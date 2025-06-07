@@ -40,13 +40,7 @@
       "interactive": true
     }
   },
-  "globalEnv": [
-    "AUTH_PROXY_URL",
-    "DATABASE_URL",
-    "GOOGLE_CLIENT_ID",
-    "GOOGLE_CLIENT_SECRET",
-    "PORT"
-  ],
+  "globalEnv": ["PORT"],
   "globalPassThroughEnv": [
     "CI",
     "NODE_ENV",

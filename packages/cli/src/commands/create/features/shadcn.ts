@@ -14,30 +14,29 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
 
   await fs.mkdir('packages/ui/src/components', { recursive: true })
 
-  const packageJsonContent = JSON.parse(
-    await fs.readFile('packages/ui/package.json', 'utf-8'),
-  ) as {
-    exports: Record<string, string | Record<string, string>>
-    scripts: Record<string, string>
-  }
-
   if (!isUse) {
-    await fs.copyFile(
-      new URL('src/tailwind.css', basePath),
-      'packages/ui/src/tailwind.css',
-    )
-
-    await fs.writeFile(
-      'packages/ui/src/components/button.tsx',
-      'export function Button() {\n  return <button>Button</button>\n}',
-      'utf-8',
-    )
-
     await fs.copyFile(
       new URL('src/lib/utils.ts', basePath),
       'packages/ui/src/index.ts',
     )
-    packageJsonContent.exports = {
+    await fs.writeFile(
+      'packages/ui/src/components/button.tsx',
+      `export function Button() { return <button>Button</button> }`,
+    )
+    await fs.writeFile(
+      'packages/ui/src/components/icons.tsx',
+      "'export * from 'lucide-react'",
+    )
+    await fs.writeFile('packages/ui/src/tailwind.css', "@import 'tailwindcss';")
+
+    const packageJson = JSON.parse(
+      await fs.readFile('packages/ui/package.json', 'utf-8'),
+    ) as {
+      exports: Record<string, unknown>
+      dependencies: Record<string, string>
+      devDependencies: Record<string, string>
+    }
+    packageJson.exports = {
       '.': {
         types: './dist/index.d.ts',
         default: './src/index.ts',
@@ -46,44 +45,24 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
         types: './dist/components/*.d.ts',
         default: './src/components/*.tsx',
       },
-      'tailwind.css': './src/tailwind.css',
+      './tailwind.css': './src/tailwind.css',
+      './postcss': './postcss.config.js',
     }
-  } else {
-    const componentsJsonContent = await fs.readFile(
-      new URL('components.json.hbs', basePath),
-      'utf-8',
-    )
+    // remove some dependencies
+    delete packageJson.dependencies['@radix-ui/react-slot']
+    delete packageJson.dependencies['class-variance-authority']
+    delete packageJson.devDependencies['tw-animate-css']
+
     await fs.writeFile(
-      'packages/ui/components.json',
-      componentsJsonContent.replace(/{{ name }}/g, name),
-      'utf-8',
+      'packages/ui/package.json',
+      JSON.stringify(packageJson, null, 2),
+      { encoding: 'utf-8' },
     )
-
-    await fs.cp(new URL('src', basePath), 'packages/ui/src', {
-      recursive: true,
-      force: true,
-    })
-
-    const files = await fs.readdir('packages/ui/src/components')
-    for (const file of files) {
-      if (file.endsWith('.tsx')) {
-        const filePath = `packages/ui/src/components/${file}`
-        let content = await fs.readFile(filePath, 'utf-8')
-        content = content.replace(/@yuki\/ui/g, `@${name}/ui`)
-        await fs.writeFile(filePath, content, 'utf-8')
-      }
-    }
-
-    packageJsonContent.scripts = {
-      ...packageJsonContent.scripts,
-      'ui-add':
-        'bunx --bun shadcn@latest add && prettier src --write --list-different',
-    }
+    return
   }
 
-  await fs.writeFile(
-    'packages/ui/package.json',
-    JSON.stringify(packageJsonContent, null, 2),
-    'utf-8',
-  )
+  await fs.cp(new URL('src', basePath), 'packages/ui/src', {
+    recursive: true,
+    force: true,
+  })
 }

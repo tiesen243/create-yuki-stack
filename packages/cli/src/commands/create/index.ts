@@ -6,14 +6,13 @@ import chalk from 'chalk'
 import { DEFAULT_APP_NAME } from '@/utils/constants'
 import { getPackageManager } from '@/utils/get-package-manager'
 import { copyPackageJson } from './copy-package-json'
-import { copyTooling } from './copy-tooling'
 import { copyTurbo } from './copy-turbo'
-import { envFeatures } from './features/env'
 import { feFeatures } from './features/fe'
 import { shadcnFeatures } from './features/shadcn'
 import { fixVersion } from './fix-version'
 import { initGit } from './init-git'
 import { renderTitle } from './render-title'
+import { replaceName } from './replace-name'
 
 export const createCommand = async (name?: string) => {
   renderTitle()
@@ -42,11 +41,6 @@ export const createCommand = async (name?: string) => {
       if (results.language === 'javascript')
         p.note(chalk.redBright('Wrong answer, using TypeScript instead'))
     },
-    shadcn: () =>
-      p.confirm({
-        message: 'Would you like to use shadcn/ui for your project?',
-        initialValue: true,
-      }),
     database: () =>
       p.select({
         message: 'Which database would you like to use?',
@@ -89,6 +83,11 @@ export const createCommand = async (name?: string) => {
         ],
         initialValues: ['nextjs'],
       }),
+    shadcn: () =>
+      p.confirm({
+        message: 'Would you like to use shadcn/ui for your project?',
+        initialValue: true,
+      }),
     packageManager: () =>
       p.select({
         message: 'Which package manager would you like to use?',
@@ -124,30 +123,45 @@ export const createCommand = async (name?: string) => {
 
     await copyPackageJson(projectName, project.packageManager)
 
+    // dot files
     await fs.copyFile(
       new URL('../templates/_gitignore', import.meta.url),
       '.gitignore',
     )
-    const tsConfigContent = await fs.readFile(
-      new URL('../templates/tsconfig.json.hbs', import.meta.url),
-    )
+    await fs.writeFile('.nvmrc', 'v22.14.0')
     await fs.writeFile(
-      'tsconfig.json',
-      tsConfigContent.toString().replace(/{{ name }}/g, projectName),
-      { encoding: 'utf-8' },
+      '.npmrc',
+      `node-linker=hoisted\nshared-workspace-lockfile=true\n`,
     )
 
+    // config files
+    await fs.copyFile(
+      new URL('../templates/tsconfig.json', import.meta.url),
+      'tsconfig.json',
+    )
+
+    // create basic structure
     await fs.mkdir('apps', { recursive: true })
     await fs.mkdir('packages', { recursive: true })
-    await copyTooling(projectName)
     await copyTurbo(projectName)
 
+    await fs.cp(new URL('../templates/tooling', import.meta.url), 'tooling', {
+      recursive: true,
+    })
+
+    await fs.cp(
+      new URL('../templates/packages/env', import.meta.url),
+      'packages/env',
+      { recursive: true },
+    )
+
     await shadcnFeatures(projectName, project.shadcn)
-    await envFeatures(projectName)
-    await feFeatures(projectName, project.frontend)
+    await feFeatures(project.frontend)
 
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
       await fixVersion()
+
+    await replaceName(projectName)
 
     execSync(
       'npx sort-package-json package.json apps/*/package.json packages/*/package.json tooling/*/package.json',

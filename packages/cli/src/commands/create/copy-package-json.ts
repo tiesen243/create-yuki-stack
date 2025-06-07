@@ -46,10 +46,6 @@ export async function copyPackageJson(name: string, packageManager: string) {
       new URL('../templates/pnpm-workspace.yaml', import.meta.url),
       'pnpm-workspace.yaml',
     )
-    await fs.writeFile(
-      '.npmrc',
-      `node-linker=hoisted\nshared-workspace-lockfile=true\n`,
-    )
   } else if (packageManager !== 'bun') {
     const packageJson = JSON.parse(
       await fs.readFile('package.json', 'utf-8'),
@@ -74,9 +70,4 @@ export async function copyPackageJson(name: string, packageManager: string) {
       encoding: 'utf-8',
     })
   }
-
-  await fs.copyFile(
-    new URL('../templates/_nvmrc', import.meta.url),
-    '.gitignore',
-  )
 }

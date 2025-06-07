@@ -8,34 +8,19 @@ export async function baseFeatures(name: string, packageName: string) {
     import.meta.url,
   )
 
-  const packageJsonContent = await fs.readFile(
-    new URL('package.json.hbs', basePath),
-    'utf-8',
-  )
-  await fs.writeFile(
+  await fs.copyFile(
+    new URL('package.json', basePath),
     `packages/${packageName}/package.json`,
-    packageJsonContent.replace(/{{ name }}/g, name),
-    'utf-8',
   )
 
-  const eContent = await fs.readFile(
-    new URL('eslint.config.js.hbs', basePath),
-    'utf-8',
-  )
-  await fs.writeFile(
+  await fs.copyFile(
+    new URL('eslint.config.js', basePath),
     `packages/${packageName}/eslint.config.js`,
-    eContent.replace(/{{ name }}/g, name),
-    'utf-8',
   )
 
-  const tContent = await fs.readFile(
-    new URL('tsconfig.json.hbs', basePath),
-    'utf-8',
-  )
-  await fs.writeFile(
+  await fs.copyFile(
+    new URL('tsconfig.json', basePath),
     `packages/${packageName}/tsconfig.json`,
-    tContent.replace(/{{ name }}/g, name),
-    'utf-8',
   )
 
   await fs.copyFile(

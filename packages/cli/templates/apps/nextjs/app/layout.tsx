@@ -2,7 +2,7 @@ import '@/app/globals.css'
 
 import { Geist, Geist_Mono } from 'next/font/google'
 
-import { cn, ThemeProvider } from '@yuki/ui'
+import { cn, ThemeProvider } from '@{{ name }}/ui'
 
 import { createMetadata } from '@/lib/metadata'
 
