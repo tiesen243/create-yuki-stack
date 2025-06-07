@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { Button } from '@yuki/ui/button'
+import { Button } from '@/components/ui/button'
 import {
   CheckCircleIcon,
   Code2Icon,
@@ -12,8 +12,8 @@ import {
   SmartphoneIcon,
   TerminalIcon,
   ZapIcon,
-} from '@yuki/ui/icons'
-import { Typography } from '@yuki/ui/typography'
+} from '@/components/ui/icons'
+import { Typography } from '@/components/ui/typography'
 
 export default function HomePage() {
   return (

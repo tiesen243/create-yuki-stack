@@ -1,1 +1,5 @@
-export { config as default } from '@yuki/ui/postcss'
+const config = {
+  plugins: ['@tailwindcss/postcss'],
+}
+
+export default config

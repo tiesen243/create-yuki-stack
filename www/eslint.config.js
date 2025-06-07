@@ -1,4 +1,4 @@
-import baseConfig, { restrictEnvAccess } from '@yuki/eslint-config/base'
+import baseConfig from '@yuki/eslint-config/base'
 import nextjsConfig from '@yuki/eslint-config/nextjs'
 import reactConfig from '@yuki/eslint-config/react'
 
@@ -10,5 +10,4 @@ export default [
   ...baseConfig,
   ...reactConfig,
   ...nextjsConfig,
-  ...restrictEnvAccess,
 ]

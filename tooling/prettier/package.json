@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@yuki/tsconfig": "workspace:*",
-    "prettier": "catalog:tool",
-    "typescript": "catalog:tool"
+    "prettier": "latest",
+    "typescript": "latest"
   }
 }

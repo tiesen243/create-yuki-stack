@@ -15,23 +15,29 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@yuki/env": "workspace:*",
+    "@radix-ui/react-slot": "^1.2.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.513.0",
     "next": "15.3.3",
-    "react": "catalog:react",
-    "react-dom": "catalog:react"
+    "next-themes": "^0.4.6",
+    "react": "latest",
+    "react-dom": "latest",
+    "tailwind-merge": "^3.3.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "catalog:tailwind",
+    "@tailwindcss/postcss": "^4.1.8",
     "@types/node": "22.15.30",
-    "@types/react": "catalog:react",
-    "@types/react-dom": "catalog:react",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
     "@yuki/eslint-config": "workspace:*",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
     "dotenv-cli": "^8.0.0",
-    "eslint": "catalog:tool",
-    "prettier": "catalog:tool",
-    "tailwindcss": "catalog:tailwind",
-    "typescript": "catalog:tool"
+    "eslint": "latest",
+    "prettier": "latest",
+    "tailwindcss": "latest",
+    "tw-animate-css": "^1.3.4",
+    "typescript": "latest"
   }
 }

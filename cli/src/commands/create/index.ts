@@ -12,7 +12,7 @@ import { shadcnFeatures } from './features/shadcn'
 import { fixVersion } from './fix-version'
 import { initGit } from './init-git'
 import { renderTitle } from './render-title'
-import { replaceName } from './replace-name'
+import { replace } from './replace'
 
 export const createCommand = async (name?: string) => {
   renderTitle()
@@ -161,7 +161,7 @@ export const createCommand = async (name?: string) => {
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
       await fixVersion()
 
-    await replaceName(projectName)
+    await replace(projectName)
 
     execSync(
       'npx sort-package-json package.json apps/*/package.json packages/*/package.json tooling/*/package.json',

@@ -4,12 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun with-env next build",
+    "build": "{{ pkm }} with-env next build",
     "clean": "git clean -xdf .cache .next .turbo node_modules",
-    "dev": "bun with-env next dev --turbopack",
+    "dev": "{{ pkm }} with-env next dev --turbopack",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "bun with-env next start",
+    "start": "{{ pkm }} with-env next start",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "catalog:tailwind",
-    "@types/node": "22.15.29",
+    "@types/node": "22.15.30",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "@{{ name }}/eslint-config": "workspace:*",
