@@ -40,15 +40,7 @@
       "interactive": true
     }
   },
-  "globalEnv": [
-    "AUTH_PROXY_URL",
-    "DATABASE_URL",
-    "DISCORD_CLIENT_ID",
-    "DISCORD_CLIENT_SECRET",
-    "GOOGLE_CLIENT_ID",
-    "GOOGLE_CLIENT_SECRET",
-    "PORT"
-  ],
+  "globalEnv": ["PORT"],
   "globalPassThroughEnv": [
     "CI",
     "NODE_ENV",
@@ -57,6 +49,7 @@
     "VERCEL_ENV",
     "VERCEL_URL",
     "VERCEL_PROJECT_PRODUCTION_URL",
+    "npm_config_user_agent",
     "npm_lifecycle_event"
   ]
 }

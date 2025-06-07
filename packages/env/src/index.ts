@@ -13,16 +13,6 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(['development', 'production', 'test'])
       .default('development'),
-    DATABASE_URL: z.string(),
-
-    // Auth
-    AUTH_PROXY_URL: z.string().optional(),
-
-    // OAuth providers
-    DISCORD_CLIENT_ID: z.string(),
-    DISCORD_CLIENT_SECRET: z.string(),
-    GOOGLE_CLIENT_ID: z.string(),
-    GOOGLE_CLIENT_SECRET: z.string(),
   },
 
   /**

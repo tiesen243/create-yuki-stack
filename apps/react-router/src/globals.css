@@ -1,7 +1,0 @@
-@import '@yuki/ui/tailwind.css';
-@source '../../../packages/ui/src/components/*.tsx';
-
-@theme inline {
-  --font-sans: 'Geist', sans-serif;
-  --font-mono: 'Geist Mono', monospace;
-}

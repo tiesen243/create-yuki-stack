@@ -1,5 +1,5 @@
 {
-  "name": "create-yuki-turbo",
+  "name": "create-yuki-stack",
   "version": "1.0.0",
   "private": true,
   "description": "Clean and typesafe starter monorepo using Turborepo along with React and tRPC ",
