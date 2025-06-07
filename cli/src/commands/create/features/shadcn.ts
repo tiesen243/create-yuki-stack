@@ -68,6 +68,10 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
     recursive: true,
     force: true,
   })
+  await fs.copyFile(
+    new URL('components.json', basePath),
+    'packages/ui/components.json',
+  )
 }
 
 export const shadcnConfigs = {
