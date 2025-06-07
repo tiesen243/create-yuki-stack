@@ -1,15 +1,29 @@
-# cli
+# create-yuki-stack
 
-To install dependencies:
+## Getting Started
 
-```bash
-bun install
-```
+To scaffold an app using `create-yuki-stack`, run any of the following four commands and answer the command prompt questions:
 
-To run:
+### npm
 
 ```bash
-bun run index.ts
+npm create yuki-stack
 ```
 
-This project was created using `bun init` in bun v1.2.15. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+### yarn
+
+```bash
+yarn create yuki-stack
+```
+
+### pnpm
+
+```bash
+pnpm create yuki-stack
+```
+
+### bun
+
+```bash
+bun create yuki-stack
+```
