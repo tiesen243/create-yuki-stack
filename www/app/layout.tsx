@@ -3,7 +3,6 @@ import '@/app/globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 
 import { cn, ThemeProvider } from '@yuki/ui'
-import { Toaster } from '@yuki/ui/sonner'
 
 import { createMetadata } from '@/lib/metadata'
 
@@ -34,8 +33,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-
-          <Toaster />
         </ThemeProvider>
       </body>
     </html>

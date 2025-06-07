@@ -8,11 +8,10 @@ type Metadata = Omit<NextMetadata, 'title' | 'keywords'> & {
 }
 
 export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
-  const siteName = 'Create Yuki Turbo'
+  const siteName = 'Create Yuki Stack'
   const title = override.title ? `${override.title} | ${siteName}` : siteName
   const description =
-    override.description ??
-    'Clean and typesafe starter monorepo using Turborepo along with Next.js and tRPC '
+    override.description ?? 'Clean and typesafe starter monorepo'
 
   const {
     title: _,
@@ -47,15 +46,14 @@ export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
       ...override.twitter,
     },
     icons: {
-      icon: 'https://tiesen.id.vn/favicon.ico',
-      shortcut: 'https://tiesen.id.vn/favicon-16x16.png',
-      apple: 'https://tiesen.id.vn/apple-touch-icon.png',
+      icon: '/favicon.ico',
+      shortcut: '/favicon-16x16.png',
+      apple: '/apple-touch-icon.png',
     },
     alternates: {
       canonical: url,
       ...override.alternates,
     },
-    assets: '/assets',
     ...restOverride,
   }
 }

@@ -7,7 +7,7 @@
     "build": "bun with-env next build",
     "clean": "git clean -xdf .cache .next .turbo node_modules",
     "dev": "bun with-env next dev --turbopack",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "format": "prettier --check . --ignore-path ../.gitignore",
     "lint": "eslint",
     "start": "bun with-env next start",
     "typecheck": "tsc --noEmit",

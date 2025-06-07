@@ -156,7 +156,7 @@ export const createCommand = async (name?: string) => {
     )
 
     await shadcnFeatures(projectName, project.shadcn)
-    await feFeatures(project.frontend)
+    await feFeatures(project.frontend, project.shadcn)
 
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
       await fixVersion()

@@ -6,7 +6,7 @@
   "license": "MIT",
   "workspaces": {
     "packages": [
-      "apps/*",
+      "www",
       "packages/*",
       "tooling/*"
     ],

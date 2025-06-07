@@ -27,7 +27,10 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
       'packages/ui/src/components/icons.tsx',
       "'export * from 'lucide-react'",
     )
-    await fs.writeFile('packages/ui/src/tailwind.css', "@import 'tailwindcss';")
+    await fs.copyFile(
+      new URL('src/tailwind.css', basePath),
+      'packages/ui/src/tailwind.css',
+    )
 
     const packageJson = JSON.parse(
       await fs.readFile('packages/ui/package.json', 'utf-8'),
@@ -48,10 +51,10 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
       './tailwind.css': './src/tailwind.css',
       './postcss': './postcss.config.js',
     }
+
     // remove some dependencies
     delete packageJson.dependencies['@radix-ui/react-slot']
     delete packageJson.dependencies['class-variance-authority']
-    delete packageJson.devDependencies['tw-animate-css']
 
     await fs.writeFile(
       'packages/ui/package.json',
@@ -65,4 +68,26 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
     recursive: true,
     force: true,
   })
+}
+
+export const shadcnConfigs = {
+  $schema: 'https://ui.shadcn.com/schema.json',
+  style: 'new-york',
+  rsc: true,
+  tsx: true,
+  tailwind: {
+    config: '',
+    css: '../../packages/ui/src/tailwind.css',
+    baseColor: 'neutral',
+    cssVariables: true,
+    prefix: '',
+  },
+  aliases: {
+    components: '@/components',
+    hooks: '@/hooks',
+    lib: '@/lib',
+    utils: '@{{ name }}/ui/utils',
+    ui: '@{{ name }}/ui/components',
+  },
+  iconLibrary: 'lucide',
 }
