@@ -21,11 +21,11 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
     )
     await fs.writeFile(
       'packages/ui/src/components/button.tsx',
-      `export function Button() { return <button>Button</button> }`,
+      `export function Button()\n{\n  return <button>Lick me</button>\n}`,
     )
     await fs.writeFile(
       'packages/ui/src/components/icons.tsx',
-      "'export * from 'lucide-react'",
+      "export * from 'lucide-react'",
     )
     await fs.copyFile(
       new URL('src/tailwind.css', basePath),

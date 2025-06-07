@@ -186,6 +186,7 @@ export const createCommand = async (name?: string) => {
     )
 
     if (project.install) await execSync(`${project.packageManager} install`)
+    await execSync(`${project.packageManager} run format:fix`)
 
     if (project.git) initGit()
   } catch (error) {
