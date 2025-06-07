@@ -1,0 +1,47 @@
+{
+  "name": "@yuki/nextjs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun with-env next build",
+    "clean": "git clean -xdf .cache .next .turbo node_modules",
+    "dev": "bun with-env next dev --turbopack",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "start": "bun with-env next start",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "prettier": "@yuki/prettier-config",
+  "dependencies": {
+    "@tanstack/react-query": "catalog:trpc",
+    "@trpc/client": "catalog:trpc",
+    "@trpc/tanstack-react-query": "catalog:trpc",
+    "@yuki/api": "workspace:*",
+    "@yuki/auth": "workspace:*",
+    "@yuki/db": "workspace:*",
+    "@yuki/env": "workspace:*",
+    "@yuki/ui": "workspace:*",
+    "@yuki/validators": "workspace:*",
+    "next": "15.3.3",
+    "nuqs": "^2.4.3",
+    "react": "catalog:react",
+    "react-dom": "catalog:react",
+    "superjson": "catalog:trpc"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "catalog:tailwind",
+    "@types/node": "22.15.29",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "catalog:tool",
+    "prettier": "catalog:tool",
+    "tailwindcss": "catalog:tailwind",
+    "typescript": "catalog:tool"
+  }
+}

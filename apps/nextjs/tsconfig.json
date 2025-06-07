@@ -1,0 +1,12 @@
+{
+  "extends": "@yuki/tsconfig/nextjs.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@yuki/ui/*": ["../../packages/ui/src/*"]
+    }
+  },
+  "include": [".", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

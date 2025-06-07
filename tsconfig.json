@@ -1,0 +1,3 @@
+{
+  "extends": "@yuki/tsconfig/base.json"
+}

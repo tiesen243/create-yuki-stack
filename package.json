@@ -1,0 +1,71 @@
+{
+  "name": "create-yuki-turbo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Clean and typesafe starter monorepo using Turborepo along with React and tRPC ",
+  "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*",
+      "tooling/*"
+    ],
+    "catalog": {
+      "zod": "^3.25.50"
+    },
+    "catalogs": {
+      "react": {
+        "react": "19.0.0",
+        "react-dom": "19.0.0",
+        "@types/react": "19.1.5",
+        "@types/react-dom": "^19.1.5"
+      },
+      "tailwind": {
+        "@tailwindcss/postcss": "^4.1.8",
+        "@tailwindcss/vite": "^4.1.8",
+        "tailwindcss": "^4.1.8"
+      },
+      "trpc": {
+        "@tanstack/react-query": "^5.80.5",
+        "@trpc/client": "^11.3.0",
+        "@trpc/tanstack-react-query": "^11.3.0",
+        "@trpc/server": "^11.3.0",
+        "superjson": "^2.2.2"
+      },
+      "tool": {
+        "eslint": "^9.28.0",
+        "prettier": "^3.5.3",
+        "typescript": "^5.8.3"
+      }
+    }
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
+    "clean": "git clean -xdf node_modules",
+    "clean:workspaces": "turbo run clean",
+    "db:push": "turbo -F @yuki/db db:push",
+    "db:studio": "turbo -F @yuki/db db:studio",
+    "dev": "turbo dev --continue",
+    "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
+    "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
+    "postinstall": "bun lint:ws",
+    "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
+    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
+    "lint:ws": "bun x --bun sherif@latest",
+    "typecheck": "turbo run typecheck",
+    "ui-add": "turbo run ui-add"
+  },
+  "prettier": "@yuki/prettier-config",
+  "devDependencies": {
+    "@turbo/gen": "^2.5.4",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
+    "turbo": "^2.5.4"
+  },
+  "packageManager": "bun@1.2.15",
+  "engines": {
+    "bun": ">=1.2.14",
+    "node": ">=22.0.0"
+  }
+}
