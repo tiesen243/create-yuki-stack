@@ -54,6 +54,8 @@
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
     "lint:ws": "bun x --bun sherif@latest",
     "typecheck": "turbo run typecheck",
+    "pub:dev": "turbo -F create-yuki-stack pub:dev",
+    "pub:release": "turbo -F create-yuki-stack pub:release",
     "ui-add": "turbo run ui-add"
   },
   "prettier": "@yuki/prettier-config",

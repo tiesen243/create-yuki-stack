@@ -27,13 +27,11 @@
       "outputs": [".cache/tsbuildinfo.json"],
       "outputLogs": "new-only"
     },
-    "db:push": {
-      "cache": false,
-      "interactive": true
+    "pub:dev": {
+      "cache": false
     },
-    "db:studio": {
-      "cache": false,
-      "persistent": true
+    "pub:release": {
+      "cache": false
     },
     "ui-add": {
       "cache": false,

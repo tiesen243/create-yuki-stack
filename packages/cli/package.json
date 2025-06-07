@@ -1,0 +1,48 @@
+{
+  "name": "create-yuki-stack",
+  "version": "0.0.1",
+  "description": "CLI for creating Yuki Stack projects",
+  "keywords": [
+    "cli",
+    "create-yuki-stack"
+  ],
+  "homepage": "https://create-yuki-stack.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiesen243/create-yuki-stack",
+    "directory": "packages/cli"
+  },
+  "author": {
+    "name": "Tiesen",
+    "url": "https://tiesen.id.vn"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": "./dist/index.js",
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "pub:dev": "tsdown && bun link create-yuki-stack",
+    "pub:release": "tsdown",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "../../tooling/prettier/index.js",
+  "dependencies": {
+    "commander": "^14.0.0",
+    "zod": "^3.25.56"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "tsdown": "^0.12.7",
+    "typescript": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
