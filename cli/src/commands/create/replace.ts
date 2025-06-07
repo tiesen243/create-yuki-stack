@@ -19,11 +19,11 @@ export async function replace(name: string) {
 
         // Replace placeholders with the provided name
         if (content.includes('{{ name }}'))
-          updatedContent = content.replace(/\{\{ name \}\}/g, name)
+          updatedContent = updatedContent.replace(/\{\{ name \}\}/g, name)
 
         // Replace placeholders with the package manager
         if (content.includes('{{ pkm }}'))
-          updatedContent = content.replace(
+          updatedContent = updatedContent.replace(
             /\{\{ pkm \}\}/g,
             getPackageManager(),
           )
