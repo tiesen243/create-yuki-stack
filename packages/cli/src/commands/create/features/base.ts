@@ -39,7 +39,7 @@ export async function baseFeatures(name: string, packageName: string) {
   )
 
   await fs.copyFile(
-    new URL('turbo.json.hbs', basePath),
+    new URL('turbo.json', basePath),
     `packages/${packageName}/turbo.json`,
   )
 }

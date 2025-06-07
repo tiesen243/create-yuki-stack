@@ -2,13 +2,14 @@ import { execSync } from 'child_process'
 import fs from 'fs/promises'
 import * as p from '@clack/prompts'
 import chalk from 'chalk'
-import spinner from 'yocto-spinner'
 
 import { DEFAULT_APP_NAME } from '@/utils/constants'
 import { getPackageManager } from '@/utils/get-package-manager'
 import { copyPackageJson } from './copy-package-json'
 import { copyTooling } from './copy-tooling'
 import { copyTurbo } from './copy-turbo'
+import { envFeatures } from './features/env'
+import { feFeatures } from './features/fe'
 import { shadcnFeatures } from './features/shadcn'
 import { fixVersion } from './fix-version'
 import { initGit } from './init-git'
@@ -17,58 +18,104 @@ import { renderTitle } from './render-title'
 export const createCommand = async (name?: string) => {
   renderTitle()
 
-  try {
-    const project = await p.group({
-      ...(!name && {
-        name: () =>
-          p.text({
-            message: 'What is the name of your project?',
-            placeholder: DEFAULT_APP_NAME,
-          }),
-      }),
-      language: () =>
-        p.select({
-          message: 'Will you be using TypeScript or JavaScript?',
-          options: [
-            { value: 'typescript', label: 'TypeScript' },
-            { value: 'javascript', label: 'JavaScript' },
-          ],
-          initialValue: 'typescript',
-        }),
-      // eslint-disable-next-line @typescript-eslint/require-await
-      _: async ({ results }) => {
-        if (results.language === 'javascript')
-          p.note(chalk.redBright('Wrong answer, using TypeScript instead'))
-      },
-      shadcn: () =>
-        p.confirm({
-          message: 'Would you like to use shadcn/ui for your project?',
-          initialValue: true,
-        }),
-      packageManager: () =>
-        p.select({
-          message: 'Which package manager would you like to use?',
-          options: [
-            { value: 'npm', label: 'npm' },
-            { value: 'yarn', label: 'Yarn' },
-            { value: 'pnpm', label: 'pnpm (recommended)' },
-            { value: 'bun', label: 'Bun (recommended)' },
-          ],
-          initialValue: getPackageManager(),
-        }),
-      install: ({ results }) =>
-        p.confirm({
-          message: `Would you like to run ${chalk.bold(`${results.packageManager} install`)} for you?`,
-          initialValue: true,
-        }),
-      git: () =>
-        p.confirm({
-          message: 'Would you like to initialize a git repository?',
-          initialValue: true,
-        }),
-    })
+  p.intro(chalk.bold.magenta('Creating a new Yuki-Stack project...'))
 
-    const creatingSpinner = spinner({ text: 'Creating new project...' }).start()
+  const project = await p.group({
+    ...(!name && {
+      name: () =>
+        p.text({
+          message: 'What is the name of your project?',
+          placeholder: DEFAULT_APP_NAME,
+        }),
+    }),
+    language: () =>
+      p.select({
+        message: 'Will you be using TypeScript or JavaScript?',
+        options: [
+          { value: 'typescript', label: 'TypeScript' },
+          { value: 'javascript', label: 'JavaScript' },
+        ],
+        initialValue: 'typescript',
+      }),
+    // eslint-disable-next-line @typescript-eslint/require-await
+    _: async ({ results }) => {
+      if (results.language === 'javascript')
+        p.note(chalk.redBright('Wrong answer, using TypeScript instead'))
+    },
+    shadcn: () =>
+      p.confirm({
+        message: 'Would you like to use shadcn/ui for your project?',
+        initialValue: true,
+      }),
+    database: () =>
+      p.select({
+        message: 'Which database would you like to use?',
+        options: [
+          { value: 'none', label: 'None' },
+          { value: 'prisma', label: 'Prisma (soon)' },
+          { value: 'drizzle', label: 'Drizzle (soon)' },
+          { value: 'mongoose', label: 'Mongoose (soon)' },
+        ],
+        initialValue: 'none',
+      }),
+    api: () =>
+      p.select({
+        message: 'What type of API will you be using?',
+        options: [
+          { value: 'none', label: 'None' },
+          { value: 'trpc', label: 'tRPC (soon)' },
+          { value: 'orpc', label: 'oRPC (soon)' },
+        ],
+        initialValue: 'none',
+      }),
+    backend: () =>
+      p.select({
+        message: 'Which backend framework would you like to use?',
+        options: [
+          { value: 'none', label: 'None' },
+          { value: 'express', label: 'Express (soon)' },
+          { value: 'elysia', label: 'Elysia (soon)' },
+        ],
+        initialValue: 'none',
+      }),
+    frontend: () =>
+      p.multiselect({
+        message: 'Which frontend framework would you like to use?',
+        options: [
+          { value: 'nextjs', label: 'Next.js' },
+          { value: 'rr', label: 'React Router (soon)' },
+          { value: 'tsr', label: 'Tanstack Router (soon)' },
+          { value: 'expo', label: 'Expo (ieact Native)' },
+        ],
+        initialValues: ['nextjs'],
+      }),
+    packageManager: () =>
+      p.select({
+        message: 'Which package manager would you like to use?',
+        options: [
+          { value: 'npm', label: 'NPM' },
+          { value: 'yarn', label: 'Yarn' },
+          { value: 'pnpm', label: 'PNPM' },
+          { value: 'bun', label: 'Bun' },
+        ],
+        initialValue: getPackageManager(),
+      }),
+    install: ({ results }) =>
+      p.confirm({
+        message: `Would you like to run ${chalk.bold(`${results.packageManager} install`)} for you?`,
+        initialValue: true,
+      }),
+    git: () =>
+      p.confirm({
+        message: 'Would you like to initialize a git repository?',
+        initialValue: true,
+      }),
+  })
+
+  const s = p.spinner()
+
+  try {
+    s.start(`Creating project...`)
 
     const projectName = name ?? project.name ?? DEFAULT_APP_NAME
 
@@ -96,6 +143,8 @@ export const createCommand = async (name?: string) => {
     await copyTurbo(projectName)
 
     await shadcnFeatures(projectName, project.shadcn)
+    await envFeatures(projectName)
+    await feFeatures(projectName, project.frontend)
 
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
       await fixVersion()
@@ -106,15 +155,13 @@ export const createCommand = async (name?: string) => {
     )
 
     if (project.install) {
-      creatingSpinner.text = `Installing dependencies...`
+      s.message(`Installing dependencies...`)
       execSync(`${project.packageManager} install`, { stdio: 'pipe' })
     }
 
     if (project.git) initGit()
 
-    creatingSpinner.success(
-      `Project ${chalk.bold(projectName)} created successfully!`,
-    )
+    s.stop(`Project ${chalk.bold(projectName)} created successfully!`)
   } catch (error) {
     if (error instanceof Error)
       console.error(chalk.redBright('Error creating project:'), error.message)

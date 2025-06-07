@@ -5,6 +5,9 @@ import { addCommand } from '@/commands/add'
 import { createCommand } from '@/commands/create'
 import packageJson from '../package.json'
 
+const exit = () => process.exit(0)
+process.on('SIGINT', exit)
+process.on('SIGTERM', exit)
 ;(function main() {
   const program = new Command()
     .name(packageJson.name)

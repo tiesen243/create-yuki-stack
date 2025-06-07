@@ -32,10 +32,10 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
       'export function Button() {\n  return <button>Button</button>\n}',
       'utf-8',
     )
-    await fs.writeFile(
+
+    await fs.copyFile(
+      new URL('src/lib/utils.ts', basePath),
       'packages/ui/src/index.ts',
-      'export * from "next-theme"',
-      'utf-8',
     )
     packageJsonContent.exports = {
       '.': {
@@ -49,6 +49,16 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
       'tailwind.css': './src/tailwind.css',
     }
   } else {
+    const componentsJsonContent = await fs.readFile(
+      new URL('components.json.hbs', basePath),
+      'utf-8',
+    )
+    await fs.writeFile(
+      'packages/ui/components.json',
+      componentsJsonContent.replace(/{{ name }}/g, name),
+      'utf-8',
+    )
+
     await fs.cp(new URL('src', basePath), 'packages/ui/src', {
       recursive: true,
       force: true,
