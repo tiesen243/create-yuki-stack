@@ -1,2 +1,7 @@
-export const DEFAULT_APP_NAME = 'my-yuki-stack'
-export const CREATE_YUKI_STACK = 'create-yuki-stack'
+export const DEFAULT_APP_NAME = 'my-yuki-app'
+
+export const APP_TITLE = `   ___              _                   _   _      _           _   
+  / __|_ _ ___ __ _| |_ ___   _  _ _  _| |_(_)  __| |_ __ _ __| |__
+ | (__| '_/ -_) _\` |  _/ -_) | || | || | / / | (_-<  _/ _\` / _| / /
+  \\___|_| \\___\\__,_|\\__\\___|  \\_, |\\_,_|_\\_\\_| /__/\\__\\__,_\\__|_\\_\\
+                              |__/                                 `

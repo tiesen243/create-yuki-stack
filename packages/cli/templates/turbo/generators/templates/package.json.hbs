@@ -1,0 +1,31 @@
+{
+  "name": "@{{ projectName }}/{{ name }}",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc --watch",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@{{ projectName }}/prettier-config",
+  "dependencies": {},
+  "devDependencies": {
+    "@{{ projectName }}/eslint-config": "workspace:*",
+    "@{{ projectName }}/prettier-config": "workspace:*",
+    "@{{ projectName }}/tsconfig": "workspace:*",
+    "eslint": "catalog:tool",
+    "prettier": "catalog:tool",
+    "typescript": "catalog:tool"
+  }
+}

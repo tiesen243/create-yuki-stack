@@ -1,17 +1,12 @@
 {
-  "name": "create-yuki-stack",
+  "name": "{{ name }}",
   "version": "1.0.0",
   "private": true,
-  "description": "Clean and typesafe starter monorepo using Turborepo along with React and tRPC ",
   "license": "MIT",
   "workspaces": {
-    "packages": [
-      "apps/*",
-      "packages/*",
-      "tooling/*"
-    ],
+    "packages": ["apps/*", "packages/*", "tooling/*"],
     "catalog": {
-      "zod": "^3.25.50"
+      "zod": "^3.25.55"
     },
     "catalogs": {
       "react": {
@@ -44,6 +39,8 @@
     "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
+    "db:push": "turbo -F @{{ name }}/db db:push",
+    "db:studio": "turbo -F @{{ name }}/db db:studio",
     "dev": "turbo dev --continue",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
@@ -52,20 +49,13 @@
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
     "lint:ws": "bun x --bun sherif@latest",
     "typecheck": "turbo run typecheck",
-    "pub:dev": "turbo -F create-yuki-stack pub:dev",
-    "pub:release": "turbo -F create-yuki-stack pub:release",
     "ui-add": "turbo run ui-add"
   },
-  "prettier": "@yuki/prettier-config",
+  "prettier": "@{{ name }}/prettier-config",
   "devDependencies": {
     "@turbo/gen": "^2.5.4",
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/tsconfig": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
     "turbo": "^2.5.4"
-  },
-  "packageManager": "bun@1.2.15",
-  "engines": {
-    "bun": ">=1.2.14",
-    "node": ">=22.0.0"
   }
 }
