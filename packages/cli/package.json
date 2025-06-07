@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ./.prettierignore",
     "lint": "eslint",
     "pub:dev": "tsdown && bun link create-yuki-stack",
     "pub:release": "tsdown && bun publish --tag latest",
