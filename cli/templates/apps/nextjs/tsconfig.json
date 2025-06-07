@@ -4,7 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@yuki/ui/*": ["../../packages/ui/src/*"]
+      "@{{ name }}/ui/*": ["../../packages/ui/src/*"]
     }
   },
   "include": [".", ".next/types/**/*.ts"],
