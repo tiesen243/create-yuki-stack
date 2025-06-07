@@ -8,5 +8,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "templates", "tsdown.config.ts", "package.json"]
+  "include": ["src", "tsdown.config.ts", "package.json"]
 }

@@ -9,6 +9,7 @@ import { getPackageManager } from '@/utils/get-package-manager'
 import { copyPackageJson } from './copy-package-json'
 import { copyTooling } from './copy-tooling'
 import { copyTurbo } from './copy-turbo'
+import { shadcnFeatures } from './features/shadcn'
 import { fixVersion } from './fix-version'
 import { initGit } from './init-git'
 import { renderTitle } from './render-title'
@@ -39,6 +40,11 @@ export const createCommand = async (name?: string) => {
         if (results.language === 'javascript')
           p.note(chalk.redBright('Wrong answer, using TypeScript instead'))
       },
+      shadcn: () =>
+        p.confirm({
+          message: 'Would you like to use shadcn/ui for your project?',
+          initialValue: true,
+        }),
       packageManager: () =>
         p.select({
           message: 'Which package manager would you like to use?',
@@ -89,19 +95,7 @@ export const createCommand = async (name?: string) => {
     await copyTooling(projectName)
     await copyTurbo(projectName)
 
-    // create mock package.json files for apps and packages
-    await fs.mkdir('apps/mock', { recursive: true })
-    await fs.writeFile(
-      'apps/mock/package.json',
-      JSON.stringify({ name: 'mock-app', version: '1.0.0' }, null, 2),
-      { encoding: 'utf-8' },
-    )
-    await fs.mkdir('packages/mock', { recursive: true })
-    await fs.writeFile(
-      'packages/mock/package.json',
-      JSON.stringify({ name: 'mock-package', version: '1.0.0' }, null, 2),
-      { encoding: 'utf-8' },
-    )
+    await shadcnFeatures(projectName, project.shadcn)
 
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
       await fixVersion()

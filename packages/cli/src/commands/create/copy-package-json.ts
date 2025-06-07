@@ -26,6 +26,9 @@ export async function copyPackageJson(name: string, packageManager: string) {
       node: '>=22.0.0',
       bun: '>=1.2.15',
     }
+    await fs.writeFile('package.json', JSON.stringify(packageJson, null, 2), {
+      encoding: 'utf-8',
+    })
   } else if (packageManager === 'pnpm') {
     const packageJson = JSON.parse(
       await fs.readFile('package.json', 'utf-8'),
