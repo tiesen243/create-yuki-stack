@@ -7,7 +7,7 @@ import {
   SmartphoneIcon,
   TerminalIcon,
   ZapIcon,
-} from '@{{ name }/ui/icons'
+} from '@{{ name }}/ui/icons'
 
 export default function HomePage() {
   return (
