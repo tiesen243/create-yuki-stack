@@ -1,5 +1,6 @@
-import { execSync } from 'child_process'
+import { exec } from 'child_process'
 import fs from 'fs/promises'
+import { promisify } from 'util'
 import * as p from '@clack/prompts'
 import chalk from 'chalk'
 
@@ -14,6 +15,8 @@ import { initGit } from './init-git'
 import { renderTitle } from './render-title'
 import { replace } from './replace'
 
+const execSync = promisify(exec)
+
 export const createCommand = async (name?: string) => {
   renderTitle()
 
@@ -27,6 +30,22 @@ export const createCommand = async (name?: string) => {
           placeholder: DEFAULT_APP_NAME,
         }),
     }),
+    _: async ({ results }) => {
+      const projectName = name ?? results.name ?? DEFAULT_APP_NAME
+
+      const projectExists = await fs
+        .access(projectName)
+        .then(() => true)
+        .catch(() => false)
+      if (projectExists) {
+        p.note(
+          chalk.redBright(
+            `A directory named ${chalk.bold(projectName)} already exists. Please choose a different name.`,
+          ),
+        )
+        process.exit(1)
+      }
+    },
     language: () =>
       p.select({
         message: 'Will you be using TypeScript or JavaScript?',
@@ -37,7 +56,7 @@ export const createCommand = async (name?: string) => {
         initialValue: 'typescript',
       }),
     // eslint-disable-next-line @typescript-eslint/require-await
-    _: async ({ results }) => {
+    __: async ({ results }) => {
       if (results.language === 'javascript')
         p.note(chalk.redBright('Wrong answer, using TypeScript instead'))
     },
@@ -111,13 +130,12 @@ export const createCommand = async (name?: string) => {
       }),
   })
 
+  const projectName = name ?? project.name ?? DEFAULT_APP_NAME
+
   const s = p.spinner()
+  s.start(`Creating project...`)
 
   try {
-    s.start(`Creating project...`)
-
-    const projectName = name ?? project.name ?? DEFAULT_APP_NAME
-
     await fs.mkdir(projectName, { recursive: true })
     process.chdir(projectName)
 
@@ -163,19 +181,13 @@ export const createCommand = async (name?: string) => {
 
     await replace(projectName)
 
-    execSync(
+    await execSync(
       'npx sort-package-json package.json apps/*/package.json packages/*/package.json tooling/*/package.json',
-      { stdio: 'pipe' },
     )
 
-    if (project.install) {
-      s.message(`Installing dependencies...`)
-      execSync(`${project.packageManager} install`, { stdio: 'pipe' })
-    }
+    if (project.install) await execSync(`${project.packageManager} install`)
 
     if (project.git) initGit()
-
-    s.stop(`Project ${chalk.bold(projectName)} created successfully!`)
   } catch (error) {
     if (error instanceof Error)
       console.error(chalk.redBright('Error creating project:'), error.message)
@@ -186,5 +198,7 @@ export const createCommand = async (name?: string) => {
         ),
       )
     process.exit(1)
+  } finally {
+    s.stop(`Project ${chalk.bold(projectName)} created successfully! 🎉`)
   }
 }

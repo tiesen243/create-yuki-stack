@@ -22,13 +22,13 @@
     "react-dom": "catalog:react"
   },
   "devDependencies": {
+    "@{{ name }}/eslint-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "catalog:tailwind",
     "@types/node": "22.15.30",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "@{{ name }}/eslint-config": "workspace:*",
-    "@{{ name }}/prettier-config": "workspace:*",
-    "@{{ name }}/tsconfig": "workspace:*",
     "dotenv-cli": "^8.0.0",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",
