@@ -29,7 +29,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "pub:dev": "tsdown && bun link create-yuki-stack",
-    "pub:release": "tsdown",
+    "pub:release": "tsdown && bun publish --tag latest",
     "typecheck": "tsc --noEmit"
   },
   "prettier": "../../tooling/prettier/index.js",
