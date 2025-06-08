@@ -32,6 +32,7 @@
     "@vitejs/plugin-react-swc": "^3.10.1",
     "dotenv-cli": "^8.0.0",
     "eslint": "catalog:tool",
+    "jiti": "^2.4.2",
     "prettier": "catalog:tool",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:tool",
