@@ -7,7 +7,7 @@ import { getBaseUrl } from '@/lib/utils'
 export function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
 
-  const defaultMeta = createMetadata({})
+  const defaultMeta = createMetadata()
   const title = searchParams.get('title') ?? defaultMeta.title
   const description = searchParams.get('description') ?? defaultMeta.description
 
@@ -30,7 +30,9 @@ export function GET(req: NextRequest) {
             style={{ filter: 'invert(1)' }}
           />
 
-          <p style={{ fontSize: '56px', fontWeight: 600 }}>Tiesen</p>
+          <p style={{ fontSize: '56px', fontWeight: 600 }}>
+            {defaultMeta.title}
+          </p>
         </div>
 
         <p

@@ -12,7 +12,7 @@ export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
   const title = override.title ? `${override.title} | ${siteName}` : siteName
   const description =
     override.description ??
-    'An CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.'
+    'A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.'
 
   const {
     title: _,

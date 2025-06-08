@@ -1,6 +1,6 @@
 # create-yuki-stack
 
-An CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.
+A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.
 
 ## Getting Started
 
