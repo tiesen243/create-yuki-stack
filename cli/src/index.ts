@@ -16,6 +16,7 @@ process.on('SIGTERM', exit)
 
   program
     .argument('[name]', 'Directory to create the Yuki stack in')
+    .option('-y, --yes', 'Skip prompts and use default values')
     .action(createCommand)
 
   program.addCommand(addCommand)
