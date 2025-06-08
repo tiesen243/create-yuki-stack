@@ -4,6 +4,7 @@ packages:
   - tooling/*
 
 catalog:
+  '@types/node': 22.15.30
   zod: ^3.25.55
 
 catalogs:

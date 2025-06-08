@@ -1,6 +1,6 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "description": "CLI for creating Yuki Stack projects",
   "keywords": [
     "cli",
