@@ -40,7 +40,7 @@
       "interactive": true
     }
   },
-  "globalEnv": ["PORT"],
+  "globalEnv": ["DATABASE_URL", "PORT"],
   "globalPassThroughEnv": [
     "CI",
     "NODE_ENV",

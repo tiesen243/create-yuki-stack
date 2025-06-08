@@ -3,7 +3,7 @@ import fs from 'fs/promises'
 import { baseFeatures } from './base'
 
 export async function shadcnFeatures(name: string, isUse: boolean) {
-  await baseFeatures(name, 'ui')
+  await baseFeatures('ui')
 
   const basePath = new URL('../templates/packages/ui/ui', import.meta.url)
 

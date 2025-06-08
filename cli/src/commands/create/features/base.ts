@@ -1,6 +1,6 @@
 import fs from 'fs/promises'
 
-export async function baseFeatures(name: string, packageName: string) {
+export async function baseFeatures(packageName: string) {
   await fs.mkdir(`packages/${packageName}`, { recursive: true })
 
   const basePath = new URL(

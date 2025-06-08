@@ -8,6 +8,7 @@ import { DEFAULT_APP_NAME } from '@/utils/constants'
 import { getPackageManager } from '@/utils/get-package-manager'
 import { copyPackageJson } from './copy-package-json'
 import { copyTurbo } from './copy-turbo'
+import { dbFeature } from './features/db'
 import { feFeatures } from './features/fe'
 import { shadcnFeatures } from './features/shadcn'
 import { fixVersion } from './fix-version'
@@ -26,7 +27,9 @@ export const createCommand = async (
   let project = {
     name: name ?? DEFAULT_APP_NAME,
     database: 'none',
+    adapter: 'none',
     api: 'none',
+    auth: 'none',
     backend: 'none',
     frontend: ['nextjs'],
     shadcn: true,
@@ -84,7 +87,7 @@ export const createCommand = async (
             options: [
               { value: 'none', label: 'None' },
               { value: 'prisma', label: 'Prisma (soon)' },
-              { value: 'drizzle', label: 'Drizzle (soon)' },
+              { value: 'drizzle', label: 'Drizzle' },
               { value: 'mongodb', label: 'MongoDb (soon)' },
             ],
             initialValue: 'none',
@@ -113,7 +116,6 @@ export const createCommand = async (
                 ],
               })
             : undefined,
-
         api: () =>
           p.select({
             message: 'What type of API will you be using?',
@@ -231,6 +233,7 @@ export const createCommand = async (
       { recursive: true },
     )
 
+    await dbFeature(project.database, project.adapter, project.auth)
     await shadcnFeatures(project.name, project.shadcn)
     await feFeatures(project.frontend, project.shadcn)
 
