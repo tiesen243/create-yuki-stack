@@ -10,41 +10,47 @@ export async function replace(name: string, pkm: string) {
     nodir: true,
   })
 
-  await Promise.all(
-    files.map(async (file) => {
+  const replacements = new Map([
+    ['{{ name }}', name],
+    ['{{ pkm }}', `${pkm} run`],
+    ['{{ pkmi }}', `${pkm} install`],
+    ['{{ pkme }}', getPackageManagerExcecuter(pkm)],
+  ])
+
+  await Promise.all([
+    ...files.map(async (file) => {
       try {
         const content = await fs.readFile(file, 'utf-8')
 
         let updatedContent = content
 
-        // Replace placeholders with the provided name
-        if (content.includes('{{ name }}'))
-          updatedContent = updatedContent.replace(/\{\{ name \}\}/g, name)
-
-        // Replace placeholders with the package manager
-        if (content.includes('{{ pkm }}'))
-          updatedContent = updatedContent.replace(
-            /\{\{ pkm \}\}/g,
-            `${pkm} run`,
-          )
-
-        if (content.includes('{{ pkmi }}'))
-          updatedContent = updatedContent.replace(
-            /\{\{ pkmi \}\}/g,
-            `${pkm} install`,
-          )
-
-        if (content.includes('{{ pkme }}'))
-          updatedContent = updatedContent.replace(
-            /\{\{ pkme \}\}/g,
-            getPackageManagerExcecuter(pkm),
-          )
+        // Apply all replacements in a single pass
+        for (const [placeholder, replacement] of replacements)
+          if (content.includes(placeholder))
+            updatedContent = updatedContent.replace(
+              new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g'),
+              replacement,
+            )
 
         await fs.writeFile(file, updatedContent, 'utf-8')
-      } catch (error) {
-        // Skip binary files or files that can't be read as text
-        console.warn(`Skipping file ${file}:`, error)
+      } catch {
+        // Ignore errors for files that cannot be read or written
       }
     }),
-  )
+    (async () => {
+      const turboGeneratorPath = 'turbo/generators/config.ts'
+      const content = await fs.readFile(turboGeneratorPath, 'utf-8')
+
+      let updatedContent = content
+      replacements.delete('{{ name }}')
+      for (const [placeholder, replacement] of replacements)
+        if (content.includes(placeholder))
+          updatedContent = updatedContent.replace(
+            new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g'),
+            replacement,
+          )
+
+      await fs.writeFile(turboGeneratorPath, updatedContent, 'utf-8')
+    })(),
+  ])
 }

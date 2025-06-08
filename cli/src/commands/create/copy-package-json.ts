@@ -7,6 +7,14 @@ interface PackageJson {
   engines: Record<string, string>
 }
 
+const versionMap = {
+  node: '22.0.0',
+  npm: '11.4.0',
+  yarn: '1.22.0',
+  bun: '1.2.15',
+  pnpm: '10.11.0',
+} as const
+
 export async function copyPackageJson(name: string, packageManager: string) {
   const pjContent = await fs.readFile(
     new URL('../templates/package.json.hbs', import.meta.url),
@@ -21,10 +29,10 @@ export async function copyPackageJson(name: string, packageManager: string) {
     const packageJson = JSON.parse(
       await fs.readFile('package.json', 'utf-8'),
     ) as PackageJson
-    packageJson.packageManager = 'bun@1.2.15'
+    packageJson.packageManager = `bun@${versionMap.bun}`
     packageJson.engines = {
-      node: '>=22.0.0',
-      bun: '>=1.2.15',
+      node: `>=${versionMap.node}`,
+      bun: `>=${versionMap.bun}`,
     }
     await fs.writeFile('package.json', JSON.stringify(packageJson, null, 2), {
       encoding: 'utf-8',
@@ -34,10 +42,10 @@ export async function copyPackageJson(name: string, packageManager: string) {
       await fs.readFile('package.json', 'utf-8'),
     ) as PackageJson
     delete packageJson.workspaces
-    packageJson.packageManager = 'pnpm@10.11.0'
+    packageJson.packageManager = `pnpm@${versionMap.pnpm}`
     packageJson.engines = {
-      node: '>=22.0.0',
-      pnpm: '>=10.11.0',
+      node: `>=${versionMap.node}`,
+      pnpm: `>=${versionMap.pnpm}`,
     }
     await fs.writeFile('package.json', JSON.stringify(packageJson, null, 2), {
       encoding: 'utf-8',
@@ -52,18 +60,11 @@ export async function copyPackageJson(name: string, packageManager: string) {
     ) as PackageJson
     packageJson.workspaces = ['apps/*', 'packages/*', 'tooling/*']
 
-    const version =
-      packageManager === 'npm'
-        ? '11.4.0'
-        : packageManager === 'yarn'
-          ? '1.22.0'
-          : '1.0.0'
+    const version = versionMap[packageManager as keyof typeof versionMap]
     packageJson.packageManager = `${packageManager}@${version}`
     packageJson.engines = {
-      node: '>=22.0.0',
-      ...(packageManager === 'npm'
-        ? { npm: '>=11.4.0' }
-        : { yarn: '>=1.22.0' }),
+      node: `>=${versionMap.node}`,
+      [packageManager === 'npm' ? 'npm' : 'yarn']: `>=${version}`,
     }
 
     await fs.writeFile('package.json', JSON.stringify(packageJson, null, 2), {

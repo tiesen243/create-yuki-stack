@@ -27,17 +27,15 @@ export async function fixVersion() {
         'peerDependencies',
       ]
 
-      for (const depType of dependencyTypes)
-        if (content[depType])
-          for (const [pkg, version] of Object.entries(content[depType])) {
-            if (typeof version === 'string' && version.startsWith('catalog:'))
-              // @ts-expect-error - replace catalog: with latest
-              content[depType][pkg] = 'latest'
+      for (const depType of dependencyTypes) {
+        const deps = content[depType] as Record<string, string> | undefined
+        if (!deps) continue
 
-            if (typeof version === 'string' && version.startsWith('workspace:'))
-              // @ts-expect-error - replace workspace: with *
-              content[depType][pkg] = '*'
-          }
+        for (const [pkg, version] of Object.entries(deps)) {
+          if (version.startsWith('catalog:')) deps[pkg] = 'latest'
+          else if (version.startsWith('workspace:')) deps[pkg] = '*'
+        }
+      }
 
       await fs.writeFile(file, JSON.stringify(content, null, 2))
     }),
