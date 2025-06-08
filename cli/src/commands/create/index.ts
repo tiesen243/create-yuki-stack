@@ -37,119 +37,153 @@ export const createCommand = async (
 
   if (!options.yes) {
     p.intro(chalk.bold.magenta('Creating a new Yuki-Stack project...'))
-    project = (await p.group({
-      ...(!name && {
-        name: () =>
-          p.text({
-            message: 'What is the name of your project?',
-            placeholder: DEFAULT_APP_NAME,
+    project = (await p.group(
+      {
+        ...(!name && {
+          name: () =>
+            p.text({
+              message: 'What is the name of your project?',
+              placeholder: DEFAULT_APP_NAME,
+            }),
+        }),
+        _: async ({ results }) => {
+          const projectName = name ?? results.name ?? DEFAULT_APP_NAME
+
+          const projectExists = await fs
+            .access(projectName)
+            .then(() => true)
+            .catch(() => false)
+          if (projectExists) {
+            p.note(
+              chalk.redBright(
+                `A directory named ${chalk.bold(projectName)} already exists. Please choose a different name.`,
+              ),
+            )
+            process.exit(1)
+          }
+
+          results.name = projectName
+        },
+        language: () =>
+          p.select({
+            message: 'Will you be using TypeScript or JavaScript?',
+            options: [
+              { value: 'typescript', label: 'TypeScript' },
+              { value: 'javascript', label: 'JavaScript' },
+            ],
+            initialValue: 'typescript',
           }),
-      }),
-      _: async ({ results }) => {
-        const projectName = name ?? results.name ?? DEFAULT_APP_NAME
+        // eslint-disable-next-line @typescript-eslint/require-await
+        __: async ({ results }) => {
+          if (results.language === 'javascript')
+            p.note(chalk.redBright('Wrong answer, using TypeScript instead'))
+        },
+        database: () =>
+          p.select({
+            message: 'Which database would you like to use?',
+            options: [
+              { value: 'none', label: 'None' },
+              { value: 'prisma', label: 'Prisma (soon)' },
+              { value: 'drizzle', label: 'Drizzle (soon)' },
+              { value: 'mongodb', label: 'MongoDb (soon)' },
+            ],
+            initialValue: 'none',
+          }),
+        adapter: ({ results }) =>
+          results.database !== 'none' && results.database !== 'mongodb'
+            ? p.select({
+                message: 'Which adapter would you like to use?',
+                options: [
+                  { value: 'none', label: 'None' },
+                  { value: 'neon', label: 'Neon' },
+                  { value: 'planet', label: 'PlanetScale' },
+                ],
+                initialValue: 'none',
+              })
+            : undefined,
+        auth: ({ results }) =>
+          results.database !== 'none'
+            ? p.select({
+                message: 'Would you like to use an authentication solution?',
+                options: [
+                  { value: 'none', label: 'None' },
+                  { value: 'lucia', label: 'Lucia (soon)' },
+                  { value: 'better-auth', label: 'BetterAuth (soon)' },
+                  { value: 'next-auth', label: 'NextAuth.js (soon)' },
+                ],
+              })
+            : undefined,
 
-        const projectExists = await fs
-          .access(projectName)
-          .then(() => true)
-          .catch(() => false)
-        if (projectExists) {
-          p.note(
-            chalk.redBright(
-              `A directory named ${chalk.bold(projectName)} already exists. Please choose a different name.`,
-            ),
-          )
-          process.exit(1)
-        }
-
-        results.name = projectName
+        api: () =>
+          p.select({
+            message: 'What type of API will you be using?',
+            options: [
+              { value: 'none', label: 'None' },
+              { value: 'trpc', label: 'tRPC (soon)' },
+              { value: 'orpc', label: 'oRPC (soon)' },
+            ],
+            initialValue: 'none',
+          }),
+        backend: () =>
+          p.select({
+            message: 'Which backend framework would you like to use?',
+            options: [
+              { value: 'none', label: 'None' },
+              { value: 'express', label: 'Express (soon)' },
+              { value: 'elysia', label: 'Elysia (soon)' },
+              { value: 'hono', label: 'Hono (soon)' },
+            ],
+            initialValue: 'none',
+          }),
+        frontend: () =>
+          p.multiselect({
+            message: 'Which frontend framework would you like to use?',
+            options: [
+              { value: 'nextjs', label: 'Next.js' },
+              { value: 'react-router', label: 'React Router' },
+              { value: 'tanstack-router', label: 'Tanstack Router' },
+              { value: 'expo', label: 'Expo (soon)' },
+            ],
+            initialValues: ['nextjs'],
+          }),
+        shadcn: () =>
+          p.confirm({
+            message: 'Would you like to use shadcn/ui for your project?',
+            initialValue: true,
+          }),
+        packageManager: () =>
+          p.select({
+            message: 'Which package manager would you like to use?',
+            options: [
+              { value: 'npm', label: 'NPM (not recommended)' },
+              { value: 'yarn', label: 'Yarn' },
+              { value: 'pnpm', label: 'PNPM' },
+              { value: 'bun', label: 'Bun' },
+            ],
+            initialValue: getPackageManager(),
+          }),
+        install: ({ results }) =>
+          p.confirm({
+            message: `Would you like to run ${chalk.bold(`${results.packageManager} install`)} for you?`,
+            initialValue: true,
+          }),
+        git: () =>
+          p.confirm({
+            message: 'Would you like to initialize a git repository?',
+            initialValue: true,
+          }),
       },
-      language: () =>
-        p.select({
-          message: 'Will you be using TypeScript or JavaScript?',
-          options: [
-            { value: 'typescript', label: 'TypeScript' },
-            { value: 'javascript', label: 'JavaScript' },
-          ],
-          initialValue: 'typescript',
-        }),
-      // eslint-disable-next-line @typescript-eslint/require-await
-      __: async ({ results }) => {
-        if (results.language === 'javascript')
-          p.note(chalk.redBright('Wrong answer, using TypeScript instead'))
+      {
+        onCancel: () => {
+          p.cancel(chalk.redBright('Project creation cancelled.'))
+          process.exit(0)
+        },
       },
-      database: () =>
-        p.select({
-          message: 'Which database would you like to use?',
-          options: [
-            { value: 'none', label: 'None' },
-            { value: 'prisma', label: 'Prisma (soon)' },
-            { value: 'drizzle', label: 'Drizzle (soon)' },
-            { value: 'mongoose', label: 'Mongoose (soon)' },
-          ],
-          initialValue: 'none',
-        }),
-      api: () =>
-        p.select({
-          message: 'What type of API will you be using?',
-          options: [
-            { value: 'none', label: 'None' },
-            { value: 'trpc', label: 'tRPC (soon)' },
-            { value: 'orpc', label: 'oRPC (soon)' },
-          ],
-          initialValue: 'none',
-        }),
-      backend: () =>
-        p.select({
-          message: 'Which backend framework would you like to use?',
-          options: [
-            { value: 'none', label: 'None' },
-            { value: 'express', label: 'Express (soon)' },
-            { value: 'elysia', label: 'Elysia (soon)' },
-          ],
-          initialValue: 'none',
-        }),
-      frontend: () =>
-        p.multiselect({
-          message: 'Which frontend framework would you like to use?',
-          options: [
-            { value: 'nextjs', label: 'Next.js' },
-            { value: 'react-router', label: 'React Router' },
-            { value: 'tanstack-router', label: 'Tanstack Router' },
-            { value: 'expo', label: 'Expo (soon)' },
-          ],
-          initialValues: ['nextjs'],
-        }),
-      shadcn: () =>
-        p.confirm({
-          message: 'Would you like to use shadcn/ui for your project?',
-          initialValue: true,
-        }),
-      packageManager: () =>
-        p.select({
-          message: 'Which package manager would you like to use?',
-          options: [
-            { value: 'npm', label: 'NPM (not recommended)' },
-            { value: 'yarn', label: 'Yarn' },
-            { value: 'pnpm', label: 'PNPM' },
-            { value: 'bun', label: 'Bun' },
-          ],
-          initialValue: getPackageManager(),
-        }),
-      install: ({ results }) =>
-        p.confirm({
-          message: `Would you like to run ${chalk.bold(`${results.packageManager} install`)} for you?`,
-          initialValue: true,
-        }),
-      git: () =>
-        p.confirm({
-          message: 'Would you like to initialize a git repository?',
-          initialValue: true,
-        }),
-    })) as typeof project
+    )) as typeof project
   }
 
   const s = p.spinner()
-  s.start(`Creating project...`)
+  s.start(`Creating project ${chalk.bold(project.name)}...`)
 
   try {
     const projectExists = await fs
