@@ -8,6 +8,7 @@ import {
 import { ThemeProvider } from '@{{ name }}/ui'
 
 import globalsCss from '@/globals.css?url'
+import { createMetadata } from '@/lib/metadata';
 
 function RootLayout() {
   return (
@@ -55,11 +56,7 @@ function ErrorBoundary(
 
 export const Route = createRootRoute({
   head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'TanStack Start Starter' },
-    ],
+    meta: createMetadata(),
     links: [
       { rel: 'stylesheet', href: globalsCss },
       { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
