@@ -180,7 +180,7 @@ export const createCommand = async (name?: string) => {
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
       await fixVersion()
 
-    await replace(projectName)
+    await replace(projectName, project.packageManager)
 
     await execSync(
       'npx sort-package-json package.json apps/*/package.json packages/*/package.json tooling/*/package.json',

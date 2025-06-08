@@ -1,12 +1,9 @@
 import fs from 'fs/promises'
 import * as glob from 'glob'
 
-import {
-  getPackageManager,
-  getPackageManagerExcecuter,
-} from '@/utils/get-package-manager'
+import { getPackageManagerExcecuter } from '@/utils/get-package-manager'
 
-export async function replace(name: string) {
+export async function replace(name: string, pkm: string) {
   // Get all files recursively, excluding common directories to avoid
   const files = glob.sync('**/*', {
     ignore: ['turbo/**'],
@@ -28,19 +25,19 @@ export async function replace(name: string) {
         if (content.includes('{{ pkm }}'))
           updatedContent = updatedContent.replace(
             /\{\{ pkm \}\}/g,
-            `${getPackageManager()} run`,
+            `${pkm} run`,
           )
 
         if (content.includes('{{ pkmi }}'))
           updatedContent = updatedContent.replace(
             /\{\{ pkm \}\}/g,
-            `${getPackageManager()} install`,
+            `${pkm} install`,
           )
 
         if (content.includes('{{ pkme }}'))
           updatedContent = updatedContent.replace(
             /\{\{ pkme \}\}/g,
-            getPackageManagerExcecuter(),
+            getPackageManagerExcecuter(pkm),
           )
 
         await fs.writeFile(file, updatedContent, 'utf-8')

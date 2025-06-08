@@ -7,11 +7,9 @@ export function getPackageManager() {
   else return 'npm'
 }
 
-export function getPackageManagerExcecuter() {
-  const pm = getPackageManager()
-
-  if (pm === 'npm') return 'npx'
-  else if (pm === 'yarn') return 'npx'
-  else if (pm === 'pnpm') return 'pnpm dlx'
+export function getPackageManagerExcecuter(pkm: string) {
+  if (pkm === 'npm') return 'npx'
+  else if (pkm === 'yarn') return 'npx'
+  else if (pkm === 'pnpm') return 'pnpm dlx'
   else return 'bunx --bun'
 }
