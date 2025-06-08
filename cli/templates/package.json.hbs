@@ -37,7 +37,7 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
+    "bump-deps": "{{ pkme }} npm-check-updates --deep -u && {{ pkmi }}",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
     "db:push": "turbo -F @{{ name }}/db db:push",
@@ -45,10 +45,10 @@
     "dev": "turbo dev --continue",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
-    "postinstall": "bun lint:ws",
+    "postinstall": "{{ pkm }} lint:ws",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
-    "lint:ws": "bun x --bun sherif@latest",
+    "lint:ws": "{{ pkme }} sherif@latest",
     "typecheck": "turbo run typecheck",
     "ui-add": "turbo run ui-add"
   },

@@ -1,7 +1,10 @@
 import fs from 'fs/promises'
 import * as glob from 'glob'
 
-import { getPackageManager } from '@/utils/get-package-manager'
+import {
+  getPackageManager,
+  getPackageManagerExcecuter,
+} from '@/utils/get-package-manager'
 
 export async function replace(name: string) {
   // Get all files recursively, excluding common directories to avoid
@@ -25,7 +28,19 @@ export async function replace(name: string) {
         if (content.includes('{{ pkm }}'))
           updatedContent = updatedContent.replace(
             /\{\{ pkm \}\}/g,
-            getPackageManager(),
+            `${getPackageManager()} run`,
+          )
+
+        if (content.includes('{{ pkmi }}'))
+          updatedContent = updatedContent.replace(
+            /\{\{ pkm \}\}/g,
+            `${getPackageManager()} install`,
+          )
+
+        if (content.includes('{{ pkme }}'))
+          updatedContent = updatedContent.replace(
+            /\{\{ pkme \}\}/g,
+            getPackageManagerExcecuter(),
           )
 
         await fs.writeFile(file, updatedContent, 'utf-8')

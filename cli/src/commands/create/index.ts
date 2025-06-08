@@ -113,8 +113,8 @@ export const createCommand = async (name?: string) => {
         options: [
           { value: 'npm', label: 'NPM' },
           { value: 'yarn', label: 'Yarn' },
-          { value: 'pnpm', label: 'PNPM' },
-          { value: 'bun', label: 'Bun' },
+          { value: 'pnpm', label: 'PNPM (recommended)' },
+          { value: 'bun', label: 'Bun (recommended)' },
         ],
         initialValue: getPackageManager(),
       }),
@@ -147,10 +147,11 @@ export const createCommand = async (name?: string) => {
       '.gitignore',
     )
     await fs.writeFile('.nvmrc', 'v22.14.0')
-    await fs.writeFile(
-      '.npmrc',
-      `node-linker=hoisted\nshared-workspace-lockfile=true\n`,
-    )
+    if (project.packageManager === 'pnpm')
+      await fs.writeFile(
+        '.npmrc',
+        `node-linker=hoisted\nshared-workspace-lockfile=true\n`,
+      )
 
     // config files
     await fs.copyFile(

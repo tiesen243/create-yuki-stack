@@ -3,12 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun with-env vinxi build",
+    "build": "{{ pkm }} with-env vinxi build",
     "clean": "git clean -xdf .cache .output .turbo .vinxi node_modules",
-    "dev": "bun with-env vinxi dev --port 3002",
+    "dev": "{{ pkm }} with-env vinxi dev --port 3002",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "bun with-env vinxi start --port 3002",
+    "start": "{{ pkm }} with-env vinxi start --port 3002",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
