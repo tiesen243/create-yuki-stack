@@ -27,3 +27,15 @@ pnpm create yuki-stack
 ```bash
 bun create yuki-stack
 ```
+
+You can skip all prompts and use default options by adding the `-y` or `--yes` flag to using default options:
+
+- **Name**: `my-yuki-app`
+- **Database**: `none`
+- **API**: `none`
+- **Backend**: `none`
+- **Frontend**: `Next.js`
+- **Shadcn/UI**: `true` (included)
+- **Package Manager**: Auto-detected from environment
+- **Install Dependencies**: `true`
+- **Initialize Git**: `true`

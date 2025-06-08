@@ -12,24 +12,15 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
     'packages/ui/postcss.config.js',
   )
 
-  await fs.mkdir('packages/ui/src/components', { recursive: true })
+  await fs.cp(new URL('src', basePath), 'packages/ui/src', {
+    recursive: true,
+    force: true,
+  })
 
   if (!isUse) {
-    await fs.copyFile(
-      new URL('src/lib/utils.ts', basePath),
-      'packages/ui/src/index.ts',
-    )
     await fs.writeFile(
       'packages/ui/src/components/button.tsx',
       `export function Button()\n{\n  return <button>Lick me</button>\n}`,
-    )
-    await fs.writeFile(
-      'packages/ui/src/components/icons.tsx',
-      "export * from 'lucide-react'",
-    )
-    await fs.copyFile(
-      new URL('src/tailwind.css', basePath),
-      'packages/ui/src/tailwind.css',
     )
 
     const packageJson = JSON.parse(
@@ -38,18 +29,6 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
       exports: Record<string, unknown>
       dependencies: Record<string, string>
       devDependencies: Record<string, string>
-    }
-    packageJson.exports = {
-      '.': {
-        types: './dist/index.d.ts',
-        default: './src/index.ts',
-      },
-      './*': {
-        types: './dist/components/*.d.ts',
-        default: './src/components/*.tsx',
-      },
-      './tailwind.css': './src/tailwind.css',
-      './postcss': './postcss.config.js',
     }
 
     // remove some dependencies
@@ -64,10 +43,6 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
     return
   }
 
-  await fs.cp(new URL('src', basePath), 'packages/ui/src', {
-    recursive: true,
-    force: true,
-  })
   await fs.copyFile(
     new URL('components.json', basePath),
     'packages/ui/components.json',
