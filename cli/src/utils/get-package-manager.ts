@@ -11,7 +11,7 @@ export function getPackageManagerExcecuter() {
   const pm = getPackageManager()
 
   if (pm === 'npm') return 'npx'
-  else if (pm === 'yarn') return 'yarn dlx'
+  else if (pm === 'yarn') return 'npx'
   else if (pm === 'pnpm') return 'pnpm dlx'
   else return 'bunx --bun'
 }

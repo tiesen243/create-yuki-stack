@@ -56,12 +56,14 @@ export async function copyPackageJson(name: string, packageManager: string) {
       packageManager === 'npm'
         ? '11.4.0'
         : packageManager === 'yarn'
-          ? '2.4.0'
+          ? '1.22.22'
           : '1.0.0'
     packageJson.packageManager = `${packageManager}@${version}`
     packageJson.engines = {
       node: '>=22.0.0',
-      ...(packageManager === 'npm' ? { npm: '>=11.4.0' } : { yarn: '>=2.4.0' }),
+      ...(packageManager === 'npm'
+        ? { npm: '>=11.4.0' }
+        : { yarn: '>=1.22.22' }),
     }
 
     await fs.writeFile('package.json', JSON.stringify(packageJson, null, 2), {
