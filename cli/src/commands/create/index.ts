@@ -38,7 +38,20 @@ export const createCommand = async (
     git: true,
   }
 
-  if (!options.yes) {
+  if (options.yes) {
+    const projectExists = await fs
+      .access(project.name)
+      .then(() => true)
+      .catch(() => false)
+    if (projectExists) {
+      p.note(
+        chalk.redBright(
+          `A directory named ${chalk.bold(project.name)} already exists. Please choose a different name.`,
+        ),
+      )
+      process.exit(1)
+    }
+  } else {
     p.intro(chalk.bold.magenta('Creating a new Yuki-Stack project...'))
     project = (await p.group(
       {
@@ -191,19 +204,13 @@ export const createCommand = async (
   s.start(`Creating project ${chalk.bold(project.name)}...`)
 
   try {
-    const projectExists = await fs
-      .access(project.name)
-      .then(() => true)
-      .catch(() => false)
-    if (projectExists)
-      throw new Error(`Project ${project.name} already exists.`)
-
     await fs.mkdir(project.name, { recursive: true })
     process.chdir(project.name)
 
     await copyPackageJson(project.name, project.packageManager)
 
     // dot files
+    await fs.writeFile('.env.example', '')
     await fs.copyFile(
       new URL('../templates/_gitignore', import.meta.url),
       '.gitignore',
@@ -236,7 +243,8 @@ export const createCommand = async (
       { recursive: true },
     )
 
-    await dbFeature(project.database, project.adapter, project.auth)
+    if (project.database !== 'none')
+      await dbFeature(project.database, project.adapter, project.auth)
     await shadcnFeatures(project.name, project.shadcn)
     await feFeatures(project.frontend, project.shadcn)
 
@@ -266,6 +274,12 @@ export const createCommand = async (
       )
     process.exit(1)
   } finally {
-    s.stop(`Project ${chalk.bold(project.name)} created successfully! 🎉`)
+    s.stop(`✨ Project ${chalk.bold(project.name)} created successfully!`)
+    p.outro(
+      `${chalk.bold('To get started:')}\n` +
+        `      ${chalk.cyan(`cd ${project.name}`)}\n` +
+        `      ${chalk.cyan('cp .env.example .env')}\n` +
+        `      ${chalk.cyan(`${project.packageManager} run dev`)}\n`,
+    )
   }
 }
