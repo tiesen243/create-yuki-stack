@@ -186,8 +186,10 @@ export const createCommand = async (name?: string) => {
       'npx sort-package-json package.json apps/*/package.json packages/*/package.json tooling/*/package.json',
     )
 
-    if (project.install) await execSync(`${project.packageManager} install`)
-    await execSync(`${project.packageManager} run format:fix`)
+    if (project.install) {
+      await execSync(`${project.packageManager} install`)
+      await execSync(`${project.packageManager} run format:fix`)
+    }
 
     if (project.git) initGit()
   } catch (error) {
