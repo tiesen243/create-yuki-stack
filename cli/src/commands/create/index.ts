@@ -111,10 +111,10 @@ export const createCommand = async (name?: string) => {
       p.select({
         message: 'Which package manager would you like to use?',
         options: [
-          { value: 'npm', label: 'NPM' },
+          { value: 'npm', label: 'NPM (not recommended)' },
           { value: 'yarn', label: 'Yarn' },
-          { value: 'pnpm', label: 'PNPM (recommended)' },
-          { value: 'bun', label: 'Bun (recommended)' },
+          { value: 'pnpm', label: 'PNPM' },
+          { value: 'bun', label: 'Bun' },
         ],
         initialValue: getPackageManager(),
       }),
