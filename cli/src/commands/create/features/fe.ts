@@ -30,4 +30,18 @@ export async function feFeatures(apps: string[], useShadcn: boolean) {
         'utf-8',
       )
   }
+
+  if (apps.includes('tanstack-router')) {
+    await fs.cp(
+      new URL('../templates/apps/tanstack-router', import.meta.url),
+      `apps/tanstack-router`,
+      { recursive: true },
+    )
+    if (useShadcn)
+      await fs.writeFile(
+        'apps/tanstack-router/components.json',
+        JSON.stringify(shadcnConfigs, null, 2),
+        'utf-8',
+      )
+  }
 }

@@ -1,15 +1,14 @@
 {
-  "name": "@{{ name }}/nextjs",
-  "version": "1.0.0",
+  "name": "@{{ name }}/tanstack-router",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "{{ pkm }} with-env next build",
-    "clean": "git clean -xdf .cache .next .turbo node_modules",
-    "dev": "{{ pkm }} with-env next dev --turbopack --port 3000",
+    "build": "bun with-env vinxi build",
+    "clean": "git clean -xdf .cache .output .turbo .vinxi node_modules",
+    "dev": "bun with-env vinxi dev --port 3002",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "{{ pkm }} with-env next start --port 3000",
+    "start": "bun with-env vinxi start --port 3002",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
@@ -17,7 +16,8 @@
   "dependencies": {
     "@{{ name }}/env": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
-    "next": "15.3.3",
+    "@tanstack/react-router": "^1.120.18",
+    "@tanstack/react-start": "^1.120.18",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
@@ -28,10 +28,13 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
+    "@vitejs/plugin-react-swc": "^3.10.1",
     "dotenv-cli": "^8.0.0",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",
     "tailwindcss": "catalog:tailwind",
-    "typescript": "catalog:tool"
+    "typescript": "catalog:tool",
+    "vinxi": "^0.5.6",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }

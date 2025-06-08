@@ -97,8 +97,8 @@ export const createCommand = async (name?: string) => {
         options: [
           { value: 'nextjs', label: 'Next.js' },
           { value: 'react-router', label: 'React Router' },
-          { value: 'tanstack-router', label: 'Tanstack Router (soon)' },
-          { value: 'expo', label: 'Expo (ieact Native)' },
+          { value: 'tanstack-router', label: 'Tanstack Router' },
+          { value: 'expo', label: 'Expo (soon)' },
         ],
         initialValues: ['nextjs'],
       }),

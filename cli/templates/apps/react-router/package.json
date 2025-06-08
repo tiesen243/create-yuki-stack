@@ -5,10 +5,10 @@
   "scripts": {
     "build": "{{ pkm }} with-env react-router build",
     "clean": "git clean -xdf .cache .react-router .turbo .vercel build node_modules",
-    "dev": "{{ pkm }} with-env react-router dev",
+    "dev": "{{ pkm }} with-env react-router dev --port 3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "react-router typegen && eslint",
-    "start": "{{ pkm }} with-env react-router-serve ./build/server/index.js",
+    "start": "{{ pkm }} with-env react-router-serve ./build/server/index.js --port 3001",
     "typecheck": "react-router typegen && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
@@ -27,7 +27,7 @@
     "@react-router/dev": "^7.6.2",
     "@react-router/fs-routes": "^7.6.2",
     "@tailwindcss/vite": "catalog:tailwind",
-    "@types/node": "22.15.30",
+    "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "@vercel/react-router": "^1.1.2",

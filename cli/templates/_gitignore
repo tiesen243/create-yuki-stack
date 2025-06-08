@@ -29,8 +29,8 @@ apps/native/android
 
 # tanstack start
 .vinxi/
-dist-ssr/
 routeTree.gen.ts
+app.config.timestamp_*.js
 
 # production
 build

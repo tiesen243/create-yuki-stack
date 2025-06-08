@@ -1,4 +1,4 @@
-import '@my-yuki-app/env'
+import '@{{ name }}/env'
 
 import type { Config } from '@react-router/dev/config'
 import { vercelPreset } from '@vercel/react-router/vite'
