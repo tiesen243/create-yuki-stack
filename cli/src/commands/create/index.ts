@@ -86,7 +86,7 @@ export const createCommand = async (
             message: 'Which database would you like to use?',
             options: [
               { value: 'none', label: 'None' },
-              { value: 'prisma', label: 'Prisma (soon)' },
+              { value: 'prisma', label: 'Prisma' },
               { value: 'drizzle', label: 'Drizzle' },
               { value: 'mongodb', label: 'MongoDb (soon)' },
             ],
@@ -99,7 +99,10 @@ export const createCommand = async (
                 options: [
                   { value: 'none', label: 'None' },
                   { value: 'neon', label: 'Neon' },
-                  { value: 'planet', label: 'PlanetScale' },
+                  {
+                    value: 'planet',
+                    label: `PlanetScale ${results.database === 'prisma' ? '(soon)' : ''}`,
+                  },
                 ],
                 initialValue: 'none',
               })

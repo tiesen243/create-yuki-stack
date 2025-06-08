@@ -22,10 +22,37 @@ export async function dbFeature(db: string, adapter: string, auth: string) {
   await fs.mkdir('packages/db/src', { recursive: true })
 
   if (db === 'prisma') {
-    console.log('Prisma database feature is not implemented yet.')
-  } else if (db === 'drizzle') {
-    // add adapter dependency
+    adapterMap.delete('none')
+    adapterMap.set('neon', '@prisma/adapter-neon')
+    adapterMap.set('planet', '@prisma/adapter-planetscale')
 
+    await fs.copyFile(
+      new URL('prisma.config.ts', basePath),
+      'packages/db/prisma.config.ts',
+    )
+
+    await fs.mkdir('packages/db/prisma', { recursive: true })
+    await fs.copyFile(
+      new URL(`prisma/schema.${auth}.prisma`, basePath),
+      'packages/db/prisma/schema.prisma',
+    )
+
+    await fs.copyFile(
+      new URL(`src/index.prisma.${adapter}.ts`, basePath),
+      'packages/db/src/index.ts',
+    )
+
+    if (adapter === 'none') {
+      const schemaPath = 'packages/db/prisma/schema.prisma'
+      let schemaContent = await fs.readFile(schemaPath, 'utf-8')
+      schemaContent = schemaContent.replace(
+        /previewFeatures\s*=\s*\["driverAdapters"\]/,
+        '',
+      )
+      await fs.writeFile(schemaPath, schemaContent, 'utf-8')
+    }
+    await fs.appendFile('.gitignore', '\n# prisma\ngenerated/')
+  } else if (db === 'drizzle') {
     await fs.copyFile(
       new URL('drizzle.config.ts', basePath),
       'packages/db/drizzle.config.ts',
@@ -50,8 +77,10 @@ export async function dbFeature(db: string, adapter: string, auth: string) {
       await fs.readFile('packages/db/package.json', 'utf-8'),
     ) as { dependencies: Record<string, string> }
 
-    packageJson.dependencies[adapterPackage] =
-      (await getPackageVersion(adapterPackage)) ?? 'latest'
+    const packageVersion = await getPackageVersion(adapterPackage)
+    packageJson.dependencies[adapterPackage] = packageVersion
+      ? `^${packageVersion}`
+      : 'latest'
     await fs.writeFile(
       'packages/db/package.json',
       JSON.stringify(packageJson, null, 2),
