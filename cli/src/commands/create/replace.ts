@@ -30,7 +30,7 @@ export async function replace(name: string, pkm: string) {
 
         if (content.includes('{{ pkmi }}'))
           updatedContent = updatedContent.replace(
-            /\{\{ pkm \}\}/g,
+            /\{\{ pkmi \}\}/g,
             `${pkm} install`,
           )
 
