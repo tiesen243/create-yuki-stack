@@ -32,10 +32,6 @@
     },
     "pub:release": {
       "cache": false
-    },
-    "ui-add": {
-      "cache": false,
-      "interactive": true
     }
   },
   "globalEnv": ["PORT"],

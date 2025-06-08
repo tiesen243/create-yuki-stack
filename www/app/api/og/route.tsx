@@ -2,6 +2,7 @@ import type { NextRequest } from 'next/server'
 import { ImageResponse } from 'next/og'
 
 import { createMetadata } from '@/lib/metadata'
+import { getBaseUrl } from '@/lib/utils'
 
 export function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -23,7 +24,7 @@ export function GET(req: NextRequest) {
         <div tw="flex flex-row items-center mb-3 text-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={`https://tiesen.id.vn/assets/logo.svg`}
+            src={`${getBaseUrl()}/logo.svg`}
             alt="Logo"
             tw="w-20 h-20 mr-4"
             style={{ filter: 'invert(1)' }}

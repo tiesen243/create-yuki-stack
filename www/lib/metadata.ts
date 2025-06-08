@@ -11,7 +11,8 @@ export const createMetadata = (override: Partial<Metadata> = {}): Metadata => {
   const siteName = 'Create Yuki Stack'
   const title = override.title ? `${override.title} | ${siteName}` : siteName
   const description =
-    override.description ?? 'Clean and typesafe starter monorepo'
+    override.description ??
+    'An CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.'
 
   const {
     title: _,

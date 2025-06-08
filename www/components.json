@@ -14,8 +14,8 @@
     "components": "@/components",
     "hooks": "@/hooks",
     "lib": "@/lib",
-    "utils": "@yuki/ui/utils",
-    "ui": "@yuki/ui/components"
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui"
   },
   "iconLibrary": "lucide"
 }

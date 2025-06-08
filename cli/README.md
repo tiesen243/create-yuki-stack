@@ -1,5 +1,7 @@
 # create-yuki-stack
 
+An CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.
+
 ## Getting Started
 
 To scaffold an app using `create-yuki-stack`, run any of the following four commands and answer the command prompt questions:
