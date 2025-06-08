@@ -60,6 +60,8 @@ export const createCommand = async (
           )
           process.exit(1)
         }
+
+        results.name = projectName
       },
       language: () =>
         p.select({
@@ -150,6 +152,13 @@ export const createCommand = async (
   s.start(`Creating project...`)
 
   try {
+    const projectExists = await fs
+      .access(project.name)
+      .then(() => true)
+      .catch(() => false)
+    if (projectExists)
+      throw new Error(`Project ${project.name} already exists.`)
+
     await fs.mkdir(project.name, { recursive: true })
     process.chdir(project.name)
 
