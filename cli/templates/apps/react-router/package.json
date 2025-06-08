@@ -1,0 +1,45 @@
+{
+  "name": "@{{ name }}/react-router",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "{{ pkm }} with-env react-router build",
+    "clean": "git clean -xdf .cache .react-router .turbo .vercel build node_modules",
+    "dev": "{{ pkm }} with-env react-router dev",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "react-router typegen && eslint",
+    "start": "{{ pkm }} with-env react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "prettier": "@{{ name }}/prettier-config",
+  "dependencies": {
+    "@react-router/node": "^7.6.2",
+    "@react-router/serve": "^7.6.2",
+    "@{{ name }}/env": "workspace:*",
+    "@{{ name }}/ui": "workspace:*",
+    "isbot": "^5.1.28",
+    "react": "catalog:react",
+    "react-dom": "catalog:react",
+    "react-router": "^7.6.2"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^7.6.2",
+    "@react-router/fs-routes": "^7.6.2",
+    "@tailwindcss/vite": "catalog:tailwind",
+    "@types/node": "22.15.30",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "@vercel/react-router": "^1.1.2",
+    "@{{ name }}/eslint-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "catalog:tool",
+    "prettier": "catalog:tool",
+    "tailwindcss": "catalog:tailwind",
+    "typescript": "catalog:tool",
+    "vite": "^6.3.5",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}

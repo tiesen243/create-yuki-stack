@@ -96,8 +96,8 @@ export const createCommand = async (name?: string) => {
         message: 'Which frontend framework would you like to use?',
         options: [
           { value: 'nextjs', label: 'Next.js' },
-          { value: 'rr', label: 'React Router (soon)' },
-          { value: 'tsr', label: 'Tanstack Router (soon)' },
+          { value: 'react-router', label: 'React Router' },
+          { value: 'tanstack-router', label: 'Tanstack Router (soon)' },
           { value: 'expo', label: 'Expo (ieact Native)' },
         ],
         initialValues: ['nextjs'],
