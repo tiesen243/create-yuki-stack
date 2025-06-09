@@ -1,5 +1,5 @@
 {
-  "name": "@{{ name }}/db",
+  "name": "@{{ name }}/api",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
@@ -9,32 +9,38 @@
       "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
     },
-    "./schema": {
-      "types": "./dist/schema.d.ts",
-      "default": "./src/schema.ts"
+    "./rsc": {
+      "types": "./dist/server/rsc.d.ts",
+      "default": "./src/client/rsc.tsx"
+    },
+    "./react": {
+      "types": "./dist/client/react.d.ts",
+      "default": "./src/client/react.tsx"
     }
   },
   "scripts": {
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "db:push": "{{ pkm }} with-env drizzle-kit push",
-    "db:studio": "{{ pkm }} with-env drizzle-kit studio",
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "typecheck": "tsc --noEmit"
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "drizzle-orm": "^0.44.2"
+    "@{{ name }}/env": "workspace:*",
+    "@tanstack/react-query": "^5.80.6",
+    "@trpc/client": "^11.3.1",
+    "@trpc/server": "^11.3.1",
+    "@trpc/tanstack-react-query": "^11.3.1",
+    "react": "catalog:react",
+    "superjson": "^2.2.2"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "dotenv-cli": "^8.0.0",
-    "drizzle-kit": "^0.31.1",
+    "@types/react": "catalog:react",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",
     "typescript": "catalog:tool"

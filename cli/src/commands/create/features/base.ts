@@ -1,10 +1,10 @@
 import fs from 'fs/promises'
 
-export async function baseFeatures(packageName: string) {
+export async function baseFeatures(packageName: string, dir?: string) {
   await fs.mkdir(`packages/${packageName}`, { recursive: true })
 
   const basePath = new URL(
-    `../templates/packages/${packageName}/${packageName}`, // dunno why this is needed, but it works
+    `../templates/packages/${dir ?? packageName}/${dir ?? packageName}`, // dunno why this is needed, but it works
     import.meta.url,
   )
 

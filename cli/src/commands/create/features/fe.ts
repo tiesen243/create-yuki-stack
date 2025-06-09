@@ -21,13 +21,13 @@ export async function feFeatures(apps: string[], useShadcn: boolean) {
     if (useShadcn) await addShadcnComponents('react-router')
   }
 
-  if (apps.includes('tanstack-router')) {
+  if (apps.includes('tanstack-start')) {
     await fs.cp(
-      new URL('../templates/apps/tanstack-router', import.meta.url),
-      `apps/tanstack-router`,
+      new URL('../templates/apps/tanstack-start', import.meta.url),
+      `apps/tanstack-start`,
       { recursive: true },
     )
-    if (useShadcn) await addShadcnComponents('tanstack-router')
+    if (useShadcn) await addShadcnComponents('tanstack-start')
   }
 }
 

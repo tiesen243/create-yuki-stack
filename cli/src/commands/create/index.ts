@@ -8,6 +8,7 @@ import { DEFAULT_APP_NAME } from '@/utils/constants'
 import { getPackageManager } from '@/utils/get-package-manager'
 import { copyPackageJson } from './copy-package-json'
 import { copyTurbo } from './copy-turbo'
+import { apiFeature } from './features/api'
 import { dbFeature } from './features/db'
 import { feFeatures } from './features/fe'
 import { shadcnFeatures } from './features/shadcn'
@@ -28,7 +29,7 @@ export const createCommand = async (
     name: name ?? DEFAULT_APP_NAME,
     database: 'none',
     adapter: 'none',
-    api: 'none',
+    api: 'none' as 'none' | 'trpc' | 'orpc',
     auth: 'none',
     backend: 'none',
     frontend: ['nextjs'],
@@ -137,7 +138,7 @@ export const createCommand = async (
             message: 'What type of API will you be using?',
             options: [
               { value: 'none', label: 'None' },
-              { value: 'trpc', label: 'tRPC (soon)' },
+              { value: 'trpc', label: 'tRPC' },
               { value: 'orpc', label: 'oRPC (soon)' },
             ],
             initialValue: 'none',
@@ -159,7 +160,7 @@ export const createCommand = async (
             options: [
               { value: 'nextjs', label: 'Next.js' },
               { value: 'react-router', label: 'React Router' },
-              { value: 'tanstack-router', label: 'Tanstack Router' },
+              { value: 'tanstack-start', label: 'Tanstack Start' },
               { value: 'expo', label: 'Expo (soon)' },
             ],
             initialValues: ['nextjs'],
@@ -247,6 +248,12 @@ export const createCommand = async (
       await dbFeature(project.database, project.adapter, project.auth)
     await shadcnFeatures(project.shadcn)
     await feFeatures(project.frontend, project.shadcn)
+    await apiFeature(
+      project.api,
+      project.database !== 'none',
+      project.auth !== 'none',
+      [project.backend, ...project.frontend],
+    )
 
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
       await fixVersion()

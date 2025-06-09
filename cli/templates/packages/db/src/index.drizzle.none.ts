@@ -13,6 +13,4 @@ const globalForDrizzle = globalThis as unknown as {
 export const db = globalForDrizzle.db ?? createDrizzleClient()
 if (process.env.NODE_ENV !== 'production') globalForDrizzle.db = db
 
-export * from './schema'
 export * from 'drizzle-orm'
-
