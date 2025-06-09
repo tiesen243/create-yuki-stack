@@ -245,7 +245,7 @@ export const createCommand = async (
 
     if (project.database !== 'none')
       await dbFeature(project.database, project.adapter, project.auth)
-    await shadcnFeatures(project.name, project.shadcn)
+    await shadcnFeatures(project.shadcn)
     await feFeatures(project.frontend, project.shadcn)
 
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
@@ -258,6 +258,9 @@ export const createCommand = async (
     )
 
     if (project.install) {
+      s.message(
+        `Installing dependencies with ${chalk.bold(project.packageManager)}...`,
+      )
       await execSync(`${project.packageManager} install`)
       await execSync(`${project.packageManager} run format:fix`)
     }

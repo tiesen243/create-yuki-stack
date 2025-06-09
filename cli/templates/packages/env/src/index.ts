@@ -21,7 +21,8 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   clientPrefix: 'NEXT_PUBLIC_',
-  client: {},
+  client: {
+  },
 
   /**
    * Specify which actual environment variables to use at runtime.

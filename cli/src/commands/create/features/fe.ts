@@ -9,12 +9,7 @@ export async function feFeatures(apps: string[], useShadcn: boolean) {
       `apps/nextjs`,
       { recursive: true },
     )
-    if (useShadcn)
-      await fs.writeFile(
-        'apps/nextjs/components.json',
-        JSON.stringify(shadcnConfigs, null, 2),
-        'utf-8',
-      )
+    if (useShadcn) await addShadcnComponents('nextjs')
   }
 
   if (apps.includes('react-router')) {
@@ -23,12 +18,7 @@ export async function feFeatures(apps: string[], useShadcn: boolean) {
       `apps/react-router`,
       { recursive: true },
     )
-    if (useShadcn)
-      await fs.writeFile(
-        'apps/react-router/components.json',
-        JSON.stringify(shadcnConfigs, null, 2),
-        'utf-8',
-      )
+    if (useShadcn) await addShadcnComponents('react-router')
   }
 
   if (apps.includes('tanstack-router')) {
@@ -37,11 +27,14 @@ export async function feFeatures(apps: string[], useShadcn: boolean) {
       `apps/tanstack-router`,
       { recursive: true },
     )
-    if (useShadcn)
-      await fs.writeFile(
-        'apps/tanstack-router/components.json',
-        JSON.stringify(shadcnConfigs, null, 2),
-        'utf-8',
-      )
+    if (useShadcn) await addShadcnComponents('tanstack-router')
   }
+}
+
+function addShadcnComponents(appName: string): Promise<void> {
+  return fs.writeFile(
+    `apps/${appName}/components.json`,
+    JSON.stringify(shadcnConfigs, null, 2),
+    'utf-8',
+  )
 }

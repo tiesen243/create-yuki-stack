@@ -1,5 +1,6 @@
 import fs from 'fs/promises'
 
+import { addEnv } from '@/utils/add-env'
 import { getPackageVersion } from '@/utils/get-package-version'
 import { baseFeatures } from './base'
 
@@ -75,7 +76,7 @@ export async function dbFeature(db: string, adapter: string, auth: string) {
     const adapterPackage = adapterMap.get(adapter) as unknown as string
     const packageJson = JSON.parse(
       await fs.readFile('packages/db/package.json', 'utf-8'),
-    ) as { dependencies: Record<string, string> }
+    ) as PackageJson
 
     const packageVersion = await getPackageVersion(adapterPackage)
     packageJson.dependencies[adapterPackage] = packageVersion
@@ -94,4 +95,6 @@ export async function dbFeature(db: string, adapter: string, auth: string) {
   } catch {
     await fs.writeFile('.env.example', 'DATABASE_URL=\n')
   }
+
+  await addEnv('server', 'DATABASE_URL', 'z.string()')
 }

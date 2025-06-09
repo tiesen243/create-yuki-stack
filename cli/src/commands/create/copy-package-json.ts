@@ -1,12 +1,5 @@
 import fs from 'fs/promises'
 
-interface PackageJson {
-  name: string
-  workspaces?: string[] | Record<string, string[]>
-  packageManager: string
-  engines: Record<string, string>
-}
-
 const versionMap = {
   node: '22.0.0',
   npm: '11.4.0',

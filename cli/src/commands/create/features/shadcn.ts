@@ -2,7 +2,7 @@ import fs from 'fs/promises'
 
 import { baseFeatures } from './base'
 
-export async function shadcnFeatures(name: string, isUse: boolean) {
+export async function shadcnFeatures(isUse: boolean) {
   await baseFeatures('ui')
 
   const basePath = new URL('../templates/packages/ui/ui', import.meta.url)
@@ -18,6 +18,7 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
   })
 
   if (!isUse) {
+    await fs.writeFile('packages/ui/src/tailwind.css', `@import 'tailwindcss';`)
     await fs.writeFile(
       'packages/ui/src/components/button.tsx',
       `export function Button()\n{\n  return <button>Lick me</button>\n}`,
@@ -25,15 +26,12 @@ export async function shadcnFeatures(name: string, isUse: boolean) {
 
     const packageJson = JSON.parse(
       await fs.readFile('packages/ui/package.json', 'utf-8'),
-    ) as {
-      exports: Record<string, unknown>
-      dependencies: Record<string, string>
-      devDependencies: Record<string, string>
-    }
+    ) as PackageJson
 
     // remove some dependencies
     delete packageJson.dependencies['@radix-ui/react-slot']
     delete packageJson.dependencies['class-variance-authority']
+    delete packageJson.devDependencies['tw-animate-css']
 
     await fs.writeFile(
       'packages/ui/package.json',

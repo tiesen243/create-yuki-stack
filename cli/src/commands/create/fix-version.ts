@@ -16,16 +16,15 @@ export async function fixVersion() {
 
   await Promise.all(
     pjFiles.map(async (file) => {
-      const content = JSON.parse(await fs.readFile(file, 'utf-8')) as Record<
-        string,
-        unknown
-      >
+      const content = JSON.parse(
+        await fs.readFile(file, 'utf-8'),
+      ) as PackageJson
 
       const dependencyTypes = [
         'dependencies',
         'devDependencies',
         'peerDependencies',
-      ]
+      ] as const
 
       for (const depType of dependencyTypes) {
         const deps = content[depType] as Record<string, string> | undefined
