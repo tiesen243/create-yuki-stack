@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
 import { appRouter } from './routers/_app'
-import { createCallerFactory, createTRPCContext } from './trpc'
+import { createTRPCContext } from './trpc'
 
 /**
  * Handle incoming API requests
@@ -9,7 +9,8 @@ import { createCallerFactory, createTRPCContext } from './trpc'
 const handlers = async (request: Request) => {
   let response: Response
 
-  if (request.method === 'OPTIONS') response = new Response(null, { status: 204 })
+  if (request.method === 'OPTIONS')
+    response = new Response(null, { status: 204 })
   else
     response = await fetchRequestHandler({
       endpoint: '/api/trpc',
@@ -32,14 +33,5 @@ const handlers = async (request: Request) => {
   return response
 }
 
-/**
- * Create a server-side caller for the tRPC API
- * @example
- * const trpc = createCaller(createContext);
- * const res = await trpc.post.all();
- *       ^? Post[]
- */
-const createCaller = createCallerFactory(appRouter)
-
 export type { AppRouter, RouterInputs, RouterOutputs } from './routers/_app'
-export { appRouter, createCaller, createTRPCContext, handlers }
+export { appRouter, createTRPCContext, handlers }

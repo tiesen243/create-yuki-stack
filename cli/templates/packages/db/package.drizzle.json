@@ -17,8 +17,8 @@
   "scripts": {
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "db:push": "{{ pkm }} with-env drizzle-kit push",
-    "db:studio": "{{ pkm }} with-env drizzle-kit studio",
+    "db:push": "{{ pkm }} run with-env drizzle-kit push",
+    "db:studio": "{{ pkm }} run with-env drizzle-kit studio",
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",

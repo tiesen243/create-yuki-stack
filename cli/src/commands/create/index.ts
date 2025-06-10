@@ -6,6 +6,7 @@ import chalk from 'chalk'
 
 import { DEFAULT_APP_NAME } from '@/utils/constants'
 import { getPackageManager } from '@/utils/get-package-manager'
+import { sortPackageJson } from '@/utils/sort-package-json'
 import { copyPackageJson } from './copy-package-json'
 import { copyTurbo } from './copy-turbo'
 import { apiFeature } from './features/api'
@@ -216,7 +217,7 @@ export const createCommand = async (
     await fs.mkdir(project.name, { recursive: true })
     process.chdir(project.name)
 
-    await copyPackageJson(project.name, project.packageManager)
+    await copyPackageJson(project.packageManager)
 
     // dot files
     await fs.writeFile('.env.example', '')
@@ -268,10 +269,7 @@ export const createCommand = async (
       await fixVersion()
 
     await replace(project.name, project.packageManager)
-
-    await execSync(
-      'npx sort-package-json package.json apps/*/package.json packages/*/package.json tooling/*/package.json',
-    )
+    await sortPackageJson()
 
     if (project.install) {
       s.message(`Running ${chalk.bold(`${project.packageManager} install`)}...`)

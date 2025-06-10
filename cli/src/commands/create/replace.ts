@@ -11,14 +11,12 @@ export async function replace(name: string, pkm: string) {
 
   const replacements = new Map([
     ['{{ name }}', name],
-    ['{{ pkm }}', `${pkm} run`],
-    ['{{ pkmi }}', `${pkm} install`],
+    ['{{ pkm }}', pkm],
     ['{{ pkme }}', getPackageManagerExcecuter(pkm)],
   ])
 
   const turboReplacements = new Map([
-    ['{{ pkm }}', `${pkm} run`],
-    ['{{ pkmi }}', `${pkm} install`],
+    ['{{ pkm }}', pkm],
     ['{{ pkme }}', getPackageManagerExcecuter(pkm)],
   ])
 

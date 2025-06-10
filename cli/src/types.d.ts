@@ -8,4 +8,5 @@ interface PackageJson {
   peerDependencies: Record<string, string>
   packageManager: string
   engines: Record<string, string>
+  [key: string]: unknown
 }

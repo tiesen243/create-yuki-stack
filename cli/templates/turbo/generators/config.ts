@@ -84,7 +84,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
          */
         if ('name' in answers && typeof answers.name === 'string') {
           execSync('{{ pkme }} sherif@latest --fix', { stdio: 'inherit' })
-          execSync('{{ pkmi }}', { stdio: 'inherit' })
+          execSync('{{ pkm }} install', { stdio: 'inherit' })
           execSync(
             `{{ pkm }} prettier --write packages/${answers.name}/** --list-different`,
           )

@@ -32,4 +32,3 @@ const server = new Elysia({ prefix: '/api' })
 server.listen(8080, () => {
   console.log('Server is running on http://localhost:8080')
 })
-
