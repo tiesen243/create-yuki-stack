@@ -108,5 +108,5 @@ function getBaseUrl() {
     return `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`
   if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`
 
-  return `http://localhost:${process.env.PORT ?? 5173}`
+  return `http://localhost:${process.env.PORT ?? {{ port }}}`
 }

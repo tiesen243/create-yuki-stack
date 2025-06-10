@@ -6,16 +6,16 @@ import { createCallerFactory, createTRPCContext } from './trpc'
 /**
  * Handle incoming API requests
  */
-const handlers = async (req: Request) => {
+const handlers = async (request: Request) => {
   let response: Response
 
-  if (req.method === 'OPTIONS') response = new Response(null, { status: 204 })
+  if (request.method === 'OPTIONS') response = new Response(null, { status: 204 })
   else
     response = await fetchRequestHandler({
       endpoint: '/api/trpc',
       router: appRouter,
-      req,
-      createContext: () => createTRPCContext({ headers: req.headers }),
+      req: request,
+      createContext: () => createTRPCContext(request),
       onError({ error, path }) {
         console.error(`>>> tRPC Error on '${path}'`, error)
       },

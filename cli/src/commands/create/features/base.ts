@@ -1,7 +1,16 @@
 import fs from 'fs/promises'
 
-export async function baseFeatures(packageName: string, dir?: string) {
-  await fs.mkdir(`packages/${packageName}`, { recursive: true })
+export async function baseFeatures(
+  packageName: string,
+  options?: {
+    templateDir?: string
+    target?: 'apps' | 'packages'
+  },
+) {
+  const dir = options?.templateDir
+  const target = options?.target ?? 'packages'
+
+  await fs.mkdir(`${target}/${packageName}`, { recursive: true })
 
   const basePath = new URL(
     `../templates/packages/${dir ?? packageName}/${dir ?? packageName}`, // dunno why this is needed, but it works
@@ -10,21 +19,21 @@ export async function baseFeatures(packageName: string, dir?: string) {
 
   await fs.copyFile(
     new URL('package.json', basePath),
-    `packages/${packageName}/package.json`,
+    `${target}/${packageName}/package.json`,
   )
 
   await fs.copyFile(
     new URL('eslint.config.js', basePath),
-    `packages/${packageName}/eslint.config.js`,
+    `${target}/${packageName}/eslint.config.js`,
   )
 
   await fs.copyFile(
     new URL('tsconfig.json', basePath),
-    `packages/${packageName}/tsconfig.json`,
+    `${target}/${packageName}/tsconfig.json`,
   )
 
   await fs.copyFile(
     new URL('turbo.json', basePath),
-    `packages/${packageName}/turbo.json`,
+    `${target}/${packageName}/turbo.json`,
   )
 }

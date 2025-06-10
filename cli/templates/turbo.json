@@ -40,7 +40,7 @@
       "interactive": true
     }
   },
-  "globalEnv": ["DATABASE_URL", "PORT"],
+  "globalEnv": ["DATABASE_URL", "NEXT_PUBLIC_API_URL", "PORT"],
   "globalPassThroughEnv": [
     "CI",
     "NODE_ENV",

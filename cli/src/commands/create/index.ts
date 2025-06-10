@@ -30,7 +30,12 @@ export const createCommand = async (
     database: 'none',
     adapter: 'none',
     api: 'none' as 'none' | 'trpc' | 'orpc',
-    auth: 'none',
+    auth: undefined as
+      | 'none'
+      | 'lucia'
+      | 'better-auth'
+      | 'next-auth'
+      | undefined,
     backend: 'none',
     frontend: ['nextjs'],
     shadcn: true,
@@ -53,7 +58,7 @@ export const createCommand = async (
       process.exit(1)
     }
   } else {
-    p.intro(chalk.bold.magenta('Creating a new Yuki-Stack project...'))
+    p.intro(chalk.bold.magenta('Creating a new Yuki-Stack project'))
     project = (await p.group(
       {
         ...(!name && {
@@ -143,17 +148,19 @@ export const createCommand = async (
             ],
             initialValue: 'none',
           }),
-        backend: () =>
-          p.select({
-            message: 'Which backend framework would you like to use?',
-            options: [
-              { value: 'none', label: 'None' },
-              { value: 'express', label: 'Express (soon)' },
-              { value: 'elysia', label: 'Elysia (soon)' },
-              { value: 'hono', label: 'Hono (soon)' },
-            ],
-            initialValue: 'none',
-          }),
+        backend: ({ results }) =>
+          results.api !== 'none'
+            ? p.select({
+                message: 'Which backend framework would you like to use?',
+                options: [
+                  { value: 'none', label: 'None' },
+                  { value: 'express', label: 'Express' },
+                  { value: 'elysia', label: 'Elysia' },
+                  { value: 'hono', label: 'Hono' },
+                ],
+                initialValue: 'none',
+              })
+            : undefined,
         frontend: () =>
           p.multiselect({
             message: 'Which frontend framework would you like to use?',
@@ -194,7 +201,7 @@ export const createCommand = async (
       },
       {
         onCancel: () => {
-          p.cancel(chalk.redBright('Project creation cancelled.'))
+          p.cancel(chalk.redBright('Operation cancelled'))
           process.exit(0)
         },
       },
@@ -202,8 +209,9 @@ export const createCommand = async (
   }
 
   const s = p.spinner()
-  s.start(`Creating project ${chalk.bold(project.name)}...`)
+  s.start(`Creating project ${chalk.bold(project.name)}....`)
 
+  project.auth ??= 'none'
   try {
     await fs.mkdir(project.name, { recursive: true })
     process.chdir(project.name)
@@ -253,6 +261,7 @@ export const createCommand = async (
       project.database !== 'none',
       project.auth !== 'none',
       [project.backend, ...project.frontend],
+      project.packageManager,
     )
 
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
