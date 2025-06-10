@@ -33,6 +33,18 @@ export async function apiFeature(
   const packagePath = isUseBackend ? 'apps' : 'packages'
   await fs.mkdir(`${packagePath}/api/src`, { recursive: true })
 
+  const packageJsonPath = `${packagePath}/api/package.json`
+  const packageJson = JSON.parse(
+    await fs.readFile(packageJsonPath, 'utf-8'),
+  ) as PackageJson
+  if (database) packageJson.dependencies['@{{ name }}/db'] = 'workspace:*'
+  if (auth) packageJson.dependencies['@{{ name }}/auth'] = 'workspace:*'
+  await fs.writeFile(
+    packageJsonPath,
+    JSON.stringify(packageJson, null, 2),
+    'utf-8',
+  )
+
   await fs.copyFile(
     new URL(`src/index.${isUseBackend ? 'be.ts' : 'ts'}`, basePath),
     `${packagePath}/api/src/index.ts`,

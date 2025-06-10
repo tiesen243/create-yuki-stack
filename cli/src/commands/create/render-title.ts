@@ -1,16 +1,22 @@
 import gradient from 'gradient-string'
 
 import { APP_TITLE } from '@/utils/constants'
+import { getPackageManager } from '@/utils/get-package-manager'
+
+const poimandresTheme = {
+  blue: '#54aaff',
+  cyan: '#89ddff',
+  green: '#17a34a',
+  magenta: '#d166ff',
+  red: '#ff5c9e',
+  yellow: '#f5d982',
+}
 
 export const renderTitle = () => {
-  console.log(
-    gradient([
-      '#ff0080',
-      '#ff8c00',
-      '#ffff00',
-      '#00ff80',
-      '#0080ff',
-      '#8000ff',
-    ])(APP_TITLE),
-  )
+  const gay = gradient(Object.values(poimandresTheme))
+
+  const pkgManager = getPackageManager()
+  if (pkgManager === 'yarn' || pkgManager === 'pnpm') console.log('')
+
+  console.log(gay.multiline(APP_TITLE))
 }
