@@ -28,7 +28,6 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "@{{ name }}/db": "workspace:*",
     "@{{ name }}/env": "workspace:*",
     "@tanstack/react-query": "^5.80.6",
     "@trpc/client": "^11.3.1",
