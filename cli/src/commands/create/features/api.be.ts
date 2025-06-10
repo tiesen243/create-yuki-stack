@@ -84,7 +84,7 @@ export async function setupBackendApp(
     ...packageJson.scripts,
     ...(packageManager === 'bun'
       ? {
-          dev: 'bun --env-file=../../.env --watch src/server.ts',
+          dev: 'bun --hot --env-file=../../.env src/server.ts',
           start: 'bun --env-file=../../.env src/server.ts',
         }
       : {
