@@ -14,10 +14,6 @@ export async function setupBackendApp(
   const packageJson = JSON.parse(
     await fs.readFile(`${packagePath}/api/package.json`, 'utf-8'),
   ) as PackageJson
-  const dotenvVYersion = await getPackageVersion('dotenv-cli')
-  packageJson.devDependencies['dotenv-cli'] = dotenvVYersion
-    ? `^${dotenvVYersion}`
-    : 'latest'
   if (apps.includes('express')) {
     const expressVersion = await getPackageVersion('express')
     const expressCorsVersion = await getPackageVersion('cors')
@@ -88,15 +84,14 @@ export async function setupBackendApp(
     ...packageJson.scripts,
     ...(packageManager === 'bun'
       ? {
-          dev: 'bun with-env bun --watch src/server.ts',
-          start: 'bun with-env bun src/server.ts',
+          dev: 'bun --env-file=../../.env --watch src/server.ts',
+          start: 'bun --env-file=../../.env src/server.ts',
         }
       : {
-          dev: '{{ pkm }} run with-env tsx watch src/server.ts',
-          start: '{{ pkm }} run with-env tsx src/server.ts',
+          dev: 'tsx watch --env-file=../../.env src/server.ts',
+          start: 'tsx --env-file=../../.env src/server.ts',
         }),
     build: 'tsc',
-    'with-env': 'dotenv -e ../../.env --',
   }
 
   await fs.writeFile(
