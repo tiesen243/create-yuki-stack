@@ -92,8 +92,8 @@ export async function setupBackendApp(
           start: 'bun with-env bun src/server.ts',
         }
       : {
-          dev: 'tsx watch src/server.ts',
-          start: 'tsx src/server.ts',
+          dev: '{{ pkm }} run with-env tsx watch src/server.ts',
+          start: '{{ pkm }} run with-env tsx src/server.ts',
         }),
     build: 'tsc',
     'with-env': 'dotenv -e ../../.env --',
