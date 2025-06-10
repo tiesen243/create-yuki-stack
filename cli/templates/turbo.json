@@ -26,18 +26,6 @@
     "typecheck": {
       "outputs": [".cache/tsbuildinfo.json"],
       "outputLogs": "new-only"
-    },
-    "db:push": {
-      "cache": false,
-      "interactive": true
-    },
-    "db:studio": {
-      "cache": false,
-      "persistent": true
-    },
-    "ui-add": {
-      "cache": false,
-      "interactive": true
     }
   },
   "globalEnv": ["DATABASE_URL", "NEXT_PUBLIC_API_URL", "PORT"],
