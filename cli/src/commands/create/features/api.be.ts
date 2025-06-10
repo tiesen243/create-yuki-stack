@@ -79,11 +79,23 @@ export async function setupBackendApp(
     )
   }
 
+  if (packageManager !== 'bun') {
+    const tsxVersion = await getPackageVersion('tsx')
+    packageJson.devDependencies.tsx = tsxVersion ? `^${tsxVersion}` : 'latest'
+  }
+
   packageJson.scripts = {
     ...packageJson.scripts,
+    ...(packageManager === 'bun'
+      ? {
+          dev: 'bun with-env bun --watch src/server.ts',
+          start: 'bun with-env bun src/server.ts',
+        }
+      : {
+          dev: 'tsx watch src/server.ts',
+          start: 'tsx src/server.ts',
+        }),
     build: 'tsc',
-    dev: '{{ pkm }} with-env {{ pkm }} --watch src/server.ts',
-    start: '{{ pkm }} with-env {{ pkm }} src/server.ts',
     'with-env': 'dotenv -e ../../.env --',
   }
 

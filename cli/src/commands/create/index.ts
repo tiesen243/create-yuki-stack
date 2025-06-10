@@ -274,9 +274,7 @@ export const createCommand = async (
     )
 
     if (project.install) {
-      s.message(
-        `Installing dependencies with ${chalk.bold(project.packageManager)}...`,
-      )
+      s.message(`Running ${chalk.bold(`${project.packageManager} install`)}...`)
       await execSync(`${project.packageManager} install`)
       await execSync(`${project.packageManager} run format:fix`)
     }
