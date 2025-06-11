@@ -21,6 +21,7 @@
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/env": "workspace:*",
+    "@{{ name }}/validators": "workspace:*",
     "@trpc/server": "catalog:api",
     "superjson": "catalog:api"
   },

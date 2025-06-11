@@ -13,7 +13,8 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "@{{ name }}/env": "workspace:*"
+    "@{{ name }}/env": "workspace:*",
+    "@{{ name }}/validators": "workspace:*"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",

@@ -192,6 +192,7 @@ async function updatePackageJson(app: string, api: 'trpc' | 'orpc') {
   const isUseCatalog = packageManager === 'pnpm' || packageManager === 'bun'
 
   packageJson.dependencies['@{{ name }}/api'] = 'workspace:*'
+  packageJson.dependencies['@{{ name }}/validators'] = 'workspace:*'
   if (api === 'trpc') {
     packageJson.dependencies['@tanstack/react-query'] = isUseCatalog
       ? 'catalog:api'
