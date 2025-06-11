@@ -6,8 +6,8 @@ import { baseFeatures } from './base'
 
 export async function apiFeature(
   api: 'none' | 'trpc' | 'orpc',
-  database: boolean,
-  auth: boolean,
+  isUseDb: boolean,
+  isAuth: boolean,
   apps: string[],
   packageManager: string,
 ) {
@@ -38,8 +38,8 @@ export async function apiFeature(
   const packageJson = JSON.parse(
     await fs.readFile(packageJsonPath, 'utf-8'),
   ) as PackageJson
-  if (database) packageJson.dependencies['@{{ name }}/db'] = 'workspace:*'
-  if (auth) packageJson.dependencies['@{{ name }}/auth'] = 'workspace:*'
+  if (isUseDb) packageJson.dependencies['@{{ name }}/db'] = 'workspace:*'
+  if (isAuth) packageJson.dependencies['@{{ name }}/auth'] = 'workspace:*'
   await fs.writeFile(
     packageJsonPath,
     JSON.stringify(packageJson, null, 2),
@@ -58,7 +58,7 @@ export async function apiFeature(
 
   await fs.copyFile(
     new URL(
-      `src/${api}.${database ? 'db' : 'none'}.${auth ? 'auth' : 'none'}.ts`,
+      `src/${api}.${isUseDb ? 'db' : 'none'}.${isAuth ? 'auth' : 'none'}.ts`,
       basePath,
     ),
     `${packagePath}/api/src/${api}.ts`,

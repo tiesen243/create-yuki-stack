@@ -264,7 +264,11 @@ export const createCommand = async (
       project.packageManager,
     )
     if (project.backend !== 'none' && project.api === 'none')
-      await beFeatures(project.backend, project.packageManager)
+      await beFeatures(
+        project.backend,
+        project.database !== 'none',
+        project.packageManager,
+      )
 
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
       await fixVersion()

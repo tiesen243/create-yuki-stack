@@ -17,6 +17,7 @@ const packages = new Map<string, { dep: string[]; devDep: string[] }>([
 
 export async function beFeatures(
   backend: 'express' | 'elysia' | 'hono',
+  isUseDb: boolean,
   packageManager: string,
 ) {
   await baseFeatures('api', {
@@ -94,6 +95,8 @@ export async function beFeatures(
       tsx: tsxVersion ? `^${tsxVersion}` : 'latest',
     })
   }
+  if (isUseDb)
+    Object.assign(packageJson.dependencies, { '@{{ name }}/db': 'workspace:*' })
 
   const scripts =
     packageManager === 'bun'
