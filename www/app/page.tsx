@@ -596,7 +596,7 @@ export default function HomePage() {
               </Typography>
               <div className="bg-secondary text-secondary-foreground mb-4 rounded-lg p-4 font-mono text-sm">
                 <div className="text-green-400"># Navigate to your project</div>
-                <div>cd my-awesome-app</div>
+                <div>cd my-yuki-app</div>
                 <div className="text-green-400">
                   # Copy the environment variables
                 </div>
