@@ -30,12 +30,13 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "dotenv-cli": "^8.0.0",
+    "dotenv-cli": "catalog:",
     "eslint": "catalog:tool",
     "jiti": "^2.4.2",
     "prettier": "catalog:tool",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:tool",
+    "vite": "^6.3.5",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }

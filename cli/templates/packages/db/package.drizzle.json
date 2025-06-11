@@ -33,7 +33,7 @@
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "dotenv-cli": "^8.0.0",
+    "dotenv-cli": "catalog:",
     "drizzle-kit": "^0.31.1",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",

@@ -20,7 +20,7 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "@t3-oss/env-core": "^0.13.6",
+    "@t3-oss/env-core": "^0.13.8",
     "zod": "catalog:"
   },
   "devDependencies": {
