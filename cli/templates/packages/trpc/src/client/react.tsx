@@ -1,22 +1,20 @@
-'use client'
-
 import type { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
 import { useState } from 'react'
-import { env } from '@{{ name }}/env'
 import { QueryClientProvider } from '@tanstack/react-query'
 import {
   createTRPCClient,
   httpBatchStreamLink,
   httpSubscriptionLink,
-  loggerLink,
   splitLink,
 } from '@trpc/client'
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
 import SuperJSON from 'superjson'
 
-import type { AppRouter } from '../index'
-import { createQueryClient } from './query-client'
+import type { AppRouter } from '@{{ name }}/api'
+
+import { getBaseUrl } from '@/lib/utils'
+import { createQueryClient } from '@/trpc/query-client'
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined
 const getQueryClient = () => {
@@ -47,11 +45,6 @@ function TRPCReactProvider({
   const [trpcClient] = useState(() =>
     createTRPCClient<AppRouter>({
       links: [
-        loggerLink({
-          enabled: (op) =>
-            process.env.NODE_ENV === 'development' ||
-            (op.direction === 'down' && op.result instanceof Error),
-        }),
         splitLink({
           condition: (op) => op.type === 'subscription',
           false: httpBatchStreamLink({
@@ -59,7 +52,7 @@ function TRPCReactProvider({
             url: getBaseUrl() + '/api/trpc',
             headers() {
               const headers = new Headers()
-              headers.set('x-trpc-source', 'react')
+              headers.set('x-trpc-source', '{{ app }}')
               return headers
             },
             fetch(input, init) {
@@ -71,10 +64,8 @@ function TRPCReactProvider({
             url: getBaseUrl() + '/api/trpc',
             eventSourceOptions() {
               const headers = new Headers()
-              headers.set('x-trpc-source', 'react')
-              return {
-                headers,
-              }
+              headers.set('x-trpc-source', '{{ app }}')
+              return { headers }
             },
           }),
         }),
@@ -86,27 +77,13 @@ function TRPCReactProvider({
     createTRPCOptionsProxy<AppRouter>({ client: trpcClient, queryClient }),
   )
 
-  const value = React.useMemo(
-    () => ({ trpc, trpcClient, queryClient }),
-    [trpc, trpcClient, queryClient],
-  )
-
   return (
     <QueryClientProvider client={queryClient}>
-      <TRPCContext value={value}>{children}</TRPCContext>
+      <TRPCContext value={{ trpc, trpcClient, queryClient }}>
+        {children}
+      </TRPCContext>
     </QueryClientProvider>
   )
 }
 
-export { useSubscription } from '@trpc/tanstack-react-query'
-export { useQuery, useSuspenseQuery, useMutation } from '@tanstack/react-query'
 export { TRPCReactProvider, useTRPC }
-
-function getBaseUrl() {
-  if (typeof window !== 'undefined') return window.location.origin
-  if (env.VERCEL_PROJECT_PRODUCTION_URL)
-    return `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`
-  if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`
-
-  return `http://localhost:${process.env.PORT ?? {{ port }}}`
-}

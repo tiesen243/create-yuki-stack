@@ -8,14 +8,6 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
-    },
-    "./react": {
-      "types": "./dist/client/react.d.ts",
-      "default": "./src/client/react.tsx"
-    },
-    "./rsc": {
-      "types": "./dist/client/rsc.d.ts",
-      "default": "./src/client/rsc.tsx"
     }
   },
   "scripts": {

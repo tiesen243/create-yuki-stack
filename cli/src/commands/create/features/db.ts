@@ -89,12 +89,15 @@ export async function dbFeature(db: string, adapter: string, auth: string) {
     )
   }
 
+  const envOperations = []
+
   try {
     await fs.access('.env.example')
-    await fs.appendFile('.env.example', 'DATABASE_URL=\n')
+    envOperations.push(fs.appendFile('.env.example', 'DATABASE_URL=\n'))
   } catch {
-    await fs.writeFile('.env.example', 'DATABASE_URL=\n')
+    envOperations.push(fs.writeFile('.env.example', 'DATABASE_URL=\n'))
   }
 
-  await addEnv('server', 'DATABASE_URL', 'z.string()')
+  envOperations.push(addEnv('server', 'DATABASE_URL', 'z.string()'))
+  await Promise.all(envOperations)
 }

@@ -2,33 +2,25 @@ import fs from 'fs/promises'
 
 import { shadcnConfigs } from './shadcn'
 
+const appConfigs = [
+  { name: 'nextjs', path: 'nextjs' },
+  { name: 'react-router', path: 'react-router' },
+  { name: 'tanstack-start', path: 'tanstack-start' },
+]
+
 export async function feFeatures(apps: string[], useShadcn: boolean) {
-  if (apps.includes('nextjs')) {
-    await fs.cp(
-      new URL('../templates/apps/nextjs', import.meta.url),
-      `apps/nextjs`,
-      { recursive: true },
-    )
-    if (useShadcn) await addShadcnComponents('nextjs')
-  }
-
-  if (apps.includes('react-router')) {
-    await fs.cp(
-      new URL('../templates/apps/react-router', import.meta.url),
-      `apps/react-router`,
-      { recursive: true },
-    )
-    if (useShadcn) await addShadcnComponents('react-router')
-  }
-
-  if (apps.includes('tanstack-start')) {
-    await fs.cp(
-      new URL('../templates/apps/tanstack-start', import.meta.url),
-      `apps/tanstack-start`,
-      { recursive: true },
-    )
-    if (useShadcn) await addShadcnComponents('tanstack-start')
-  }
+  await Promise.all(
+    appConfigs
+      .filter((config) => apps.includes(config.name))
+      .map(async (config) => {
+        await fs.cp(
+          new URL(`../templates/apps/${config.path}`, import.meta.url),
+          `apps/${config.path}`,
+          { recursive: true },
+        )
+        if (useShadcn) await addShadcnComponents(config.path)
+      }),
+  )
 }
 
 function addShadcnComponents(appName: string): Promise<void> {

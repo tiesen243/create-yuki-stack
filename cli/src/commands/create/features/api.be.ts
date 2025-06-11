@@ -9,71 +9,104 @@ export async function setupBackendApp(
   apps: string[],
   packageManager: string,
 ) {
-  const trpcClientPath = `${packagePath}/api/src/client/react.tsx`
-
   const packageJson = JSON.parse(
     await fs.readFile(`${packagePath}/api/package.json`, 'utf-8'),
   ) as PackageJson
-  if (apps.includes('express')) {
-    const expressVersion = await getPackageVersion('express')
-    const expressCorsVersion = await getPackageVersion('cors')
-    const typesExpressVersion = await getPackageVersion('@types/express')
-    const typesCorsVersion = await getPackageVersion('@types/cors')
 
-    packageJson.dependencies.express = expressVersion
-      ? `^${expressVersion}`
-      : 'latest'
-    packageJson.dependencies.cors = expressCorsVersion
-      ? `^${expressCorsVersion}`
-      : 'latest'
-    packageJson.devDependencies['@types/express'] = typesExpressVersion
-      ? `^${typesExpressVersion}`
-      : 'latest'
-    packageJson.devDependencies['@types/cors'] = typesCorsVersion
-      ? `^${typesCorsVersion}`
-      : 'latest'
+  const serverSetups = [
+    {
+      name: 'express',
+      condition: apps.includes('express'),
+      setup: async () => {
+        const [
+          expressVersion,
+          expressCorsVersion,
+          typesExpressVersion,
+          typesCorsVersion,
+        ] = await Promise.all([
+          getPackageVersion('express'),
+          getPackageVersion('cors'),
+          getPackageVersion('@types/express'),
+          getPackageVersion('@types/cors'),
+        ])
 
-    await fs.copyFile(
-      new URL('src/server.express.ts', basePath),
-      `${packagePath}/api/src/server.ts`,
-    )
-  } else if (apps.includes('elysia')) {
-    const elysiaVersion = await getPackageVersion('elysia')
-    const elysiaCorsVersion = await getPackageVersion('@elysiajs/cors')
-    const elysuaNodeVersion = await getPackageVersion('@elysiajs/node')
+        Object.assign(packageJson.dependencies, {
+          express: expressVersion ? `^${expressVersion}` : 'latest',
+          cors: expressCorsVersion ? `^${expressCorsVersion}` : 'latest',
+        })
 
-    packageJson.dependencies.elysia = elysiaVersion
-      ? `^${elysiaVersion}`
-      : 'latest'
-    packageJson.dependencies['@elysiajs/cors'] = elysiaCorsVersion
-      ? `^${elysiaCorsVersion}`
-      : 'latest'
+        Object.assign(packageJson.devDependencies, {
+          '@types/express': typesExpressVersion
+            ? `^${typesExpressVersion}`
+            : 'latest',
+          '@types/cors': typesCorsVersion ? `^${typesCorsVersion}` : 'latest',
+        })
 
-    if (packageManager !== 'bun')
-      packageJson.dependencies['@elysiajs/node'] = elysuaNodeVersion
-        ? `^${elysuaNodeVersion}`
-        : 'latest'
+        return fs.copyFile(
+          new URL('src/server.express.ts', basePath),
+          `${packagePath}/api/src/server.ts`,
+        )
+      },
+    },
+    {
+      name: 'elysia',
+      condition: apps.includes('elysia'),
+      setup: async () => {
+        const [elysiaVersion, elysiaCorsVersion, elysuaNodeVersion] =
+          await Promise.all([
+            getPackageVersion('elysia'),
+            getPackageVersion('@elysiajs/cors'),
+            getPackageVersion('@elysiajs/node'),
+          ])
 
-    await fs.copyFile(
-      new URL(
-        `src/server.elysia${packageManager === 'bun' ? '.ts' : '-node.ts'}`,
-        basePath,
-      ),
-      `${packagePath}/api/src/server.ts`,
-    )
-  } else if (apps.includes('hono')) {
-    const honoVersion = await getPackageVersion('hono')
-    const honoTrpcVersion = await getPackageVersion('@hono/trpc-server')
+        packageJson.dependencies.elysia = elysiaVersion
+          ? `^${elysiaVersion}`
+          : 'latest'
+        packageJson.dependencies['@elysiajs/cors'] = elysiaCorsVersion
+          ? `^${elysiaCorsVersion}`
+          : 'latest'
 
-    packageJson.dependencies.hono = honoVersion ? `^${honoVersion}` : 'latest'
-    packageJson.dependencies['@hono/trpc-server'] = honoTrpcVersion
-      ? `^${honoTrpcVersion}`
-      : 'latest'
-    await fs.copyFile(
-      new URL('src/server.hono.ts', basePath),
-      `${packagePath}/api/src/server.ts`,
-    )
-  }
+        if (packageManager !== 'bun') {
+          packageJson.dependencies['@elysiajs/node'] = elysuaNodeVersion
+            ? `^${elysuaNodeVersion}`
+            : 'latest'
+        }
+
+        return fs.copyFile(
+          new URL(
+            `src/server.elysia${packageManager === 'bun' ? '.ts' : '-node.ts'}`,
+            basePath,
+          ),
+          `${packagePath}/api/src/server.ts`,
+        )
+      },
+    },
+    {
+      name: 'hono',
+      condition: apps.includes('hono'),
+      setup: async () => {
+        const [honoVersion, honoTrpcVersion] = await Promise.all([
+          getPackageVersion('hono'),
+          getPackageVersion('@hono/trpc-server'),
+        ])
+
+        packageJson.dependencies.hono = honoVersion
+          ? `^${honoVersion}`
+          : 'latest'
+        packageJson.dependencies['@hono/trpc-server'] = honoTrpcVersion
+          ? `^${honoTrpcVersion}`
+          : 'latest'
+
+        return fs.copyFile(
+          new URL('src/server.hono.ts', basePath),
+          `${packagePath}/api/src/server.ts`,
+        )
+      },
+    },
+  ]
+
+  const activeSetup = serverSetups.find((setup) => setup.condition)
+  if (activeSetup) await activeSetup.setup()
 
   if (packageManager !== 'bun') {
     const tsxVersion = await getPackageVersion('tsx')
@@ -101,15 +134,4 @@ export async function setupBackendApp(
   )
 
   await addEnv('client', 'NEXT_PUBLIC_API_URL', 'z.string().optional()')
-
-  const trpcReactContent = await fs.readFile(trpcClientPath, 'utf-8')
-  const updatedTrpcReactContent = trpcReactContent.replace(
-    /function getBaseUrl\(\) \{[\s\S]*?\n\}/,
-    `function getBaseUrl() {
-  if (env.NEXT_PUBLIC_API_URL)
-    return \`https://\${env.NEXT_PUBLIC_API_URL}\`
-  return \`http://localhost:\${process.env.PORT ?? 8080}\`
-}`,
-  )
-  await fs.writeFile(trpcClientPath, updatedTrpcReactContent, 'utf-8')
 }

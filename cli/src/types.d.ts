@@ -1,6 +1,6 @@
 interface PackageJson {
   name: string
-  workspaces?: string[] | Record<string, string[]>
+  workspaces?: string[] | Record<string, Record<string, unknown>>
   exports: Record<string, unknown>
   scripts: Record<string, string>
   dependencies: Record<string, string>

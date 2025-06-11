@@ -17,23 +17,16 @@ export async function baseFeatures(
     import.meta.url,
   )
 
-  await fs.copyFile(
-    new URL('package.json', basePath),
-    `${target}/${packageName}/package.json`,
-  )
+  const filesToCopy = [
+    'package.json',
+    'eslint.config.js',
+    'tsconfig.json',
+    'turbo.json',
+  ]
 
-  await fs.copyFile(
-    new URL('eslint.config.js', basePath),
-    `${target}/${packageName}/eslint.config.js`,
-  )
-
-  await fs.copyFile(
-    new URL('tsconfig.json', basePath),
-    `${target}/${packageName}/tsconfig.json`,
-  )
-
-  await fs.copyFile(
-    new URL('turbo.json', basePath),
-    `${target}/${packageName}/turbo.json`,
+  await Promise.all(
+    filesToCopy.map((file) =>
+      fs.copyFile(new URL(file, basePath), `${target}/${packageName}/${file}`),
+    ),
   )
 }
