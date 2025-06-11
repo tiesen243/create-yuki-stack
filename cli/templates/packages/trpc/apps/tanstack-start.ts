@@ -1,9 +1,12 @@
-import { createAPIFileRoute } from '@tanstack/react-start/api'
+import { createServerFileRoute } from '@tanstack/react-start/server'
 
 import { handlers } from '@{{ name }}/api'
 
-export const APIRoute = createAPIFileRoute('/api/trpc/$trpc')({
+export const ServerRoute: unknown = createServerFileRoute(
+  '/api/trpc/$',
+).methods({
   GET: ({ request }) => handlers(request),
   POST: ({ request }) => handlers(request),
   OPTIONS: ({ request }) => handlers(request),
 })
+

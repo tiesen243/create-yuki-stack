@@ -98,7 +98,7 @@ export async function apiFeature(
     if (!isUseBackend)
       await fs.cp(
         new URL('apps/react-router.ts', basePath),
-        'apps/react-router/src/routes/api.trpc.$trpc.ts',
+        'apps/react-router/src/routes/api.trpc.$.ts',
         { recursive: true, force: true },
       )
 
@@ -111,7 +111,7 @@ export async function apiFeature(
     if (!isUseBackend)
       await fs.cp(
         new URL('apps/tanstack-start.ts', basePath),
-        'apps/tanstack-start/src/routes/api.trpc.$trpc.ts',
+        'apps/tanstack-start/src/routes/api/trpc.$.ts',
         { recursive: true, force: true },
       )
 

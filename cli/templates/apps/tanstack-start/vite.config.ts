@@ -9,7 +9,7 @@ await jiti.import('@my-yuki-app/env')
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  process.env = { ...process.env, ...env }
+  process.env = { ...process.env, ...env, PATH: undefined }
 
   return {
     define: { 'process.env': process.env },
