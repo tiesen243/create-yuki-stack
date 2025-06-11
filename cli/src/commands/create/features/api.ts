@@ -80,6 +80,7 @@ export async function apiFeature(
     })
 
     let reactFile = await fs.readFile(`${helpersDir}/react.tsx`, 'utf-8')
+    reactFile = reactFile.replace(/{{ app }}/g, appName)
     if (appName === 'react-nextjs') reactFile = `"use client"\n${reactFile}`
 
     if (isUseBackend) {
@@ -96,11 +97,7 @@ export async function apiFeature(
 }`
     }
 
-    await fs.writeFile(
-      `${helpersDir}/react.tsx`,
-      reactFile.replace(/@{{ app }}/g, appName),
-      'utf-8',
-    )
+    await fs.writeFile(`${helpersDir}/react.tsx`, reactFile, 'utf-8')
   }
 
   const appHandlers = [
