@@ -82,13 +82,15 @@ export async function apiFeature(
   }
 
   if (apps.includes('nextjs')) {
-    if (!isUseBackend) {
-      await fs.cp(
-        new URL('apps/nextjs.ts', basePath),
-        'apps/nextjs/app/api/trpc/[trpc]/route.ts',
-        { recursive: true, force: true },
+    if (!isUseBackend)
+      await fs.writeFile(
+        'apps/react-router/src/routes/api.trpc.$.ts',
+        `import { handlers } from '@{{ name }}/api'
+
+         export { handlers as GET, handlers as POST, handlers as OPTIONS }`,
+        'utf-8',
       )
-    }
+
     await updatePackageJson('nextjs')
     await addProviderToRoot('apps/nextjs/app/layout.tsx')
     await updatePort(3000)
@@ -96,10 +98,15 @@ export async function apiFeature(
 
   if (apps.includes('react-router')) {
     if (!isUseBackend)
-      await fs.cp(
-        new URL('apps/react-router.ts', basePath),
+      await fs.writeFile(
         'apps/react-router/src/routes/api.trpc.$.ts',
-        { recursive: true, force: true },
+        `import { handlers } from '@{{ name }}/api'
+
+         import type { Route } from './+types/api.trpc.$'
+
+         export const loader = async ({ request }: Route.LoaderArgs) => handlers(request)
+         export const action = async ({ request }: Route.ActionArgs) => handlers(request)`,
+        'utf-8',
       )
 
     await updatePackageJson('react-router')
@@ -109,10 +116,20 @@ export async function apiFeature(
 
   if (apps.includes('tanstack-start')) {
     if (!isUseBackend)
-      await fs.cp(
-        new URL('apps/tanstack-start.ts', basePath),
-        'apps/tanstack-start/src/routes/api/trpc.$.ts',
-        { recursive: true, force: true },
+      await fs.writeFile(
+        'apps/tanstack-start/src/routes/api.trpc.$.ts',
+        `import { createServerFileRoute } from '@tanstack/react-start/server'
+
+         import { handlers } from '@{{ name }}/api'
+
+         export const ServerRoute: unknown = createServerFileRoute(
+           '/api/trpc/$',
+         ).methods({
+           GET: ({ request }) => handlers(request),
+           POST: ({ request }) => handlers(request),
+           OPTIONS: ({ request }) => handlers(request),
+         })`,
+        'utf-8',
       )
 
     await updatePackageJson('tanstack-start')
