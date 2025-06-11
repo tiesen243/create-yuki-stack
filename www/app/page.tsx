@@ -598,6 +598,10 @@ export default function HomePage() {
                 <div className="text-green-400"># Navigate to your project</div>
                 <div>cd my-awesome-app</div>
                 <div className="text-green-400">
+                  # Copy the environment variables
+                </div>
+                <div>cp .env.example .env</div>
+                <div className="text-green-400">
                   # Start all apps in development
                 </div>
                 <div>npm run dev</div>
