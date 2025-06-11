@@ -92,7 +92,11 @@ export const createCommand = async (
             message: 'Will you be using TypeScript or JavaScript?',
             options: [
               { value: 'typescript', label: 'TypeScript' },
-              { value: 'javascript', label: 'JavaScript' },
+              {
+                value: 'javascript',
+                label: 'JavaScript',
+                hint: 'You should kys',
+              },
             ],
             initialValue: 'typescript',
           }),
@@ -106,9 +110,21 @@ export const createCommand = async (
             message: 'Which database would you like to use?',
             options: [
               { value: 'none', label: 'None' },
-              { value: 'prisma', label: 'Prisma' },
-              { value: 'drizzle', label: 'Drizzle' },
-              { value: 'mongodb', label: 'MongoDb (soon)' },
+              {
+                value: 'drizzle',
+                label: 'Drizzle',
+                hint: 'Lightweight and performant TypeScript ORM',
+              },
+              {
+                value: 'prisma',
+                label: 'Prisma',
+                hint: 'Powerful, feature-rich ORM',
+              },
+              {
+                value: 'mongodb',
+                label: 'MongoDb (soon)',
+                hint: 'NoSQL database',
+              },
             ],
             initialValue: 'none',
           }),
@@ -118,10 +134,15 @@ export const createCommand = async (
                 message: 'Which adapter would you like to use?',
                 options: [
                   { value: 'none', label: 'None' },
-                  { value: 'neon', label: 'Neon' },
+                  {
+                    value: 'neon',
+                    label: 'Neon',
+                    hint: 'Serverless Postgres with branching',
+                  },
                   {
                     value: 'planetscale',
                     label: `PlanetScale ${results.database === 'prisma' ? '(soon)' : ''}`,
+                    hint: 'Serverless MySQL with branching',
                   },
                 ],
                 initialValue: 'none',
@@ -133,9 +154,21 @@ export const createCommand = async (
                 message: 'Would you like to use an authentication solution?',
                 options: [
                   { value: 'none', label: 'None' },
-                  { value: 'lucia', label: 'Lucia (soon)' },
-                  { value: 'better-auth', label: 'BetterAuth (soon)' },
-                  { value: 'next-auth', label: 'NextAuth.js (soon)' },
+                  {
+                    value: 'basic',
+                    label: 'Basic (soon)',
+                    hint: 'Basic authentication built from scratch',
+                  },
+                  {
+                    value: 'better-auth',
+                    label: 'BetterAuth (soon)',
+                    hint: 'Open-source authentication solution',
+                  },
+                  {
+                    value: 'next-auth',
+                    label: 'NextAuth.js (soon)',
+                    hint: 'Flexible authentication for Next.js',
+                  },
                 ],
               })
             : undefined,
@@ -148,8 +181,16 @@ export const createCommand = async (
             message: 'What type of API will you be using?',
             options: [
               { value: 'none', label: 'None' },
-              { value: 'trpc', label: 'tRPC' },
-              { value: 'orpc', label: 'oRPC' },
+              {
+                value: 'trpc',
+                label: 'tRPC',
+                hint: 'End-to-end typesafe APIs',
+              },
+              {
+                value: 'orpc',
+                label: 'oRPC',
+                hint: 'End-to-end typesafe APIs that adhere to OpenAPI standards',
+              },
             ],
             initialValue: 'none',
           }),
@@ -158,9 +199,21 @@ export const createCommand = async (
             message: 'Which backend framework would you like to use?',
             options: [
               { value: 'none', label: 'None' },
-              { value: 'express', label: 'Express' },
-              { value: 'elysia', label: 'Elysia' },
-              { value: 'hono', label: 'Hono' },
+              {
+                value: 'express',
+                label: 'Express',
+                hint: 'Fast, unopinionated, minimalist web framework',
+              },
+              {
+                value: 'elysia',
+                label: 'Elysia',
+                hint: 'Ergonomic Framework for Hoomans & Fox Girls',
+              },
+              {
+                value: 'hono',
+                label: 'Hono',
+                hint: 'Lightweight, ultra-fast web framework',
+              },
             ],
             initialValue: 'none',
           }),
@@ -168,10 +221,26 @@ export const createCommand = async (
           p.multiselect({
             message: 'Which frontend framework would you like to use?',
             options: [
-              { value: 'nextjs', label: 'Next.js' },
-              { value: 'react-router', label: 'React Router' },
-              { value: 'tanstack-start', label: 'Tanstack Start' },
-              { value: 'expo', label: 'Expo (soon)' },
+              {
+                value: 'nextjs',
+                label: 'Next.js',
+                hint: 'The React Framework for Webapp',
+              },
+              {
+                value: 'react-router',
+                label: 'React Router',
+                hint: 'A user-obsessed, standards-focused and multi-strategy router',
+              },
+              {
+                value: 'tanstack-start',
+                label: 'Tanstack Start',
+                hint: 'Modern and scalable routing, SSR, Server Functions and API Routes.',
+              },
+              {
+                value: 'expo',
+                label: 'Expo (soon)',
+                hint: 'React Native/Expo app',
+              },
             ],
             initialValues: ['nextjs'],
           }),
@@ -180,17 +249,25 @@ export const createCommand = async (
             message: 'Would you like to use shadcn/ui for your project?',
             initialValue: true,
           }),
-        packageManager: () =>
-          p.select({
+        packageManager: ({ results }) => {
+          const isNotRecommendedNpm = results.frontend?.includes('react-router')
+          return p.select({
             message: 'Which package manager would you like to use?',
             options: [
-              { value: 'npm', label: 'NPM (not recommended)' },
+              {
+                value: 'npm',
+                label: `NPM ${isNotRecommendedNpm ? '(not recommended)' : ''}`,
+                ...(isNotRecommendedNpm && {
+                  hint: 'React Router may have dependency resolution issues with npm',
+                }),
+              },
               { value: 'yarn', label: 'Yarn' },
               { value: 'pnpm', label: 'PNPM' },
               { value: 'bun', label: 'Bun' },
             ],
             initialValue: getPackageManager(),
-          }),
+          })
+        },
         install: ({ results }) =>
           p.confirm({
             message: `Would you like to run ${chalk.bold(`${results.packageManager} install`)} for you?`,
