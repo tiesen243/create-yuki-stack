@@ -26,6 +26,7 @@ export const createCommand = async (
   options: { yes: boolean },
 ) => {
   renderTitle()
+  p.intro(chalk.bold.magenta('Creating a new Yuki-Stack project'))
 
   let project = {
     name: name ?? DEFAULT_APP_NAME,
@@ -60,7 +61,6 @@ export const createCommand = async (
       process.exit(1)
     }
   } else {
-    p.intro(chalk.bold.magenta('Creating a new Yuki-Stack project'))
     project = (await p.group(
       {
         ...(!name && {
