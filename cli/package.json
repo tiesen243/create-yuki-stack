@@ -1,6 +1,6 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.0.63",
+  "version": "0.0.64",
   "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
     "cli",
@@ -10,7 +10,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/tiesen243/create-yuki-stack",
-    "directory": "packages/cli"
+    "directory": "cli"
   },
   "author": {
     "name": "Tiesen",
@@ -18,7 +18,6 @@
   },
   "type": "module",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "bin": "./dist/index.js",
   "files": [
     "dist",
@@ -36,8 +35,8 @@
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "chalk": "^5.4.1",
-    "commander": "^14.0.0",
-    "gradient-string": "^3.0.0"
+    "gradient-string": "^3.0.0",
+    "trpc-cli": "^0.9.0"
   },
   "devDependencies": {
     "@types/node": "24.0.0",

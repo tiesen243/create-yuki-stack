@@ -7,6 +7,7 @@ import chalk from 'chalk'
 import { DEFAULT_APP_NAME } from '@/utils/constants'
 import { getPackageManager } from '@/utils/get-package-manager'
 import { sortPackageJson } from '@/utils/sort-package-json'
+import { projectNameSchema } from '@/utils/validators'
 import { buildReadme } from './build-readme'
 import { copyPackageJson } from './copy-package-json'
 import { copyTurbo } from './copy-turbo'
@@ -43,7 +44,7 @@ export const createCommand = async (
     git: true,
   } as ProjectConfig
 
-  if (options.yes) {
+  if (options.yes && name !== '.') {
     const projectExists = await fs
       .access(project.name)
       .then(() => true)
@@ -56,7 +57,7 @@ export const createCommand = async (
       )
       process.exit(1)
     }
-  } else {
+  } else if (!options.yes) {
     project = (await p.group(
       {
         ...(!name && {
@@ -68,18 +69,20 @@ export const createCommand = async (
         }),
         _: async ({ results }) => {
           const projectName = name ?? results.name ?? DEFAULT_APP_NAME
+          if (projectName !== '.') {
+            const projectExists = await fs
+              .access(projectName)
+              .then(() => true)
+              .catch(() => false)
 
-          const projectExists = await fs
-            .access(projectName)
-            .then(() => true)
-            .catch(() => false)
-          if (projectExists) {
-            p.note(
-              chalk.redBright(
-                `A directory named ${chalk.bold(projectName)} already exists. Please choose a different name.`,
-              ),
-            )
-            process.exit(1)
+            if (projectExists) {
+              p.note(
+                chalk.redBright(
+                  `A directory named ${chalk.bold(projectName)} already exists. Please choose a different name.`,
+                ),
+              )
+              process.exit(1)
+            }
           }
 
           results.name = projectName
@@ -208,12 +211,20 @@ export const createCommand = async (
     )) as ProjectConfig
   }
 
+  await projectNameSchema.parseAsync(project.name)
+
   const s = p.spinner()
   s.start(`Creating project ${chalk.bold(project.name)}....`)
 
+  let isDotDir = false
   try {
-    await fs.mkdir(project.name, { recursive: true })
-    process.chdir(project.name)
+    if (project.name !== '.') {
+      await fs.mkdir(project.name, { recursive: true })
+      process.chdir(project.name)
+    } else {
+      isDotDir = true
+      project.name = process.cwd().split('/').pop() ?? DEFAULT_APP_NAME
+    }
 
     await copyPackageJson(project.packageManager)
 
@@ -297,7 +308,7 @@ export const createCommand = async (
     s.stop(`✨ Project ${chalk.bold(project.name)} created successfully!`)
     p.outro(
       `${chalk.bold('To get started:')}\n` +
-        `      ${chalk.cyan(`cd ${project.name}`)}\n` +
+        (!isDotDir ? `      ${chalk.cyan(`cd ${project.name}`)}\n` : '') +
         `      ${chalk.cyan('cp .env.example .env')}\n` +
         `      ${chalk.cyan(`${project.packageManager} run dev`)}\n`,
     )
