@@ -1,16 +1,15 @@
-'use client'
-
 import type { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
 import { createORPCClient } from '@orpc/client'
 import { RPCLink } from '@orpc/client/fetch'
+import { BatchLinkPlugin, DedupeRequestsPlugin } from '@orpc/client/plugins'
 import { createTanstackQueryUtils } from '@orpc/tanstack-query'
 import { QueryClientProvider } from '@tanstack/react-query'
 
-import { env } from '@{{ name }}/env'
+import type { AppRouter } from '@{{ name }}/api'
 
-import type { AppRouter } from '../routers/_app'
-import { createQueryClient } from './query-client'
+import { getBaseUrl } from '@/lib/utils'
+import { createQueryClient } from '@/orpc/query-client'
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined
 const getQueryClient = () => {
@@ -41,7 +40,16 @@ function ORPCReactProvider({
   const [orpcClient] = React.useState(() => {
     const link = new RPCLink({
       url: getBaseUrl() + '/api/orpc',
-      headers: { 'x-orpc-source': 'react' },
+      headers: { 'x-orpc-source': '{{ app }}' },
+      plugins: [
+        new BatchLinkPlugin({
+          groups: [{ condition: () => true, context: {} }],
+        }),
+        new DedupeRequestsPlugin({
+          filter: ({ request }) => request.method === 'GET',
+          groups: [{ condition: () => true, context: {} }],
+        }),
+      ],
     })
     return createORPCClient<AppRouter>(link)
   })
@@ -60,13 +68,3 @@ function ORPCReactProvider({
 }
 
 export { useORPC, ORPCReactProvider }
-export * from '@tanstack/react-query'
-
-function getBaseUrl() {
-  if (typeof window !== 'undefined') return window.location.origin
-  if (env.VERCEL_PROJECT_PRODUCTION_URL)
-    return `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`
-  if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`
-
-  return `http://localhost:${process.env.PORT ?? {{ port }}}`
-}

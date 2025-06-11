@@ -66,11 +66,10 @@ export async function setupBackendApp(
           ? `^${elysiaCorsVersion}`
           : 'latest'
 
-        if (packageManager !== 'bun') {
+        if (packageManager !== 'bun')
           packageJson.dependencies['@elysiajs/node'] = elysuaNodeVersion
             ? `^${elysuaNodeVersion}`
             : 'latest'
-        }
 
         return fs.copyFile(
           new URL(
@@ -85,16 +84,9 @@ export async function setupBackendApp(
       name: 'hono',
       condition: apps.includes('hono'),
       setup: async () => {
-        const [honoVersion, honoTrpcVersion] = await Promise.all([
-          getPackageVersion('hono'),
-          getPackageVersion('@hono/trpc-server'),
-        ])
-
+        const honoVersion = await getPackageVersion('hono')
         packageJson.dependencies.hono = honoVersion
           ? `^${honoVersion}`
-          : 'latest'
-        packageJson.dependencies['@hono/trpc-server'] = honoTrpcVersion
-          ? `^${honoTrpcVersion}`
           : 'latest'
 
         return fs.copyFile(

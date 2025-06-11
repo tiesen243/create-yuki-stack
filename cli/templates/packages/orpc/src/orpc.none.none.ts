@@ -7,7 +7,7 @@
  * The pieces you will need to use are documented accordingly near the end
  */
 
-import { createRouterClient, ORPCError, os } from '@orpc/server'
+import { createRouterClient, os } from '@orpc/server'
 
 /**
  * 1. CONTEXT
@@ -22,6 +22,8 @@ import { createRouterClient, ORPCError, os } from '@orpc/server'
  * @see https://orpc.unnoq.com/docs/context
  */
 const createORPCContext = async (opts: { headers: Headers }) => {
+  await new Promise((resolve) => setTimeout(resolve, 100))
+
   console.log(
     '>>> oRPC Request from',
     opts.headers.get('x-orpc-source') ?? 'unknown',

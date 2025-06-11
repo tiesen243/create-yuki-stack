@@ -1,9 +1,8 @@
 import '@{{ name }}/env'
 
-import { trpcServer } from '@hono/trpc-server'
+import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import { logger } from 'hono/logger'
 
 import { appRouter } from './routers/_app'
 import { createTRPCContext } from './trpc'
@@ -22,21 +21,21 @@ server.use(
   }),
 )
 
-server.use(logger())
-
 server.get('/api', (c) => c.json({ message: 'Hello from Hono!' }))
 
-server.use(
-  '/api/trpc/*',
-  trpcServer({
+server.use('/api/trpc/*', async (c) => {
+  const response = await fetchRequestHandler({
     endpoint: '/api/trpc',
     router: appRouter,
-    createContext: ({ req }) => createTRPCContext(req),
+    req: c.req.raw,
+    createContext: () => createTRPCContext(c.req.raw),
     onError({ error, path }) {
       console.error(`>>> tRPC Error on '${path}'`, error)
     },
-  }),
-)
+  })
+
+  return c.newResponse(response.body, response)
+})
 
 export default {
   port: 8080,

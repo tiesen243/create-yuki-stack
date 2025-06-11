@@ -5,7 +5,7 @@ import {
   ResponseHeadersPlugin,
 } from '@orpc/server/plugins'
 
-import { createORPCContext } from './orpc'
+import { createCallerFactory, createORPCContext } from './orpc'
 import { appRouter } from './routers/_app'
 
 /**
@@ -28,4 +28,4 @@ const handlers = async (req: Request) => {
 }
 
 export type { AppRouter, RouterInputs, RouterOutputs } from './routers/_app'
-export { appRouter, createORPCContext, handlers }
+export { appRouter, createCallerFactory, createORPCContext, handlers }

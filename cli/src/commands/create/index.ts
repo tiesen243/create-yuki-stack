@@ -145,7 +145,7 @@ export const createCommand = async (
             options: [
               { value: 'none', label: 'None' },
               { value: 'trpc', label: 'tRPC' },
-              { value: 'orpc', label: 'oRPC (soon)' },
+              { value: 'orpc', label: 'oRPC' },
             ],
             initialValue: 'none',
           }),
