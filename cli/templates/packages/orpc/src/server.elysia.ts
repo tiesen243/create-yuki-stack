@@ -10,7 +10,7 @@ import { createORPCContext } from './orpc'
 
 const server = new Elysia({ prefix: '/api' })
   .use(cors())
-  .get('/', () => 'Hello from Elysia!')
+  .get('/', () => ({ message: 'Hello from Elysia!' }))
   .all('/orpc/*', async ({ request }) => {
     const { matched, response } = await new RPCHandler(appRouter, {
       plugins: [

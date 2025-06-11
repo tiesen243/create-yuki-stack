@@ -10,6 +10,7 @@ import { sortPackageJson } from '@/utils/sort-package-json'
 import { copyPackageJson } from './copy-package-json'
 import { copyTurbo } from './copy-turbo'
 import { apiFeature } from './features/api'
+import { beFeatures } from './features/be'
 import { dbFeature } from './features/db'
 import { feFeatures } from './features/fe'
 import { shadcnFeatures } from './features/shadcn'
@@ -37,7 +38,7 @@ export const createCommand = async (
       | 'better-auth'
       | 'next-auth'
       | undefined,
-    backend: 'none',
+    backend: 'none' as 'none' | 'express' | 'elysia' | 'hono',
     frontend: ['nextjs'],
     shadcn: true,
     packageManager: getPackageManager(),
@@ -149,19 +150,17 @@ export const createCommand = async (
             ],
             initialValue: 'none',
           }),
-        backend: ({ results }) =>
-          results.api !== 'none'
-            ? p.select({
-                message: 'Which backend framework would you like to use?',
-                options: [
-                  { value: 'none', label: 'None' },
-                  { value: 'express', label: 'Express' },
-                  { value: 'elysia', label: 'Elysia' },
-                  { value: 'hono', label: 'Hono' },
-                ],
-                initialValue: 'none',
-              })
-            : undefined,
+        backend: () =>
+          p.select({
+            message: 'Which backend framework would you like to use?',
+            options: [
+              { value: 'none', label: 'None' },
+              { value: 'express', label: 'Express' },
+              { value: 'elysia', label: 'Elysia' },
+              { value: 'hono', label: 'Hono' },
+            ],
+            initialValue: 'none',
+          }),
         frontend: () =>
           p.multiselect({
             message: 'Which frontend framework would you like to use?',
@@ -264,6 +263,8 @@ export const createCommand = async (
       [project.backend, ...project.frontend],
       project.packageManager,
     )
+    if (project.backend !== 'none' && project.api === 'none')
+      await beFeatures(project.backend, project.packageManager)
 
     if (project.packageManager === 'npm' || project.packageManager === 'yarn')
       await fixVersion()

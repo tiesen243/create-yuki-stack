@@ -39,7 +39,7 @@ server.use('/api/orpc', async (req, res, next) => {
 server.use(express.json())
 
 server.get('/api', (_, res) => {
-  res.send('Hello from Express!')
+  res.json({ message: 'Hello from Express!' })
 })
 
 server.listen(8080, () => {

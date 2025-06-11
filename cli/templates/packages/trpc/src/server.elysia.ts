@@ -9,7 +9,7 @@ import { createTRPCContext } from './trpc'
 
 const server = new Elysia({ prefix: '/api' })
   .use(cors())
-  .get('/', () => 'Hello from Elysia!')
+  .get('/', () => ({ message: 'Hello from Elysia!' }))
   .all('/trpc/*', async ({ request }) => {
     let response: Response
 

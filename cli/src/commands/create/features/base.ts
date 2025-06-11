@@ -7,13 +7,13 @@ export async function baseFeatures(
     target?: 'apps' | 'packages'
   },
 ) {
-  const dir = options?.templateDir
+  const dir = options?.templateDir ?? packageName
   const target = options?.target ?? 'packages'
 
   await fs.mkdir(`${target}/${packageName}`, { recursive: true })
 
   const basePath = new URL(
-    `../templates/packages/${dir ?? packageName}/${dir ?? packageName}`, // dunno why this is needed, but it works
+    `../templates/packages/${dir}/${dir}`, // dunno why this is needed, but it works
     import.meta.url,
   )
 

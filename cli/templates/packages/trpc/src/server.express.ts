@@ -24,7 +24,7 @@ server.use(
 )
 
 server.get('/api', (_, res) => {
-  res.send('Hello from Express!')
+  res.json({ message: 'Hello from Express!' })
 })
 
 server.use(
