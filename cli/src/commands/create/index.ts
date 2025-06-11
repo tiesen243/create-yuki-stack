@@ -7,6 +7,7 @@ import chalk from 'chalk'
 import { DEFAULT_APP_NAME } from '@/utils/constants'
 import { getPackageManager } from '@/utils/get-package-manager'
 import { sortPackageJson } from '@/utils/sort-package-json'
+import { buildReadme } from './build-readme'
 import { copyPackageJson } from './copy-package-json'
 import { copyTurbo } from './copy-turbo'
 import { apiFeature } from './features/api'
@@ -32,20 +33,15 @@ export const createCommand = async (
     name: name ?? DEFAULT_APP_NAME,
     database: 'none',
     adapter: 'none',
-    api: 'none' as 'none' | 'trpc' | 'orpc',
-    auth: undefined as
-      | 'none'
-      | 'lucia'
-      | 'better-auth'
-      | 'next-auth'
-      | undefined,
-    backend: 'none' as 'none' | 'express' | 'elysia' | 'hono',
+    api: 'none',
+    auth: 'none',
+    backend: 'none',
     frontend: ['nextjs'],
     shadcn: true,
     packageManager: getPackageManager(),
     install: true,
     git: true,
-  }
+  } as ProjectConfig
 
   if (options.yes) {
     const projectExists = await fs
@@ -121,7 +117,7 @@ export const createCommand = async (
                   { value: 'none', label: 'None' },
                   { value: 'neon', label: 'Neon' },
                   {
-                    value: 'planet',
+                    value: 'planetscale',
                     label: `PlanetScale ${results.database === 'prisma' ? '(soon)' : ''}`,
                   },
                 ],
@@ -140,6 +136,10 @@ export const createCommand = async (
                 ],
               })
             : undefined,
+        ___: ({ results }) => {
+          results.auth ??= 'none'
+          return undefined
+        },
         api: () =>
           p.select({
             message: 'What type of API will you be using?',
@@ -205,13 +205,12 @@ export const createCommand = async (
           process.exit(0)
         },
       },
-    )) as typeof project
+    )) as ProjectConfig
   }
 
   const s = p.spinner()
   s.start(`Creating project ${chalk.bold(project.name)}....`)
 
-  project.auth ??= 'none'
   try {
     await fs.mkdir(project.name, { recursive: true })
     process.chdir(project.name)
@@ -274,6 +273,7 @@ export const createCommand = async (
       await fixVersion()
 
     await replace(project.name, project.packageManager)
+    await buildReadme(project)
     await sortPackageJson()
 
     if (project.install) {

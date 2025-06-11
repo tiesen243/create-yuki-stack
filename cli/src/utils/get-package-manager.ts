@@ -1,4 +1,4 @@
-export function getPackageManager() {
+export function getPackageManager(): 'npm' | 'yarn' | 'pnpm' | 'bun' {
   const ua = process.env.npm_config_user_agent ?? 'npm'
 
   if (ua.startsWith('yarn')) return 'yarn'

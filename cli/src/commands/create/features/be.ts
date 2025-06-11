@@ -20,6 +20,12 @@ export async function beFeatures(
   isUseDb: boolean,
   packageManager: string,
 ) {
+  await fs.cp(
+    new URL('../templates/packages/validators', import.meta.url),
+    'packages/validators',
+    { recursive: true, force: true },
+  )
+
   await baseFeatures('api', {
     target: 'apps',
   })
