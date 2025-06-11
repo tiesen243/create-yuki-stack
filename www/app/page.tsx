@@ -533,7 +533,10 @@ export default function HomePage() {
                 <div className="text-green-400">
                   # Interactive CLI will ask you:
                 </div>
-                <div>┌ Creating a new Yuki-Stack project...</div>
+                <div>┌ Creating a new Yuki-Stack project</div>
+                <div>│</div>
+                <div>◇ What is the name of your project?</div>
+                <div>│ &nbsp;my-yuki-app</div>
                 <div>│</div>
                 <div>◇ Will you be using TypeScript or JavaScript?</div>
                 <div>│ &nbsp;TypeScript</div>
@@ -541,14 +544,20 @@ export default function HomePage() {
                 <div>◇ Which database would you like to use?</div>
                 <div>│ &nbsp;Drizzle</div>
                 <div>│</div>
+                <div>◇ Which adapter would you like to use?</div>
+                <div>│ &nbsp;Neon</div>
+                <div>│</div>
+                <div>◇ Would you like to use an authentication solution?</div>
+                <div>│ &nbsp;None</div>
+                <div>│</div>
                 <div>◇ What type of API will you be using?</div>
                 <div>│ &nbsp;tRPC</div>
                 <div>│</div>
                 <div>◇ Which backend framework would you like to use?</div>
-                <div>│ &nbsp;None</div>
+                <div>│ &nbsp;Elysia</div>
                 <div>│</div>
                 <div>◇ Which frontend framework would you like to use?</div>
-                <div>│ &nbsp;Next.js</div>
+                <div>│ &nbsp;Next.js, React Router</div>
                 <div>│</div>
                 <div>◇ Would you like to use shadcn/ui for your project?</div>
                 <div>│ &nbsp;Yes</div>
@@ -562,7 +571,18 @@ export default function HomePage() {
                 <div>◇ Would you like to initialize a git repository?</div>
                 <div>│ &nbsp;Yes</div>
                 <div>│</div>
-                <div>◇ Project dasd created successfully!</div>
+                <div>◇ ✨ Project my-yuki-app created successfully!</div>
+                <div>│</div>
+                <div>└ To get started:</div>
+                <div className="text-green-400">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cd my-yuki-app
+                </div>
+                <div className="text-green-400">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cp .env.example .env
+                </div>
+                <div className="text-green-400">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bun run dev
+                </div>
               </div>
               <Typography className="text-muted-foreground">
                 Customize your monorepo with the technologies that best fit your
