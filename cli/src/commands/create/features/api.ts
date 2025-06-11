@@ -268,9 +268,6 @@ async function updatePackageJson(app: string, api: 'trpc' | 'orpc') {
       )
     } else {
       let pnpmWorkspace = await fs.readFile('pnpm-workspace.yaml', 'utf-8')
-      const catalogsRegex = /catalogs:\s*\n/
-      const apiCatalogRegex =
-        /catalogs:\s*\n([\s\S]*?)\n\s*api:\s*\n([\s\S]*?)(?=\n\s*\w+:|$)/
 
       const apiCatalog =
         api === 'trpc'
@@ -300,18 +297,12 @@ async function updatePackageJson(app: string, api: 'trpc' | 'orpc') {
         .map(([key, value]) => `    ${key}: ${value}`)
         .join('\n')
 
-      if (apiCatalogRegex.test(pnpmWorkspace))
+      if (!pnpmWorkspace.includes('api:'))
         pnpmWorkspace = pnpmWorkspace.replace(
-          apiCatalogRegex,
-          (_, catalogsContent) =>
-            `catalogs:\n${catalogsContent}\n  api:\n${apiCatalogYaml}`,
+          'catalogs:',
+          `catalogs:\n  api:\n${apiCatalogYaml}\n`,
         )
-      else if (catalogsRegex.test(pnpmWorkspace))
-        pnpmWorkspace = pnpmWorkspace.replace(
-          catalogsRegex,
-          `catalogs:\n  api:\n${apiCatalogYaml}\n\n`,
-        )
-      else pnpmWorkspace += `\ncatalogs:\n  api:\n${apiCatalogYaml}\n`
+
       await fs.writeFile('pnpm-workspace.yaml', pnpmWorkspace, 'utf-8')
     }
   }
