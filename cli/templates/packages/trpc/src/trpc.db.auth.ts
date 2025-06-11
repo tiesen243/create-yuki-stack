@@ -36,7 +36,7 @@ const isomorphicGetSession = async (headers: Headers) => {
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = (opts: { headers: Headers }) => {
+const createTRPCContext = (opts: { headers: Headers }) => {
   const session = await isomorphicGetSession(opts.headers)
 
   console.log(
@@ -74,21 +74,17 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  * Create a server-side caller
  * @see https://trpc.io/docs/server/server-side-calls
  */
-export const createCallerFactory = t.createCallerFactory
+const createCallerFactory = t.createCallerFactory
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
  * These are the pieces you use to build your tRPC API. You should import these
- * a lot in the /src/server/api/routers folder
- */
-
-/**
+ * a lot in the /src/routers folder
+ *
  * This is how you create new routers and subrouters in your tRPC API
  * @see https://trpc.io/docs/router
  */
-export const createTRPCRouter = t.router
-export const mergeTRPCRouters = t.mergeRouters
 
 /**
  * Middleware for timing procedure execution.
@@ -120,7 +116,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * tRPC API. It does not guarantee that a user querying is authorized, but you
  * can still access user session data if they are logged in
  */
-export const publicProcedure = t.procedure.use(timingMiddleware)
+const publicProcedure = t.procedure.use(timingMiddleware)
 
 /**
  * Protected (authenticated) procedure
@@ -130,7 +126,7 @@ export const publicProcedure = t.procedure.use(timingMiddleware)
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure
+const protectedProcedure = t.procedure
   .use(timingMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' })
@@ -142,3 +138,11 @@ export const protectedProcedure = t.procedure
       },
     })
   })
+
+export {
+  t as trpc,
+  createCallerFactory,
+  createTRPCContext,
+  publicProcedure,
+  protectedProcedure,
+}

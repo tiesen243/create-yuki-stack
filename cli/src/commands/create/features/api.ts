@@ -62,29 +62,29 @@ export async function apiFeature(
 
   await fs.copyFile(
     new URL(
-      `src/trpc.${database ? 'db' : 'none'}.${auth ? 'auth' : 'none'}.ts`,
+      `src/${api}.${database ? 'db' : 'none'}.${auth ? 'auth' : 'none'}.ts`,
       basePath,
     ),
-    `${packagePath}/api/src/trpc.ts`,
+    `${packagePath}/api/src/${api}.ts`,
   )
 
   if (isUseBackend)
     await setupBackendApp(basePath, packagePath, apps, packageManager)
 
   async function updatePort(port: number) {
-    const trpcClientPath = `${packagePath}/api/src/client/react.tsx`
-    const trpcReactContent = await fs.readFile(trpcClientPath, 'utf-8')
-    const updatedTrpcReactContent = trpcReactContent.replace(
+    const clientPath = `${packagePath}/api/src/client/react.tsx`
+    const reactContent = await fs.readFile(clientPath, 'utf-8')
+    const updatedReactContent = reactContent.replace(
       /{{ port }}/g,
       port.toString(),
     )
-    await fs.writeFile(trpcClientPath, updatedTrpcReactContent, 'utf-8')
+    await fs.writeFile(clientPath, updatedReactContent, 'utf-8')
   }
 
   if (apps.includes('nextjs')) {
     if (!isUseBackend)
       await fs.writeFile(
-        'apps/react-router/src/routes/api.trpc.$.ts',
+        `apps/react-router/src/routes/api.${api}.$.ts`,
         `import { handlers } from '@{{ name }}/api'
 
          export { handlers as GET, handlers as POST, handlers as OPTIONS }`,
@@ -92,17 +92,17 @@ export async function apiFeature(
       )
 
     await updatePackageJson('nextjs')
-    await addProviderToRoot('apps/nextjs/app/layout.tsx')
+    await addProviderToRoot(api, 'apps/nextjs/app/layout.tsx')
     await updatePort(3000)
   }
 
   if (apps.includes('react-router')) {
     if (!isUseBackend)
       await fs.writeFile(
-        'apps/react-router/src/routes/api.trpc.$.ts',
+        `apps/react-router/src/routes/api.${api}.$.ts`,
         `import { handlers } from '@{{ name }}/api'
 
-         import type { Route } from './+types/api.trpc.$'
+         import type { Route } from './+types/api.${api}.$'
 
          export const loader = async ({ request }: Route.LoaderArgs) => handlers(request)
          export const action = async ({ request }: Route.ActionArgs) => handlers(request)`,
@@ -110,20 +110,20 @@ export async function apiFeature(
       )
 
     await updatePackageJson('react-router')
-    await addProviderToRoot('apps/react-router/src/root.tsx')
+    await addProviderToRoot(api, 'apps/react-router/src/root.tsx')
     await updatePort(3001)
   }
 
   if (apps.includes('tanstack-start')) {
     if (!isUseBackend)
       await fs.writeFile(
-        'apps/tanstack-start/src/routes/api.trpc.$.ts',
+        `apps/tanstack-start/src/routes/api.${api}.$.ts`,
         `import { createServerFileRoute } from '@tanstack/react-start/server'
 
          import { handlers } from '@{{ name }}/api'
 
          export const ServerRoute: unknown = createServerFileRoute(
-           '/api/trpc/$',
+           '/api/${api}/$',
          ).methods({
            GET: ({ request }) => handlers(request),
            POST: ({ request }) => handlers(request),
@@ -133,7 +133,7 @@ export async function apiFeature(
       )
 
     await updatePackageJson('tanstack-start')
-    await addProviderToRoot('apps/tanstack-start/src/routes/__root.tsx', true)
+    await addProviderToRoot(api, 'apps/tanstack-start/src/routes/__root.tsx')
     await updatePort(3002)
   }
 }
@@ -151,16 +151,19 @@ async function updatePackageJson(app: string) {
   )
 }
 
-async function addProviderToRoot(path: string, isUseOutlet = false) {
+async function addProviderToRoot(api: 'trpc' | 'orpc', path: string) {
+  const provider = api === 'trpc' ? 'TRPCReactProvider' : 'ORPCReactProvider'
+
   const rootContent = await fs.readFile(path, 'utf-8')
+  const isHaveChildren = rootContent.includes('{children}')
 
   let updatedRootContent = rootContent
-  updatedRootContent = `${updatedRootContent}\nimport { TRPCReactProvider } from '@{{ name }}/api/react'`
+  updatedRootContent = `${updatedRootContent}\nimport { ${provider} } from '@{{ name }}/api/react'`
   updatedRootContent = updatedRootContent.replace(
-    isUseOutlet ? '<Outlet />' : '{children}',
-    `<TRPCReactProvider>
-      ${isUseOutlet ? '<Outlet />' : '{children}'}
-    </TRPCReactProvider>`,
+    isHaveChildren ? '{children}' : '<Outlet />',
+    `<${provider}>
+      ${isHaveChildren ? '{children}' : '<Outlet />'}
+    </${provider}>`,
   )
 
   await fs.writeFile(path, updatedRootContent, 'utf-8')

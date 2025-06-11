@@ -1,8 +1,8 @@
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
-import { createTRPCRouter, publicProcedure } from '../trpc'
+import { publicProcedure, trpc } from '../trpc'
 
-const appRouter = createTRPCRouter({
+const appRouter = trpc.router({
   health: publicProcedure.query(() => {
     return { status: 'ok' }
   }),

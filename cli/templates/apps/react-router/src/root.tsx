@@ -32,6 +32,7 @@ export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
         >
           {children}
         </ThemeProvider>
+
         <ScrollRestoration />
         <Scripts />
       </body>

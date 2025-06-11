@@ -45,8 +45,11 @@ const createCallerFactory = createRouterClient
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
- * These are the pieces you use to build your tRPC API. You should import these
+ * These are the pieces you use to build your oRPC API. You should import these
  * a lot in the /src/routers folder
+ *
+ * This is how you create new routers and subrouters in your tRPC API
+ * @see https://orpc.unnoq.com/docs/router 
  */
 
 /**
@@ -80,25 +83,9 @@ const timingMiddleware = o.middleware(async ({ next, path }) => {
  */
 const publicProcedure = o.use(timingMiddleware)
 
-/**
- * Protected (authenticated) procedure
- *
- * If you want a query or mutation to ONLY be accessible to logged in users, use this. It verifies
- * the session is valid and guarantees `ctx.session.user` is not null.
- *
- * @see https://orpc.unnoq.com/docs/procedure
- */
-const protectedProcedure = o
-  .use(timingMiddleware)
-  .use(async ({ context, next }) => {
-    if (!context.session.user) throw new ORPCError('UNAUTHORIZED')
-    return next()
-  })
-
 export {
   o as orpc,
   createCallerFactory,
   createORPCContext,
   publicProcedure,
-  protectedProcedure,
 }
