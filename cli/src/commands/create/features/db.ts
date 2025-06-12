@@ -146,18 +146,14 @@ export async function dbFeature(
       default: './src/schema.ts',
     }
   } else if (db === 'mongodb') {
-    await fs.writeFile(
+    await fs.copyFile(
+      new URL(`src/collections.${auth}.ts`, basePath),
+      'packages/db/src/collections.ts',
+    )
+
+    await fs.copyFile(
+      new URL(`src/index.mongodb.ts`, basePath),
       'packages/db/src/index.ts',
-      `import mongoose from 'mongoose';
-mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost:27017/mydb')
-.then(() => {
-  console.log('Connected to MongoDB');
-  })
-.catch(err => {
-  console.error('Error connecting to MongoDB:', err);
-  process.exit(1);
-});`,
-      'utf-8',
     )
 
     const dep = packageMap.get('mongodb')?.dep ?? ''
