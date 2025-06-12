@@ -1,6 +1,6 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
     "cli",
@@ -12,6 +12,7 @@
     "url": "https://github.com/tiesen243/create-yuki-stack",
     "directory": "cli"
   },
+  "license": "MIT",
   "author": {
     "name": "Tiesen",
     "url": "https://tiesen.id.vn"

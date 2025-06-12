@@ -1,6 +1,6 @@
-import * as fs from 'fs'
-import * as path from 'path'
-import * as glob from 'glob'
+import fs from 'fs/promises'
+import path from 'path'
+import glob from 'glob'
 
 /**
  * Deeply sort an object or array, with special handling for `exports`
@@ -53,13 +53,13 @@ function sortRootKeys(obj: Record<string, unknown>): Record<string, unknown> {
   return sorted
 }
 
-function sortPackageJsonFile(filePath: string) {
+async function sortPackageJsonFile(filePath: string) {
   try {
-    const raw = fs.readFileSync(filePath, 'utf-8')
+    const raw = await fs.readFile(filePath, 'utf-8')
     const json = JSON.parse(raw) as Record<string, unknown>
     const sorted = sortRootKeys(json)
     const output = JSON.stringify(sorted, null, 2) + '\n'
-    fs.writeFileSync(filePath, output, 'utf-8')
+    await fs.writeFile(filePath, output, 'utf-8')
   } catch {
     // If the file is not valid JSON, skip it
   }
@@ -74,9 +74,9 @@ function getAllPackageJsonPaths(): string[] {
   return [root, ...workspaces]
 }
 
-export function sortPackageJson() {
+export async function sortPackageJson() {
   const paths = getAllPackageJsonPaths()
-  paths.forEach(sortPackageJsonFile)
+  await Promise.all(paths.map(sortPackageJsonFile))
 }
 
 const keyOrder = [

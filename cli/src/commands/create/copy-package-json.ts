@@ -4,7 +4,7 @@ const versionMap = {
   node: '22.0.0',
   npm: '11.4.0',
   yarn: '1.22.0',
-  bun: '1.2.15',
+  bun: '1.2.16',
   pnpm: '10.11.0',
 } as const
 
@@ -25,6 +25,10 @@ export async function copyPackageJson(packageManager: string) {
     await fs.writeFile('package.json', JSON.stringify(packageJson, null, 2), {
       encoding: 'utf-8',
     })
+    await fs.copyFile(
+      new URL('../templates/bunfig.toml', import.meta.url),
+      'bunfig.toml',
+    )
   } else if (packageManager === 'pnpm') {
     delete packageJson.workspaces
     packageJson.packageManager = `pnpm@${versionMap.pnpm}`

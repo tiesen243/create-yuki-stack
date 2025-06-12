@@ -6,8 +6,8 @@
   "license": "MIT",
   "workspaces": [
     "cli",
-    "www",
-    "tooling/*"
+    "tooling/*",
+    "www"
   ],
   "scripts": {
     "build": "turbo run build",
@@ -17,10 +17,10 @@
     "dev": "turbo dev --continue",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",
     "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/.prettiercache",
-    "postinstall": "bun lint:ws",
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
-    "lint:ws": "bun x --bun sherif@latest",
+    "lint:ws": "bunx --bun sherif@latest",
+    "postinstall": "bun lint:ws",
     "pub:dev": "turbo -F create-yuki-stack pub:dev",
     "pub:release": "turbo -F create-yuki-stack pub:release",
     "typecheck": "turbo run typecheck",
@@ -33,7 +33,7 @@
     "@yuki/tsconfig": "workspace:*",
     "turbo": "^2.5.4"
   },
-  "packageManager": "bun@1.2.15",
+  "packageManager": "bun@1.2.16",
   "engines": {
     "bun": ">=1.2.14",
     "node": ">=22.0.0"

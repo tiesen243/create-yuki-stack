@@ -17,8 +17,8 @@
       "types": "./dist/hooks/*.d.ts",
       "default": "./src/hooks/*.ts"
     },
-    "./tailwind.css": "./src/tailwind.css",
-    "./postcss": "./postcss.config.js"
+    "./postcss": "./postcss.config.js",
+    "./tailwind.css": "./src/tailwind.css"
   },
   "scripts": {
     "build": "tsc",
