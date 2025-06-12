@@ -29,7 +29,7 @@ export async function shadcnFeatures(isUse: boolean) {
     ) as PackageJson
 
     // remove some dependencies
-    delete packageJson.dependencies['@radix-ui/react-slot']
+    delete packageJson.dependencies['radix-ui']
     delete packageJson.dependencies['class-variance-authority']
     delete packageJson.devDependencies['tw-animate-css']
 

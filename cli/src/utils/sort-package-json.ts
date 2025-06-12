@@ -1,63 +1,82 @@
-import fs from 'fs/promises'
+import * as fs from 'fs'
+import * as path from 'path'
 import * as glob from 'glob'
 
-const patterns = [
-  'package.json',
-  'apps/*/package.json',
-  'packages/*/package.json',
-]
+/**
+ * Deeply sort an object or array, with special handling for `exports`
+ */
+function deepSort(value: unknown, parentPath: string[] = []): unknown {
+  if (Array.isArray(value)) {
+    return [...(value as unknown[])].sort()
+  }
 
-function sortObject(obj: PackageJson): PackageJson {
-  const sorted: Record<string, unknown> = {}
+  if (value && typeof value === 'object') {
+    const isExportsContext = parentPath.includes('exports')
 
-  keyOrder.forEach((key) => {
-    if (key in obj) {
-      if (
-        key === 'scripts' ||
-        key === 'dependencies' ||
-        key === 'devDependencies' ||
-        key === 'peerDependencies' ||
-        key === 'optionalDependencies'
-      ) {
-        const sortedSubObj: Record<string, unknown> = {}
-        Object.keys(obj[key] ?? {})
-          .sort()
-          .forEach(
-            (subKey) =>
-              (sortedSubObj[subKey] = (obj[key] as Record<string, unknown>)[
-                subKey
-              ]),
-          )
-        sorted[key] = sortedSubObj
-      } else sorted[key] = obj[key]
+    const keys = Object.keys(value)
+    const sortedKeys = isExportsContext
+      ? keys.sort((a, b) => {
+          if (a === 'types') return -1
+          if (b === 'types') return 1
+          if (a === 'default') return 1
+          if (b === 'default') return -1
+          return a.localeCompare(b)
+        })
+      : keys.sort()
+
+    const result: Record<string, unknown> = {}
+    for (const key of sortedKeys) {
+      result[key] = deepSort(value[key as never], [...parentPath, key])
     }
-  })
+    return result
+  }
 
-  Object.keys(obj).forEach((key) => {
-    if (!keyOrder.includes(key)) sorted[key] = obj[key]
-  })
-
-  return sorted as PackageJson
+  return value
 }
 
-export async function sortPackageJson() {
-  try {
-    const files = patterns.flatMap((pattern) => glob.sync(pattern))
+/**
+ * Sort root-level keys using keyOrder, then alphabetically
+ */
+function sortRootKeys(obj: Record<string, unknown>): Record<string, unknown> {
+  const sorted: Record<string, unknown> = {}
 
-    for (const file of files) {
-      const content = await fs.readFile(file, 'utf-8')
-      const packageJson = JSON.parse(content) as PackageJson
-
-      const sortedPackageJson = sortObject(packageJson)
-
-      await fs.writeFile(
-        file,
-        JSON.stringify(sortedPackageJson, null, 2) + '\n',
-      )
-    }
-  } catch {
-    // Handle errors gracefully
+  for (const key of keyOrder) {
+    if (key in obj) sorted[key] = deepSort(obj[key], [key])
   }
+
+  const remainingKeys = Object.keys(obj)
+    .filter((k) => !keyOrder.includes(k))
+    .sort()
+
+  for (const key of remainingKeys) sorted[key] = deepSort(obj[key], [key])
+
+  return sorted
+}
+
+function sortPackageJsonFile(filePath: string) {
+  try {
+    const raw = fs.readFileSync(filePath, 'utf-8')
+    const json = JSON.parse(raw) as Record<string, unknown>
+    const sorted = sortRootKeys(json)
+    const output = JSON.stringify(sorted, null, 2) + '\n'
+    fs.writeFileSync(filePath, output, 'utf-8')
+  } catch {
+    // If the file is not valid JSON, skip it
+  }
+}
+
+function getAllPackageJsonPaths(): string[] {
+  const root = path.resolve('package.json')
+  const workspaces = glob.sync('{apps,packages,tooling}/**/package.json', {
+    absolute: true,
+    ignore: ['**/node_modules/**'],
+  })
+  return [root, ...workspaces]
+}
+
+export function sortPackageJson() {
+  const paths = getAllPackageJsonPaths()
+  paths.forEach(sortPackageJsonFile)
 }
 
 const keyOrder = [
@@ -74,7 +93,6 @@ const keyOrder = [
   'author',
   'maintainers',
   'contributors',
-
   'type',
   'imports',
   'exports',
@@ -82,13 +100,10 @@ const keyOrder = [
   'module',
   'types',
   'files',
-
   'workspaces',
   'scripts',
   'prettier',
-
   'jest',
-
   'overrides',
   'dependencies',
   'devDependencies',
@@ -96,7 +111,6 @@ const keyOrder = [
   'peerDependenciesMeta',
   'optionalDependencies',
   'bundledDependencies',
-
   'packageManager',
   'engines',
   'publishConfig',
