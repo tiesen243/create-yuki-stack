@@ -25,9 +25,9 @@ export async function copyPackageJson(packageManager: string) {
     await fs.writeFile('package.json', JSON.stringify(packageJson, null, 2), {
       encoding: 'utf-8',
     })
-    await fs.copyFile(
-      new URL('../templates/bunfig.toml', import.meta.url),
+    await fs.writeFile(
       'bunfig.toml',
+      `[install]\nlinkWorkspacePackages = true\n\n[run]\nbun = true`,
     )
   } else if (packageManager === 'pnpm') {
     delete packageJson.workspaces

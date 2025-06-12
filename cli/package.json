@@ -1,10 +1,19 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.0.69",
+  "version": "0.0.70",
   "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
     "cli",
-    "create-yuki-stack"
+    "create-yuki-stack",
+    "monorepo",
+    "turborepo",
+    "workspace",
+    "full-stack",
+    "typescript",
+    "type-safe",
+    "scaffolding",
+    "starter",
+    "boilerplate-generator"
   ],
   "homepage": "https://create-yuki-stack.vercel.app",
   "repository": {

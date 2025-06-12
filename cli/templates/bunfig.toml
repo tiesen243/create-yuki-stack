@@ -1,5 +1,0 @@
-[install]
-linkWorkspacePackages = true
-
-[run]
-bun = true
