@@ -27,13 +27,14 @@
   "dependencies": {
     "@{{ name }}/db": "workspace:*",
     "@{{ name }}/env": "workspace:*",
-    "arctic": "^3.7.0",
-    "react": "catalog:react"
+    "react": "catalog:react",
+    "arctic": "^3.7.0"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
+    "@types/react": "catalog:react",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",
     "typescript": "catalog:tool"

@@ -22,10 +22,6 @@ export function Auth(opts: AuthOptions) {
   const options = {
     ...DEFAULT_OPTIONS,
     ...opts,
-    cookieOptions: {
-      ...DEFAULT_OPTIONS.cookieOptions,
-      ...opts.cookieOptions,
-    },
   } satisfies Required<AuthOptions>
 
   /**
