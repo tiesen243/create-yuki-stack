@@ -36,7 +36,7 @@ const isomorphicGetSession = async (headers: Headers) => {
  *
  * @see https://trpc.io/docs/server/context
  */
-const createTRPCContext = (opts: { headers: Headers }) => {
+const createTRPCContext = async (opts: { headers: Headers }) => {
   const session = await isomorphicGetSession(opts.headers)
 
   console.log(

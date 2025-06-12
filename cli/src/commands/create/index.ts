@@ -14,6 +14,7 @@ import { buildReadme } from './build-readme'
 import { copyPackageJson } from './copy-package-json'
 import { copyTurbo } from './copy-turbo'
 import { apiFeature } from './features/api'
+import { authFeature } from './features/auth'
 import { beFeatures } from './features/be'
 import { dbFeature } from './features/db'
 import { feFeatures } from './features/fe'
@@ -382,6 +383,7 @@ export const initCommand = procedure
           project.database !== 'none',
           project.packageManager,
         )
+      await authFeature()
 
       if (project.packageManager === 'npm' || project.packageManager === 'yarn')
         await fixVersion()
