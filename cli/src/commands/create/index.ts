@@ -299,10 +299,10 @@ export const initCommand = procedure
               message: `Would you like to run ${chalk.bold(`${results.packageManager} install`)} for you?`,
               initialValue: true,
             }),
-          git: () =>
+          git: ({ results }) =>
             p.confirm({
               message: 'Would you like to initialize a git repository?',
-              initialValue: true,
+              initialValue: Boolean(results.install),
             }),
         },
         {

@@ -4,29 +4,57 @@ import { addEnv } from '@/utils/add-env'
 import { getPackageVersion } from '@/utils/get-package-version'
 import { baseFeatures } from './base'
 
-const adapterMap = new Map([
-  ['none', 'postgres'],
-  ['neon', '@neondatabase/serverless'],
-  ['planet', '@planetscale/database'],
+const packageMap = new Map([
+  [
+    'prisma',
+    {
+      dep: '@prisma/client',
+      devDep: 'prisma',
+      adapter: {
+        none: '',
+        neon: '@prisma/adapter-neon',
+        planetscale: '@prisma/adapter-planetscale',
+      },
+    },
+  ],
+  [
+    'drizzle',
+    {
+      dep: 'drizzle-orm',
+      devDep: 'drizzle-kit',
+      adapter: {
+        none: 'postgres',
+        neon: '@neondatabase/serverless',
+        planetscale: '@planetscale/database',
+      },
+    },
+  ],
+  [
+    'mongodb',
+    {
+      dep: 'mongoose',
+      devDep: '',
+      adapter: { none: '', neon: '', planetscale: '' },
+    },
+  ],
 ])
 
-export async function dbFeature(db: string, adapter: string, auth: string) {
+export async function dbFeature(
+  db: ProjectConfig['database'],
+  adapter: ProjectConfig['adapter'],
+  auth: ProjectConfig['auth'],
+) {
   await baseFeatures('db')
 
   const basePath = new URL('../templates/packages/db/db', import.meta.url)
 
-  await fs.copyFile(
-    new URL(`package.${db}.json`, basePath),
-    'packages/db/package.json',
-  )
-
   await fs.mkdir('packages/db/src', { recursive: true })
 
-  if (db === 'prisma') {
-    adapterMap.delete('none')
-    adapterMap.set('neon', '@prisma/adapter-neon')
-    adapterMap.set('planet', '@prisma/adapter-planetscale')
+  const packageJson = JSON.parse(
+    await fs.readFile('packages/db/package.json', 'utf-8'),
+  ) as PackageJson
 
+  if (db === 'prisma') {
     await fs.copyFile(
       new URL('prisma.config.ts', basePath),
       'packages/db/prisma.config.ts',
@@ -53,6 +81,29 @@ export async function dbFeature(db: string, adapter: string, auth: string) {
       await fs.writeFile(schemaPath, schemaContent, 'utf-8')
     }
     await fs.appendFile('.gitignore', '\n# prisma\ngenerated/')
+
+    const [dep, devDep, adapterDep] = [
+      packageMap.get('prisma')?.dep ?? '',
+      packageMap.get('prisma')?.devDep ?? '',
+      packageMap.get('prisma')?.adapter[adapter] ?? '',
+    ]
+    const versions = await Promise.all([
+      getPackageVersion(dep),
+      getPackageVersion(devDep),
+      getPackageVersion(adapterDep),
+    ])
+    packageJson.dependencies[packageMap.get('prisma')?.dep ?? ''] = versions[0]
+      ? `^${versions[0]}`
+      : 'latest'
+    if (adapter !== 'none')
+      packageJson.dependencies[adapterDep] = versions[2]
+        ? `^${versions[2]}`
+        : 'latest'
+    packageJson.devDependencies[packageMap.get('prisma')?.devDep ?? ''] =
+      versions[1] ? `^${versions[1]}` : 'latest'
+
+    packageJson.scripts['db:push'] = '{{ pkm }} run with-env prisma db push'
+    packageJson.scripts['db:studio'] = '{{ pkm }} run with-env prisma studio'
   } else if (db === 'drizzle') {
     await fs.copyFile(
       new URL('drizzle.config.ts', basePath),
@@ -68,26 +119,56 @@ export async function dbFeature(db: string, adapter: string, auth: string) {
       new URL(`src/index.drizzle.${adapter}.ts`, basePath),
       'packages/db/src/index.ts',
     )
-  } else if (db === 'mongodb') {
-    console.log('MongoDB database feature is not implemented yet.')
-  }
 
-  if (adapterMap.has(adapter)) {
-    const adapterPackage = adapterMap.get(adapter) as unknown as string
-    const packageJson = JSON.parse(
-      await fs.readFile('packages/db/package.json', 'utf-8'),
-    ) as PackageJson
-
-    const packageVersion = await getPackageVersion(adapterPackage)
-    packageJson.dependencies[adapterPackage] = packageVersion
-      ? `^${packageVersion}`
+    const [dep, devDep, adapterDep] = [
+      packageMap.get('drizzle')?.dep ?? '',
+      packageMap.get('drizzle')?.devDep ?? '',
+      packageMap.get('drizzle')?.adapter[adapter] ?? '',
+    ]
+    const versions = await Promise.all([
+      getPackageVersion(dep),
+      getPackageVersion(devDep),
+      getPackageVersion(adapterDep),
+    ])
+    packageJson.dependencies[dep] = versions[0] ? `^${versions[0]}` : 'latest'
+    packageJson.dependencies[adapterDep] = versions[2]
+      ? `^${versions[2]}`
       : 'latest'
+    packageJson.devDependencies[devDep] = versions[1]
+      ? `^${versions[1]}`
+      : 'latest'
+
+    packageJson.scripts['db:push'] = '{{ pkm }} run with-env drizzle-kit push'
+    packageJson.scripts['db:studio'] =
+      '{{ pkm }} run with-env drizzle-kit studio'
+    packageJson.exports['./schema'] = {
+      types: './dist/schema.d.ts',
+      default: './src/schema.ts',
+    }
+  } else if (db === 'mongodb') {
     await fs.writeFile(
-      'packages/db/package.json',
-      JSON.stringify(packageJson, null, 2),
-      { encoding: 'utf-8' },
+      'packages/db/src/index.ts',
+      `import mongoose from 'mongoose';
+mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost:27017/mydb')
+.then(() => {
+  console.log('Connected to MongoDB');
+  })
+.catch(err => {
+  console.error('Error connecting to MongoDB:', err);
+  process.exit(1);
+});`,
+      'utf-8',
     )
+
+    const dep = packageMap.get('mongodb')?.dep ?? ''
+    const version = await getPackageVersion(dep)
+    packageJson.dependencies[dep] = version ? `^${version}` : 'latest'
   }
 
+  await fs.writeFile(
+    'packages/db/package.json',
+    JSON.stringify(packageJson, null, 2),
+    'utf-8',
+  )
   await addEnv('server', 'DATABASE_URL', 'z.string()')
 }
