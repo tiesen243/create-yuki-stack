@@ -6,10 +6,10 @@
   "scripts": {
     "build": "{{ pkm }} run with-env react-router build",
     "clean": "git clean -xdf .cache .react-router .turbo .vercel build node_modules",
-    "dev": "{{ pkm }} run with-env react-router dev --port 3001",
+    "dev": "{{ pkm }} run with-env react-router dev {{ hyphen }} --port 3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "react-router typegen && eslint",
-    "start": "{{ pkm }} run with-env react-router-serve ./build/server/index.js --port 3001",
+    "start": "{{ pkm }} run with-env react-router-serve ./build/server/index.js {{ hyphen }} --port 3001",
     "typecheck": "react-router typegen && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },

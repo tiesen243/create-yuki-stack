@@ -20,7 +20,8 @@ const packages = new Map<string, { dep: string[]; devDep: string[] }>([
 ])
 
 export async function beFeatures(
-  backend: 'express' | 'elysia' | 'hono',
+  backend: ProjectConfig['backend'],
+  frontend: ProjectConfig['frontend'],
   isUseDb: boolean,
   packageManager: string,
 ) {
@@ -40,6 +41,9 @@ export async function beFeatures(
   ) as PackageJson
 
   const hanlders = {
+    none: async () => {
+      // No backend setup needed
+    },
     express: async () => {
       const { dep, devDep } = packages.get('express') ?? { dep: [], devDep: [] }
       const versions = await Promise.all(
@@ -78,7 +82,7 @@ export async function beFeatures(
       packageJson.exports = {
         '.': {
           types: './dist/index.d.ts',
-          default: './src/idnex.ts',
+          default: './src/index.ts',
         },
       }
 
@@ -93,6 +97,19 @@ export async function beFeatures(
         new URL('src/index.elysia.ts', basePath),
         'apps/api/src/index.ts',
       )
+
+      for (const app of frontend) {
+        const fePackageJson = JSON.parse(
+          await fs.readFile(`apps/${app}/package.json`, 'utf-8'),
+        ) as PackageJson
+        Object.assign(fePackageJson.dependencies, {
+          '@{{ name }}/api': 'workspace:*',
+        })
+        await fs.writeFile(
+          `apps/${app}/package.json`,
+          JSON.stringify(fePackageJson, null, 2),
+        )
+      }
     },
     hono: async () => {
       const { dep } = packages.get('hono') ?? { dep: [], devDep: [] }

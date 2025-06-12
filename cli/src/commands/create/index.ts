@@ -378,6 +378,7 @@ export const initCommand = procedure
       if (project.backend !== 'none' && project.api === 'none')
         await beFeatures(
           project.backend,
+          project.frontend,
           project.database !== 'none',
           project.packageManager,
         )

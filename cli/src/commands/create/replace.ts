@@ -27,13 +27,16 @@ export async function replace(name: string, pkm: string) {
     let updatedContent = content
 
     for (const [placeholder, replacement] of replacementMap) {
-      if (content.includes(placeholder)) {
+      if (content.includes(placeholder))
         updatedContent = updatedContent.replace(
           new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g'),
           replacement,
         )
-      }
     }
+    updatedContent = updatedContent.replace(
+      /{{ hyphen }}/g,
+      pkm === 'npm' ? '--' : '',
+    )
 
     return updatedContent
   }
@@ -44,9 +47,8 @@ export async function replace(name: string, pkm: string) {
         const content = await fs.readFile(file, 'utf-8')
         const updatedContent = replaceInContent(content, replacements)
 
-        if (updatedContent !== content) {
+        if (updatedContent !== content)
           await fs.writeFile(file, updatedContent, 'utf-8')
-        }
       } catch {
         // Ignore errors for files that cannot be read or written
       }
