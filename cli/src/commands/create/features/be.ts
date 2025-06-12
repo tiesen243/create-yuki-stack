@@ -1,5 +1,6 @@
 import fs from 'fs/promises'
 
+import { addEnv } from '@/utils/add-env'
 import { getPackageVersion } from '@/utils/get-package-version'
 import { baseFeatures } from './base'
 
@@ -10,7 +11,10 @@ const packages = new Map<string, { dep: string[]; devDep: string[] }>([
   ],
   [
     'elysia',
-    { dep: ['elysia', '@elysiajs/cors', '@elysiajs/node'], devDep: [] },
+    {
+      dep: ['elysia', '@elysiajs/cors', '@elysiajs/eden', '@elysiajs/node'],
+      devDep: [],
+    },
   ],
   ['hono', { dep: ['hono'], devDep: [] }],
 ])
@@ -63,12 +67,20 @@ export async function beFeatures(
       const dependencies: Record<string, string> = {
         elysia: versions[0] ? `^${versions[0]}` : 'latest',
         '@elysiajs/cors': versions[1] ? `^${versions[1]}` : 'latest',
+        '@elysiajs/eden': versions[2] ? `^${versions[2]}` : 'latest',
       }
       if (packageManager !== 'bun')
-        dependencies['@elysiajs/node'] = versions[2]
-          ? `^${versions[2]}`
+        dependencies['@elysiajs/node'] = versions[3]
+          ? `^${versions[3]}`
           : 'latest'
       Object.assign(packageJson.dependencies, dependencies)
+
+      packageJson.exports = {
+        '.': {
+          types: './dist/index.d.ts',
+          default: './src/idnex.ts',
+        },
+      }
 
       await fs.copyFile(
         new URL(
@@ -76,6 +88,10 @@ export async function beFeatures(
           basePath,
         ),
         'apps/api/src/server.ts',
+      )
+      await fs.copyFile(
+        new URL('src/index.elysia.ts', basePath),
+        'apps/api/src/index.ts',
       )
     },
     hono: async () => {
@@ -116,6 +132,7 @@ export async function beFeatures(
         }
   Object.assign(packageJson.scripts, scripts)
 
+  await addEnv('client', 'NEXT_PUBLIC_API_URL', 'z.string().optional()')
   await fs.writeFile(
     'apps/api/package.json',
     JSON.stringify(packageJson, null, 2),
