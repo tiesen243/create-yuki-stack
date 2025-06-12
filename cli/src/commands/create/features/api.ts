@@ -1,5 +1,6 @@
 import fs from 'fs/promises'
 
+import { addProviderToRoot } from '@/utils/add-provider'
 import { getPackageVersion } from '@/utils/get-package-version'
 import { setupBackendApp } from './api.be'
 import { baseFeatures } from './base'
@@ -92,13 +93,15 @@ export async function apiFeature(
       reactFile += `\nfunction getBaseUrl() {
   if (env.NEXT_PUBLIC_API_URL)
     return \`https://\${env.NEXT_PUBLIC_API_URL}\`
-  // eslint-disable-next-line no-restricted-properties
-  return \`http://localhost:\${process.env.PORT ?? 8080}\`
+  return 'http://localhost:8080'
 }`
     }
 
     await fs.writeFile(`${helpersDir}/react.tsx`, reactFile, 'utf-8')
   }
+
+  const provider = api === 'trpc' ? 'TRPCReactProvider' : 'ORPCReactProvider'
+  const imp = `import { ${provider} } from '@/${api}/react'`
 
   const appHandlers = [
     {
@@ -117,7 +120,7 @@ export { handlers as GET, handlers as POST, handlers as OPTIONS }`,
         }
         await Promise.all([
           updatePackageJson('nextjs', api),
-          addProviderToRoot(api, 'apps/nextjs/app/layout.tsx'),
+          addProviderToRoot(imp, provider, 'apps/nextjs/app/layout.tsx'),
           copyHelpers('apps/nextjs', 'react-nextjs'),
         ])
       },
@@ -139,7 +142,7 @@ export const action = async ({ request }: Route.ActionArgs) => handlers(request)
         }
         await Promise.all([
           updatePackageJson('react-router', api),
-          addProviderToRoot(api, 'apps/react-router/src/root.tsx'),
+          addProviderToRoot(imp, provider, 'apps/react-router/src/root.tsx'),
           copyHelpers('apps/react-router', 'react-router'),
         ])
       },
@@ -166,7 +169,11 @@ export const ServerRoute: unknown = createServerFileRoute(
         }
         await Promise.all([
           updatePackageJson('tanstack-start', api),
-          addProviderToRoot(api, 'apps/tanstack-start/src/routes/__root.tsx'),
+          addProviderToRoot(
+            imp,
+            provider,
+            'apps/tanstack-start/src/routes/__root.tsx',
+          ),
           copyHelpers('apps/tanstack-start', 'react-start'),
         ])
       },
@@ -312,22 +319,4 @@ async function updatePackageJson(app: string, api: 'trpc' | 'orpc') {
     JSON.stringify(packageJson, null, 2),
     'utf-8',
   )
-}
-
-async function addProviderToRoot(api: 'trpc' | 'orpc', path: string) {
-  const provider = api === 'trpc' ? 'TRPCReactProvider' : 'ORPCReactProvider'
-
-  const rootContent = await fs.readFile(path, 'utf-8')
-  const isHaveChildren = rootContent.includes('{children}')
-
-  let updatedRootContent = rootContent
-  updatedRootContent = `${updatedRootContent}\nimport { ${provider} } from '@/${api}/react'`
-  updatedRootContent = updatedRootContent.replace(
-    isHaveChildren ? '{children}' : '<Outlet />',
-    `<${provider}>
-      ${isHaveChildren ? '{children}' : '<Outlet />'}
-    </${provider}>`,
-  )
-
-  await fs.writeFile(path, updatedRootContent, 'utf-8')
 }

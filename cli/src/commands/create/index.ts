@@ -175,7 +175,7 @@ export const initCommand = procedure
                     { value: 'none', label: 'None' },
                     {
                       value: 'basic',
-                      label: 'Basic (soon)',
+                      label: 'Basic',
                       hint: 'Basic authentication built from scratch',
                     },
                     {
@@ -383,7 +383,7 @@ export const initCommand = procedure
           project.database !== 'none',
           project.packageManager,
         )
-      await authFeature()
+      await authFeature(project.auth, project.database, project.frontend)
 
       if (project.packageManager === 'npm' || project.packageManager === 'yarn')
         await fixVersion()

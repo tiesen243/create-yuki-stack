@@ -4,6 +4,17 @@
   "private": true,
   "license": "MIT",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts",
+      "react-server": "./src/index.rsc.ts"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "default": "./src/react.tsx"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
@@ -16,6 +27,7 @@
   "dependencies": {
     "@{{ name }}/db": "workspace:*",
     "@{{ name }}/env": "workspace:*",
+    "arctic": "^3.7.0",
     "react": "catalog:react"
   },
   "devDependencies": {

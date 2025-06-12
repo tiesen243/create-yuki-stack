@@ -42,7 +42,7 @@ const createORPCContext = async (opts: { headers: Headers }) => {
     '>>> oRPC Request from',
     opts.headers.get('x-orpc-source') ?? 'unknown',
     'by',
-    'anonymous',
+    session.user?.name ?? 'anonymous',
   )
 
   return {
