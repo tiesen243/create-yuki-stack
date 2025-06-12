@@ -16,9 +16,9 @@ catalogs:
     '@types/react-dom': ^19.1.6
 
   tailwind:
-    '@tailwindcss/postcss': ^4.1.8
-    '@tailwindcss/vite': ^4.1.8
-    tailwindcss: ^4.1.8
+    '@tailwindcss/postcss': ^4.1.10
+    '@tailwindcss/vite': ^4.1.10
+    tailwindcss: ^4.1.10
 
   tool:
     eslint: ^9.28.0

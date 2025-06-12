@@ -38,7 +38,6 @@ export async function copyPackageJson(packageManager: string) {
     )
   } else if (packageManager !== 'bun') {
     packageJson.workspaces = ['apps/*', 'packages/*', 'tooling/*']
-
     const version = versionMap[packageManager as keyof typeof versionMap]
     packageJson.packageManager = `${packageManager}@${version}`
     packageJson.engines = {

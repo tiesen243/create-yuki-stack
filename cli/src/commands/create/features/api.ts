@@ -216,7 +216,6 @@ async function updatePackageJson(app: string, api: 'trpc' | 'orpc') {
       : 'latest'
   }
 
-  // update catalog if using pnpm or bun
   if (isUseCatalog) {
     const reactQueryVersion = await getPackageVersion('@tanstack/react-query')
     let serverVersion, clientVersion, helpersVersion, superjsonVersion
