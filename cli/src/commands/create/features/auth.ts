@@ -177,7 +177,7 @@ export const ServerRoute: unknown = createServerFileRoute(
       }
     },
     'next-auth': async () => {
-      // This is a placeholder for the next-auth feature
+      // NextAuth.js authentication
     },
   }
 

@@ -132,6 +132,38 @@ export const initCommand = procedure
               p.note(chalk.redBright('Wrong answer, using TypeScript instead'))
             return undefined
           },
+          frontend: () =>
+            p.multiselect({
+              message: 'Which frontend framework would you like to use?',
+              options: [
+                {
+                  value: 'nextjs',
+                  label: 'Next.js',
+                  hint: 'The React Framework for Webapp',
+                },
+                {
+                  value: 'react-router',
+                  label: 'React Router',
+                  hint: 'A user-obsessed, standards-focused and multi-strategy router',
+                },
+                {
+                  value: 'tanstack-start',
+                  label: 'Tanstack Start',
+                  hint: 'Modern and scalable routing, SSR, Server Functions and API Routes.',
+                },
+                {
+                  value: 'expo',
+                  label: 'Expo (soon)',
+                  hint: 'React Native/Expo app',
+                },
+              ],
+              initialValues: ['nextjs'],
+            }),
+          shadcn: () =>
+            p.confirm({
+              message: 'Would you like to use shadcn/ui for your project?',
+              initialValue: true,
+            }),
           database: () =>
             p.select({
               message: 'Which database would you like to use?',
@@ -170,30 +202,6 @@ export const initCommand = procedure
                   initialValue: 'none',
                 })
               : undefined,
-          auth: ({ results }) =>
-            results.database !== 'none'
-              ? p.select({
-                  message: 'Would you like to use an authentication solution?',
-                  options: [
-                    { value: 'none', label: 'None' },
-                    {
-                      value: 'basic-auth',
-                      label: 'BasicAuth',
-                      hint: 'Basic authentication built from scratch',
-                    },
-                    {
-                      value: 'better-auth',
-                      label: 'BetterAuth',
-                      hint: 'Open-source authentication solution',
-                    },
-                    {
-                      value: 'next-auth',
-                      label: 'NextAuth.js (soon)',
-                      hint: 'Flexible authentication for Next.js',
-                    },
-                  ],
-                })
-              : Promise.resolve('none'),
           api: () =>
             p.select({
               message: 'What type of API will you be using?',
@@ -211,33 +219,6 @@ export const initCommand = procedure
                 },
               ],
               initialValue: 'none',
-            }),
-          frontend: () =>
-            p.multiselect({
-              message: 'Which frontend framework would you like to use?',
-              options: [
-                {
-                  value: 'nextjs',
-                  label: 'Next.js',
-                  hint: 'The React Framework for Webapp',
-                },
-                {
-                  value: 'react-router',
-                  label: 'React Router',
-                  hint: 'A user-obsessed, standards-focused and multi-strategy router',
-                },
-                {
-                  value: 'tanstack-start',
-                  label: 'Tanstack Start',
-                  hint: 'Modern and scalable routing, SSR, Server Functions and API Routes.',
-                },
-                {
-                  value: 'expo',
-                  label: 'Expo (soon)',
-                  hint: 'React Native/Expo app',
-                },
-              ],
-              initialValues: ['nextjs'],
             }),
           backend: ({ results }) =>
             p.select({
@@ -268,11 +249,35 @@ export const initCommand = procedure
               ],
               initialValue: 'none',
             }),
-          shadcn: () =>
-            p.confirm({
-              message: 'Would you like to use shadcn/ui for your project?',
-              initialValue: true,
-            }),
+          auth: ({ results }) =>
+            results.database !== 'none'
+              ? p.select({
+                  message: 'Would you like to use an authentication solution?',
+                  options: [
+                    { value: 'none', label: 'None' },
+                    {
+                      value: 'basic-auth',
+                      label: 'BasicAuth',
+                      hint: 'Basic authentication built from scratch',
+                    },
+                    {
+                      value: 'better-auth',
+                      label: 'BetterAuth',
+                      hint: 'Open-source authentication solution',
+                    },
+                    ...(results.frontend?.length === 1 &&
+                    results.frontend[0] === 'nextjs'
+                      ? [
+                          {
+                            value: 'next-auth',
+                            label: 'NextAuth.js (soon)',
+                            hint: 'Flexible authentication for Next.js',
+                          },
+                        ]
+                      : []),
+                  ],
+                })
+              : Promise.resolve('none'),
           packageManager: ({ results }) => {
             const isNotRecommendedNpm =
               results.frontend?.includes('react-router')
