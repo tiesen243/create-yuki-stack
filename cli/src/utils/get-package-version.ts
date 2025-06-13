@@ -1,6 +1,6 @@
 export async function getPackageVersion(
   packageName: string,
-  tag = 'latest',
+  tag: string | number = 'latest',
 ): Promise<string | null> {
   try {
     const response = await fetch(
