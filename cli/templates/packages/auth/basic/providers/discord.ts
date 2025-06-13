@@ -4,6 +4,7 @@ import BaseProvider from './base'
 export class Discord extends BaseProvider {
   private authorizationUrl = 'https://discord.com/oauth2/authorize'
   private tokenUrl = 'https://discord.com/api/oauth2/token'
+  private apiUrl = 'https://discord.com/api/users/@me'
   private callbackUrl = this.createCallbackUrl('discord')
 
   constructor(opts: { clientId: string; clientSecret: string }) {
@@ -59,7 +60,7 @@ export class Discord extends BaseProvider {
       expires_in: number
     }
 
-    const response = await fetch('https://discord.com/api/users/@me', {
+    const response = await fetch(this.apiUrl, {
       headers: { Authorization: `Bearer ${token}` },
     })
 

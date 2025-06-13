@@ -1,7 +1,7 @@
 import type BaseProvider from '../providers/base'
 import type { Session } from './adapter'
 import type { CookieOptions } from './cookies'
-import { generateCodeVerifier, generateState } from '../providers/base'
+import { generateSecureString } from '../providers/base'
 import {
   authenticateCredentials,
   getOrCreateUser,
@@ -70,8 +70,8 @@ export function Auth(opts: AuthOptions) {
             const provider = options.providers[providerName]
             if (!provider) throw new Error(`Provider ${providerName} not found`)
 
-            const state = generateState()
-            const codeVerifier = generateCodeVerifier()
+            const state = generateSecureString()
+            const codeVerifier = generateSecureString()
             const redirectUrl = searchParams.get('redirect_to') ?? '/'
 
             const callbackUrl = await provider.getAuthorizationUrl(

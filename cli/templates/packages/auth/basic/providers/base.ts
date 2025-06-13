@@ -48,16 +48,7 @@ export default abstract class BaseProvider {
   }
 }
 
-export function generateCodeVerifier(): string {
-  const randomValues = new Uint8Array(32)
-  crypto.getRandomValues(randomValues)
-  return btoa(String.fromCharCode(...randomValues))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '')
-}
-
-export function generateState(): string {
+export function generateSecureString(): string {
   const randomValues = new Uint8Array(32)
   crypto.getRandomValues(randomValues)
   return btoa(String.fromCharCode(...randomValues))
