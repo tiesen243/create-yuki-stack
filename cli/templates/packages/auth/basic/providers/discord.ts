@@ -2,10 +2,10 @@ import type { ProviderUserData } from './base'
 import BaseProvider from './base'
 
 export class Discord extends BaseProvider {
-  protected authorizationUrl = 'https://discord.com/oauth2/authorize'
-  protected tokenUrl = 'https://discord.com/api/oauth2/token'
-  protected apiUrl = 'https://discord.com/api/users/@me'
-  protected callbackUrl = this.createCallbackUrl('discord')
+  protected override authorizationUrl = 'https://discord.com/oauth2/authorize'
+  protected override tokenUrl = 'https://discord.com/api/oauth2/token'
+  protected override apiUrl = 'https://discord.com/api/users/@me'
+  protected override callbackUrl = this.createCallbackUrl('discord')
   protected override scopes = ['identify', 'email']
 
   constructor(opts: { clientId: string; clientSecret: string }) {
