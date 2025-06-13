@@ -28,7 +28,7 @@ apps/native/android
 .react-router/
 
 # tanstack start
-.vinxi/
+.tanstack/
 routeTree.gen.ts
 app.config.timestamp_*.js
 
