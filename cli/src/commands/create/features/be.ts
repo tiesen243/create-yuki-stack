@@ -16,7 +16,7 @@ const packages = new Map<string, { dep: string[]; devDep: string[] }>([
       devDep: [],
     },
   ],
-  ['hono', { dep: ['hono'], devDep: [] }],
+  ['hono', { dep: ['hono', '@hono/node-server'], devDep: [] }],
 ])
 
 export async function beFeatures(
@@ -113,14 +113,22 @@ export async function beFeatures(
     },
     hono: async () => {
       const { dep } = packages.get('hono') ?? { dep: [], devDep: [] }
-      const [honoVersion] = await Promise.all(dep.map(getPackageVersion))
+      const versions = await Promise.all(dep.map(getPackageVersion))
 
-      Object.assign(packageJson.dependencies, {
-        hono: honoVersion ? `^${honoVersion}` : 'latest',
-      })
+      const dependencies: Record<string, string> = {
+        hono: versions[0] ? `^${versions[0]}` : 'latest',
+      }
+      if (packageManager !== 'bun')
+        dependencies['@hono/node-server'] = versions[1]
+          ? `^${versions[1]}`
+          : 'latest'
+      Object.assign(packageJson.dependencies, dependencies)
 
       await fs.copyFile(
-        new URL('src/server.hono.ts', basePath),
+        new URL(
+          `src/server.hono${packageManager == 'bun' ? '' : '-node'}.ts`,
+          basePath,
+        ),
         'apps/api/src/server.ts',
       )
     },

@@ -268,7 +268,7 @@ export const initCommand = procedure
                 {
                   value: 'hono',
                   label: 'Hono',
-                  hint: 'Lightweight, ultra-fast web framework (Only work with Bun)',
+                  hint: 'Lightweight, ultra-fast web framework',
                 },
               ],
               initialValue: 'none',

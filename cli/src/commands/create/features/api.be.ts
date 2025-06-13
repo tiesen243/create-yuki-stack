@@ -3,6 +3,18 @@ import fs from 'fs/promises'
 import { addEnv } from '@/utils/add-env'
 import { getPackageVersion } from '@/utils/get-package-version'
 
+const packages = new Map<string, { dep: string[]; devDep: string[] }>([
+  [
+    'express',
+    { dep: ['express', 'cors'], devDep: ['@types/express', '@types/cors'] },
+  ],
+  [
+    'elysia',
+    { dep: ['elysia', '@elysiajs/cors', '@elysiajs/node'], devDep: [] },
+  ],
+  ['hono', { dep: ['hono', '@hono/node-server'], devDep: [] }],
+])
+
 export async function setupBackendApp(
   basePath: URL,
   packagePath: string,
@@ -18,17 +30,16 @@ export async function setupBackendApp(
       name: 'express',
       condition: apps.includes('express'),
       setup: async () => {
+        const { dep, devDep } = packages.get('express') ?? {
+          dep: [],
+          devDep: [],
+        }
         const [
           expressVersion,
           expressCorsVersion,
           typesExpressVersion,
           typesCorsVersion,
-        ] = await Promise.all([
-          getPackageVersion('express'),
-          getPackageVersion('cors'),
-          getPackageVersion('@types/express'),
-          getPackageVersion('@types/cors'),
-        ])
+        ] = await Promise.all([...dep, ...devDep].map(getPackageVersion))
 
         Object.assign(packageJson.dependencies, {
           express: expressVersion ? `^${expressVersion}` : 'latest',
@@ -52,12 +63,9 @@ export async function setupBackendApp(
       name: 'elysia',
       condition: apps.includes('elysia'),
       setup: async () => {
+        const { dep } = packages.get('elysia') ?? { dep: [] }
         const [elysiaVersion, elysiaCorsVersion, elysuaNodeVersion] =
-          await Promise.all([
-            getPackageVersion('elysia'),
-            getPackageVersion('@elysiajs/cors'),
-            getPackageVersion('@elysiajs/node'),
-          ])
+          await Promise.all(dep.map(getPackageVersion))
 
         packageJson.dependencies.elysia = elysiaVersion
           ? `^${elysiaVersion}`
@@ -73,7 +81,7 @@ export async function setupBackendApp(
 
         return fs.copyFile(
           new URL(
-            `src/server.elysia${packageManager === 'bun' ? '.ts' : '-node.ts'}`,
+            `src/server.elysia${packageManager === 'bun' ? '' : '-node'}.ts`,
             basePath,
           ),
           `${packagePath}/api/src/server.ts`,
@@ -84,13 +92,23 @@ export async function setupBackendApp(
       name: 'hono',
       condition: apps.includes('hono'),
       setup: async () => {
-        const honoVersion = await getPackageVersion('hono')
-        packageJson.dependencies.hono = honoVersion
-          ? `^${honoVersion}`
+        const { dep } = packages.get('hono') ?? { dep: [] }
+        const versions = await Promise.all(dep.map(getPackageVersion))
+
+        packageJson.dependencies.hono = versions[0]
+          ? `^${versions[0]}`
           : 'latest'
+        if (packageManager !== 'bun') {
+          packageJson.dependencies['@hono/node-server'] = versions[1]
+            ? `^${versions[1]}`
+            : 'latest'
+        }
 
         return fs.copyFile(
-          new URL('src/server.hono.ts', basePath),
+          new URL(
+            `src/server.hono${packageManager === 'bun' ? '' : '-node'}.ts`,
+            basePath,
+          ),
           `${packagePath}/api/src/server.ts`,
         )
       },
