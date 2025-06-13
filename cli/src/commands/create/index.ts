@@ -321,7 +321,7 @@ export const initCommand = procedure
     await projectNameSchema.parseAsync(project.name)
 
     const s = p.spinner()
-    s.start(`Creating project ${chalk.bold(project.name)}....`)
+    s.start(`Creating project ${chalk.bold(project.name)}...`)
 
     let isDotDir = false
     try {

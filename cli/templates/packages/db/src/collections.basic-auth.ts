@@ -1,5 +1,5 @@
 import type { Model } from 'mongoose'
-import { model, models, Schema } from 'mongoose'
+import mongoose from 'mongoose'
 
 export interface User {
   _id: string
@@ -10,7 +10,7 @@ export interface User {
   updatedAt: Date
 }
 
-const userSchema = new Schema<User>(
+const userSchema = new mongoose.Schema<User>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -19,7 +19,8 @@ const userSchema = new Schema<User>(
   { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } },
 )
 
-export const users: Model<User> = models.user ?? model<User>('user', userSchema)
+export const users: Model<User> =
+  mongoose.models.user ?? mongoose.model<User>('user', userSchema)
 
 export interface Account {
   provider: string
@@ -28,7 +29,7 @@ export interface Account {
   userId: string
 }
 
-const accountSchema = new Schema<Account>({
+const accountSchema = new mongoose.Schema<Account>({
   provider: { type: String, required: true },
   accountId: { type: String, required: true },
   password: { type: String, required: false },
@@ -38,7 +39,7 @@ const accountSchema = new Schema<Account>({
 accountSchema.index({ provider: 1, accountId: 1 }, { unique: true })
 
 export const accounts: Model<Account> =
-  models.account ?? model<Account>('account', accountSchema)
+  mongoose.models.account ?? mongoose.model<Account>('account', accountSchema)
 
 export interface Session {
   token: string
@@ -46,11 +47,12 @@ export interface Session {
   userId: string
 }
 
-const sessionSchema = new Schema<Session>({
+const sessionSchema = new mongoose.Schema<Session>({
   token: { type: String, required: true, unique: true },
   expires: { type: Date, required: true },
   userId: { type: String, required: true },
 })
 
 export const sessions: Model<Session> =
-  models.session ?? model<Session>('session', sessionSchema)
+  mongoose.models.session ?? mongoose.model<Session>('session', sessionSchema)
+

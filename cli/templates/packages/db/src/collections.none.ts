@@ -1,5 +1,5 @@
 import type { Model } from 'mongoose'
-import { model, models, Schema } from 'mongoose'
+import mongoose from 'mongoose'
 
 export interface Post {
   _id: string
@@ -9,7 +9,7 @@ export interface Post {
   updatedAt: Date
 }
 
-const postSchema = new Schema<Post>(
+const postSchema = new mongoose.Schema<Post>(
   {
     title: { type: String, required: true, maxlength: 255 },
     content: { type: String, required: true, maxlength: 1000 },
@@ -19,4 +19,5 @@ const postSchema = new Schema<Post>(
   { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } },
 )
 
-export const posts: Model<Post> = models.post ?? model<Post>('post', postSchema)
+export const posts: Model<Post> =
+  mongoose.models.post ?? mongoose.model<Post>('post', postSchema)
