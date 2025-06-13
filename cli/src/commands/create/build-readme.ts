@@ -362,7 +362,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 function getAuthLabel(auth: string): string {
   switch (auth) {
-    case 'basic':
+    case 'basic-auth':
       return 'Basic Auth'
     case 'better-auth':
       return 'Better Auth'
@@ -375,7 +375,7 @@ function getAuthLabel(auth: string): string {
 
 function getAuthDescription(auth: string): string {
   switch (auth) {
-    case 'basic':
+    case 'basic-auth':
       return 'Basic authentication built from scratch'
     case 'better-auth':
       return 'Modern authentication with Better Auth'
