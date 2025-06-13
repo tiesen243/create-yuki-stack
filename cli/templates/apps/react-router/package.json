@@ -10,7 +10,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "react-router typegen && eslint",
     "start": "{{ pkm }} run with-env react-router-serve ./build/server/index.js {{ hyphen }} --port 3001",
-    "typecheck": "react-router typegen && tsc --noEmit",
+    "typecheck": "{{ pkm }} run with-env react-router typegen && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "prettier": "@{{ name }}/prettier-config",
