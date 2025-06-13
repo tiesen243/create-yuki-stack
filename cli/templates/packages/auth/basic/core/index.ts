@@ -1,8 +1,7 @@
-import { generateCodeVerifier, generateState } from 'arctic'
-
 import type BaseProvider from '../providers/base'
 import type { Session } from './adapter'
 import type { CookieOptions } from './cookies'
+import { generateCodeVerifier, generateState } from '../providers/base'
 import {
   authenticateCredentials,
   getOrCreateUser,

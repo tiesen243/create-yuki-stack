@@ -24,10 +24,8 @@ export async function authFeature({
       // No authentication needed, just return
     },
     'basic-auth': async () => {
-      const arcticVersion = await getPackageVersion('arctic')
-      packageJson.dependencies.arctic = arcticVersion
-        ? `^${arcticVersion}`
-        : 'latest'
+      packageJson.dependencies.react = 'catalog:react'
+      packageJson.devDependencies['@types/react'] = 'catalog:react'
 
       await fs.cp(new URL('basic', basePath), 'packages/auth/src', {
         recursive: true,

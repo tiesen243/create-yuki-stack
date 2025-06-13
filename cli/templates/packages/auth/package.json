@@ -26,14 +26,12 @@
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/db": "workspace:*",
-    "@{{ name }}/env": "workspace:*",
-    "react": "catalog:react"
+    "@{{ name }}/env": "workspace:*"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "@types/react": "catalog:react",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",
     "typescript": "catalog:tool"

@@ -128,7 +128,7 @@ async function getOrCreateUser(opts: {
       }
     }
 
-    await db.insert(accounts).values({ accountId, provider, userId })
+    await tx.insert(accounts).values({ accountId, provider, userId })
     return { userId }
   })
 
