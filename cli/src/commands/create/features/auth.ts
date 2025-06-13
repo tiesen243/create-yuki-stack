@@ -177,7 +177,67 @@ export const ServerRoute: unknown = createServerFileRoute(
       }
     },
     'next-auth': async () => {
-      // NextAuth.js authentication
+      const versions = await Promise.all([
+        getPackageVersion('next-auth', 'beta'),
+        getPackageVersion('@auth/drizzle-adapter'),
+        getPackageVersion('@auth/prisma-adapter'),
+        getPackageVersion('@auth/mongodb-adapter'),
+        getPackageVersion('mongodb'),
+      ])
+      packageJson.dependencies['next-auth'] = versions[0]
+        ? `^${versions[0]}`
+        : 'latest'
+      if (database === 'drizzle')
+        packageJson.dependencies['@auth/drizzle-adapter'] = versions[1]
+          ? `^${versions[1]}`
+          : 'latest'
+      if (database === 'prisma')
+        packageJson.dependencies['@auth/prisma-adapter'] = versions[2]
+          ? `^${versions[2]}`
+          : 'latest'
+      if (database === 'mongodb') {
+        packageJson.dependencies['@auth/mongodb-adapter'] = versions[3]
+          ? `^${versions[3]}`
+          : 'latest'
+        packageJson.dependencies.mongodb = versions[4]
+          ? `^${versions[4]}`
+          : 'latest'
+      }
+
+      await fs.cp(new URL('next', basePath), 'packages/auth/src', {
+        recursive: true,
+        force: true,
+      })
+      await fs.copyFile(
+        new URL(`configs/next.${database}.ts`, basePath),
+        'packages/auth/src/config.ts',
+      )
+
+      await fs.mkdir('apps/nextjs/app/api/auth/[[...auth]]', {
+        recursive: true,
+      })
+      await fs.writeFile(
+        'apps/nextjs/app/api/auth/[[...auth]]/route.ts',
+        `import { handlers } from '@dasads/auth'
+
+export const { GET, POST } = handlers
+`,
+      )
+
+      await addProviderToRoot(
+        "import { SessionProvider } from '@{{ name }}/auth/react'",
+        'SessionProvider',
+        'apps/nextjs/app/layout.tsx',
+      )
+
+      if (api !== 'none') {
+        const apiPath = `${backend === 'none' ? 'packages' : 'apps'}/api/src/${api}.ts`
+        const apiContent = await fs.readFile(apiPath, 'utf-8')
+        const updatedContent = apiContent
+          .replace(/{ headers }/, '')
+          .replace(/session\.user(?! )/g, 'session?.user')
+        await fs.writeFile(apiPath, updatedContent)
+      }
     },
   }
 

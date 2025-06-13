@@ -1,9 +1,10 @@
 export async function getPackageVersion(
   packageName: string,
+  tag = 'latest',
 ): Promise<string | null> {
   try {
     const response = await fetch(
-      `https://registry.npmjs.org/${packageName}/latest`,
+      `https://registry.npmjs.org/${packageName}/${tag}`,
     )
 
     if (!response.ok) return null
