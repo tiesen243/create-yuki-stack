@@ -1,5 +1,6 @@
 'use server'
 
+import type { User } from '@{{ name }}/db'
 import { db } from '@{{ name }}/db'
 
 import { authOptions } from '../config'
@@ -7,12 +8,7 @@ import { encodeHex, generateSecureString, hashSecret } from './crypto'
 import { Password } from './password'
 
 export interface ValidSession {
-  user: {
-    id: string
-    email: string
-    name: string
-    image: string
-  }
+  user: User
   expires: Date
 }
 export interface InvalidSession {

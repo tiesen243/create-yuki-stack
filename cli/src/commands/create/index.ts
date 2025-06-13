@@ -149,7 +149,7 @@ export const initCommand = procedure
                 },
                 {
                   value: 'mongodb',
-                  label: 'MongoDb (soon)',
+                  label: 'MongoDb',
                   hint: 'NoSQL database',
                 },
               ],

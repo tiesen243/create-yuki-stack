@@ -7,7 +7,7 @@ const createPrismaClient = () => {
   return new PrismaClient({ adapter })
 }
 const globalForPrisma = globalThis as unknown as {
-  db: ReturnType<typeof createPrismaClient> | undefined
+  db: PrismaClient | undefined
 }
 export const db = globalForPrisma.db ?? createPrismaClient()
 if (process.env.NODE_ENV !== 'production') globalForPrisma.db = db
