@@ -14,7 +14,7 @@ interface PackageJson {
 interface ProjectConfig {
   name: string
   database: 'none' | 'prisma' | 'drizzle' | 'mongodb'
-  adapter: 'none' | 'neon' | 'planetscale'
+  adapter: 'none' | 'neon'
   api: 'none' | 'trpc' | 'orpc'
   auth: 'none' | 'basic-auth' | 'better-auth' | 'next-auth'
   backend: 'none' | 'express' | 'elysia' | 'hono'

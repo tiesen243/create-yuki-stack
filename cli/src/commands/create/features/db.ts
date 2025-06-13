@@ -13,7 +13,6 @@ const packageMap = new Map([
       adapter: {
         none: '',
         neon: '@prisma/adapter-neon',
-        planetscale: '@prisma/adapter-planetscale',
       },
     },
   ],
@@ -25,7 +24,6 @@ const packageMap = new Map([
       adapter: {
         none: 'postgres',
         neon: '@neondatabase/serverless',
-        planetscale: '@planetscale/database',
       },
     },
   ],
@@ -34,7 +32,7 @@ const packageMap = new Map([
     {
       dep: 'mongoose',
       devDep: '',
-      adapter: { none: '', neon: '', planetscale: '' },
+      adapter: { none: '', neon: '' },
     },
   ],
 ])

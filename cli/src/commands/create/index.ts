@@ -166,11 +166,6 @@ export const initCommand = procedure
                       label: 'Neon',
                       hint: 'Serverless Postgres with branching',
                     },
-                    {
-                      value: 'planetscale',
-                      label: `PlanetScale ${results.database === 'prisma' ? '(soon)' : ''}`,
-                      hint: 'Serverless MySQL with branching',
-                    },
                   ],
                   initialValue: 'none',
                 })
