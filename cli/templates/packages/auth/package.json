@@ -27,8 +27,7 @@
   "dependencies": {
     "@{{ name }}/db": "workspace:*",
     "@{{ name }}/env": "workspace:*",
-    "react": "catalog:react",
-    "arctic": "^3.7.0"
+    "react": "catalog:react"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",

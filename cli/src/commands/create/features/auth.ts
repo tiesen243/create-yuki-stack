@@ -5,11 +5,13 @@ import { addProviderToRoot } from '@/utils/add-provider'
 import { getPackageVersion } from '@/utils/get-package-version'
 import { baseFeatures } from './base'
 
-export async function authFeature(
-  auth: ProjectConfig['auth'],
-  database: ProjectConfig['database'],
-  apps: ProjectConfig['frontend'],
-) {
+export async function authFeature({
+  api,
+  auth,
+  backend,
+  database,
+  frontend,
+}: ProjectConfig) {
   await baseFeatures('auth')
 
   const basePath = new URL('../templates/packages/auth/auth', import.meta.url)
@@ -27,15 +29,19 @@ export async function authFeature(
         ? `^${arcticVersion}`
         : 'latest'
 
+      await fs.cp(new URL('basic', basePath), 'packages/auth/src', {
+        recursive: true,
+        force: true,
+      })
       await fs.copyFile(
-        new URL(`adapters/${database}.ts`, basePath),
+        new URL(`configs/basic.${database}.ts`, basePath),
         'packages/auth/src/core/adapter.ts',
       )
 
       const imp = "import { SessionProvider } from '@{{ name }}/auth/react'"
       const provider = 'SessionProvider'
 
-      if (apps.includes('nextjs')) {
+      if (frontend.includes('nextjs')) {
         await fs.mkdir('apps/nextjs/app/api/auth/[...auth]', {
           recursive: true,
         })
@@ -48,8 +54,7 @@ export const { GET, POST } = handlers
         )
         await addProviderToRoot(imp, provider, 'apps/nextjs/app/layout.tsx')
       }
-      if (apps.includes('react-router')) {
-        await fs.mkdir('apps/react-router/src/routes', { recursive: true })
+      if (frontend.includes('react-router')) {
         await fs.writeFile(
           'apps/react-router/src/routes/api.auth.$.ts',
           `import { handlers } from '@{{ name }}/auth'
@@ -64,9 +69,7 @@ export const action = ({ request }: Route.ActionArgs) => POST(request)
         )
         await addProviderToRoot(imp, provider, 'apps/react-router/src/root.tsx')
       }
-
-      if (apps.includes('tanstack-start')) {
-        await fs.mkdir('apps/tanstack-start/src/routes', { recursive: true })
+      if (frontend.includes('tanstack-start')) {
         await fs.writeFile(
           'apps/tanstack-start/src/routes/api.auth.$.ts',
           `import { createServerFileRoute } from '@tanstack/react-start/server'
@@ -93,20 +96,95 @@ export const ServerRoute: unknown = createServerFileRoute(
       await addEnv('server', 'AUTH_DISCORD_SECRET', 'z.string()')
     },
     'better-auth': async () => {
-      // This is a placeholder for the better-auth feature
+      const betterAuthVersion = await getPackageVersion('better-auth')
+      packageJson.dependencies['better-auth'] = betterAuthVersion
+        ? `^${betterAuthVersion}`
+        : 'latest'
+
+      await fs.cp(new URL('better', basePath), 'packages/auth/src', {
+        recursive: true,
+        force: true,
+      })
+      await fs.copyFile(
+        new URL(`configs/better.${database}.ts`, basePath),
+        'packages/auth/src/config.ts',
+      )
+
+      if (frontend.includes('nextjs')) {
+        await fs.mkdir('apps/nextjs/app/api/auth/[...auth]', {
+          recursive: true,
+        })
+        await fs.writeFile(
+          'apps/nextjs/app/api/auth/[...auth]/route.ts',
+          `import { handler } from '@{{ name }}/auth'
+
+export { handler as GET, handler as POST }
+`,
+        )
+      }
+      if (frontend.includes('react-router')) {
+        await fs.writeFile(
+          'apps/react-router/src/routes/api.auth.$.ts',
+          `import { handler } from '@{{ name }}/auth'
+
+import type { Route } from './+types/api.auth.$'
+
+export const loader = ({ request }: Route.LoaderArgs) => handler(request)
+export const action = ({ request }: Route.ActionArgs) => handler(request)
+`,
+        )
+      }
+      if (frontend.includes('tanstack-start')) {
+        await fs.writeFile(
+          'apps/tanstack-start/src/routes/api.auth.$.ts',
+          `import { createServerFileRoute } from '@tanstack/react-start/server'
+
+import { handler } from '@my-yuki-app/auth'
+
+export const ServerRoute: unknown = createServerFileRoute(
+  '/api/auth/$',
+).methods({
+  GET: ({ request }) => handler(request),
+  POST: ({ request }) => handler(request),
+})
+`,
+        )
+      }
+
+      if (api !== 'none') {
+        const apiPath = `${backend === 'none' ? 'packages' : 'apps'}/api/src/${api}.ts`
+        const apiContent = await fs.readFile(apiPath, 'utf-8')
+        const updatedContent = apiContent
+          .replace(
+            "import { auth, validateSessionToken } from '@{{ name }}/auth'",
+            "import { auth } from '@{{ name }}/auth'",
+          )
+          .replace(
+            /const isomorphicGetSession = async \(headers: Headers\) => \{[\s\S]*?const authToken = headers\.get\('Authorization'\) \?\? null[\s\S]*?if \(authToken\) return validateSessionToken\(authToken\)[\s\S]*?return auth\(\{ headers \}\)[\s\S]*?\}/,
+            `const isomorphicGetSession = async (headers: Headers) => {
+  return auth({ headers })
+}`,
+          )
+        await fs.writeFile(apiPath, updatedContent)
+      }
     },
     'next-auth': async () => {
       // This is a placeholder for the next-auth feature
     },
   }
 
-  await fs.cp(new URL('src', basePath), 'packages/auth/src', {
-    recursive: true,
-    force: true,
-  })
   await handlers[auth]()
   await fs.writeFile(
-    new URL('package.json', basePath),
+    'packages/auth/package.json',
     JSON.stringify(packageJson, null, 2),
   )
+
+  for (const app of frontend) {
+    const apjPath = `apps/${app}/package.json`
+    const appPackageJson = JSON.parse(
+      await fs.readFile(apjPath, 'utf-8'),
+    ) as PackageJson
+    appPackageJson.dependencies['@{{ name }}/auth'] = `workspace:*`
+    await fs.writeFile(apjPath, JSON.stringify(appPackageJson, null, 2))
+  }
 }

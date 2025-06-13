@@ -183,7 +183,7 @@ export const initCommand = procedure
                     },
                     {
                       value: 'better-auth',
-                      label: 'BetterAuth (soon)',
+                      label: 'BetterAuth',
                       hint: 'Open-source authentication solution',
                     },
                     {
@@ -382,8 +382,7 @@ export const initCommand = procedure
           project.database !== 'none',
           project.packageManager,
         )
-      if (project.auth !== 'none')
-        await authFeature(project.auth, project.database, project.frontend)
+      if (project.auth !== 'none') await authFeature(project)
 
       if (project.packageManager === 'npm' || project.packageManager === 'yarn')
         await fixVersion()
