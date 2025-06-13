@@ -270,7 +270,7 @@ export const initCommand = procedure
                       ? [
                           {
                             value: 'next-auth',
-                            label: 'NextAuth.js (soon)',
+                            label: 'NextAuth.js',
                             hint: 'Flexible authentication for Next.js',
                           },
                         ]

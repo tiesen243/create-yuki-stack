@@ -73,7 +73,7 @@ export async function dbFeature(
       const schemaPath = 'packages/db/prisma/schema.prisma'
       let schemaContent = await fs.readFile(schemaPath, 'utf-8')
       schemaContent = schemaContent.replace(
-        /previewFeatures\s*=\s*\["driverAdapters"\]/,
+        /previewFeatures\s*=\s*\["driverAdapters"\]\s*\n?/,
         '',
       )
       await fs.writeFile(schemaPath, schemaContent, 'utf-8')
