@@ -1,26 +1,14 @@
 import type { BetterAuthOptions } from 'better-auth'
-import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { mongodbAdapter } from 'better-auth/adapters/mongodb'
+import { MongoClient } from 'mongodb'
 
-import { db } from '@{{ name }}/db'
-import {
-  accounts,
-  sessions,
-  users,
-  verifications,
-} from '@{{ name }}/db/schema'
-
-const database = drizzleAdapter(db, {
-  provider: 'pg',
-  schema: {
-    account: accounts,
-    session: sessions,
-    user: users,
-    verification: verifications,
-  },
+const client = new MongoClient(process.env.DATABASE_URL ?? '', {
+  serverApi: { version: '1', strict: true, deprecationErrors: true },
 })
+const database = mongodbAdapter(client.db())
 
 export const authOptions = {
-  database: database,
+  database,
   baseURL: getBaseUrl(),
   socialProviders: {
     discord: {

@@ -96,10 +96,18 @@ export const ServerRoute: unknown = createServerFileRoute(
       await addEnv('server', 'AUTH_DISCORD_SECRET', 'z.string()')
     },
     'better-auth': async () => {
-      const betterAuthVersion = await getPackageVersion('better-auth')
-      packageJson.dependencies['better-auth'] = betterAuthVersion
-        ? `^${betterAuthVersion}`
+      const version = await Promise.all([
+        getPackageVersion('better-auth'),
+        getPackageVersion('mongodb'),
+      ])
+      packageJson.dependencies['better-auth'] = version[0]
+        ? `^${version[0]}`
         : 'latest'
+      if (database === 'mongodb') {
+        packageJson.dependencies.mongodb = version[1]
+          ? `^${version[1]}`
+          : 'latest'
+      }
 
       await fs.cp(new URL('better', basePath), 'packages/auth/src', {
         recursive: true,

@@ -1,14 +1,14 @@
 import type { BetterAuthOptions } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 
-import { db } from '@my-yuki-app/db'
+import { db } from '@{{ name }}/db'
 
 const database = prismaAdapter(db, {
   provider: 'postgresql',
 })
 
 export const authOptions = {
-  database: database,
+  database,
   baseURL: getBaseUrl(),
   socialProviders: {
     discord: {

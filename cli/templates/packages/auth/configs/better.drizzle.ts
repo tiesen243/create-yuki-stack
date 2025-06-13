@@ -20,7 +20,7 @@ const database = drizzleAdapter(db, {
 })
 
 export const authOptions = {
-  database: database,
+  database,
   baseURL: getBaseUrl(),
   socialProviders: {
     discord: {
