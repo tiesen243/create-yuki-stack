@@ -88,23 +88,28 @@ export const initCommand = procedure
           }),
           _: async ({ results }) => {
             const projectName = name ?? results.name ?? DEFAULT_APP_NAME
+            results.name = projectName
+
             if (projectName !== '.') {
               const projectExists = await fs
                 .access(projectName)
                 .then(() => true)
                 .catch(() => false)
 
-              if (projectExists) {
-                p.note(
-                  chalk.redBright(
-                    `A directory named ${chalk.bold(projectName)} already exists. Please choose a different name.`,
+              if (projectExists)
+                return p.confirm({
+                  message: chalk.redBright(
+                    `A directory named ${chalk.bold(projectName)} already exists. Do you want to overwrite it?`,
                   ),
-                )
-                process.exit(1)
-              }
+                  initialValue: false,
+                })
             }
-
-            results.name = projectName
+          },
+          __: ({ results }) => {
+            if (results._ === false) {
+              p.cancel(chalk.redBright('Operation cancelled'))
+            }
+            return undefined
           },
           language: () =>
             p.select({
@@ -119,10 +124,10 @@ export const initCommand = procedure
               ],
               initialValue: 'typescript',
             }),
-          // eslint-disable-next-line @typescript-eslint/require-await
-          __: async ({ results }) => {
+          ___: ({ results }) => {
             if (results.language === 'javascript')
               p.note(chalk.redBright('Wrong answer, using TypeScript instead'))
+            return undefined
           },
           database: () =>
             p.select({
@@ -190,11 +195,7 @@ export const initCommand = procedure
                     },
                   ],
                 })
-              : undefined,
-          ___: ({ results }) => {
-            results.auth ??= 'none'
-            return undefined
-          },
+              : Promise.resolve('none'),
           api: () =>
             p.select({
               message: 'What type of API will you be using?',
@@ -383,7 +384,8 @@ export const initCommand = procedure
           project.database !== 'none',
           project.packageManager,
         )
-      await authFeature(project.auth, project.database, project.frontend)
+      if (project.auth !== 'none')
+        await authFeature(project.auth, project.database, project.frontend)
 
       if (project.packageManager === 'npm' || project.packageManager === 'yarn')
         await fixVersion()
