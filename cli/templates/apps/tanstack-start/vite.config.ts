@@ -5,7 +5,7 @@ import { defineConfig, loadEnv } from 'vite'
 import tsConfigPaths from 'vite-tsconfig-paths'
 
 const jiti = createJiti(import.meta.url)
-await jiti.import('@aabb/env')
+await jiti.import('@{{ name }}/env')
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
