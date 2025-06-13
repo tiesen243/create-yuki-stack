@@ -72,6 +72,7 @@ async function authenticateCredentials(opts: {
     where: (table, { eq }) => eq(table.email, opts.email),
   })
   if (!user) throw new Error('Invalid credentials')
+
   const account = await db.query.accounts.findFirst({
     where: (table, { and, eq }) =>
       and(eq(table.provider, 'credentials'), eq(table.accountId, user.id)),
@@ -108,29 +109,29 @@ async function getOrCreateUser(opts: {
 
   if (existingAccount) return createSession(existingAccount.userId)
 
-  let userId: string
-  if (existingUser) userId = existingUser.id
-  else {
-    const result = await db.transaction(async (tx) => {
+  const { userId } = await db.transaction(async (tx) => {
+    let userId: string
+
+    if (existingUser) userId = existingUser.id
+    else {
       const userInTx = await tx.query.users.findFirst({
         where: (table, { eq }) => eq(table.email, userData.email),
       })
 
-      if (userInTx) {
-        return { userId: userInTx.id, isNewUser: false }
+      if (userInTx) userId = userInTx.id
+      else {
+        const [newUser] = await tx
+          .insert(users)
+          .values(userData)
+          .returning({ id: users.id })
+        userId = newUser?.id ?? ''
       }
+    }
 
-      const [newUser] = await tx
-        .insert(users)
-        .values(userData)
-        .returning({ id: users.id })
-      return { userId: newUser?.id ?? '', isNewUser: true }
-    })
+    await db.insert(accounts).values({ accountId, provider, userId })
+    return { userId }
+  })
 
-    userId = result.userId
-  }
-
-  await db.insert(accounts).values({ accountId, provider, userId })
   return createSession(userId)
 }
 

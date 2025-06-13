@@ -11,26 +11,10 @@ export interface Post {
 
 const postSchema = new Schema<Post>(
   {
-    title: {
-      type: String,
-      required: true,
-      maxlength: 255,
-    },
-    content: {
-      type: String,
-      required: true,
-      maxlength: 1000,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      required: true,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-      required: true,
-    },
+    title: { type: String, required: true, maxlength: 255 },
+    content: { type: String, required: true, maxlength: 1000 },
+    createdAt: { type: Date, default: Date.now, required: true },
+    updatedAt: { type: Date, default: Date.now, required: true },
   },
   { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } },
 )

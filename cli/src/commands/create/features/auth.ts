@@ -21,7 +21,7 @@ export async function authFeature(
     none: async () => {
       // No authentication needed, just return
     },
-    basic: async () => {
+    'basic-auth': async () => {
       const arcticVersion = await getPackageVersion('arctic')
       packageJson.dependencies.arctic = arcticVersion
         ? `^${arcticVersion}`

@@ -1,5 +1,11 @@
 'use server'
 
+import { db } from '@{{ name }}/db'
+
+import { authOptions } from '../config'
+import { encodeHex, generateSecureString, hashSecret } from './crypto'
+import { Password } from './password'
+
 export interface ValidSession {
   user: {
     id: string
@@ -20,43 +26,124 @@ interface SessionResult {
   expires: Date
 }
 
-async function createSession(_userId: string): Promise<SessionResult> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  throw new Error('Not implemented')
+async function createSession(userId: string): Promise<SessionResult> {
+  const token = generateSecureString()
+  const hashToken = await hashSecret(token)
+  const expires = new Date(Date.now() + authOptions.session.expiresIn)
+
+  await db.session.create({
+    data: { token: encodeHex(hashToken), expires, userId },
+  })
+
+  return { token, expires }
 }
 
-async function validateSessionToken(_token: string): Promise<Session> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  throw new Error('Not implemented')
+async function validateSessionToken(token: string): Promise<Session> {
+  const hashToken = encodeHex(await hashSecret(token))
+
+  const result = await db.session.findFirst({
+    where: { token: hashToken },
+    include: { user: true },
+  })
+
+  if (!result) return { user: null, expires: new Date() }
+
+  const now = Date.now()
+  if (now > result.expires.getTime()) {
+    await db.session.delete({ where: { token: hashToken } })
+    return { user: null, expires: new Date() }
+  }
+
+  if (now >= result.expires.getTime() - authOptions.session.updateInterval) {
+    const newExpires = new Date(now + authOptions.session.expiresIn)
+    await db.session.update({
+      where: { token: hashToken },
+      data: { expires: newExpires },
+    })
+    result.expires = newExpires
+  }
+
+  return result
 }
 
-async function authenticateCredentials(_opts: {
+async function authenticateCredentials(opts: {
   email: string
   password: string
 }): Promise<SessionResult> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  throw new Error('Not implemented')
+  const user = await db.user.findUnique({
+    where: { email: opts.email },
+  })
+  if (!user) throw new Error('Invalid credentials')
+
+  const account = await db.account.findFirst({
+    where: { provider: 'credentials', accountId: user.id },
+  })
+  if (!account) throw new Error('Invalid credentials')
+
+  const isValid = await new Password().verify(
+    account.password ?? '',
+    opts.password,
+  )
+  if (!isValid) throw new Error('Invalid credentials')
+
+  return createSession(user.id)
 }
 
-async function getOrCreateUser(_opts: {
+async function getOrCreateUser(opts: {
   provider: string
   accountId: string
   email: string
   name: string
   image: string
 }): Promise<SessionResult> {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  throw new Error('Not implemented')
+  const { provider, accountId, ...userData } = opts
+
+  const [existingAccount, existingUser] = await Promise.all([
+    db.account.findUnique({
+      where: { provider_accountId: { provider, accountId } },
+    }),
+    db.user.findFirst({
+      where: { email: userData.email },
+    }),
+  ])
+
+  if (existingAccount) return createSession(existingAccount.userId)
+
+  const { userId } = await db.$transaction(async (tx) => {
+    let userId: string
+
+    if (existingUser) userId = existingUser.id
+    else {
+      const userInTx = await tx.user.findUnique({
+        where: { email: userData.email },
+      })
+
+      if (userInTx) userId = userInTx.id
+      else {
+        const newUser = await tx.user.create({
+          data: userData,
+        })
+        userId = newUser.id
+      }
+    }
+
+    await tx.account.create({
+      data: { accountId, provider, userId },
+    })
+
+    return { userId }
+  })
+
+  return createSession(userId)
 }
 
-async function invalidateSessionToken(_token: string) {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  throw new Error('Not implemented')
+async function invalidateSessionToken(token: string) {
+  const hashToken = encodeHex(await hashSecret(token))
+  await db.session.delete({ where: { token: hashToken } })
 }
 
-async function invalidateSessionTokens(_userId: string) {
-  await new Promise((resolve) => setTimeout(resolve, 100))
-  throw new Error('Not implemented')
+async function invalidateSessionTokens(userId: string) {
+  await db.session.deleteMany({ where: { userId } })
 }
 
 export {
@@ -67,3 +154,4 @@ export {
   invalidateSessionToken,
   invalidateSessionTokens,
 }
+

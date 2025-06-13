@@ -105,11 +105,14 @@ export const initCommand = procedure
                 })
             }
           },
-          __: ({ results }) => {
-            if (results._ === false) {
+          __: async ({ results }) => {
+            if (results._ === true)
+              await fs.rm(results.name ?? DEFAULT_APP_NAME, {
+                recursive: true,
+                force: true,
+              })
+            else if (results._ === false)
               p.cancel(chalk.redBright('Operation cancelled'))
-            }
-            return undefined
           },
           language: () =>
             p.select({
@@ -179,8 +182,8 @@ export const initCommand = procedure
                   options: [
                     { value: 'none', label: 'None' },
                     {
-                      value: 'basic',
-                      label: 'Basic',
+                      value: 'basic-auth',
+                      label: 'BasicAuth',
                       hint: 'Basic authentication built from scratch',
                     },
                     {

@@ -16,7 +16,7 @@ interface ProjectConfig {
   database: 'none' | 'prisma' | 'drizzle' | 'mongodb'
   adapter: 'none' | 'neon' | 'planetscale'
   api: 'none' | 'trpc' | 'orpc'
-  auth: 'none' | 'basic' | 'better-auth' | 'next-auth'
+  auth: 'none' | 'basic-auth' | 'better-auth' | 'next-auth'
   backend: 'none' | 'express' | 'elysia' | 'hono'
   frontend: ('nextjs' | 'react-router' | 'tanstack-start' | 'expo')[]
   shadcn: boolean

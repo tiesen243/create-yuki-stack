@@ -104,6 +104,7 @@ export async function dbFeature(
 
     packageJson.scripts['db:push'] = '{{ pkm }} run with-env prisma db push'
     packageJson.scripts['db:studio'] = '{{ pkm }} run with-env prisma studio'
+    packageJson.scripts.postinstall = '{{ pkm }} run with-env prisma generate'
   } else if (db === 'drizzle') {
     await fs.copyFile(
       new URL('drizzle.config.ts', basePath),
