@@ -55,4 +55,3 @@ const sessionSchema = new mongoose.Schema<Session>({
 
 export const sessions: Model<Session> =
   mongoose.models.session ?? mongoose.model<Session>('session', sessionSchema)
-
