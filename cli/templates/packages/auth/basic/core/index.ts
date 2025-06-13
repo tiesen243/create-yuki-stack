@@ -74,7 +74,7 @@ export function Auth(opts: AuthOptions) {
             const codeVerifier = generateSecureString()
             const redirectUrl = searchParams.get('redirect_to') ?? '/'
 
-            const callbackUrl = await provider.getAuthorizationUrl(
+            const callbackUrl = await provider.createAuthorizationUrl(
               state,
               codeVerifier,
             )
@@ -84,9 +84,9 @@ export function Auth(opts: AuthOptions) {
             })
 
             const opts = { Path: '/', MaxAge: 1000 * 60 * 5 }
-            cookies.set(response, 'auth:state', state, opts)
-            cookies.set(response, 'auth:code', codeVerifier, opts)
-            cookies.set(response, 'auth:redirect', redirectUrl, opts)
+            cookies.set(response, 'auth.state', state, opts)
+            cookies.set(response, 'auth.code', codeVerifier, opts)
+            cookies.set(response, 'auth.redirect', redirectUrl, opts)
           } else if (/^\/api\/auth\/callback\/[^/]+$/.test(pathname)) {
             const provider = pathname.split('/').pop() ?? ''
             const pIns = options.providers[provider]
@@ -94,9 +94,9 @@ export function Auth(opts: AuthOptions) {
 
             const code = searchParams.get('code') ?? ''
             const state = searchParams.get('state') ?? ''
-            const storedState = cookies.get('auth:state') ?? ''
-            const codeVerifier = cookies.get('auth:code') ?? ''
-            const redirectTo = cookies.get('auth:redirect') ?? '/'
+            const storedState = cookies.get('auth.state') ?? ''
+            const codeVerifier = cookies.get('auth.code') ?? ''
+            const redirectTo = cookies.get('auth.redirect') ?? '/'
             if (state !== storedState || !code || !codeVerifier)
               throw new Error('Invalid state or code')
 
@@ -112,8 +112,9 @@ export function Auth(opts: AuthOptions) {
               ...options.cookieOptions,
               expires: session.expires,
             })
-            cookies.delete(response, 'auth:state')
-            cookies.delete(response, 'auth:code')
+            cookies.delete(response, 'auth.state')
+            cookies.delete(response, 'auth.code')
+            cookies.delete(response, 'auth.redirect')
           }
         } catch (error) {
           if (error instanceof Error)
@@ -168,7 +169,7 @@ function setCorsHeaders(response: Response): Response {
 }
 
 const DEFAULT_OPTIONS: Required<AuthOptions> = {
-  cookieKey: 'auth:token',
+  cookieKey: 'auth.token',
   cookieOptions: {
     path: '/',
     httpOnly: true,

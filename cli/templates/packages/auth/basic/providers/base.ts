@@ -5,30 +5,73 @@ export interface ProviderUserData {
   image: string
 }
 
+export interface OAuth2Token {
+  access_token: string
+  token_type: string
+  expires_in: number
+}
+
 export default abstract class BaseProvider {
+  protected abstract authorizationUrl: string
+  protected abstract tokenUrl: string
+  protected abstract apiUrl: string
+  protected abstract callbackUrl: string
+  protected abstract scopes: string[]
+
   constructor(
     protected readonly clientId: string,
     protected readonly clientSecret: string,
   ) {}
 
-  abstract getAuthorizationUrl(
+  async createAuthorizationUrl(
     state: string,
     codeVerifier: string | null,
-  ): Promise<URL>
+  ): Promise<URL> {
+    const url = new URL(this.authorizationUrl)
+    url.searchParams.set('response_type', 'code')
+    url.searchParams.set('client_id', this.clientId)
+    url.searchParams.set('redirect_uri', this.callbackUrl)
+    url.searchParams.set('state', state)
+    url.searchParams.set('scope', this.scopes.join(' '))
+    if (codeVerifier) {
+      const codeChallenge = await this.generateCodeChallenge(codeVerifier)
+      url.searchParams.set('code_challenge', codeChallenge)
+      url.searchParams.set('code_challenge_method', 'S256')
+    }
+
+    return url
+  }
 
   abstract fetchUserData(
     code: string,
     codeVerifier: string | null,
   ): Promise<ProviderUserData>
 
-  protected createCallbackUrl(provider: string) {
-    let baseUrl = `http://localhost:${process.env.PORT ?? 3000}`
-    if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
-      baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    else if (process.env.VERCEL_URL)
-      baseUrl = `https://${process.env.VERCEL_URL}`
+  protected async validateAuthorizationCode(
+    code: string,
+    codeVerifier: string | null,
+  ): Promise<OAuth2Token> {
+    const body = new URLSearchParams()
+    body.set('grant_type', 'authorization_code')
+    body.set('code', code)
+    body.set('redirect_uri', this.callbackUrl)
+    if (codeVerifier) body.set('code_verifier', codeVerifier)
 
-    return `${baseUrl}/api/auth/callback/${provider}`
+    const tokenResponse = await fetch(this.tokenUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${this.encodeCredentials(this.clientId, this.clientSecret)}`,
+      },
+      body,
+    })
+
+    if (!tokenResponse.ok)
+      throw new Error(
+        `Failed to fetch access token: ${tokenResponse.statusText}`,
+      )
+
+    return (await tokenResponse.json()) as OAuth2Token
   }
 
   protected encodeCredentials(username: string, password: string): string {
@@ -45,6 +88,16 @@ export default abstract class BaseProvider {
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
       .replace(/=/g, '')
+  }
+
+  protected createCallbackUrl(provider: string) {
+    let baseUrl = `http://localhost:${process.env.PORT ?? 3000}`
+    if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
+      baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    else if (process.env.VERCEL_URL)
+      baseUrl = `https://${process.env.VERCEL_URL}`
+
+    return `${baseUrl}/api/auth/callback/${provider}`
   }
 }
 

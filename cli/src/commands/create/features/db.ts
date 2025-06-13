@@ -37,11 +37,12 @@ const packageMap = new Map([
   ],
 ])
 
-export async function dbFeature(
-  db: ProjectConfig['database'],
-  adapter: ProjectConfig['adapter'],
-  auth: ProjectConfig['auth'],
-) {
+export async function dbFeature({
+  adapter,
+  auth,
+  database,
+  frontend,
+}: ProjectConfig) {
   await baseFeatures('db')
 
   const basePath = new URL('../templates/packages/db/db', import.meta.url)
@@ -52,7 +53,7 @@ export async function dbFeature(
     await fs.readFile('packages/db/package.json', 'utf-8'),
   ) as PackageJson
 
-  if (db === 'prisma') {
+  if (database === 'prisma') {
     await fs.copyFile(
       new URL('prisma.config.ts', basePath),
       'packages/db/prisma.config.ts',
@@ -103,7 +104,7 @@ export async function dbFeature(
     packageJson.scripts['db:push'] = '{{ pkm }} run with-env prisma db push'
     packageJson.scripts['db:studio'] = '{{ pkm }} run with-env prisma studio'
     packageJson.scripts.postinstall = '{{ pkm }} run with-env prisma generate'
-  } else if (db === 'drizzle') {
+  } else if (database === 'drizzle') {
     await fs.copyFile(
       new URL('drizzle.config.ts', basePath),
       'packages/db/drizzle.config.ts',
@@ -144,7 +145,7 @@ export async function dbFeature(
       types: './dist/schema.d.ts',
       default: './src/schema.ts',
     }
-  } else if (db === 'mongodb') {
+  } else if (database === 'mongodb') {
     await fs.copyFile(
       new URL(`src/collections.${auth}.ts`, basePath),
       'packages/db/src/collections.ts',
@@ -166,4 +167,19 @@ export async function dbFeature(
     'utf-8',
   )
   await addEnv('server', 'DATABASE_URL', 'z.string()')
+
+  await Promise.all(
+    frontend.map(async (app) => {
+      const appPath = `apps/${app}/package.json`
+      const appPackageJson = JSON.parse(
+        await fs.readFile(appPath, 'utf-8'),
+      ) as PackageJson
+      appPackageJson.dependencies['@{{ name }}/db'] = `workspace:*`
+      await fs.writeFile(
+        appPath,
+        JSON.stringify(appPackageJson, null, 2),
+        'utf-8',
+      )
+    }),
+  )
 }

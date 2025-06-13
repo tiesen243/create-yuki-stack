@@ -369,10 +369,9 @@ export const initCommand = procedure
         { recursive: true },
       )
 
-      if (project.database !== 'none')
-        await dbFeature(project.database, project.adapter, project.auth)
-      await shadcnFeatures(project.shadcn)
       await feFeatures(project.frontend, project.shadcn)
+      await shadcnFeatures(project.shadcn)
+      if (project.database !== 'none') await dbFeature(project)
       await apiFeature(
         project.api,
         project.database !== 'none',
