@@ -5,7 +5,4 @@ export default defineConfig({
   dts: true,
   shims: true,
   clean: true,
-  outputOptions: {
-    banner: '#!/usr/bin/env node\n',
-  },
 })

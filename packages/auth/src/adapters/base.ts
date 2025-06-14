@@ -11,11 +11,27 @@ import type {
  */
 export default abstract class BaseAdapter {
   /**
+   *
+   */
+  constructor(
+    protected opts: {
+      expiresIn: number
+      expireThreshold: number
+    } = {
+      expiresIn: 1000 * 60 * 60 * 24 * 30, // 30 days after creation
+      expireThreshold: 1000 * 60 * 60 * 24 * 15, // 15 days before expiration
+    },
+  ) {}
+
+  /**
    * Creates a new session for the specified user.
    * @param userId - The unique identifier of the user
    * @returns Promise resolving to session result with token and expiration
    */
-  abstract createSession(userId: string): Promise<SessionResult>
+  abstract createSession(
+    userId: string,
+    expiresIn: number,
+  ): Promise<SessionResult>
 
   /**
    * Validates a session token and returns the associated session.

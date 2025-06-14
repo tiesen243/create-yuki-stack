@@ -87,6 +87,8 @@ export interface OAuth2Token {
  * This represents the mapped data from OAuth provider responses to valid database format.
  */
 export interface ProviderUserData {
+  /** OAuth provider name (e.g., 'google', 'github') */
+  provider: string
   /** Account ID from the provider */
   accountId: string
   /** User's email from provider */
