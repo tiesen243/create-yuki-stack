@@ -15,8 +15,8 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "@tanstack/react-router": "^1.121.0",
-    "@tanstack/react-start": "^1.121.0",
+    "@tanstack/react-router": "^1.121.12",
+    "@tanstack/react-start": "^1.121.12",
     "@{{ name }}/env": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
     "react": "catalog:react",
