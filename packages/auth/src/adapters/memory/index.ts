@@ -6,10 +6,10 @@ import type {
   SessionResult,
   User,
 } from '@/types'
+import BaseAdapter from '@/adapters/base'
 import { encodeHex, generateSecureString, hashSecret } from '@/core/crypto'
+import { generateCuid } from '@/core/cuid'
 import { Password } from '@/core/password'
-import BaseAdapter from '../base'
-import { generateCuid } from './cuid'
 
 export class MemoryAdapter extends BaseAdapter {
   private users: User[] = []
