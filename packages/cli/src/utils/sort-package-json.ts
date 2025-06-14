@@ -3,31 +3,40 @@ import path from 'path'
 import glob from 'glob'
 
 /**
+ * Custom sorting function that orders keys based on a predefined order array
+ */
+function customOrder(keys: string[], orderArray: string[]): string[] {
+  return keys.sort((a, b) => {
+    const aIndex = orderArray.indexOf(a)
+    const bIndex = orderArray.indexOf(b)
+
+    if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex
+    if (aIndex !== -1) return -1
+    if (bIndex !== -1) return 1
+    return a.localeCompare(b)
+  })
+}
+
+/**
  * Deeply sort an object or array, with special handling for `exports`
  */
 function deepSort(value: unknown, parentPath: string[] = []): unknown {
-  if (Array.isArray(value)) {
-    return [...(value as unknown[])].sort()
-  }
+  if (Array.isArray(value)) return [...(value as unknown[])].sort()
 
   if (value && typeof value === 'object') {
-    const isExportsContext = parentPath.includes('exports')
-
     const keys = Object.keys(value)
-    const sortedKeys = isExportsContext
-      ? keys.sort((a, b) => {
-          if (a === 'types') return -1
-          if (b === 'types') return 1
-          if (a === 'default') return 1
-          if (b === 'default') return -1
-          return a.localeCompare(b)
-        })
-      : keys.sort()
+    let sortedKeys: string[]
+
+    if (parentPath.includes('exports'))
+      sortedKeys = customOrder(keys, customExportsOrder)
+    else if (parentPath.includes('repository'))
+      sortedKeys = customOrder(keys, customRepositoryOrder)
+    else sortedKeys = keys.sort()
 
     const result: Record<string, unknown> = {}
-    for (const key of sortedKeys) {
+    for (const key of sortedKeys)
       result[key] = deepSort(value[key as never], [...parentPath, key])
-    }
+
     return result
   }
 
@@ -37,12 +46,11 @@ function deepSort(value: unknown, parentPath: string[] = []): unknown {
 /**
  * Sort root-level keys using keyOrder, then alphabetically
  */
-function sortRootKeys(obj: Record<string, unknown>): Record<string, unknown> {
+function sortRootKeys<T extends Record<string, unknown>>(obj: T): T {
   const sorted: Record<string, unknown> = {}
 
-  for (const key of keyOrder) {
+  for (const key of keyOrder)
     if (key in obj) sorted[key] = deepSort(obj[key], [key])
-  }
 
   const remainingKeys = Object.keys(obj)
     .filter((k) => !keyOrder.includes(k))
@@ -50,15 +58,15 @@ function sortRootKeys(obj: Record<string, unknown>): Record<string, unknown> {
 
   for (const key of remainingKeys) sorted[key] = deepSort(obj[key], [key])
 
-  return sorted
+  return sorted as T
 }
 
-async function sortPackageJsonFile(filePath: string) {
+async function sortPackageJsonFile(filePath: string): Promise<void> {
   try {
     const raw = await fs.readFile(filePath, 'utf-8')
-    const json = JSON.parse(raw) as Record<string, unknown>
+    const json = JSON.parse(raw) as PackageJson
     const sorted = sortRootKeys(json)
-    const output = JSON.stringify(sorted, null, 2) + '\n'
+    const output = `${JSON.stringify(sorted, null, 2)}\n`
     await fs.writeFile(filePath, output, 'utf-8')
   } catch {
     // If the file is not valid JSON, skip it
@@ -74,7 +82,7 @@ function getAllPackageJsonPaths(): string[] {
   return [root, ...workspaces]
 }
 
-export async function sortPackageJson() {
+export async function sortPackageJson(): Promise<void> {
   const paths = getAllPackageJsonPaths()
   await Promise.all(paths.map(sortPackageJsonFile))
 }
@@ -116,3 +124,21 @@ const keyOrder = [
   'engines',
   'publishConfig',
 ]
+
+const customExportsOrder = [
+  'types',
+  'default',
+  'import',
+  'require',
+  'node',
+  'browser',
+  'deno',
+  'worker',
+  'webworker',
+  'electron',
+  'react-server',
+  'react-native',
+  'react-native-web',
+]
+
+const customRepositoryOrder = ['type', 'url', 'directory']

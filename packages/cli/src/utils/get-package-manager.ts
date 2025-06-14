@@ -1,15 +1,15 @@
-export function getPackageManager(): 'npm' | 'yarn' | 'pnpm' | 'bun' {
+export function getPackageManager(): ProjectConfig['packageManager'] {
   const ua = process.env.npm_config_user_agent ?? 'npm'
 
   if (ua.startsWith('yarn')) return 'yarn'
-  else if (ua.startsWith('pnpm')) return 'pnpm'
-  else if (ua.startsWith('bun')) return 'bun'
-  else return 'npm'
+  if (ua.startsWith('pnpm')) return 'pnpm'
+  if (ua.startsWith('bun')) return 'bun'
+  return 'npm'
 }
 
-export function getPackageManagerExcecuter(pkm: string) {
-  if (pkm === 'npm') return 'npx'
-  else if (pkm === 'yarn') return 'npx'
-  else if (pkm === 'pnpm') return 'pnpm dlx'
-  else return 'bunx --bun'
+export function getExecutor(packageManager: string) {
+  if (packageManager === 'npm') return 'npx'
+  if (packageManager === 'yarn') return 'npx'
+  if (packageManager === 'pnpm') return 'pnpm dlx'
+  return 'bunx --bun'
 }

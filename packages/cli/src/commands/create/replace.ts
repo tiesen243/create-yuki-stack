@@ -1,7 +1,7 @@
 import fs from 'fs/promises'
 import * as glob from 'glob'
 
-import { getPackageManagerExcecuter } from '@/utils/get-package-manager'
+import { getExecutor } from '@/utils/get-package-manager'
 
 export async function replace(name: string, pkm: string) {
   const files = glob.sync('**/*', {
@@ -12,12 +12,12 @@ export async function replace(name: string, pkm: string) {
   const replacements = new Map([
     ['{{ name }}', name],
     ['{{ pkm }}', pkm],
-    ['{{ pkme }}', getPackageManagerExcecuter(pkm)],
+    ['{{ pkme }}', getExecutor(pkm)],
   ])
 
   const turboReplacements = new Map([
     ['{{ pkm }}', pkm],
-    ['{{ pkme }}', getPackageManagerExcecuter(pkm)],
+    ['{{ pkme }}', getExecutor(pkm)],
   ])
 
   const replaceInContent = (
