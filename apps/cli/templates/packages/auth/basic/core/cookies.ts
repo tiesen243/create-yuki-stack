@@ -1,13 +1,4 @@
-export interface CookieOptions {
-  domain?: string
-  expires?: Date | string | number
-  httpOnly?: boolean
-  maxAge?: number
-  path?: string
-  sameSite?: 'Strict' | 'Lax' | 'None'
-  secure?: boolean
-  [key: string]: unknown
-}
+import type { CookieOptions } from './types'
 
 export default class Cookies {
   private _cookies: Record<string, string> = {}
@@ -27,6 +18,10 @@ export default class Cookies {
 
   get(key: string): string | undefined {
     return this._cookies[key]
+  }
+
+  getAll(): Record<string, string> {
+    return { ...this._cookies }
   }
 
   set(

@@ -1,15 +1,20 @@
 import type { ProviderUserData } from './base'
 import BaseProvider from './base'
 
-export class Discord extends BaseProvider {
+export default class Discord extends BaseProvider {
   protected override authorizationUrl = 'https://discord.com/oauth2/authorize'
   protected override tokenUrl = 'https://discord.com/api/oauth2/token'
   protected override apiUrl = 'https://discord.com/api/users/@me'
   protected override callbackUrl = this.createCallbackUrl('discord')
   protected override scopes = ['identify', 'email']
 
-  constructor(opts: { clientId: string; clientSecret: string }) {
+  constructor(opts: {
+    clientId: string
+    clientSecret: string
+    callbackUrl?: string
+  }) {
     super(opts.clientId, opts.clientSecret)
+    if (opts.callbackUrl) this.callbackUrl = opts.callbackUrl
   }
 
   override async fetchUserData(

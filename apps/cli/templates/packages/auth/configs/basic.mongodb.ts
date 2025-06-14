@@ -50,7 +50,7 @@ async function validateSessionToken(token: string): Promise<Session> {
     return { user: null, expires: new Date() }
   }
 
-  if (now >= session.expires.getTime() - authOptions.session.updateInterval) {
+  if (now >= session.expires.getTime() - authOptions.session.expiresThreshold) {
     const newExpires = new Date(now + authOptions.session.expiresIn)
     await db.sessions.updateOne({ token: hashToken }, { expires: newExpires })
     session.expires = newExpires

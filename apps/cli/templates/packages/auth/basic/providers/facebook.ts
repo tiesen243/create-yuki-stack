@@ -10,8 +10,13 @@ export default class Facebook extends BaseProvider {
   protected override callbackUrl = this.createCallbackUrl('facebook')
   protected override scopes = ['email', 'public_profile']
 
-  constructor(opts: { clientId: string; clientSecret: string }) {
+  constructor(opts: {
+    clientId: string
+    clientSecret: string
+    callbackUrl?: string
+  }) {
     super(opts.clientId, opts.clientSecret)
+    if (opts.callbackUrl) this.callbackUrl = opts.callbackUrl
   }
 
   override async createAuthorizationUrl(

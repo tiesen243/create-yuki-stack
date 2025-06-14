@@ -25,8 +25,7 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "@{{ name }}/db": "workspace:*",
-    "@{{ name }}/env": "workspace:*"
+    "@{{ name }}/db": "workspace:*"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",

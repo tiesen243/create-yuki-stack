@@ -100,12 +100,3 @@ export default abstract class BaseProvider {
     return `${baseUrl}/api/auth/callback/${provider}`
   }
 }
-
-export function generateSecureString(): string {
-  const randomValues = new Uint8Array(32)
-  crypto.getRandomValues(randomValues)
-  return btoa(String.fromCharCode(...randomValues))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '')
-}

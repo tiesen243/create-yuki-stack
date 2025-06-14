@@ -1,7 +1,5 @@
-import type BaseProvider from '../providers/base'
 import type { Session } from './adapter'
-import type { CookieOptions } from './cookies'
-import { generateSecureString } from '../providers/base'
+import type { AuthOptions } from './types'
 import {
   authenticateCredentials,
   getOrCreateUser,
@@ -9,19 +7,17 @@ import {
   validateSessionToken,
 } from './adapter'
 import Cookies from './cookies'
-
-export interface AuthOptions {
-  cookieKey?: string
-  cookieOptions?: CookieOptions
-  session?: { expiresIn: number; updateInterval: number }
-  providers: Record<string, BaseProvider>
-}
+import { generateRandomString } from './crypto'
 
 export function Auth(opts: AuthOptions) {
   const options = {
     ...DEFAULT_OPTIONS,
     ...opts,
+    cookieKeys: { ...DEFAULT_OPTIONS.cookieKeys, ...opts.cookieKeys },
+    cookieOptions: { ...DEFAULT_OPTIONS.cookieOptions, ...opts.cookieOptions },
   } satisfies Required<AuthOptions>
+
+  const { cookieKeys, cookieOptions, providers } = options
 
   /**
    * Auth
@@ -33,7 +29,7 @@ export function Auth(opts: AuthOptions) {
    */
   const auth = async (opts: { headers: Headers }): Promise<Session> => {
     const cookies = new Cookies(opts as Request)
-    const token = cookies.get(options.cookieKey) ?? ''
+    const token = cookies.get(cookieKeys.token) ?? ''
     return await validateSessionToken(token)
   }
 
@@ -47,7 +43,7 @@ export function Auth(opts: AuthOptions) {
    */
   const signOut = async (opts: { headers: Headers }): Promise<void> => {
     const cookies = new Cookies(opts as Request)
-    const token = cookies.get(options.cookieKey) ?? ''
+    const token = cookies.get(cookieKeys.token) ?? ''
     await invalidateSessionToken(token)
   }
 
@@ -66,15 +62,15 @@ export function Auth(opts: AuthOptions) {
             const session = await auth(request)
             response = Response.json(session)
           } else if (/^\/api\/auth\/[^/]+$/.test(pathname)) {
-            const providerName = pathname.split('/').pop() ?? ''
-            const provider = options.providers[providerName]
-            if (!provider) throw new Error(`Provider ${providerName} not found`)
+            const provider = pathname.split('/').pop() ?? ''
+            const instance = providers[provider]
+            if (!instance) throw new Error(`Provider ${provider} not found`)
 
-            const state = generateSecureString()
-            const codeVerifier = generateSecureString()
+            const state = generateRandomString()
+            const codeVerifier = generateRandomString()
             const redirectUrl = searchParams.get('redirect_to') ?? '/'
 
-            const callbackUrl = await provider.createAuthorizationUrl(
+            const callbackUrl = await instance.createAuthorizationUrl(
               state,
               codeVerifier,
             )
@@ -84,23 +80,23 @@ export function Auth(opts: AuthOptions) {
             })
 
             const opts = { Path: '/', MaxAge: 1000 * 60 * 5 }
-            cookies.set(response, 'auth.state', state, opts)
-            cookies.set(response, 'auth.code', codeVerifier, opts)
-            cookies.set(response, 'auth.redirect', redirectUrl, opts)
+            cookies.set(response, cookieKeys.state, state, opts)
+            cookies.set(response, cookieKeys.code, codeVerifier, opts)
+            cookies.set(response, cookieKeys.redirect, redirectUrl, opts)
           } else if (/^\/api\/auth\/callback\/[^/]+$/.test(pathname)) {
             const provider = pathname.split('/').pop() ?? ''
-            const pIns = options.providers[provider]
-            if (!pIns) throw new Error(`Provider ${provider} not found`)
+            const instance = options.providers[provider]
+            if (!instance) throw new Error(`Provider ${provider} not found`)
 
             const code = searchParams.get('code') ?? ''
             const state = searchParams.get('state') ?? ''
-            const storedState = cookies.get('auth.state') ?? ''
-            const codeVerifier = cookies.get('auth.code') ?? ''
-            const redirectTo = cookies.get('auth.redirect') ?? '/'
+            const storedState = cookies.get(cookieKeys.state) ?? ''
+            const codeVerifier = cookies.get(cookieKeys.code) ?? ''
+            const redirectTo = cookies.get(cookieKeys.redirect) ?? '/'
             if (state !== storedState || !code || !codeVerifier)
               throw new Error('Invalid state or code')
 
-            const userData = await pIns.fetchUserData(code, codeVerifier)
+            const userData = await instance.fetchUserData(code, codeVerifier)
             const session = await getOrCreateUser({ ...userData, provider })
 
             const redirectUrl = new URL(redirectTo, request.url)
@@ -108,13 +104,13 @@ export function Auth(opts: AuthOptions) {
               status: 302,
               headers: { Location: redirectUrl.toString() },
             })
-            cookies.set(response, options.cookieKey, session.token, {
-              ...options.cookieOptions,
+            cookies.set(response, cookieKeys.token, session.token, {
+              ...cookieOptions,
               expires: session.expires,
             })
-            cookies.delete(response, 'auth.state')
-            cookies.delete(response, 'auth.code')
-            cookies.delete(response, 'auth.redirect')
+            cookies.delete(response, cookieKeys.state)
+            cookies.delete(response, cookieKeys.code)
+            cookies.delete(response, cookieKeys.redirect)
           }
         } catch (error) {
           if (error instanceof Error)
@@ -135,14 +131,14 @@ export function Auth(opts: AuthOptions) {
             const result = await authenticateCredentials(body)
 
             response = Response.json(result)
-            cookies.set(response, options.cookieKey, result.token, {
-              ...options.cookieOptions,
+            cookies.set(response, cookieKeys.token, result.token, {
+              ...cookieOptions,
               expires: result.expires,
             })
           } else if (pathname === '/api/auth/sign-out') {
             await signOut(request)
             response = Response.json({ error: 'Signed out successfully' })
-            cookies.delete(response, options.cookieKey)
+            cookies.delete(response, cookieKeys.token)
           }
         } catch (error) {
           if (error instanceof Error)
@@ -168,8 +164,13 @@ function setCorsHeaders(response: Response): Response {
   return response
 }
 
-const DEFAULT_OPTIONS: Required<AuthOptions> = {
-  cookieKey: 'auth.token',
+const DEFAULT_OPTIONS = {
+  cookieKeys: {
+    token: 'auth.token',
+    state: 'auth.state',
+    code: 'auth.code',
+    redirect: 'auth.redirect',
+  },
   cookieOptions: {
     path: '/',
     httpOnly: true,
@@ -178,7 +179,7 @@ const DEFAULT_OPTIONS: Required<AuthOptions> = {
   },
   session: {
     expiresIn: 1000 * 60 * 60 * 24 * 30, // 30 days
-    updateInterval: 1000 * 60 * 60 * 24, // 24 hours
+    expiresThreshold: 1000 * 60 * 60 * 24, // 24 hours
   },
   providers: {},
-}
+} as const satisfies Required<AuthOptions>
