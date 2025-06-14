@@ -1,4 +1,4 @@
-import type { ProviderUserData } from './base'
+import type { ProviderUserData } from '../core/types'
 import BaseProvider from './base'
 
 export default class Google extends BaseProvider {

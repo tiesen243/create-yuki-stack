@@ -1,15 +1,4 @@
-export interface ProviderUserData {
-  accountId: string
-  email: string
-  name: string
-  image: string
-}
-
-export interface OAuth2Token {
-  access_token: string
-  token_type: string
-  expires_in: number
-}
+import type { OAuth2Token, ProviderUserData } from '../core/types'
 
 export default abstract class BaseProvider {
   protected abstract authorizationUrl: string
@@ -47,10 +36,10 @@ export default abstract class BaseProvider {
     codeVerifier: string | null,
   ): Promise<ProviderUserData>
 
-  protected async validateAuthorizationCode(
+  protected async fetchToken(
     code: string,
     codeVerifier: string | null,
-  ): Promise<OAuth2Token> {
+  ): Promise<Response> {
     const body = new URLSearchParams()
     body.set('grant_type', 'authorization_code')
     body.set('code', code)
@@ -66,11 +55,21 @@ export default abstract class BaseProvider {
       body,
     })
 
-    if (!tokenResponse.ok)
+    if (!tokenResponse.ok) {
+      const errorText = await tokenResponse.text().catch(() => 'Unknown error')
       throw new Error(
-        `Failed to fetch access token: ${tokenResponse.statusText}`,
+        `Validation error (${tokenResponse.status}): ${errorText}`,
       )
+    }
 
+    return tokenResponse
+  }
+
+  protected async validateAuthorizationCode(
+    code: string,
+    codeVerifier: string | null,
+  ): Promise<OAuth2Token> {
+    const tokenResponse = await this.fetchToken(code, codeVerifier)
     return (await tokenResponse.json()) as OAuth2Token
   }
 

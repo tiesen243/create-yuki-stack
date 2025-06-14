@@ -1,4 +1,4 @@
-import type { ProviderUserData } from './base'
+import type { ProviderUserData } from '../core/types'
 import BaseProvider from './base'
 
 export default class Facebook extends BaseProvider {
@@ -35,6 +35,7 @@ export default class Facebook extends BaseProvider {
     const searchParams = new URLSearchParams()
     searchParams.set('access_token', access_token)
     searchParams.set('fields', ['id', 'name', 'picture', 'email'].join(','))
+
     const response = await fetch(`${this.apiUrl}?${searchParams.toString()}`)
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error')

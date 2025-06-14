@@ -1,5 +1,3 @@
-'use server'
-
 import { db, eq } from '@{{ name }}/db'
 import { accounts, sessions, users } from '@{{ name }}/db/schema'
 

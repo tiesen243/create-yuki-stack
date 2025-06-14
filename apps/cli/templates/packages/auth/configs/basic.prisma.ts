@@ -1,5 +1,3 @@
-'use server'
-
 import type { User } from '@{{ name }}/db'
 import { db } from '@{{ name }}/db'
 
