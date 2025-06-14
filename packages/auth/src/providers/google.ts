@@ -9,8 +9,13 @@ export default class Google extends BaseProvider {
   protected override callbackUrl = this.createCallbackUrl('google')
   protected override scopes = ['openid', 'email', 'profile']
 
-  constructor(options: { clientId: string; clientSecret: string }) {
-    super(options.clientId, options.clientSecret)
+  constructor(opts: {
+    clientId: string
+    clientSecret: string
+    callbackUrl?: string
+  }) {
+    super(opts.clientId, opts.clientSecret)
+    if (opts.callbackUrl) this.callbackUrl = opts.callbackUrl
   }
 
   override async fetchUserData(

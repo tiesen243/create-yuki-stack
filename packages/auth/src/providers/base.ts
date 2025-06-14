@@ -25,7 +25,7 @@ export default abstract class BaseProvider {
 
   async createAuthorizationUrl(
     state: string,
-    codeVerifier: string | null,
+    _codeVerifier: string | null,
   ): Promise<URL> {
     const url = new URL(this.authorizationUrl)
     url.searchParams.set('response_type', 'code')
@@ -33,13 +33,13 @@ export default abstract class BaseProvider {
     url.searchParams.set('redirect_uri', this.callbackUrl)
     url.searchParams.set('state', state)
     url.searchParams.set('scope', this.scopes.join(' '))
-    if (codeVerifier) {
-      const codeChallenge = await this.generateCodeChallenge(codeVerifier)
-      url.searchParams.set('code_challenge', codeChallenge)
-      url.searchParams.set('code_challenge_method', 'S256')
-    }
+    // if (codeVerifier) {
+    //   const codeChallenge = await this.generateCodeChallenge(codeVerifier)
+    //   url.searchParams.set('code_challenge', codeChallenge)
+    //   url.searchParams.set('code_challenge_method', 'S256')
+    // }
 
-    return url
+    return Promise.resolve(url)
   }
 
   abstract fetchUserData(
@@ -49,13 +49,13 @@ export default abstract class BaseProvider {
 
   protected async validateAuthorizationCode(
     code: string,
-    codeVerifier: string | null,
+    _codeVerifier: string | null,
   ): Promise<OAuth2Token> {
     const body = new URLSearchParams()
     body.set('grant_type', 'authorization_code')
     body.set('code', code)
     body.set('redirect_uri', this.callbackUrl)
-    if (codeVerifier) body.set('code_verifier', codeVerifier)
+    // if (codeVerifier) body.set('code_verifier', codeVerifier)
 
     const tokenResponse = await fetch(this.tokenUrl, {
       method: 'POST',
@@ -66,10 +66,13 @@ export default abstract class BaseProvider {
       body,
     })
 
-    if (!tokenResponse.ok)
+    if (!tokenResponse.ok) {
+      const errorText = await tokenResponse.text().catch(() => 'Unknown error')
+      console.error(`OAuth2 token error: ${errorText}`)
       throw new Error(
         `Failed to fetch access token: ${tokenResponse.statusText}`,
       )
+    }
 
     return (await tokenResponse.json()) as OAuth2Token
   }

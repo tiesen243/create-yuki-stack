@@ -8,8 +8,13 @@ export default class Discord extends BaseProvider {
   protected override callbackUrl = this.createCallbackUrl('discord')
   protected override scopes = ['identify', 'email']
 
-  constructor(opts: { clientId: string; clientSecret: string }) {
+  constructor(opts: {
+    clientId: string
+    clientSecret: string
+    callbackUrl?: string
+  }) {
     super(opts.clientId, opts.clientSecret)
+    if (opts.callbackUrl) this.callbackUrl = opts.callbackUrl
   }
 
   override async fetchUserData(
