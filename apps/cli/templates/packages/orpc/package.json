@@ -21,7 +21,6 @@
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@orpc/server": "catalog:api",
-    "@{{ name }}/env": "workspace:*",
     "@{{ name }}/validators": "workspace:*"
   },
   "devDependencies": {
