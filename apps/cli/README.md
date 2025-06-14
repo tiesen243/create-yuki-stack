@@ -1,9 +1,11 @@
 # create-yuki-stack
 
-<div align="center">  
-  [![NPM Downloads](https://img.shields.io/npm/dw/create-yuki-stack)](https://www.npmjs.com/package/create-yuki-stack)
-  [![GitHub Stars](https://img.shields.io/github/stars/tiesen243/create-yuki-stack)](https://github.com/tiesen243/create-yuki-stack)
-  [![License](https://img.shields.io/npm/l/create-yuki-stack)](https://github.com/tiesen243/create-yuki-stack/blob/main/LICENSE)
+<div align="center">
+
+[![NPM Downloads](https://img.shields.io/npm/dw/create-yuki-stack)](https://www.npmjs.com/package/create-yuki-stack)
+[![GitHub Stars](https://img.shields.io/github/stars/tiesen243/create-yuki-stack)](https://github.com/tiesen243/create-yuki-stack)
+[![License](https://img.shields.io/npm/l/create-yuki-stack)](https://github.com/tiesen243/create-yuki-stack/blob/main/LICENSE)
+
 </div>
 
 A modern CLI tool for scaffolding fully-typed, full-stack TypeScript applications with best practices and customizable technology choices.
