@@ -33,6 +33,10 @@
     "./adapters/*": {
       "types": "./dist/adapters/*/index.d.ts",
       "default": "./dist/adapters/*/index.js"
+    },
+    "./providers/*": {
+      "types": "./dist/providers/*.d.ts",
+      "default": "./dist/providers/*.js"
     }
   },
   "main": "./dist/index.js",

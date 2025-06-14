@@ -2,7 +2,7 @@ import type BaseAdapter from '@/adapters/base'
 import type { CookieOptions } from '@/core/cookies'
 import type BaseProvider from '@/providers/base'
 import type { CredentialsOptions, Session } from '@/types'
-import { MemoryAdapter } from '@/adapters/memory'
+import MemoryAdapter from '@/adapters/memory'
 import Cookies from '@/core/cookies'
 import { generateSecureString } from './crypto'
 

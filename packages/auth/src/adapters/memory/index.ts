@@ -11,7 +11,7 @@ import { encodeHex, generateSecureString, hashSecret } from '@/core/crypto'
 import { generateCuid } from '@/core/cuid'
 import { Password } from '@/core/password'
 
-export class MemoryAdapter extends BaseAdapter {
+export default class MemoryAdapter extends BaseAdapter {
   private users: User[] = []
   private accounts: Account[] = []
   private sessions: {
