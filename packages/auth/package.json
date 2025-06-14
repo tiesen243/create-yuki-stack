@@ -21,7 +21,22 @@
     "url": "https://tiesen.id.vn"
   },
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./adapters": {
+      "types": "./dist/adapters/base.d.ts",
+      "default": "./dist/adapters/base.js"
+    },
+    "./adapters/*": {
+      "types": "./dist/adapters/*.d.ts",
+      "default": "./dist/adapters/*.js"
+    }
+  },
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
