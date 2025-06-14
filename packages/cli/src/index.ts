@@ -1,7 +1,7 @@
 import { createCli } from 'trpc-cli'
 
 import { initCommand } from '@/commands/create'
-import { createTRPCRouter, t } from '@/trpc'
+import { createTRPCRouter } from '@/trpc'
 import packageJson from '../package.json'
 import { sortCommand } from './commands/sort'
 

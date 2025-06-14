@@ -90,9 +90,9 @@ function getAllPackageJsonPaths(): string[] {
   return [root, ...workspaces]
 }
 
-export async function sortPackageJson(
-opts: { verbose: boolean },
-): Promise<void> {
+export async function sortPackageJson(opts: {
+  verbose: boolean
+}): Promise<void> {
   const paths = getAllPackageJsonPaths()
   const results = await Promise.all(
     paths.map((path) => sortPackageJsonFile(path, opts.verbose)),
