@@ -10,9 +10,24 @@
         "turbo": "^2.5.4",
       },
     },
-    "cli": {
+    "packages/auth": {
+      "name": "yuki-auth",
+      "version": "0.0.1",
+      "dependencies": {
+        "react": "^19.1.0",
+      },
+      "devDependencies": {
+        "@types/node": "24.0.1",
+        "@types/react": "^19.1.8",
+        "eslint": "^9.29.0",
+        "prettier": "^3.5.3",
+        "tsdown": "^0.12.7",
+        "typescript": "^5.8.3",
+      },
+    },
+    "packages/cli": {
       "name": "create-yuki-stack",
-      "version": "0.0.93",
+      "version": "0.0.98",
       "bin": "./dist/index.js",
       "dependencies": {
         "@clack/prompts": "^0.11.0",
@@ -648,7 +663,7 @@
 
     "create-require": ["create-require@1.1.1", "", {}, "sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ=="],
 
-    "create-yuki-stack": ["create-yuki-stack@workspace:cli"],
+    "create-yuki-stack": ["create-yuki-stack@workspace:packages/cli"],
 
     "cross-spawn": ["cross-spawn@7.0.6", "", { "dependencies": { "path-key": "^3.1.0", "shebang-command": "^2.0.0", "which": "^2.0.1" } }, "sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="],
 
@@ -1425,6 +1440,8 @@
     "yn": ["yn@3.1.1", "", {}, "sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q=="],
 
     "yocto-queue": ["yocto-queue@0.1.0", "", {}, "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="],
+
+    "yuki-auth": ["yuki-auth@workspace:packages/auth"],
 
     "zod": ["zod@3.25.63", "", {}, "sha512-3ttCkqhtpncYXfP0f6dsyabbYV/nEUW+Xlu89jiXbTBifUfjaSqXOG6JnQPLtqt87n7KAmnMqcjay6c0Wq0Vbw=="],
 

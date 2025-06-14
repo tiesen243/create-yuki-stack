@@ -393,7 +393,7 @@ export const initCommand = procedure
 
       await replace(project.name, project.packageManager)
       await buildReadme(project)
-      await sortPackageJson()
+      await sortPackageJson({ verbose: false })
 
       if (project.install) {
         s.message(

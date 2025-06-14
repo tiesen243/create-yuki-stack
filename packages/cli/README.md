@@ -1,5 +1,7 @@
 # create-yuki-stack
 
+![NPM Downloads](https://img.shields.io/npm/dw/create-yuki-stack)
+
 A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.
 
 ## Getting Started

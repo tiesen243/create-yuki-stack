@@ -1,0 +1,12 @@
+{
+  "extends": "../../tooling/typescript/react-library.json",
+  "compilerOptions": {
+    "checkJs": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "tsdown.config.ts", "package.json"]
+}

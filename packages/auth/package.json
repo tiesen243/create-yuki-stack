@@ -3,16 +3,50 @@
   "version": "0.0.1",
   "description": "Basic authentication package for Yuki Stack",
   "keywords": [
-    "yuki-stack",
     "auth",
     "authentication",
     "authorization",
-    "typescript"
+    "typescript",
+    "yuki-stack"
   ],
   "homepage": "https://create-yuki-stack.vercel.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/tiesen243/create-yuki-stack",
     "directory": "packages/auth"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Tiesen",
+    "url": "https://tiesen.id.vn"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ./.prettierignore",
+    "lint": "eslint",
+    "pub:dev": "bun run build && bun link",
+    "pub:release": "bun run build && bun publish --tag latest",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "../../tooling/prettier/index.js",
+  "dependencies": {
+    "react": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.1",
+    "@types/react": "^19.1.8",
+    "eslint": "^9.29.0",
+    "prettier": "^3.5.3",
+    "tsdown": "^0.12.7",
+    "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

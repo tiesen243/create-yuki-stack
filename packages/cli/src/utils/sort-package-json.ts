@@ -61,15 +61,23 @@ function sortRootKeys<T extends Record<string, unknown>>(obj: T): T {
   return sorted as T
 }
 
-async function sortPackageJsonFile(filePath: string): Promise<void> {
+async function sortPackageJsonFile(
+  filePath: string,
+  verbose: boolean,
+): Promise<boolean> {
   try {
     const raw = await fs.readFile(filePath, 'utf-8')
     const json = JSON.parse(raw) as PackageJson
     const sorted = sortRootKeys(json)
     const output = `${JSON.stringify(sorted, null, 2)}\n`
     await fs.writeFile(filePath, output, 'utf-8')
-  } catch {
-    // If the file is not valid JSON, skip it
+    return true
+  } catch (error) {
+    if (verbose) {
+      const message = error instanceof Error ? error.message : String(error)
+      console.error(`Error sorting ${filePath}:`, message)
+    }
+    return false
   }
 }
 
@@ -82,9 +90,19 @@ function getAllPackageJsonPaths(): string[] {
   return [root, ...workspaces]
 }
 
-export async function sortPackageJson(): Promise<void> {
+export async function sortPackageJson(
+opts: { verbose: boolean },
+): Promise<void> {
   const paths = getAllPackageJsonPaths()
-  await Promise.all(paths.map(sortPackageJsonFile))
+  const results = await Promise.all(
+    paths.map((path) => sortPackageJsonFile(path, opts.verbose)),
+  )
+
+  if (opts.verbose) {
+    console.log(`Found ${results.length} package.json files to sort`)
+    const successCount = results.filter(Boolean).length
+    console.log(`${successCount} package.json files sorted successfully`)
+  }
 }
 
 const keyOrder = [

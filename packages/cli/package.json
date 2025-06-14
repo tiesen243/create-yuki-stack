@@ -1,6 +1,6 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.0.98",
+  "version": "0.0.99",
   "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
     "boilerplate-generator",
@@ -34,11 +34,12 @@
     "templates"
   ],
   "scripts": {
+    "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ./.prettierignore",
     "lint": "eslint",
-    "pub:dev": "tsdown && bun link",
-    "pub:release": "tsdown && bun publish --tag latest",
+    "pub:dev": "bun run build && bun link",
+    "pub:release": "bun run build && bun publish --tag latest",
     "typecheck": "tsc --noEmit"
   },
   "prettier": "../../tooling/prettier/index.js",

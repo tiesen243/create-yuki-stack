@@ -7,8 +7,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "react-server": "./src/index.rsc.ts",
-      "default": "./src/index.ts"
+      "default": "./src/index.ts",
+      "react-server": "./src/index.rsc.ts"
     },
     "./react": {
       "types": "./dist/react.d.ts",
