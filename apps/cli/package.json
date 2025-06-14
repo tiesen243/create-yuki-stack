@@ -1,19 +1,25 @@
 {
-  "name": "yuki-auth",
-  "version": "0.0.1",
-  "description": "Basic authentication package for Yuki Stack",
+  "name": "create-yuki-stack",
+  "version": "0.1.0",
+  "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
-    "auth",
-    "authentication",
-    "authorization",
+    "boilerplate-generator",
+    "cli",
+    "create-yuki-stack",
+    "full-stack",
+    "monorepo",
+    "scaffolding",
+    "starter",
+    "turborepo",
+    "type-safe",
     "typescript",
-    "yuki-stack"
+    "workspace"
   ],
   "homepage": "https://create-yuki-stack.vercel.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/tiesen243/create-yuki-stack",
-    "directory": "packages/auth"
+    "directory": "apps/cli"
   },
   "license": "MIT",
   "author": {
@@ -21,28 +27,11 @@
     "url": "https://tiesen.id.vn"
   },
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
-    "./adapters": {
-      "types": "./dist/adapters/base.d.ts",
-      "default": "./dist/adapters/base.js"
-    },
-    "./adapters/*": {
-      "types": "./dist/adapters/*/index.d.ts",
-      "default": "./dist/adapters/*/index.js"
-    },
-    "./providers/*": {
-      "types": "./dist/providers/*.d.ts",
-      "default": "./dist/providers/*.js"
-    }
-  },
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "bin": "./dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "templates"
   ],
   "scripts": {
     "build": "tsdown",
@@ -55,11 +44,13 @@
   },
   "prettier": "../../tooling/prettier/index.js",
   "dependencies": {
-    "react": "^19.1.0"
+    "@clack/prompts": "^0.11.0",
+    "chalk": "^5.4.1",
+    "gradient-string": "^3.0.0",
+    "trpc-cli": "^0.9.2"
   },
   "devDependencies": {
     "@types/node": "24.0.1",
-    "@types/react": "^19.1.8",
     "eslint": "^9.29.0",
     "prettier": "^3.5.3",
     "tsdown": "^0.12.7",
@@ -67,8 +58,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "peerDependencies": {
-    "drizzle-orm": "^0.44.2"
   }
 }

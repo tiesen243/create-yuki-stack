@@ -1,1 +1,1 @@
-packages/cli/README.md
+apps/cli/README.md
