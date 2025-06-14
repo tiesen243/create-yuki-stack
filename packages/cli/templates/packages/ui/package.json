@@ -39,11 +39,11 @@
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "catalog:tailwind",
+    "@types/react": "catalog:react",
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "catalog:tailwind",
-    "@types/react": "catalog:react",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",
     "tailwindcss": "catalog:tailwind",

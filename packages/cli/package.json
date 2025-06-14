@@ -1,25 +1,25 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.0.96",
+  "version": "0.0.97",
   "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
+    "boilerplate-generator",
     "cli",
     "create-yuki-stack",
-    "monorepo",
-    "turborepo",
-    "workspace",
     "full-stack",
-    "typescript",
-    "type-safe",
+    "monorepo",
     "scaffolding",
     "starter",
-    "boilerplate-generator"
+    "turborepo",
+    "type-safe",
+    "typescript",
+    "workspace"
   ],
   "homepage": "https://create-yuki-stack.vercel.app",
   "repository": {
     "type": "git",
     "url": "https://github.com/tiesen243/create-yuki-stack",
-    "directory": "cli"
+    "directory": "packages/cli"
   },
   "license": "MIT",
   "author": {
@@ -35,13 +35,13 @@
   ],
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "format": "prettier --check . --ignore-path ../.gitignore --ignore-path ./.prettierignore",
+    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ./.prettierignore",
     "lint": "eslint",
-    "pub:dev": "tsdown && bun link create-yuki-stack",
+    "pub:dev": "tsdown && bun link",
     "pub:release": "tsdown && bun publish --tag latest",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "../tooling/prettier/index.js",
+  "prettier": "../../tooling/prettier/index.js",
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "chalk": "^5.4.1",

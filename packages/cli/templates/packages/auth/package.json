@@ -1,5 +1,5 @@
 {
-  "name": "@{{ name }}/db",
+  "name": "@{{ name }}/auth",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
@@ -7,7 +7,12 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "react-server": "./src/index.rsc.ts",
       "default": "./src/index.ts"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "default": "./src/react.tsx"
     }
   },
   "scripts": {
@@ -16,20 +21,19 @@
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit",
-    "with-env": "dotenv -e ../../.env --"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
+    "@{{ name }}/db": "workspace:*",
+    "@{{ name }}/env": "workspace:*"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "dotenv-cli": "catalog:",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",
     "typescript": "catalog:tool"
   }
 }
-

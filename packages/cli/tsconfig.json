@@ -1,5 +1,5 @@
 {
-  "extends": "../tooling/typescript/internal-package.json",
+  "extends": "../../tooling/typescript/internal-package.json",
   "compilerOptions": {
     "checkJs": true,
 

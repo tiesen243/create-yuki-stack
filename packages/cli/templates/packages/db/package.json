@@ -1,5 +1,5 @@
 {
-  "name": "@{{ name }}/api",
+  "name": "@{{ name }}/db",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
@@ -16,19 +16,16 @@
     "dev": "tsc --watch",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
   },
   "prettier": "@{{ name }}/prettier-config",
-  "dependencies": {
-    "@{{ name }}/env": "workspace:*",
-    "@{{ name }}/validators": "workspace:*",
-    "@trpc/server": "catalog:api",
-    "superjson": "catalog:api"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
+    "dotenv-cli": "catalog:",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",
     "typescript": "catalog:tool"

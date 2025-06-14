@@ -99,6 +99,7 @@ const keyOrder = [
   'main',
   'module',
   'types',
+  'bin',
   'files',
   'workspaces',
   'scripts',

@@ -1,15 +1,15 @@
 {
-  "name": "@{{ name }}/tanstack-start",
+  "name": "@{{ name }}/nextjs",
   "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "{{ pkm }} run with-env vite build",
-    "clean": "git clean -xdf .cache .nitro .output .tanstack .turbo node_modules",
-    "dev": "{{ pkm }} run with-env vite dev {{ hyphen }} --port 3002",
+    "build": "{{ pkm }} run with-env next build",
+    "clean": "git clean -xdf .cache .next .turbo node_modules",
+    "dev": "{{ pkm }} run with-env next dev {{ hyphen }} --turbopack --port 3000",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "{{ pkm }} run with-env vite preview {{ hyphen }} --port 3002",
+    "start": "{{ pkm }} run with-env next start {{ hyphen }} --port 3000",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
@@ -17,26 +17,21 @@
   "dependencies": {
     "@{{ name }}/env": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
-    "@tanstack/react-router": "^1.121.0",
-    "@tanstack/react-start": "^1.121.0",
+    "next": "15.3.3",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
   "devDependencies": {
-    "@{{ name }}/eslint-config": "workspace:*",
-    "@{{ name }}/prettier-config": "workspace:*",
-    "@{{ name }}/tsconfig": "workspace:*",
-    "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
+    "@{{ name }}/eslint-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
     "dotenv-cli": "catalog:",
     "eslint": "catalog:tool",
-    "jiti": "^2.4.2",
     "prettier": "catalog:tool",
     "tailwindcss": "catalog:tailwind",
-    "typescript": "catalog:tool",
-    "vite": "^6.3.5",
-    "vite-tsconfig-paths": "^5.1.4"
+    "typescript": "catalog:tool"
   }
 }

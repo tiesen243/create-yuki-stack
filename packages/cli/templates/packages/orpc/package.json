@@ -20,9 +20,9 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
+    "@orpc/server": "catalog:api",
     "@{{ name }}/env": "workspace:*",
-    "@{{ name }}/validators": "workspace:*",
-    "@orpc/server": "catalog:api"
+    "@{{ name }}/validators": "workspace:*"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
