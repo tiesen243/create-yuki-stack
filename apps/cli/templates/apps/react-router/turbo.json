@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".react-router/**", ".vercel/**", "build/**"]
+      "outputs": [".vercel/**", "build/**"]
     },
     "dev": { "persistent": true }
   }

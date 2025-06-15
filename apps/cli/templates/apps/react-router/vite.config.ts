@@ -8,8 +8,9 @@ export default defineConfig(({ mode }) => {
   process.env = { ...process.env, ...env, PATH: undefined, PORT: '3001' }
 
   return {
+    server: { port: 3001 },
     define: { 'process.env': process.env },
-    plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
+    plugins: [reactRouter(), tailwindcss(), tsconfigPaths()],
   }
 })
 

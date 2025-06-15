@@ -47,9 +47,6 @@ export function GET(req: NextRequest) {
         </p>
       </div>
     ),
-    {
-      width: 1200,
-      height: 630,
-    },
+    { width: 1200, height: 630 },
   )
 }
