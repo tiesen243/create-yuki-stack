@@ -1,5 +1,4 @@
-import type { Session } from './adapter'
-import type { AuthOptions } from './types'
+import type { AuthOptions, Session } from './types'
 import {
   authenticateCredentials,
   getOrCreateUser,

@@ -20,8 +20,8 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "@trpc/server": "catalog:api",
     "@{{ name }}/validators": "workspace:*",
+    "@trpc/server": "catalog:api",
     "superjson": "catalog:api"
   },
   "devDependencies": {

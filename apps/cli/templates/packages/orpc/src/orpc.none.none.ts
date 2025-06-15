@@ -50,7 +50,7 @@ const createCallerFactory = createRouterClient
  * These are the pieces you use to build your oRPC API. You should import these
  * a lot in the /src/routers folder
  *
- * This is how you create new routers and subrouters in your tRPC API
+ * This is how you create new routers and subrouters in your oRPC API
  * @see https://orpc.unnoq.com/docs/router 
  */
 

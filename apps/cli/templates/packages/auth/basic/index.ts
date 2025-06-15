@@ -1,7 +1,7 @@
 import { authOptions } from './config'
 import { Auth } from './core'
 
-export type { Session } from './core/adapter'
+export type { Session } from './core/types'
 export const { auth, signIn, signOut, handlers } = Auth(authOptions)
 export { Password } from './core/password/index'
 export {

@@ -1,24 +1,9 @@
-import type { User } from '@{{ name }}/db'
 import { db } from '@{{ name }}/db'
 
+import type { Session, SessionResult } from './types'
 import { authOptions } from '../config'
 import { encodeHex, generateSecureString, hashSecret } from './crypto'
 import { Password } from './password'
-
-export interface ValidSession {
-  user: User
-  expires: Date
-}
-export interface InvalidSession {
-  user: null
-  expires: Date
-}
-export type Session = ValidSession | InvalidSession
-
-interface SessionResult {
-  token: string
-  expires: Date
-}
 
 async function createSession(userId: string): Promise<SessionResult> {
   const token = generateSecureString()

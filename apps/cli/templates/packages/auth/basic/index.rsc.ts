@@ -11,7 +11,7 @@ const { auth: uncachedAuth, signIn, signOut, handlers } = Auth(authOptions)
  */
 const auth = cache(uncachedAuth)
 
-export type { Session } from './core/adapter'
+export type { Session } from './core/types'
 export { auth, signIn, signOut, handlers }
 export { Password } from './core/password/index'
 export {

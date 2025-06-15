@@ -3,7 +3,7 @@
 import * as React from 'react'
 
 import type { Providers } from './config'
-import type { InvalidSession, Session, ValidSession } from './core/adapter'
+import type { InvalidSession, Session, ValidSession } from './core/types'
 
 type AuthProviders =
   | 'credentials'
