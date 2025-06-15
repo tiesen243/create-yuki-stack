@@ -1,39 +1,65 @@
-import type { ProviderUserData } from '../core/types'
-import BaseProvider from './base'
+import type { OAuth2Token, ProviderUserData } from '../core/types'
+import BaseProvider, { OAuthClient } from './base'
 
 export default class Discord extends BaseProvider {
-  protected override authorizationUrl = 'https://discord.com/oauth2/authorize'
-  protected override tokenUrl = 'https://discord.com/api/oauth2/token'
-  protected override apiUrl = 'https://discord.com/api/users/@me'
-  protected override callbackUrl = this.createCallbackUrl('discord')
-  protected override scopes = ['identify', 'email']
+  private client: OAuthClient
+
+  private authorizationEndpoint = 'https://discord.com/oauth2/authorize'
+  private tokenEndpoint = 'https://discord.com/api/oauth2/token'
+  private apiEndpoint = 'https://discord.com/api/users/@me'
 
   constructor(opts: {
     clientId: string
     clientSecret: string
-    callbackUrl?: string
+    redirectUrl?: string
   }) {
-    super(opts.clientId, opts.clientSecret)
-    if (opts.callbackUrl) this.callbackUrl = opts.callbackUrl
+    super()
+    this.client = new OAuthClient(
+      opts.clientId,
+      opts.clientSecret,
+      opts.redirectUrl ?? this.createCallbackUrl('discord'),
+    )
   }
 
-  override async fetchUserData(
+  public override async createAuthorizationUrl(
+    state: string,
+    codeVerifier: string,
+  ): Promise<URL> {
+    const url = await this.client.createAuthorizationUrlWithPKCE(
+      this.authorizationEndpoint,
+      state,
+      ['identify', 'email'],
+      codeVerifier,
+    )
+
+    return url
+  }
+
+  public override async fetchUserData(
     code: string,
     codeVerifier: string | null,
   ): Promise<ProviderUserData> {
-    const { access_token } = await this.validateAuthorizationCode(
+    const tokenResponse = await this.client.validateAuthorizationCode(
+      this.tokenEndpoint,
       code,
       codeVerifier,
     )
 
-    const response = await fetch(this.apiUrl, {
-      headers: { Authorization: `Bearer ${access_token}` },
+    if (!tokenResponse.ok) {
+      const error = await tokenResponse.text().catch(() => 'Unknown error')
+      throw new Error(`Discord API error: ${error}`)
+    }
+
+    const tokenData = (await tokenResponse.json()) as OAuth2Token
+    const userResponse = await fetch(this.apiEndpoint, {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` },
     })
+    if (!userResponse.ok) {
+      const error = await userResponse.text().catch(() => 'Unknown error')
+      throw new Error(`Discord API error: ${error}`)
+    }
 
-    if (!response.ok)
-      throw new Error(`Failed to fetch user data: ${response.statusText}`)
-    const userData = (await response.json()) as DiscordUserResponse
-
+    const userData = (await userResponse.json()) as DiscordUserResponse
     return {
       accountId: userData.id,
       email: userData.email,
@@ -51,4 +77,3 @@ interface DiscordUserResponse {
   username: string
   avatar: string
 }
-

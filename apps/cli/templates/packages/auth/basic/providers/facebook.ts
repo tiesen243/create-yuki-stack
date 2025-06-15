@@ -1,49 +1,65 @@
-import type { ProviderUserData } from '../core/types'
-import BaseProvider from './base'
+import type { OAuth2Token, ProviderUserData } from '../core/types'
+import BaseProvider, { OAuthClient } from './base'
 
 export default class Facebook extends BaseProvider {
-  protected override authorizationUrl =
-    'https://www.facebook.com/v23.0/dialog/oauth'
-  protected override tokenUrl =
-    'https://graph.facebook.com/v23.0/oauth/access_token'
-  protected override apiUrl = 'https://graph.facebook.com/me'
-  protected override callbackUrl = this.createCallbackUrl('facebook')
-  protected override scopes = ['email', 'public_profile']
+  private client: OAuthClient
+
+  private authorizationEndpoint = 'https://www.facebook.com/v23.0/dialog/oauth'
+  private tokenEndpoint = 'https://graph.facebook.com/v23.0/oauth/access_token'
+  private apiEndpoint = 'https://graph.facebook.com/me'
 
   constructor(opts: {
     clientId: string
     clientSecret: string
-    callbackUrl?: string
+    redirectUrl?: string
   }) {
-    super(opts.clientId, opts.clientSecret)
-    if (opts.callbackUrl) this.callbackUrl = opts.callbackUrl
+    super()
+    this.client = new OAuthClient(
+      opts.clientId,
+      opts.clientSecret,
+      opts.redirectUrl ?? this.createCallbackUrl('facebook'),
+    )
   }
 
   override async createAuthorizationUrl(
     state: string,
     _codeVerifier: string | null,
   ): Promise<URL> {
-    return super.createAuthorizationUrl(state, null)
+    const url = await this.client.createAuthorizationUrl(
+      this.authorizationEndpoint,
+      state,
+      ['email', 'public_profile'],
+    )
+
+    return url
   }
 
   override async fetchUserData(
     code: string,
     _codeVerifier: string | null,
   ): Promise<ProviderUserData> {
-    const { access_token } = await this.validateAuthorizationCode(code, null)
-
-    const searchParams = new URLSearchParams()
-    searchParams.set('access_token', access_token)
-    searchParams.set('fields', ['id', 'name', 'picture', 'email'].join(','))
-
-    const response = await fetch(`${this.apiUrl}?${searchParams.toString()}`)
-    if (!response.ok) {
-      const errorText = await response.text().catch(() => 'Unknown error')
-      throw new Error(`Facebook API error (${response.status}): ${errorText}`)
+    const tokenResponse = await this.client.validateAuthorizationCode(
+      this.tokenEndpoint,
+      code,
+    )
+    if (!tokenResponse.ok) {
+      const error = await tokenResponse.text().catch(() => 'Unknown error')
+      throw new Error(`Facebook API error: ${error}`)
     }
 
-    const userData = (await response.json()) as FacebookUserResponse
+    const tokenData = (await tokenResponse.json()) as OAuth2Token
+    const searchParams = new URLSearchParams()
+    searchParams.set('access_token', tokenData.access_token)
+    searchParams.set('fields', ['id', 'name', 'picture', 'email'].join(','))
+    const userResponse = await fetch(
+      `${this.apiEndpoint}?${searchParams.toString()}`,
+    )
+    if (!userResponse.ok) {
+      const error = await userResponse.text().catch(() => 'Unknown error')
+      throw new Error(`Facebook API error: ${error}`)
+    }
 
+    const userData = (await userResponse.json()) as FacebookUserResponse
     return {
       accountId: userData.id,
       email: userData.email,
