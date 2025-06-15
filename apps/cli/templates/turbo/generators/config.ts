@@ -14,7 +14,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
     prompts: [
       {
         type: 'input',
-        name: 'name',
+        name: 'packageName',
         message:
           'What is the name of the package? (You can skip the `@yuki/` prefix)',
       },
@@ -27,40 +27,40 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
     ],
     actions: [
       (answers) => {
-        if ('name' in answers && typeof answers.name === 'string') {
-          if (answers.name.startsWith('@yuki/'))
-            answers.name = answers.name.replace('@yuki/', '')
+        if ('packageName' in answers && typeof answers.packageName === 'string') {
+          if (answers.packageName.startsWith('@yuki/'))
+            answers.packageName = answers.packageName.replace('@yuki/', '')
         }
         return 'Config sanitized'
       },
       {
         type: 'add',
-        path: 'packages/{{ name }}/eslint.config.js',
+        path: 'packages/{{ packageName }}/eslint.config.js',
         templateFile: 'templates/eslint.config.js.hbs',
       },
       {
         type: 'add',
-        path: 'packages/{{ name }}/package.json',
+        path: 'packages/{{ packageName }}/package.json',
         templateFile: 'templates/package.json.hbs',
       },
       {
         type: 'add',
-        path: 'packages/{{ name }}/tsconfig.json',
+        path: 'packages/{{ packageName }}/tsconfig.json',
         templateFile: 'templates/tsconfig.json.hbs',
       },
       {
         type: 'add',
-        path: 'packages/{{ name }}/turbo.json',
+        path: 'packages/{{ packageName }}/turbo.json',
         templateFile: 'templates/turbo.json.hbs',
       },
       {
         type: 'add',
-        path: 'packages/{{ name }}/src/index.ts',
+        path: 'packages/{{ packageName }}/src/index.ts',
         template: "export const name = '{{ name }}';",
       },
       {
         type: 'modify',
-        path: 'packages/{{ name }}/package.json',
+        path: 'packages/{{ packageName }}/package.json',
         async transform(content, answers) {
           if ('deps' in answers && typeof answers.deps === 'string') {
             const pkg = JSON.parse(content) as PackageJson
@@ -82,11 +82,11 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
         /**
          * Install deps and format everything
          */
-        if ('name' in answers && typeof answers.name === 'string') {
+        if ('packageName' in answers && typeof answers.packageName === 'string') {
           execSync('{{ pkme }} sherif@latest --fix', { stdio: 'inherit' })
           execSync('{{ pkm }} install', { stdio: 'inherit' })
           execSync(
-            `{{ pkm }} prettier --write packages/${answers.name}/** --list-different`,
+            `{{ pkm }} prettier --write packages/${answers.packageName}/** --list-different`,
           )
           return 'Package scaffolded'
         }

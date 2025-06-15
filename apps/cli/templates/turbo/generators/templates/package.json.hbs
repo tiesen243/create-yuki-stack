@@ -1,5 +1,5 @@
 {
-  "name": "@{{ projectName }}/{{ name }}",
+  "name": "@{{ name }}/{{ packageName }}",
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
@@ -18,12 +18,12 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@{{ projectName }}/prettier-config",
+  "prettier": "@{{ name }}/prettier-config",
   "dependencies": {},
   "devDependencies": {
-    "@{{ projectName }}/eslint-config": "workspace:*",
-    "@{{ projectName }}/prettier-config": "workspace:*",
-    "@{{ projectName }}/tsconfig": "workspace:*",
+    "@{{ name }}/eslint-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
     "eslint": "catalog:tool",
     "prettier": "catalog:tool",
     "typescript": "catalog:tool"

@@ -4,18 +4,10 @@ import * as glob from 'glob'
 import { getExecutor } from '@/utils/get-package-manager'
 
 export async function replace(name: string, pkm: string) {
-  const files = glob.sync('**/*', {
-    ignore: ['turbo/**'],
-    nodir: true,
-  })
+  const files = glob.sync('**/*', { nodir: true })
 
   const replacements = new Map([
     ['{{ name }}', name],
-    ['{{ pkm }}', pkm],
-    ['{{ pkme }}', getExecutor(pkm)],
-  ])
-
-  const turboReplacements = new Map([
     ['{{ pkm }}', pkm],
     ['{{ pkme }}', getExecutor(pkm)],
   ])
@@ -33,16 +25,12 @@ export async function replace(name: string, pkm: string) {
           replacement,
         )
     }
-    updatedContent = updatedContent.replace(
-      /{{ hyphen }}/g,
-      pkm === 'npm' ? '--' : '',
-    )
 
     return updatedContent
   }
 
-  await Promise.all([
-    ...files.map(async (file) => {
+  await Promise.all(
+    files.map(async (file) => {
       try {
         const content = await fs.readFile(file, 'utf-8')
         const updatedContent = replaceInContent(content, replacements)
@@ -53,18 +41,5 @@ export async function replace(name: string, pkm: string) {
         // Ignore errors for files that cannot be read or written
       }
     }),
-    (async () => {
-      try {
-        const turboGeneratorPath = 'turbo/generators/config.ts'
-        const content = await fs.readFile(turboGeneratorPath, 'utf-8')
-        const updatedContent = replaceInContent(content, turboReplacements)
-
-        if (updatedContent !== content) {
-          await fs.writeFile(turboGeneratorPath, updatedContent, 'utf-8')
-        }
-      } catch {
-        // Ignore errors for turbo generator file
-      }
-    })(),
-  ])
+  )
 }
