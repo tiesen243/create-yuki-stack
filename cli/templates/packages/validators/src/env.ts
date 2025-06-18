@@ -2,10 +2,7 @@ import * as z from 'zod/v4-mini'
 
 export const env = createEnv({
   server: {
-    NODE_ENV: z._default(
-      z.enum(['development', 'production', 'test']),
-      'development',
-    ),
+    NODE_ENV: z._default(z.enum(['development', 'production', 'test']), 'development'),
 
     // Vercel environment variables
     VERCEL: z.optional(z.boolean()),
@@ -19,12 +16,10 @@ export const env = createEnv({
 
   runtimeEnv: {
     // Server-side environment variables
-    // ENV: process.env.ENV,
     NODE_ENV: process.env.NODE_ENV,
 
 
     // Client-side environment variables
-    // NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
 
     // Vercel environment variables
     VERCEL: process.env.VERCEL,

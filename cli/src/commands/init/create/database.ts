@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 
 import type { ProjectOptions } from '@/commands/init/types'
+import { addEnv } from '@/utils/add-env'
 import { getPackageVersions } from '@/utils/get-package-version'
 
 export async function addDatabase(opts: ProjectOptions) {
@@ -114,4 +115,6 @@ export async function addDatabase(opts: ProjectOptions) {
     `${destPath}/package.json`,
     JSON.stringify(packageJson, null, 2),
   )
+
+  await addEnv('server', 'DATABASE_URL', 'z.string()')
 }
