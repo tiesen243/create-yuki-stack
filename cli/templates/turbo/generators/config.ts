@@ -16,7 +16,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
         type: 'input',
         name: 'packageName',
         message:
-          'What is the name of the package? (You can skip the `@acme/` prefix)',
+          'What is the name of the package? (You can skip the `@{{ name }}/` prefix)',
       },
       {
         type: 'input',
@@ -31,8 +31,8 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           'packageName' in answers &&
           typeof answers.packageName === 'string'
         ) {
-          if (answers.packageName.startsWith('@acme/'))
-            answers.packageName = answers.packageName.replace('@acme/', '')
+          if (answers.packageName.startsWith('@{{ name }}/'))
+            answers.packageName = answers.packageName.replace('@{{ name }}/', '')
         }
         return 'Config sanitized'
       },
@@ -89,10 +89,10 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           'packageName' in answers &&
           typeof answers.packageName === 'string'
         ) {
-          execSync('bunx sherif@latest --fix', { stdio: 'inherit' })
-          execSync('bun install', { stdio: 'inherit' })
+          execSync('{{ pkme }} sherif@latest --fix', { stdio: 'inherit' })
+          execSync('{{ pkm }} install', { stdio: 'inherit' })
           execSync(
-            `bun prettier --write packages/${answers.packageName}/** --list-different`,
+            `{{ pkm }} prettier --write packages/${answers.packageName}/** --list-different`,
           )
           return 'Package scaffolded'
         }

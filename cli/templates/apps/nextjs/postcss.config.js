@@ -1,1 +1,5 @@
-export { postcssConfig as default } from '@acme/ui/postcss'
+const config = {
+  plugins: ['@tailwindcss/postcss'],
+}
+
+export default config

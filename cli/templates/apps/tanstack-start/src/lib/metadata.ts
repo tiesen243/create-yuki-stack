@@ -12,7 +12,7 @@ export interface Metadata {
 }
 
 export function createMetadata(override: Metadata): AnyRouteMatch['meta'] {
-  const siteName = 'Acme'
+  const siteName = '{{ name }}'
   const baseUrl = getBaseUrl()
 
   const title = override.title ? `${override.title} | ${siteName}` : siteName

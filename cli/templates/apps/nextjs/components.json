@@ -5,8 +5,8 @@
     "components": "@/components",
     "hooks": "@/hooks",
     "lib": "@/lib",
-    "utils": "@acme/ui/utils",
-    "ui": "@acme/ui/components"
+    "utils": "@{{ name }}/ui/utils",
+    "ui": "@{{ name }}/ui/components"
   },
   "iconLibrary": "lucide",
   "rsc": true,

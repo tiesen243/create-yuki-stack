@@ -1,7 +1,7 @@
 {
-  "name": "acme",
+  "name": "{{ name }}",
   "private": true,
-  "prettier": "@acme/prettier-config",
+  "prettier": "@{{ name }}/prettier-config",
   "scripts": {
     "build": "turbo run build",
     "bump-deps": "bunx npm-check-updates --deep -u && bun install",
@@ -17,7 +17,7 @@
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
-    "@acme/prettier-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
     "@turbo/gen": "^2.5.4",
     "turbo": "^2.5.4"
   },

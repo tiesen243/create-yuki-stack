@@ -1,4 +1,4 @@
-import '@acme/validators/env'
+import '@{{ name }}/validators/env'
 
 import type { NextConfig } from 'next'
 
@@ -9,11 +9,11 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
 
   transpilePackages: [
-    '@acme/api',
-    '@acme/auth',
-    '@acme/db',
-    '@acme/ui',
-    '@acme/validators',
+    '@{{ name }}/api',
+    '@{{ name }}/auth',
+    '@{{ name }}/db',
+    '@{{ name }}/ui',
+    '@{{ name }}/validators',
   ],
 } satisfies NextConfig
 

@@ -9,7 +9,7 @@ import {
   ScrollRestoration,
 } from 'react-router'
 
-import { ThemeProvider } from '@acme/ui'
+import { ThemeProvider } from '@{{ name }}/ui'
 
 import type { Route } from './+types/root'
 import { createMetadata } from '@/lib/metadata'

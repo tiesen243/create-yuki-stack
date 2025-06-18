@@ -1,4 +1,4 @@
-import '@acme/validators/env'
+import '@{{ name }}/validators/env'
 
 import { createRouter as createTanStackRouter } from '@tanstack/react-router'
 

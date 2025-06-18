@@ -1,5 +1,5 @@
 {
-  "name": "@acme/eslint-config",
+  "name": "@{{ name }}/eslint-config",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -13,7 +13,7 @@
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@acme/prettier-config",
+  "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@next/eslint-plugin-next": "^15.3.3",
     "eslint-plugin-import": "^2.31.0",
@@ -24,8 +24,8 @@
     "typescript-eslint": "^8.34.0"
   },
   "devDependencies": {
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"

@@ -1,9 +1,9 @@
 {
-  "extends": "@acme/tsconfig/next.json",
+  "extends": "@{{ name }}/tsconfig/next.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./*"],
-      "@acme/ui/*": ["../../packages/ui/src/*"]
+      "@{{ name }}/ui/*": ["../../packages/ui/src/*"]
     }
   },
   "include": ["**/*", "next-env.d.ts", ".next/types/**/*.ts"],

@@ -5,7 +5,7 @@ import {
   Scripts,
 } from '@tanstack/react-router'
 
-import { ThemeProvider } from '@acme/ui'
+import { ThemeProvider } from '@{{ name }}/ui'
 
 // @ts-expect-error - globals.css is a CSS file, not a module
 import globalsCss from '@/globals.css?url'

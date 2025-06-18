@@ -1,5 +1,5 @@
 {
-  "name": "@acme/nextjs",
+  "name": "@{{ name }}/nextjs",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -13,18 +13,19 @@
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
-  "prettier": "@acme/prettier-config",
+  "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "@acme/ui": "workspace:*",
-    "@acme/validators": "workspace:*",
+    "@{{ name }}/ui": "workspace:*",
+    "@{{ name }}/validators": "workspace:*",
     "next": "15.3.3",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
   "devDependencies": {
-    "@acme/eslint-config": "workspace:*",
-    "@acme/prettier-config": "workspace:*",
-    "@acme/tsconfig": "workspace:*",
+    "@{{ name }}/eslint-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
+    "@tailwindcss/postcss": "^4.1.10",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
