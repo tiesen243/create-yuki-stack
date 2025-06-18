@@ -21,5 +21,5 @@
     "@turbo/gen": "^2.5.4",
     "turbo": "^2.5.4"
   },
-  "packageManager": "bun@1.2.16"
+  "packageManager": "pnpm@10.11.0"
 }
