@@ -1,3 +1,0 @@
-{
-  "extends": "@{{ name }}/tsconfig/base.json"
-}

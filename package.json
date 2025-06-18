@@ -5,7 +5,8 @@
   "description": "Clean and typesafe starter monorepo using Turborepo along with React and tRPC ",
   "license": "MIT",
   "workspaces": [
-    "apps/*",
+    "cli",
+    "www",
     "tooling/*"
   ],
   "scripts": {
