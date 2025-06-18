@@ -9,7 +9,7 @@
     "dev": "bun with-env next dev --turbopack --port 3000",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "bun with-env next start --port 3000",
+    "start": "bun with-env next start {{ hyphen }} --port 3000",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "{{ pkm }} run with-env vite build",
     "clean": "git clean -xdf .cache .nitro .output .tanstack .turbo node_modules",
-    "dev": "{{ pkm }} run with-env vite dev --port 3002",
+    "dev": "{{ pkm }} run with-env vite dev {{ hyphen }} --port 3002",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "start": "PORT=3002 {{ pkm }} run with-env node ./.output/server/index.mjs",

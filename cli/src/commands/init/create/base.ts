@@ -8,6 +8,7 @@ export async function addBase(opts: ProjectOptions) {
   await fs.copyFile(new URL('_gitignore', templatePath), '.gitignore')
   await fs.copyFile(new URL('tsconfig.json', templatePath), 'tsconfig.json')
   await fs.copyFile(new URL('turbo.json', templatePath), 'turbo.json')
+  await fs.writeFile('.env.example', '# Example environment variables\n')
 
   if (opts.packageManager === 'pnpm') {
     await fs.copyFile(

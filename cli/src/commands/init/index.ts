@@ -242,16 +242,11 @@ export const initCommand = procedure
     const { isCurrentDir, dest, projectName } = await checkDir(project.name)
     project.name = projectName
 
-    const spinner = p.spinner()
-    spinner.start(`Creating project ${pc.cyan(`"${projectName}"`)}...`)
     if (!isCurrentDir) {
       await fs.mkdir(projectName, { recursive: true })
       process.chdir(projectName)
     }
-    await createProject(project)
-    spinner.stop(
-      `${pc.green('Success!')} Created ${pc.bold(projectName)} at ${pc.cyan(dest)}`,
-    )
+    await createProject(project, dest)
 
     p.outro(
       `Next steps:\n\n` +

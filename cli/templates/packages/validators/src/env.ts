@@ -8,16 +8,27 @@ export const env = createEnv({
     ),
 
     // Vercel environment variables
+    VERCEL: z.optional(z.boolean()),
+    VERCEL_ENV: z.optional(z.enum(['production', 'preview', 'development'])),
     VERCEL_URL: z.optional(z.string()),
     VERCEL_PROJECT_PRODUCTION_URL: z.optional(z.string()),
   },
 
-  client: {},
+  client: {
+  },
 
   runtimeEnv: {
+    // Server-side environment variables
+    // ENV: process.env.ENV,
     NODE_ENV: process.env.NODE_ENV,
 
+
+    // Client-side environment variables
+    // NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
+
     // Vercel environment variables
+    VERCEL: process.env.VERCEL,
+    VERCEL_ENV: process.env.VERCEL_ENV,
     VERCEL_URL: process.env.VERCEL_URL,
     VERCEL_PROJECT_PRODUCTION_URL: process.env.VERCEL_PROJECT_PRODUCTION_URL,
   },

@@ -13,6 +13,7 @@ export async function completeOperation(opts: ProjectOptions): Promise<void> {
     ['{{ name }}', opts.name],
     ['{{ pkm }}', opts.packageManager],
     ['{{ pkme }}', getExecutor(opts.packageManager)],
+    ['{{ hyphen }}', opts.packageManager === 'npm' ? '--' : ''],
   ])
 
   await replaceInDirectory(process.cwd(), replaceMap)
