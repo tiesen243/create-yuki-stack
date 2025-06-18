@@ -65,4 +65,5 @@ export async function addEnv(
   }
 
   await fs.writeFile(ENV_PATH, updatedContent, 'utf8')
+  await fs.appendFile('.env.example', `\n${key}=`, 'utf8')
 }
