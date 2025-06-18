@@ -1,3 +1,4 @@
+import fs from 'node:fs/promises'
 import * as p from '@clack/prompts'
 import pc from 'picocolors'
 import { zod as z } from 'trpc-cli'
@@ -239,9 +240,14 @@ export const initCommand = procedure
 
     await projectOptions.parseAsync(project)
     const { isCurrentDir, dest, projectName } = await checkDir(project.name)
+    project.name = projectName
 
     const spinner = p.spinner()
     spinner.start(`Creating project ${pc.cyan(`"${projectName}"`)}...`)
+    if (!isCurrentDir) {
+      await fs.mkdir(projectName, { recursive: true })
+      process.chdir(projectName)
+    }
     await createProject(project)
     spinner.stop(
       `${pc.green('Success!')} Created ${pc.bold(projectName)} at ${pc.cyan(dest)}`,

@@ -1,11 +1,6 @@
 {
   "name": "acme",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "tools/*"
-  ],
   "prettier": "@acme/prettier-config",
   "scripts": {
     "build": "turbo run build",

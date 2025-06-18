@@ -1,5 +1,8 @@
 import type { ProjectOptions } from '@/commands/init/types'
+import { addBase } from './base'
+import { completeOperation } from './complete'
 
-export async function createProject(_opts: ProjectOptions): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
+export async function createProject(opts: ProjectOptions): Promise<void> {
+  await addBase(opts)
+  await completeOperation(opts)
 }

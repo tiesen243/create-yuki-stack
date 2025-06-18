@@ -1,11 +1,28 @@
 {
   "name": "acme",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "tools/*"
-  ],
+  "workspaces": {
+    "catalog": {
+      "@types/node": "^24.0.0",
+      "dotenv-cli": "^8.0.0",
+      "eslint": "^9.29.0",
+      "prettier": "^3.5.3",
+      "typescript": "^5.8.3"
+    },
+    "catalogs": {
+      "react": {
+        "@types/react": "^19.1.6",
+        "@types/react-dom": "^19.1.6",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0"
+      }
+    },
+    "packages": [
+      "apps/*",
+      "packages/*",
+      "tools/*"
+    ]
+  },
   "prettier": "@acme/prettier-config",
   "scripts": {
     "build": "turbo run build",
