@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@acme/ui/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "extends": "@acme/tsconfig/react.json",
+  "include": ["src"]
+}

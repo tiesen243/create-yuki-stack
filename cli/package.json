@@ -14,7 +14,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/tiesen243/create-yuki-stack",
-    "directory": "apps/cli"
+    "directory": "cli"
   },
   "license": "MIT",
   "author": {
@@ -32,7 +32,7 @@
     "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsdown --watch",
-    "format": "prettier --check . --ignore-path ../../.gitignore --ignore-path ./.prettierignore",
+    "format": "prettier --check . --ignore-path ../.gitignore --ignore-path ./.prettierignore",
     "lint": "eslint",
     "pub:dev": "bun run build && bun link",
     "pub:release": "bun run build && bun publish --tag latest",

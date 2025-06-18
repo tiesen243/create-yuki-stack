@@ -1,0 +1,52 @@
+{
+  "name": "@acme/ui",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/lib/utils.d.ts",
+      "default": "./src/lib/utils.ts"
+    },
+    "./*": {
+      "types": "./dist/components/*.d.ts",
+      "default": "./src/components/*.tsx"
+    },
+    "./hooks": {
+      "types": "./dist/hooks/*.d.ts",
+      "default": "./src/hooks/*.tsx"
+    },
+    "./postcss": "./postcss.config.js",
+    "./vite": "./vite.config.ts",
+    "./tailwind.css": "./src/tailwind.css"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc --watch",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@acme/prettier-config",
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.516.0",
+    "next-themes": "^0.4.6",
+    "tailwind-merge": "^3.3.1",
+    "tw-animate-css": "^1.3.4"
+  },
+  "devDependencies": {
+    "@acme/eslint-config": "workspace:*",
+    "@acme/prettier-config": "workspace:*",
+    "@acme/tsconfig": "workspace:*",
+    "@tailwindcss/postcss": "^4.1.10",
+    "@tailwindcss/vite": "^4.1.10",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "tailwindcss": "^4.1.10",
+    "typescript": "catalog:"
+  }
+}

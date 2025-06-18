@@ -1,0 +1,12 @@
+{
+  "extends": "@acme/tsconfig/react.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@acme/ui/*": ["../../packages/ui/src/*"]
+    }
+  },
+  "include": ["**/*"],
+  "exclude": ["node_modules"]
+}
