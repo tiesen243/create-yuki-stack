@@ -19,6 +19,11 @@ export async function completeOperation(opts: ProjectOptions): Promise<void> {
   if (opts.packageManager === 'npm' || opts.packageManager === 'yarn')
     await fixYarnAndNpmVersion(process.cwd())
 
+  await execAsync(
+    `${getExecutor(opts.packageManager)} sort-package-json@latest package.json apps/*/package.json packages/*/package.json tools/*/package.json`,
+    { cwd: process.cwd() },
+  )
+
   if (opts.install) {
     await execAsync(`${opts.packageManager} install`, { cwd: process.cwd() })
     await execAsync(`${opts.packageManager} run format:fix`, {
