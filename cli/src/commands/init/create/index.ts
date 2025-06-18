@@ -4,6 +4,7 @@ import pc from 'picocolors'
 import type { ProjectOptions } from '@/commands/init/types'
 import { addBase } from './base'
 import { completeOperation } from './complete'
+import { addDatabase } from './database'
 import { addFrontend } from './frontend'
 
 export async function createProject(
@@ -15,6 +16,7 @@ export async function createProject(
 
   await addBase(opts)
   await addFrontend(opts)
+  await addDatabase(opts)
 
   creatingSpinner.message(`Running ${pc.bold(opts.packageManager)} install...`)
   await completeOperation(opts)
