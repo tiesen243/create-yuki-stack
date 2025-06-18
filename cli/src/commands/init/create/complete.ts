@@ -9,6 +9,7 @@ import { getExecutor } from '@/utils/get-package-manager'
 const execAsync = promisify(exec)
 
 export async function completeOperation(opts: ProjectOptions): Promise<void> {
+  const cwd = process.cwd()
   const replaceMap = new Map<string, string>([
     ['{{ name }}', opts.name],
     ['{{ pkm }}', opts.packageManager],
@@ -16,27 +17,25 @@ export async function completeOperation(opts: ProjectOptions): Promise<void> {
     ['{{ hyphen }}', opts.packageManager === 'npm' ? '--' : ''],
   ])
 
-  await replaceInDirectory(process.cwd(), replaceMap)
+  await replaceInDirectory(cwd, replaceMap)
   if (opts.packageManager === 'npm' || opts.packageManager === 'yarn')
-    await fixYarnAndNpmVersion(process.cwd())
+    await fixYarnAndNpmVersion(cwd)
 
   await execAsync(
     `${getExecutor(opts.packageManager)} sort-package-json@latest package.json apps/*/package.json packages/*/package.json tools/*/package.json`,
-    { cwd: process.cwd() },
+    { cwd },
   )
 
   if (opts.install) {
-    await execAsync(`${opts.packageManager} install`, { cwd: process.cwd() })
-    await execAsync(`${opts.packageManager} run format:fix`, {
-      cwd: process.cwd(),
-    })
+    await execAsync(`${opts.packageManager} install`, { cwd })
+    await execAsync(`${opts.packageManager} run format:fix`, { cwd })
   }
 
   if (opts.git) {
-    await execAsync('git init', { cwd: process.cwd() })
-    await execAsync('git add --all', { cwd: process.cwd() })
+    await execAsync('git init', { cwd })
+    await execAsync('git add --all', { cwd })
     await execAsync('git commit -m "Initial commit from Create Yuki Stack"', {
-      cwd: process.cwd(),
+      cwd,
     })
   }
 }
@@ -63,26 +62,25 @@ async function replaceInDirectory(
 ): Promise<void> {
   const entries = await fs.readdir(dirPath, { withFileTypes: true })
 
-  for (const entry of entries) {
+  const tasks = entries.map(async (entry) => {
     const fullPath = path.join(dirPath, entry.name)
+    if (entry.isDirectory()) return replaceInDirectory(fullPath, replaceMap)
+    else if (entry.isFile()) return replaceInFile(fullPath, replaceMap)
+  })
 
-    if (entry.isDirectory()) await replaceInDirectory(fullPath, replaceMap)
-    else if (entry.isFile()) await replaceInFile(fullPath, replaceMap)
-  }
+  await Promise.all(tasks)
 }
 
 async function fixYarnAndNpmVersion(dirPath: string): Promise<void> {
   const entries = await fs.readdir(dirPath, { withFileTypes: true })
 
-  for (const entry of entries) {
+  const tasks = entries.map(async (entry) => {
     const fullPath = path.join(dirPath, entry.name)
+    if (entry.isDirectory()) return fixYarnAndNpmVersion(fullPath)
+    else if (entry.name === 'package.json') return fixPackageJson(fullPath)
+  })
 
-    if (entry.isDirectory()) {
-      await fixYarnAndNpmVersion(fullPath)
-    } else if (entry.name === 'package.json') {
-      await fixPackageJson(fullPath)
-    }
-  }
+  await Promise.all(tasks)
 }
 
 async function fixPackageJson(filePath: string): Promise<void> {
@@ -95,25 +93,26 @@ async function fixPackageJson(filePath: string): Promise<void> {
     const sectionsToFix = ['dependencies', 'devDependencies'] as const
 
     for (const section of sectionsToFix) {
-      if (packageJson[section]) {
-        for (const [key, value] of Object.entries(packageJson[section])) {
-          if (typeof value === 'string') {
-            let newValue = value
+      const sectionObj = packageJson[section]
+      if (!sectionObj) continue
 
-            // Replace workspace:* with *
-            if (value === 'workspace:*') {
-              newValue = '*'
-              modified = true
-            }
-            // Replace catalog: patterns with latest
-            else if (value.startsWith('catalog:')) {
-              newValue = 'latest'
-              modified = true
-            }
+      for (const [key, value] of Object.entries(sectionObj)) {
+        if (typeof value !== 'string') continue
+        let newValue = value
 
-            if (newValue !== value) packageJson[section][key] = newValue
-          }
+        // Replace workspace:* with *
+        if (value === 'workspace:*') {
+          newValue = '*'
+          modified = true
         }
+
+        // Replace catalog: patterns with latest
+        else if (value.startsWith('catalog:')) {
+          newValue = 'latest'
+          modified = true
+        }
+
+        if (newValue !== value) sectionObj[key] = newValue
       }
     }
 
