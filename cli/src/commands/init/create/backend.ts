@@ -162,7 +162,7 @@ async function addElysiaPlugins(opts: ProjectOptions, srcDir: string) {
   let modifiedContent = serverContent
 
   if (opts.auth !== 'none') {
-    modifiedContent = `${serverContent}\nimport { authPlugin } from './plugins/auth'`
+    modifiedContent = `${modifiedContent}\nimport { authPlugin } from './plugins/auth'`
 
     modifiedContent = modifiedContent.replace(
       /\.use\(\s*cors\(\{\s*origin:\s*\[\s*'[^']*',?\s*'[^']*',?\s*'[^']*',?\s*\],\s*credentials:\s*true,?\s*\}\),?\s*\)/,
@@ -171,7 +171,7 @@ async function addElysiaPlugins(opts: ProjectOptions, srcDir: string) {
   }
 
   if (opts.database !== 'none') {
-    modifiedContent = `${serverContent}\nimport { dbPlugin } from './plugins/db'`
+    modifiedContent = `${modifiedContent}\nimport { dbPlugin } from './plugins/db'`
 
     modifiedContent = modifiedContent.replace(
       /\.use\(\s*cors\(\{\s*origin:\s*\[\s*'[^']*',?\s*'[^']*',?\s*'[^']*',?\s*\],\s*credentials:\s*true,?\s*\}\),?\s*\)/,
