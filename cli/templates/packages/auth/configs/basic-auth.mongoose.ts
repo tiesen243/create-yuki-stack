@@ -1,14 +1,16 @@
 import { db } from '@{{ name }}/db'
 
 import type { Session, SessionResult } from './types'
-import { authOptions } from '../config'
 import { encodeHex, generateSecureString, hashSecret } from './crypto'
 import { Password } from './password'
+
+const SESSION_EXPIRES_IN = 1000 * 60 * 60 * 24 * 30 // 30 days in seconds
+const SESSION_EXPIRES_THRESHOLD = 1000 * 60 * 60 * 24 * 7 // 24 hours in seconds
 
 async function createSession(userId: string): Promise<SessionResult> {
   const token = generateSecureString()
   const hashToken = await hashSecret(token)
-  const expires = new Date(Date.now() + authOptions.session.expiresIn)
+  const expires = new Date(Date.now() + SESSION_EXPIRES_IN)
 
   await db.sessions.create({
     token: encodeHex(hashToken),
@@ -33,8 +35,8 @@ async function validateSessionToken(token: string): Promise<Session> {
     return { user: null, expires: new Date() }
   }
 
-  if (now >= session.expires.getTime() - authOptions.session.expiresThreshold) {
-    const newExpires = new Date(now + authOptions.session.expiresIn)
+  if (now >= session.expires.getTime() - SESSION_EXPIRES_THRESHOLD) {
+    const newExpires = new Date(now + SESSION_EXPIRES_IN)
     await db.sessions.updateOne({ token: hashToken }, { expires: newExpires })
     session.expires = newExpires
   }

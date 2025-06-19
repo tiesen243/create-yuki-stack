@@ -56,6 +56,5 @@ export interface AuthOptions {
     redirect?: string
   }
   cookieOptions?: CookieOptions
-  session?: { expiresIn: number; expiresThreshold: number }
   providers: Record<string, BaseProvider>
 }

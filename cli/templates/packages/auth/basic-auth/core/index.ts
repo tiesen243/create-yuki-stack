@@ -6,7 +6,7 @@ import {
   validateSessionToken,
 } from './adapter'
 import Cookies from './cookies'
-import { generateRandomString } from './crypto'
+import { generateStateOrCode } from './crypto'
 
 export function Auth(opts: AuthOptions) {
   const options = {
@@ -65,8 +65,8 @@ export function Auth(opts: AuthOptions) {
             const instance = providers[provider]
             if (!instance) throw new Error(`Provider ${provider} not found`)
 
-            const state = generateRandomString()
-            const codeVerifier = generateRandomString()
+            const state = generateStateOrCode()
+            const codeVerifier = generateStateOrCode()
             const redirectUrl = searchParams.get('redirect_to') ?? '/'
 
             const callbackUrl = await instance.createAuthorizationUrl(
@@ -175,10 +175,6 @@ const DEFAULT_OPTIONS = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'Lax',
-  },
-  session: {
-    expiresIn: 1000 * 60 * 60 * 24 * 30, // 30 days
-    expiresThreshold: 1000 * 60 * 60 * 24, // 24 hours
   },
   providers: {},
 } as const satisfies Required<AuthOptions>

@@ -10,7 +10,7 @@ function generateSecureString(): string {
   return id
 }
 
-function generateRandomString(): string {
+function generateStateOrCode(): string {
   const randomValues = new Uint8Array(32)
   crypto.getRandomValues(randomValues)
   return btoa(String.fromCharCode(...randomValues))
@@ -62,7 +62,7 @@ export {
   constantTimeEqual,
   decodeHex,
   encodeHex,
-  generateRandomString,
+  generateStateOrCode,
   generateCodeChallenge,
   generateSecureString,
   hashSecret,
