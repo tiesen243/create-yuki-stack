@@ -3,7 +3,7 @@ import '@{{ name }}/validators/env'
 import cors from '@elysiajs/cors'
 import Elysia from 'elysia'
 
-const PORT = process.env.PORT ?? 8080
+const PORT = parseInt(process.env.PORT ?? '8080', 10)
 
 const server = new Elysia({ aot: true, prefix: '/api' })
   .use(

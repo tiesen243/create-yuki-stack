@@ -10,7 +10,7 @@
     "dev": "bun run --hot --env-file=../../.env src/server.ts",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "src": "bun run --hot --env-file=../../.env src/server.ts",
+    "start": "bun run --hot --env-file=../../.env src/server.ts",
     "typecheck": "tsc --noEmit"
   },
   "prettier": "@{{ name }}/prettier-config",

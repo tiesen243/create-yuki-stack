@@ -2,6 +2,7 @@ import { spinner } from '@clack/prompts'
 import pc from 'picocolors'
 
 import type { ProjectOptions } from '@/commands/init/types'
+import { addBackend } from './backend'
 import { addBase } from './base'
 import { completeOperation } from './complete'
 import { addDatabase } from './database'
@@ -17,6 +18,7 @@ export async function createProject(
   await addBase(opts)
   await addFrontend(opts)
   await addDatabase(opts)
+  await addBackend(opts)
 
   creatingSpinner.message(`Running ${pc.bold(opts.packageManager)} install...`)
   await completeOperation(opts)

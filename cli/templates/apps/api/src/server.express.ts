@@ -3,7 +3,7 @@ import '@{{ name }}/validators/env'
 import cors from 'cors'
 import express from 'express'
 
-const PORT = process.env.PORT ?? 8080
+const PORT = parseInt(process.env.PORT ?? '8080', 10)
 
 const server = express()
   .use(

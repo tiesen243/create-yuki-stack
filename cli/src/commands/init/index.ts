@@ -120,14 +120,14 @@ export const initCommand = procedure
               options: [
                 { value: 'none', label: 'None' },
                 {
-                  value: 'express',
-                  label: 'Express',
-                  hint: 'Fast, unopinionated, minimalist web framework for Node.js',
-                },
-                {
                   value: 'elysia',
                   label: 'Elysia',
                   hint: 'Ergonomic Framework for Humans & Fox Girls',
+                },
+                {
+                  value: 'express',
+                  label: 'Express',
+                  hint: 'Fast, unopinionated, minimalist web framework for Node.js',
                 },
                 {
                   value: 'hono',

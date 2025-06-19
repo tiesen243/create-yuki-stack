@@ -7,9 +7,9 @@ export async function getPackageVersion(dep: string): Promise<string> {
   return version ? `^${version}` : 'latest'
 }
 
-export async function getPackageVersions(
-  deps: string[],
-): Promise<Record<string, string>> {
+export async function getPackageVersions<T extends string>(
+  deps: T[],
+): Promise<Record<T, string>> {
   const versions: Record<string, string> = {}
   await Promise.all(
     deps.map(async (dep) => (versions[dep] = await getPackageVersion(dep))),
