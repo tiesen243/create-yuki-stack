@@ -23,8 +23,7 @@ export const projectOptions = z.object({
   adapter: z.enum(['none', 'neon']).optional(),
 
   backend: z.enum(['none', 'express', 'elysia', 'hono']).optional(),
-  api: z.enum(['none', 'trpc', 'orpc']).optional(),
-  edenTreaty: z.boolean().optional(),
+  api: z.enum(['none', 'eden', 'trpc', 'orpc']).optional(),
 
   auth: z.enum(['none', 'basic-auth', 'better-auth', 'next-auth']).optional(),
   packageManager: z.enum(['npm', 'yarn', 'pnpm', 'bun']).optional(),

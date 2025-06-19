@@ -137,11 +137,20 @@ export const initCommand = procedure
               ],
               initialValue: DEFAULT_PROJECT_OPTIONS.backend,
             }),
-          api: () =>
+          api: ({ results }) =>
             p.select({
               message: 'Which API framework would you like to use?',
               options: [
                 { value: 'none', label: 'None' },
+                ...(results.backend === 'elysia'
+                  ? [
+                      {
+                        value: 'eden',
+                        label: 'Eden Treaty',
+                        hint: 'End-to-end type-safe APIs with Elysia',
+                      },
+                    ]
+                  : []),
                 {
                   value: 'trpc',
                   label: 'tRPC',
@@ -155,14 +164,6 @@ export const initCommand = procedure
               ],
               initialValue: DEFAULT_PROJECT_OPTIONS.api,
             }),
-          edenTreaty: ({ results }) =>
-            results.backend === 'elysia' && results.api === 'none'
-              ? p.confirm({
-                  message:
-                    'Would you like to use Eden Treaty for End-to-End Type Safety with Elysia?',
-                  initialValue: DEFAULT_PROJECT_OPTIONS.edenTreaty,
-                })
-              : Promise.resolve(DEFAULT_PROJECT_OPTIONS.edenTreaty),
 
           // Auth
           auth: ({ results }) =>
