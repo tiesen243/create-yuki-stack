@@ -3,6 +3,8 @@ import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import { MongoClient } from 'mongodb'
 import Discord from 'next-auth/providers/discord'
 
+import { env } from '@{{ name }}/validators/env'
+
 const client = new MongoClient(process.env.DATABASE_URL ?? '', {
   serverApi: { version: '1', strict: true, deprecationErrors: true },
 })
@@ -13,8 +15,8 @@ const authOptions = {
   adapter,
   providers: [
     Discord({
-      clientId: process.env.AUTH_DISCORD_ID ?? '',
-      clientSecret: process.env.AUTH_DISCORD_SECRET ?? '',
+      clientId: env.AUTH_DISCORD_ID ?? '',
+      clientSecret: env.AUTH_DISCORD_SECRET ?? '',
     }),
   ],
 } satisfies NextAuthConfig

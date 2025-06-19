@@ -23,7 +23,10 @@
     "typecheck": "tsc --noEmit"
   },
   "prettier": "@{{ name }}/prettier-config",
-  "dependencies": {},
+  "dependencies": {
+    "@{{ name }}/db": "workspace:*",
+    "@{{ name }}/validators": "workspace:*"
+  },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",

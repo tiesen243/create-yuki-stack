@@ -3,6 +3,7 @@ import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import Discord from 'next-auth/providers/discord'
 
 import { db } from '@{{ name }}/db'
+import { env } from '@{{ name }}/validators/env'
 
 const adapter = DrizzleAdapter(db)
 
@@ -10,8 +11,8 @@ const authOptions = {
   adapter,
   providers: [
     Discord({
-      clientId: process.env.AUTH_DISCORD_ID ?? '',
-      clientSecret: process.env.AUTH_DISCORD_SECRET ?? '',
+      clientId: env.AUTH_DISCORD_ID ?? '',
+      clientSecret: env.AUTH_DISCORD_SECRET ?? '',
     }),
   ],
 } satisfies NextAuthConfig

@@ -60,13 +60,10 @@ async function setupPackageManager(
       break
 
     case 'bun':
-      await Promise.all([
-        fs.copyFile(new URL('package.bun.json', templatePath), 'package.json'),
-        fs.writeFile(
-          'bunfig.toml',
-          '[install]\nlinkWorkspacePackages = true\n\n[run]\nbun = true',
-        ),
-      ])
+      await fs.writeFile(
+        'bunfig.toml',
+        '[install]\nlinkWorkspacePackages = true\n\n[run]\nbun = true',
+      )
       break
 
     default: {
