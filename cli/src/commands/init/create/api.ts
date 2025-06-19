@@ -29,7 +29,12 @@ export async function addApi(opts: ProjectOptions) {
 
   const [packageJson] = await Promise.all([
     fs
-      .readFile(new URL('package.json', templatePath), 'utf-8')
+      .readFile(
+        opts.backend === 'none'
+          ? new URL('package.json', templatePath)
+          : `${destPath}/package.json`,
+        'utf-8',
+      )
       .then((data) => JSON.parse(data) as PackageJson),
     fs.copyFile(
       new URL(
@@ -57,10 +62,12 @@ export async function addApi(opts: ProjectOptions) {
     packageJson.dependencies.superjson = 'catalog:api'
   } else packageJson.dependencies['@orpc/server'] = 'catalog:api'
 
-  if (opts.database !== 'none')
-    packageJson.dependencies[`@{{ name }}/db`] = 'workspace:*'
-  if (opts.auth !== 'none')
-    packageJson.dependencies[`@{{ name }}/auth`] = 'workspace:*'
+  if (opts.backend === 'none') {
+    if (opts.database !== 'none')
+      packageJson.dependencies[`@{{ name }}/db`] = 'workspace:*'
+    if (opts.auth !== 'none')
+      packageJson.dependencies[`@{{ name }}/auth`] = 'workspace:*'
+  }
 
   await fs.writeFile(
     `${destPath}/package.json`,

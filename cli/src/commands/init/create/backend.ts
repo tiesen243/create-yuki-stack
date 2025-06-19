@@ -80,6 +80,24 @@ export async function addBackend(opts: ProjectOptions) {
     JSON.stringify(packageJson, null, 2),
   )
 
+  if (opts.api !== 'none' && opts.api !== 'eden') {
+    const serverContent = await fs.readFile(`${srcDir}/server.ts`, 'utf-8')
+    let modifiedContent = serverContent
+    const appendContent = API_ROUTES[opts.api][opts.backend]
+    if (opts.backend === 'hono')
+      modifiedContent = modifiedContent.replace(
+        /(\nserve\({|\nexport default {)/,
+        `${appendContent}\n$1`,
+      )
+    else
+      modifiedContent = modifiedContent.replace(
+        '\nserver.listen',
+        `${appendContent}\n\nserver.listen`,
+      )
+    if (modifiedContent !== serverContent)
+      await fs.writeFile(`${srcDir}/server.ts`, modifiedContent)
+  }
+
   await addEnv('client', 'NEXT_PUBLIC_API_URL', 'z.optional(z.string())')
 }
 
@@ -183,3 +201,16 @@ async function addElysiaPlugins(opts: ProjectOptions, srcDir: string) {
   if (modifiedContent !== serverContent)
     await fs.writeFile(`${srcDir}/server.ts`, modifiedContent)
 }
+
+const API_ROUTES = {
+  trpc: {
+    elysia: `  .all('/trpc/*', async ({ request }) => {\n    let response: Response\n    if (request.method === 'OPTIONS')\n      response = new Response(null, { status: 204 })\n    else\n      response = await fetchRequestHandler({\n        endpoint: '/api/trpc',\n        req: request,\n        router: appRouter,\n        createContext: () => createTRPCContext(request),\n      })\n\n    return response\n  })\n\nimport { fetchRequestHandler } from '@trpc/server/adapters/fetch'\nimport { appRouter } from './routers/_app'\nimport { createTRPCContext } from './trpc'\n`,
+    express: `  .use(\n    '/api/trpc',\n    createExpressMiddleware({\n      router: appRouter,\n      createContext: ({ req }) =>\n        createTRPCContext({\n          headers: new Headers(req.headers as Record<string, string>),\n        }),\n    }),\n  )\n\nimport { createExpressMiddleware } from '@trpc/server/adapters/express'\nimport { appRouter } from './routers/_app'\nimport { createTRPCContext } from './trpc'\n`,
+    hono: `  .all('/api/trpc/*', async (c) => {\n    let response: Response\n    if (c.req.method === 'OPTIONS')\n      response = new Response(null, { status: 204 })\n    else\n      response = await fetchRequestHandler({\n        endpoint: '/api/trpc',\n        req: c.req.raw,\n        router: appRouter,\n        createContext: () => createTRPCContext(c.req.raw),\n      })\n\n    return c.body(response.body ?? '', response)\n  })\n\nimport { fetchRequestHandler } from '@trpc/server/adapters/fetch'\nimport { appRouter } from './routers/_app'\nimport { createTRPCContext } from './trpc'\n`,
+  },
+  orpc: {
+    elysia: ``,
+    express: ``,
+    hono: ``,
+  },
+} as const
