@@ -3,7 +3,7 @@
 import * as React from 'react'
 
 import type { Providers } from './config'
-import type { InvalidSession, Session, ValidSession } from './core/types'
+import type { Session, User } from './core/types'
 
 type AuthProviders =
   | 'credentials'
@@ -19,8 +19,8 @@ type SessionContextValue = {
   signOut: (opts?: { redirectUrl: string }) => Promise<void>
 } & (
   | { status: 'loading'; session: Session }
-  | { status: 'unauthenticated'; session: InvalidSession }
-  | { status: 'authenticated'; session: ValidSession }
+  | { status: 'unauthenticated'; session: Session & { user: null } }
+  | { status: 'authenticated'; session: Session & { user: User } }
 )
 
 const SessionContext = React.createContext<SessionContextValue | null>(null)

@@ -14,17 +14,10 @@ export interface ProviderUserData {
   image: string
 }
 
-export interface ValidSession {
-  user: User
+export interface Session {
+  user: User | null
   expires: Date
 }
-
-export interface InvalidSession {
-  user: null
-  expires: Date
-}
-
-export type Session = ValidSession | InvalidSession
 
 export interface SessionResult {
   token: string
