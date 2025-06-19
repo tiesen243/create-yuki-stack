@@ -17,7 +17,7 @@ const createTRPCContext = async (opts: { headers: Headers }) => {
     '>>> tRPC Request from',
     opts.headers.get('x-trpc-source') ?? 'unknown',
     'by',
-    session.user?.name ?? 'anonymous',
+    session?.user?.name ?? 'anonymous',
   )
 
   return {
@@ -51,7 +51,7 @@ const publicProcedure = t.procedure.use(timingMiddleware)
 const protectedProcedure = t.procedure
   .use(timingMiddleware)
   .use(({ ctx, next }) => {
-    if (!ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' })
+    if (!ctx.session?.user) throw new TRPCError({ code: 'UNAUTHORIZED' })
     return next({
       ctx: {
         session: { ...ctx.session, user: ctx.session.user },
