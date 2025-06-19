@@ -1,6 +1,8 @@
+type Tag = 'latest' | 'beta'
+
 export async function getPackageVersion(
   dep: string,
-  tag: 'latest' | 'beta' = 'latest',
+  tag: Tag = 'latest',
 ): Promise<string> {
   const version = await fetch(
     `https://registry.npmjs.org/-/package/${dep}/dist-tags`,
@@ -16,11 +18,10 @@ export async function getPackageVersions<T extends string>(
   const versions: Record<string, string> = {}
   await Promise.all(
     deps.map(async (dep) => {
-      const [pkg, tag = 'latest'] = dep.split('@') as [
-        string,
-        'latest' | 'beta',
-      ]
-      return (versions[dep] = await getPackageVersion(pkg, tag))
+      const lastAtIndex = dep.lastIndexOf('@')
+      const pkg = lastAtIndex > 0 ? dep.substring(0, lastAtIndex) : dep
+      const tag = lastAtIndex > 0 ? dep.substring(lastAtIndex + 1) : 'latest'
+      return (versions[dep] = await getPackageVersion(pkg, tag as Tag))
     }),
   )
   return versions

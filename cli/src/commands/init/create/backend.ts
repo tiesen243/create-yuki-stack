@@ -110,15 +110,8 @@ async function configureBackendDependencies(
     if (opts.packageManager !== 'bun')
       packageJson.dependencies['@elysiajs/node'] = versions['@elysiajs/node']
 
-    if (opts.api === 'eden') {
+    if (opts.api === 'eden')
       packageJson.dependencies['@elysiajs/eden'] = versions['@elysiajs/eden']
-      packageJson.exports = {
-        '.': {
-          types: './dist/index.d.ts',
-          default: './src/index.ts',
-        },
-      }
-    }
   } else if (opts.backend === 'express') {
     packageJson.dependencies.express = versions.express
     packageJson.dependencies.cors = versions.cors
@@ -131,6 +124,14 @@ async function configureBackendDependencies(
       packageJson.dependencies['@hono/node-server'] =
         versions['@hono/node-server']
   }
+
+  if (opts.api !== 'none')
+    packageJson.exports = {
+      '.': {
+        types: './dist/index.d.ts',
+        default: './src/index.ts',
+      },
+    }
 }
 
 async function modifyServerFileForNonBunEnvironment(

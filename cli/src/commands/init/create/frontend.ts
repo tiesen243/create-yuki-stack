@@ -24,10 +24,24 @@ export async function addFrontend(opts: ProjectOptions) {
   const deps: Record<string, string> = {}
   if (opts.auth !== 'none') deps['@{{ name }}/auth'] = 'workspace:*'
   if (opts.database !== 'none') deps['@{{ name }}/db'] = 'workspace:*'
-  if (opts.api !== 'none') deps['@{{ name }}/api'] = 'workspace:*'
+
+  if (opts.api === 'trpc')
+    Object.assign(deps, {
+      ['@{{ name }}/api']: 'workspace:*',
+      '@tanstack/react-query': 'catalog:api',
+      '@trpc/client': 'catalog:api',
+      '@trpc/tanstack-react-query': 'catalog:api',
+    })
+  else if (opts.api === 'orpc')
+    Object.assign(deps, {
+      ['@{{ name }}/api']: 'workspace:*',
+      '@tanstack/react-query': 'catalog:api',
+      '@orpc/client': 'catalog:api',
+      '@orpc/react-query': 'catalog:api',
+    })
+
   const needsTanstackYarnFix =
     opts.frontend.includes('tanstack-start') && opts.packageManager === 'yarn'
-  if (Object.keys(deps).length === 0 && !needsTanstackYarnFix) return
 
   await Promise.all(
     opts.frontend.map((app) =>
@@ -44,9 +58,10 @@ async function processApp(
 ) {
   const appConfig = getAppConfig(app)
 
-  await Promise.allSettled([
+  await Promise.all([
     updatePackageJson(app, workspaceDeps, needsTanstackYarnFix),
     createApiRoutes(app, opts, appConfig),
+    addApiClient(app, opts),
     createAuthRoutes(app, opts, appConfig),
     updateLayoutFile(opts, appConfig.layoutFile),
   ])
@@ -107,6 +122,19 @@ async function createApiRoutes(
   } catch {
     // Handle errors silently
   }
+}
+
+async function addApiClient(
+  app: ProjectOptions['frontend'][number],
+  opts: ProjectOptions,
+) {
+  if (opts.api !== 'trpc' && opts.api !== 'orpc') return
+
+  await fs.cp(
+    new URL(`../templates/packages/api/${opts.api}`, import.meta.url),
+    `apps/${app}${app !== 'nextjs' ? '/src' : ''}/${opts.api}`,
+    { recursive: true, force: true },
+  )
 }
 
 async function createAuthRoutes(
