@@ -1,9 +1,9 @@
-import { initTRPC, TRPCError } from '@trpc/server'
-import SuperJSON from 'superjson'
+import type { ResponseHeadersPluginContext } from '@orpc/server/plugins'
+import { createRouterClient, os } from '@orpc/server'
 
-const createTRPCContext = (opts: { headers: Headers }) => {
+const createORPCContext = async (opts: { headers: Headers }) => {
   console.log(
-    '>>> tRPC Request from',
+    '>>> oRPC Request from',
     opts.headers.get('x-trpc-source') ?? 'unknown',
     'by',
     'anonymous',
@@ -12,32 +12,25 @@ const createTRPCContext = (opts: { headers: Headers }) => {
   return {}
 }
 
-const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: SuperJSON,
-  sse: {
-    maxDurationMs: 1_000 * 60 * 5, // 5 minutes
-    ping: { enabled: true, intervalMs: 3_000 },
-    client: { reconnectAfterInactivityMs: 5_000 },
-  },
-})
+const o = os.$context<
+  Awaited<ReturnType<typeof createORPCContext>> & ResponseHeadersPluginContext
+>()
 
-const createCallerFactory = t.createCallerFactory
+const createCallerFactory = createRouterClient
 
-const createTRPCRouter = t.router
-
-const timingMiddleware = t.middleware(async ({ next, path }) => {
+const timingMiddleware = o.middleware(async ({ next, path }) => {
   const start = Date.now()
   const result = await next()
   const end = Date.now()
-  console.log(`[tRPC] ${path} took ${end - start}ms to execute`)
+  console.log(`[oRPC] ${path} took ${end - start}ms to execute`)
   return result
 })
 
-const publicProcedure = t.procedure.use(timingMiddleware)
+const publicProcedure = o.use(timingMiddleware)
 
 export {
+  o,
   createCallerFactory,
-  createTRPCContext,
-  createTRPCRouter,
+  createORPCContext,
   publicProcedure,
 }

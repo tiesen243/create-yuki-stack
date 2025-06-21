@@ -1,5 +1,5 @@
-import { initTRPC, TRPCError } from '@trpc/server'
-import SuperJSON from 'superjson'
+import type { ResponseHeadersPluginContext } from '@orpc/server/plugins'
+import { createRouterClient, ORPCError, os } from '@orpc/server'
 
 import { auth, validateSessionToken } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
@@ -10,14 +10,14 @@ const isomorphicGetSession = async (headers: Headers) => {
   return auth()
 }
 
-const createTRPCContext = async (opts: { headers: Headers }) => {
+const createORPCContext = async (opts: { headers: Headers }) => {
   const session = await isomorphicGetSession(opts.headers)
 
   console.log(
-    '>>> tRPC Request from',
+    '>>> oRPC Request from',
     opts.headers.get('x-trpc-source') ?? 'unknown',
     'by',
-    session.user?.name ?? 'anonymous',
+    session?.user?.name ?? 'anonymous',
   )
 
   return {
@@ -26,43 +26,34 @@ const createTRPCContext = async (opts: { headers: Headers }) => {
   }
 }
 
-const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: SuperJSON,
-  sse: {
-    maxDurationMs: 1_000 * 60 * 5, // 5 minutes
-    ping: { enabled: true, intervalMs: 3_000 },
-    client: { reconnectAfterInactivityMs: 5_000 },
-  },
-})
+const o = os.$context<
+  Awaited<ReturnType<typeof createORPCContext>> & ResponseHeadersPluginContext
+>()
 
-const createCallerFactory = t.createCallerFactory
+const createCallerFactory = createRouterClient
 
-const createTRPCRouter = t.router
-
-const timingMiddleware = t.middleware(async ({ next, path }) => {
+const timingMiddleware = o.middleware(async ({ next, path }) => {
   const start = Date.now()
   const result = await next()
   const end = Date.now()
-  console.log(`[tRPC] ${path} took ${end - start}ms to execute`)
+  console.log(`[oRPC] ${path} took ${end - start}ms to execute`)
   return result
 })
 
-const publicProcedure = t.procedure.use(timingMiddleware)
-const protectedProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(({ ctx, next }) => {
-    if (!ctx.session.user) throw new TRPCError({ code: 'UNAUTHORIZED' })
-    return next({
-      ctx: {
-        session: { ...ctx.session, user: ctx.session.user },
-      },
-    })
+const publicProcedure = o.use(timingMiddleware)
+const protectedProcedure = o.use(timingMiddleware).use(({ context, next }) => {
+  if (!context.session?.user) throw new ORPCError('UNAUTHORIZED')
+  return next({
+    context: {
+      session: { ...context.session, user: context.session.user },
+    },
   })
+})
 
 export {
+  o,
   createCallerFactory,
-  createTRPCContext,
-  createTRPCRouter,
+  createORPCContext,
   publicProcedure,
   protectedProcedure,
 }

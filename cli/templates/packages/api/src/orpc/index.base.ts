@@ -1,27 +1,30 @@
-import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
+import { RPCHandler } from '@orpc/server/fetch'
+import {
+  BatchHandlerPlugin,
+  CORSPlugin,
+  ResponseHeadersPlugin,
+} from '@orpc/server/plugins'
 
+import { createCallerFactory, createORPCContext } from './orpc'
 import { appRouter } from './routers/_app'
-import { createCallerFactory, createTRPCContext } from './trpc'
 
 const handler = async (request: Request) => {
-  let response: Response
+  const handler = new RPCHandler(appRouter, {
+    plugins: [
+      new BatchHandlerPlugin(),
+      new CORSPlugin(),
+      new ResponseHeadersPlugin(),
+    ],
+  })
 
-  if (request.method === 'OPTIONS')
-    response = new Response(null, { status: 204 })
-  else
-    response = await fetchRequestHandler({
-      endpoint: '/api/trpc',
-      req: request,
-      router: appRouter,
-      createContext: () => createTRPCContext(request),
-    })
+  const { matched, response } = await handler.handle(request, {
+    prefix: '/api/orpc',
+    context: await createORPCContext(),
+  })
 
-  response.headers.set('Access-Control-Allow-Origin', '*')
-  response.headers.set('Access-Control-Request-Method', '*')
-  response.headers.set('Access-Control-Allow-Methods', 'OPTIONS, GET, POST')
-  response.headers.set('Access-Control-Allow-Headers', '*')
+  if (!matched) return new Response('Not Found', { status: 404 })
   return response
 }
 
 export type { AppRouter, RouterInputs, RouterOutputs } from './routers/_app'
-export { appRouter, createCallerFactory, createTRPCContext, handler }
+export { appRouter, createCallerFactory, createORPCContext, handler }

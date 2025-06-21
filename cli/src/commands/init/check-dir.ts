@@ -45,7 +45,7 @@ export async function checkDir(
       initialValue: false,
     })
 
-    if (!shouldContinue) {
+    if (!shouldContinue || p.isCancel(shouldContinue)) {
       p.cancel('Operation cancelled')
       process.exit(0)
     }
