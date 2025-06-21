@@ -51,11 +51,23 @@ bun create yuki-stack
 
 ## CLI Options
 
-| Option          | Description                               |
-| --------------- | ----------------------------------------- |
-| `-y, --yes`     | Skip all prompts and use default settings |
-| `-h, --help`    | Display help information                  |
-| `-V, --version` | Display version number                    |
+| Option                       | Description                                                                |
+| ---------------------------- | -------------------------------------------------------------------------- |
+| `-y, --yes`                  | Skip all prompts and use [default settings](#default-options-with--y-flag) |
+| `--no-yes`                   | Negate `--yes` option                                                      |
+| `--frontend [values...]`     | Frontend frameworks (choices: nextjs, react-router, tanstack-start)        |
+| `--database [string]`        | Database option (choices: none, drizzle, prisma, mongoose)                 |
+| `--adapter [string]`         | Database adapter (choices: none, neon)                                     |
+| `--backend [string]`         | Backend framework (choices: none, express, elysia, hono)                   |
+| `--api [string]`             | API type (choices: none, eden, trpc, orpc)                                 |
+| `--auth [string]`            | Authentication (choices: none, basic-auth, better-auth, next-auth)         |
+| `--package-manager [string]` | Package manager (choices: npm, yarn, pnpm, bun)                            |
+| `--install`                  | Install dependencies after setup                                           |
+| `--no-install`               | Negate `--install` option                                                  |
+| `--git`                      | Initialize git repository                                                  |
+| `--no-git`                   | Negate `--git` option                                                      |
+| `-h, --help`                 | Display help information                                                   |
+| `-V, --version`              | Display version number                                                     |
 
 ### Default Options (with `-y` flag)
 

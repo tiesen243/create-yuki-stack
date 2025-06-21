@@ -17,19 +17,32 @@ export const projectOptions = z.object({
 
   frontend: z
     .array(z.enum(['nextjs', 'react-router', 'tanstack-start']))
+    .describe('Frontend frameworks')
     .optional(),
 
-  database: z.enum(['none', 'drizzle', 'prisma', 'mongoose']).optional(),
-  adapter: z.enum(['none', 'neon']).optional(),
+  database: z
+    .enum(['none', 'drizzle', 'prisma', 'mongoose'])
+    .describe('Database options')
+    .optional(),
+  adapter: z.enum(['none', 'neon']).describe('Database adapter').optional(),
 
-  backend: z.enum(['none', 'express', 'elysia', 'hono']).optional(),
-  api: z.enum(['none', 'eden', 'trpc', 'orpc']).optional(),
+  backend: z
+    .enum(['none', 'express', 'elysia', 'hono'])
+    .describe('Backend framework')
+    .optional(),
+  api: z.enum(['none', 'eden', 'trpc', 'orpc']).describe('API type').optional(),
 
-  auth: z.enum(['none', 'basic-auth', 'better-auth', 'next-auth']).optional(),
-  packageManager: z.enum(['npm', 'yarn', 'pnpm', 'bun']).optional(),
-  install: z.boolean().optional(),
+  auth: z
+    .enum(['none', 'basic-auth', 'better-auth', 'next-auth'])
+    .describe('Authentication options')
+    .optional(),
 
-  git: z.boolean().optional(),
+  packageManager: z
+    .enum(['npm', 'yarn', 'pnpm', 'bun'])
+    .describe('Package manager')
+    .optional(),
+  install: z.boolean().describe('Install dependencies after setup').optional(),
+  git: z.boolean().describe('Initialize a git repository').optional(),
 })
 
 export type ProjectOptions = Omit<
