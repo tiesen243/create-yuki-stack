@@ -164,7 +164,7 @@ async function modifyServerFileForNonBunEnvironment(
     modifiedContent = `${serverContent.replace(
       /new Elysia\(\{ aot: /g,
       'new Elysia({ adapter: node(), aot: ',
-    )}\nimport cors from '@elysiajs/cors'`
+    )}\nimport node from '@elysiajs/node'`
   } else if (opts.backend === 'hono') {
     modifiedContent = `${serverContent.replace(
       /export default {\n\s*fetch: server\.fetch,\n\s*port: PORT,\n\s*} as const/g,
