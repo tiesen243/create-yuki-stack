@@ -5,8 +5,7 @@
     "rootDirs": [".", "./.react-router/types"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@{{ name }}/ui/*": ["../../packages/ui/src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["**/*", ".react-router/types/**/*"],
