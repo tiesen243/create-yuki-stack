@@ -60,12 +60,11 @@ bun create yuki-stack
 ### Default Options (with `-y` flag)
 
 - **Name**: `my-yuki-app`
-- **Frontend**: `Next.js`
-- **Shadcn/UI**: `true` (included)
+- **Frontend**: [`Next.js`]
 - **Database**: `none`
 - **Adapter**: none
-- **API**: `none`
 - **Backend**: `none`
+- **API**: `none`
 - **Auth**: none
 - **Package Manager**: Auto-detected from environment
 - **Install Dependencies**: `true`
@@ -97,6 +96,7 @@ bun create yuki-stack
 
 - **tRPC**: End-to-end typesafe APIs with minimal boilerplate
 - **oRPC**: Optimized RPC library for efficient API calls
+- **eden**: "End-to-End Type Safety for Elysia"
 
 </details>
 
@@ -124,14 +124,11 @@ The generated project follows a monorepo structure using Turborepo with:
 
 ```
 apps/
-  ├─ nextjs/      # Next.js application
-  ├─ api/         # API server (if selected)
-  └─ native/      # Expo app (if selected)
+  ├─ api/         # API server
+  └─ nextjs/      # Next.js application
 packages/
-  ├─ api/         # API definitions
   ├─ auth/        # Authentication utilities
   ├─ db/          # Database client and schema
-  ├─ env/         # Environment variable validation
   ├─ ui/          # Shared UI components
   └─ validators/  # Shared validation schemas
 ```
