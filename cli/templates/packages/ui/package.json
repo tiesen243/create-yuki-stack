@@ -12,7 +12,7 @@
       "types": "./dist/components/*.d.ts",
       "default": "./src/components/*.tsx"
     },
-    "./hooks": {
+    "./hooks/*": {
       "types": "./dist/hooks/*.d.ts",
       "default": "./src/hooks/*.tsx"
     },
