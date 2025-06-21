@@ -12,7 +12,6 @@ export const DEFAULT_PROJECT_OPTIONS = {
 
   backend: 'none',
   api: 'none',
-  edenTreaty: false,
 
   auth: 'none',
 

@@ -100,6 +100,7 @@ export async function addDatabase(opts: ProjectOptions) {
       'db:studio': '{{ pkm }} run with-env drizzle-kit studio',
     })
   } else if (opts.database === 'prisma') {
+    packageJson.exports = packageJson.exports ?? {}
     Object.assign(packageJson.exports['./schema'] ?? {}, {
       types: './dist/generated/prisma/client.d.ts',
       default: './src/generated/prisma/client.ts',
