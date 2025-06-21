@@ -129,12 +129,22 @@ async function addApiClient(
   opts: ProjectOptions,
 ) {
   if (opts.api !== 'trpc' && opts.api !== 'orpc') return
+  const clientPath = `apps/${app}${app !== 'nextjs' ? '/src' : ''}/${opts.api}`
 
   await fs.cp(
     new URL(`../templates/packages/api/${opts.api}`, import.meta.url),
-    `apps/${app}${app !== 'nextjs' ? '/src' : ''}/${opts.api}`,
+    clientPath,
     { recursive: true, force: true },
   )
+
+  if (opts.backend !== 'none') {
+    const reactContent = await fs.readFile(`${clientPath}/react.tsx`, 'utf-8')
+    const modifiedContent = `${reactContent.replace(
+      `import { getBaseUrl } from '@/lib/utils'`,
+      `import { env } from '@{{ name }}/validators/env'`,
+    )}\nfunction getBaseUrl() {\n  if (env.NEXT_PUBLIC_API_URL) return \`https://\${env.NEXT_PUBLIC_API_URL}\`\n  return 'http://localhost:8080'\n}`
+    await fs.writeFile(`${clientPath}/react.tsx`, modifiedContent)
+  }
 }
 
 async function createAuthRoutes(
