@@ -152,6 +152,13 @@ async function configureBackendDependencies(
     }
 }
 
+/**
+ * Modifies the backend server file for compatibility with non-Bun environments.
+ *
+ * For Elysia, updates the server instantiation to use the Node adapter and appends the necessary import. For Hono, replaces the default export with a `serve` function call and adds the corresponding import. Writes changes only if modifications are made.
+ *
+ * @param serverFilePath - Path to the backend server file to modify
+ */
 async function modifyServerFileForNonBunEnvironment(
   opts: ProjectOptions,
   serverFilePath: string,
