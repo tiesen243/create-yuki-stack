@@ -1,0 +1,12 @@
+{
+  "extends": "@{{ name }}/tsconfig/react.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@{{ name }}/ui/*": ["../../packages/ui/src/*"]
+    }
+  },
+  "include": ["**/*"],
+  "exclude": ["node_modules"]
+}

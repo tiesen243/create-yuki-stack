@@ -1,0 +1,36 @@
+{
+  "name": "@{{ name }}/nextjs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun with-env next build",
+    "clean": "git clean -xdf .cache .next .turbo node_modules",
+    "dev": "bun with-env next dev --turbopack --port 3000",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "start": "bun with-env next start {{ hyphen }} --port 3000",
+    "typecheck": "tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "prettier": "@{{ name }}/prettier-config",
+  "dependencies": {
+    "@{{ name }}/ui": "workspace:*",
+    "@{{ name }}/validators": "workspace:*",
+    "next": "15.3.4",
+    "react": "catalog:react",
+    "react-dom": "catalog:react"
+  },
+  "devDependencies": {
+    "@{{ name }}/eslint-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
+    "@tailwindcss/postcss": "^4.1.10",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "dotenv-cli": "catalog:",
+    "tailwindcss": "^4.1.10",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "@{{ name }}/validators",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc --watch",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@{{ name }}/prettier-config",
+  "dependencies": {
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@{{ name }}/eslint-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  }
+}
