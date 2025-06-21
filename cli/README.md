@@ -12,7 +12,7 @@ A modern CLI tool for scaffolding fully-typed, full-stack TypeScript application
 
 ## Features
 
-- 🚀 **Multiple Frontend Options**: Next.js, React Router, TanStack Router, or Expo
+- 🚀 **Multiple Frontend Options**: Next.js, React Router or TanStack Start
 - 🔄 **API Layer Options**: tRPC or oRPC for end-to-end type safety
 - 🗄️ **Database Choices**: Prisma, Drizzle, or Mongoose
 - 🔒 **Authentication**: Multiple auth solutions including NextAuth.js and Better Auth
@@ -87,46 +87,45 @@ bun create yuki-stack
 <details>
 <summary><b>Frontend Frameworks</b></summary>
 
-- **Next.js**: Full-stack React framework with server components
-- **React Router**: Standard React routing solution
-- **TanStack Router**: Type-safe router with data loading
-- **Expo**: React Native for mobile applications
+- **Next.js**: The React Framework for the Web
+- **React Router**: A user‑obsessed, standards‑focused, multi‑strategy router you can deploy anywhere
+- **TanStack Start**: Full-stack React and Solid framework powered by TanStack Router
 
 </details>
 
 <details>
 <summary><b>Backend Frameworks</b></summary>
 
-- **Express**: Industry standard Node.js web framework
-- **Elysia**: High-performance Bun web framework with end-to-end type safety
-- **Hono**: Lightweight, ultrafast web framework for the edge
+- **Elysia**: Ergonomic Framework for Humans & Fox Girls
+- **Express**: Fast, unopinionated, minimalist web framework for Node.js
+- **Hono**: Fast, lightweight, built on Web Standards. Support for any JavaScript runtime
 
 </details>
 
 <details>
 <summary><b>API Layers</b></summary>
 
-- **tRPC**: End-to-end typesafe APIs with minimal boilerplate
-- **oRPC**: Optimized RPC library for efficient API calls
-- **eden**: "End-to-End Type Safety for Elysia"
+- **eden**: End-to-end type-safe APIs with Elysia
+- **tRPC**: Move Fast and Break Nothing. End-to-end typesafe APIs made easy
+- **oRPC**: Easy to build APIs that are end-to-end type-safe and adhere to OpenAPI standards
 
 </details>
 
 <details>
 <summary><b>Database Options</b></summary>
 
-- **Prisma**: Modern database toolkit with type safety
-- **Drizzle**: Lightweight SQL ORM with type safety
-- **Mongoose**: MongoDB ODM for flexible schemas
+- **Drizzle**: A lightweight and performant TypeScript ORM with developer experience in mind
+- **Prisma**: Ship at lightning speed, and scale to a global audience effortlessly with our next-gen serverless Postgres database
+- **Mongoose**: Elegant MongoDB object modeling for Node.js
 
 </details>
 
 <details>
 <summary><b>Authentication</b></summary>
 
-- **Basic Auth**: Minimalist authentication implementation
-- **Better Auth**: Modern authentication solution
-- **Next Auth**: Authentication for Next.js
+- **Basic Auth**: Basic authentication built from scratch based on [Lucia](https://lucia-auth.com)
+- **Better Auth**: The most comprehensive authentication framework for TypeScript
+- **Next Auth**: Authentication for Next.js applications
 
 </details>
 
