@@ -5,7 +5,7 @@ export const env = createEnv({
     NODE_ENV: z._default(z.enum(['development', 'production', 'test']), 'development'),
 
     // Vercel environment variables
-    VERCEL: z.optional(z.boolean()),
+    VERCEL: z.optional(z.string()),
     VERCEL_ENV: z.optional(z.enum(['production', 'preview', 'development'])),
     VERCEL_URL: z.optional(z.string()),
     VERCEL_PROJECT_PRODUCTION_URL: z.optional(z.string()),
