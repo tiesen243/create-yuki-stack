@@ -71,7 +71,8 @@ function createEnv<
       `❌ Environment variables validation failed:\n${parsedEnvs.error.message}`,
     )
 
-  return new Proxy(parsedEnvs.data as TResult, {
+  const envData = parsedEnvs.success ? parsedEnvs.data : {}
+  return new Proxy(envData as TResult, {
     get(target, prop) {
       if (!isServer && prop in opts.server)
         throw new Error(
