@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import * as p from '@clack/prompts'
 
+import type { Options } from './types'
 import { procedure } from '@/trpc'
 import { setupMonoapp } from './setup-monoapp'
 import { setupMonorepo } from './setup-turborepo'
@@ -31,7 +32,9 @@ export const addAuth = procedure.mutation(async () => {
     } catch (error) {
       if (error instanceof Error) console.error(error.message)
       else console.log('No db package found, skipping db auth setup.')
-      process.exit(0)
+      throw new Error(
+        'Database package detection failed. Please run with manual configuration.',
+      )
     }
   } catch {
     const { db, dbInstance } = await p.group({
@@ -58,9 +61,3 @@ export const addAuth = procedure.mutation(async () => {
   if (options.turbo) await setupMonorepo(options)
   else await setupMonoapp(options)
 })
-
-export interface Options {
-  turbo: boolean
-  db: 'drizzle' | 'prisma' | 'mongoose'
-  dbInstance: string
-}

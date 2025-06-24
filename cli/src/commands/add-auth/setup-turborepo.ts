@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 
-import type { Options } from '.'
+import type { Options } from './types'
 import { DEFAULT_PROJECT_NAME } from '../init/constants'
 
 export async function setupMonorepo(opts: Options) {

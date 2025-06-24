@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 
-import type { Options } from '.'
+import type { Options } from './types'
 
 export async function setupMonoapp(opts: Options) {
   const templatePath = new URL('../templates/packages/auth/', import.meta.url)
@@ -32,10 +32,6 @@ export async function setupMonoapp(opts: Options) {
       .replace(
         /import { accounts, sessions, users } from '@{{ name }}\/db\/schema'/g,
         `import { accounts, sessions, users } from '${opts.dbInstance}/schema'`,
-      )
-      .replace(
-        /(?<!import { db })(?<!import { db, eq })(?<!import.*eq.*from)/g,
-        '',
       )
     modifiedConfig = `import { eq } from 'drizzle-orm'\n\n${modifiedConfig}`
   } else {
