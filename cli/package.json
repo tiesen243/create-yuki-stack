@@ -39,7 +39,7 @@
     "pub:release": "bun run build && bun publish --tag latest",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "../tooling/prettier/index.js",
+  "prettier": "../tools/prettier/index.js",
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "picocolors": "^1.1.1",

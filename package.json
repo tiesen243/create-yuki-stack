@@ -7,7 +7,7 @@
   "workspaces": [
     "cli",
     "www",
-    "tooling/*"
+    "tools/*"
   ],
   "scripts": {
     "build": "turbo run build",

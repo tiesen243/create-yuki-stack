@@ -12,7 +12,7 @@
     },
     "cli": {
       "name": "create-yuki-stack",
-      "version": "0.1.16",
+      "version": "0.1.17",
       "bin": "./dist/index.js",
       "dependencies": {
         "@clack/prompts": "^0.11.0",
@@ -27,7 +27,7 @@
         "typescript": "^5.8.3",
       },
     },
-    "tooling/eslint": {
+    "tools/eslint": {
       "name": "@yuki/eslint-config",
       "version": "1.0.0",
       "dependencies": {
@@ -42,16 +42,16 @@
       "devDependencies": {
         "@yuki/prettier-config": "workspace:*",
         "@yuki/tsconfig": "workspace:*",
-        "eslint": "latest",
-        "prettier": "latest",
-        "typescript": "latest",
+        "eslint": "^9.29.0",
+        "prettier": "^3.6.0",
+        "typescript": "^5.8.3",
       },
     },
-    "tooling/github": {
+    "tools/github": {
       "name": "@yuki/github",
       "version": "1.0.0",
     },
-    "tooling/prettier": {
+    "tools/prettier": {
       "name": "@yuki/prettier-config",
       "version": "1.0.0",
       "dependencies": {
@@ -60,11 +60,11 @@
       },
       "devDependencies": {
         "@yuki/tsconfig": "workspace:*",
-        "prettier": "latest",
-        "typescript": "latest",
+        "eslint": "^9.29.0",
+        "prettier": "^3.6.0",
       },
     },
-    "tooling/typescript": {
+    "tools/typescript": {
       "name": "@yuki/tsconfig",
       "version": "1.0.0",
     },
@@ -501,13 +501,13 @@
 
     "@typescript-eslint/visitor-keys": ["@typescript-eslint/visitor-keys@8.35.0", "", { "dependencies": { "@typescript-eslint/types": "8.35.0", "eslint-visitor-keys": "^4.2.1" } }, "sha512-zTh2+1Y8ZpmeQaQVIc/ZZxsx8UzgKJyNg1PTvjzC7WMhPSVS8bfDX34k1SrwOf016qd5RU3az2UxUNue3IfQ5g=="],
 
-    "@yuki/eslint-config": ["@yuki/eslint-config@workspace:tooling/eslint"],
+    "@yuki/eslint-config": ["@yuki/eslint-config@workspace:tools/eslint"],
 
-    "@yuki/github": ["@yuki/github@workspace:tooling/github"],
+    "@yuki/github": ["@yuki/github@workspace:tools/github"],
 
-    "@yuki/prettier-config": ["@yuki/prettier-config@workspace:tooling/prettier"],
+    "@yuki/prettier-config": ["@yuki/prettier-config@workspace:tools/prettier"],
 
-    "@yuki/tsconfig": ["@yuki/tsconfig@workspace:tooling/typescript"],
+    "@yuki/tsconfig": ["@yuki/tsconfig@workspace:tools/typescript"],
 
     "@yuki/www": ["@yuki/www@workspace:www"],
 
