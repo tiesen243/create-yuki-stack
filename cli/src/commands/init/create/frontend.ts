@@ -137,14 +137,18 @@ async function addApiClient(
     { recursive: true, force: true },
   )
 
+  const reactContent = await fs.readFile(`${clientPath}/react.tsx`, 'utf-8')
+  let modifiedReactContent = reactContent.replace(
+    /{{ app }}/g,
+    appMap.get(app) ?? app,
+  )
   if (opts.backend !== 'none') {
-    const reactContent = await fs.readFile(`${clientPath}/react.tsx`, 'utf-8')
-    const modifiedContent = `${reactContent.replace(
+    modifiedReactContent = `${modifiedReactContent.replace(
       `import { getBaseUrl } from '@/lib/utils'`,
       `import { env } from '@{{ name }}/validators/env'`,
     )}\nfunction getBaseUrl() {\n  if (env.NEXT_PUBLIC_API_URL) return \`https://\${env.NEXT_PUBLIC_API_URL}\`\n  return 'http://localhost:8080'\n}`
-    await fs.writeFile(`${clientPath}/react.tsx`, modifiedContent)
   }
+  await fs.writeFile(`${clientPath}/react.tsx`, modifiedReactContent)
 }
 
 async function createAuthRoutes(
@@ -226,6 +230,13 @@ function getApiRoutePath(
 
   return `${config.api.path}/api.${opts.api}.$.ts`
 }
+
+const appMap = new Map([
+  ['nextjs', 'react-nextjs'],
+  ['react-router', 'react-router'],
+  ['tanstack-start', 'react-start'],
+  ['expo', 'react-native'],
+])
 
 const API_ROUTES_DIR = {
   nextjs: {
