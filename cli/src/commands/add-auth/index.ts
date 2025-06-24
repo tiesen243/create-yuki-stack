@@ -55,7 +55,7 @@ export const addAuth = procedure.mutation(async () => {
         }),
     })
     options.db = db as 'drizzle' | 'prisma' | 'mongoose'
-    options.dbInstance = dbInstance || '@/server/db'
+    options.dbInstance = dbInstance.trim() || '@/server/db'
   }
 
   if (options.turbo) await setupMonorepo(options)
