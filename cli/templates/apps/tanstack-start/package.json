@@ -17,8 +17,8 @@
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "@tanstack/react-router": "^1.121.27",
-    "@tanstack/react-start": "^1.121.31",
+    "@tanstack/react-router": "^1.121.34",
+    "@tanstack/react-start": "^1.121.35",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
@@ -35,7 +35,7 @@
     "prettier": "catalog:",
     "tailwindcss": "^4.1.10",
     "typescript": "catalog:",
-    "vite": "^6.3.5",
+    "vite": "^7.0.0",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }
