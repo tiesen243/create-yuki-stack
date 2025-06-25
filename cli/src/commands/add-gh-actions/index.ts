@@ -12,6 +12,12 @@ const lockFilemap = new Map([
 
 export const addGhActionsCommand = procedure.mutation(async () => {
   let packageManager: ProjectOptions['packageManager'] = 'npm'
+
+  const packageJson = (await fs
+    .readFile('package.json', 'utf-8')
+    .then(JSON.parse)) as PackageJson
+  const name = packageJson.name
+
   for (const [lockFile, pm] of lockFilemap) {
     if (
       await fs
@@ -25,6 +31,20 @@ export const addGhActionsCommand = procedure.mutation(async () => {
   }
 
   await addGhActions({ packageManager } as ProjectOptions)
+
+  const packageJsonGh = await fs.readFile('tools/github/package.json', 'utf-8')
+  await fs.writeFile(
+    'tools/github/package.json',
+    packageJsonGh.replace(/{{ name }}/g, name),
+    'utf-8',
+  )
+
+  const ci = await fs.readFile('.github/workflows/ci.yml', 'utf-8')
+  await fs.writeFile(
+    '.github/workflows/ci.yml',
+    ci.replace(/{{ pkm }}/g, packageManager),
+    'utf-8',
+  )
 })
 
 export async function addGhActions(opts: ProjectOptions) {
