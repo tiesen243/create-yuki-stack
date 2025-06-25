@@ -151,6 +151,15 @@ export const initCommand = procedure
                       },
                     ]
                   : []),
+                ...(results.backend === 'hono'
+                  ? [
+                      {
+                        value: 'hc',
+                        label: 'Hono Client',
+                        hint: 'The RPC feature allows sharing of the API specifications between the server and the client',
+                      },
+                    ]
+                  : []),
                 {
                   value: 'trpc',
                   label: 'tRPC',

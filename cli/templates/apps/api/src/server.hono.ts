@@ -30,3 +30,5 @@ export default {
   fetch: server.fetch,
   port: PORT,
 } as const
+
+export type Server = typeof server

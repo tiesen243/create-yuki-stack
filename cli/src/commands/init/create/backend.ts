@@ -21,7 +21,10 @@ export async function addBackend(opts: ProjectOptions) {
     { src: 'turbo.json', dest: `${apiDir}/turbo.json` },
     { src: `src/server.${opts.backend}.ts`, dest: `${srcDir}/server.ts` },
     ...(opts.api === 'eden'
-      ? [{ src: 'src/index.ts', dest: `${srcDir}/index.ts` }]
+      ? [{ src: 'src/index.elysia.ts', dest: `${srcDir}/index.ts` }]
+      : []),
+    ...(opts.api === 'hc'
+      ? [{ src: 'src/index.hono.ts', dest: `${srcDir}/index.ts` }]
       : []),
   ]
   if (
@@ -80,7 +83,7 @@ export async function addBackend(opts: ProjectOptions) {
     JSON.stringify(packageJson, null, 2),
   )
 
-  if (opts.api !== 'none' && opts.api !== 'eden') {
+  if (opts.api !== 'none' && opts.api !== 'eden' && opts.api !== 'hc') {
     const serverContent = await fs.readFile(`${srcDir}/server.ts`, 'utf-8')
     let modifiedContent = serverContent
     const appendContent = API_ROUTES[opts.api][opts.backend]

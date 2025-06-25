@@ -30,7 +30,10 @@ export const projectOptions = z.object({
     .enum(['none', 'express', 'elysia', 'hono'])
     .describe('Backend framework')
     .optional(),
-  api: z.enum(['none', 'eden', 'trpc', 'orpc']).describe('API type').optional(),
+  api: z
+    .enum(['none', 'eden', 'hc', 'trpc', 'orpc'])
+    .describe('API type')
+    .optional(),
 
   auth: z
     .enum(['none', 'basic-auth', 'better-auth', 'next-auth'])
