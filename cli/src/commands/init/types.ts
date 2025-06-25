@@ -40,6 +40,8 @@ export const projectOptions = z.object({
     .describe('Authentication options')
     .optional(),
 
+  extras: z.array(z.enum(['gh-actions', 'email'])).optional(),
+
   packageManager: z
     .enum(['npm', 'yarn', 'pnpm', 'bun'])
     .describe('Package manager')

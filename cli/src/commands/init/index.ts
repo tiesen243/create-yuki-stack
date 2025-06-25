@@ -206,6 +206,25 @@ export const initCommand = procedure
                 })
               : Promise.resolve(DEFAULT_PROJECT_OPTIONS.auth),
 
+          extras: () =>
+            p.multiselect({
+              message: 'Would you like to add any extras?',
+              options: [
+                {
+                  value: 'gh-actions',
+                  label: 'GitHub Actions',
+                  hint: 'CI/CD pipeline with type checking, linting, and formatting',
+                },
+                {
+                  value: 'email',
+                  label: 'Email',
+                  hint: 'Email service with Resend provider and React Email templates',
+                },
+              ],
+              initialValues: DEFAULT_PROJECT_OPTIONS.extras,
+              required: false,
+            }),
+
           // Configuration
           packageManager: () =>
             p.select({

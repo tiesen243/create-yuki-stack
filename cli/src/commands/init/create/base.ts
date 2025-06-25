@@ -22,6 +22,7 @@ export async function addBase(opts: ProjectOptions) {
     fs.mkdir('apps', { recursive: true }),
     fs.mkdir('packages', { recursive: true }),
     fs.writeFile('.env.example', '# Example environment variables\n'),
+    fs.writeFile('.nvmrc', 'v22.15.1'),
   ])
 
   await setupPackageManager(opts.packageManager, templatePath)

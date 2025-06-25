@@ -8,6 +8,7 @@ import { addBackend } from './backend'
 import { addBase } from './base'
 import { completeOperation } from './complete'
 import { addDatabase } from './database'
+import { addExtras } from './extras'
 import { addFrontend } from './frontend'
 
 export async function createProject(
@@ -23,6 +24,7 @@ export async function createProject(
   await addBackend(opts)
   await addApi(opts)
   await addAuth(opts)
+  await addExtras(opts)
 
   creatingSpinner.message(`Running ${pc.bold(opts.packageManager)} install...`)
   await completeOperation(opts)
