@@ -79,6 +79,7 @@ bun create yuki-stack
 - **Backend**: `none`
 - **API**: `none`
 - **Auth**: none
+- **Extras**: []
 - **Package Manager**: Auto-detected from environment
 - **Install Dependencies**: `true`
 - **Initialize Git**: `true`
