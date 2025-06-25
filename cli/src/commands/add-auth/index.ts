@@ -6,7 +6,7 @@ import { procedure } from '@/trpc'
 import { setupMonoapp } from './setup-monoapp'
 import { setupMonorepo } from './setup-turborepo'
 
-export const addAuth = procedure.mutation(async () => {
+export const addAuthCommand = procedure.mutation(async () => {
   const options: Options = {
     turbo: false,
     db: 'drizzle',

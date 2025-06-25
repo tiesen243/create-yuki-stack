@@ -1,0 +1,37 @@
+{
+  "name": "@{{ name }}/email",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc --watch",
+    "dev:email": "email dev --dir src/emails --port 6969",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@{{ name }}/prettier-config",
+  "dependencies": {
+    "@{{ name }}/validators": "workspace:*",
+    "@react-email/components": "^0.1.1",
+    "resend": "^4.6.0"
+  },
+  "devDependencies": {
+    "@{{ name }}/eslint-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "react-email": "^4.0.17",
+    "typescript": "catalog:"
+  }
+}

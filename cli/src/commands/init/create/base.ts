@@ -3,6 +3,7 @@ import fs from 'node:fs/promises'
 import type { ProjectOptions } from '@/commands/init/types'
 
 const versionMap = new Map<string, string>([
+  ['node', '22.0.0'],
   ['npm', '11.4.0'],
   ['yarn', '1.22.22'],
   ['pnpm', '10.12.0'],
@@ -22,6 +23,7 @@ export async function addBase(opts: ProjectOptions) {
     fs.mkdir('apps', { recursive: true }),
     fs.mkdir('packages', { recursive: true }),
     fs.writeFile('.env.example', '# Example environment variables\n'),
+    fs.writeFile('.nvmrc', `v${versionMap.get('node')}`),
   ])
 
   await setupPackageManager(opts.packageManager, templatePath)
@@ -57,6 +59,10 @@ async function setupPackageManager(
           'node-linker=hoisted\nshared-workspace-lockfile=true',
         ),
       ])
+      packageJson.engines = {
+        node: `>=${versionMap.get('node')}`,
+        pnpm: `>=${versionMap.get('pnpm')}`,
+      }
       break
 
     case 'bun':
@@ -64,14 +70,20 @@ async function setupPackageManager(
         'bunfig.toml',
         '[install]\nlinkWorkspacePackages = true\n\n[run]\nbun = true',
       )
+      packageJson.engines = {
+        node: `>=${versionMap.get('node')}`,
+        bun: `>=${versionMap.get('bun')}`,
+      }
       break
 
     default: {
       packageJson.workspaces = ['apps/*', 'packages/*', 'tools/*']
-      await fs.writeFile(
-        'package.json',
-        JSON.stringify(packageJson, null, 2) + '\n',
-      )
+      packageJson.engines = {
+        node: `>=${versionMap.get('node')}`,
+        ...(packageManager === 'npm'
+          ? { npm: `>=${versionMap.get('npm')}` }
+          : { yarn: `>=${versionMap.get('yarn')}` }),
+      }
       break
     }
   }

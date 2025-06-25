@@ -1,0 +1,17 @@
+name: 'Setup and install'
+description: 'Common setup steps for Actions'
+
+runs:
+  using: composite
+  steps:
+    - uses: borales/actions-yarn@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'yarn'
+
+    - shell: bash
+      run: yarn global add turbo
+
+    - shell: bash
+      run: yarn install

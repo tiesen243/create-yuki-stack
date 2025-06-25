@@ -107,7 +107,12 @@ async function createApiRoutes(
   opts: ProjectOptions,
   config: AppConfig,
 ) {
-  if (opts.api === 'none' || opts.api === 'eden' || opts.backend !== 'none')
+  if (
+    opts.api === 'none' ||
+    opts.api === 'eden' ||
+    opts.api === 'hc' ||
+    opts.backend !== 'none'
+  )
     return
 
   const apiContent = API_ROUTES_CONTENT[app].api[opts.api]
@@ -128,7 +133,7 @@ async function addApiClient(
   app: ProjectOptions['frontend'][number],
   opts: ProjectOptions,
 ) {
-  if (opts.api !== 'trpc' && opts.api !== 'orpc') return
+  if (!['trpc', 'orpc'].includes(opts.api)) return
   const clientPath = `apps/${app}${app !== 'nextjs' ? '/src' : ''}/${opts.api}`
 
   await fs.cp(
@@ -180,10 +185,10 @@ async function updateLayoutFile(opts: ProjectOptions, layoutFile: string) {
   try {
     let layoutContent = await fs.readFile(layoutFile, 'utf-8')
 
-    if (opts.api === 'trpc' || opts.api === 'orpc') {
+    const needsProvider = ['trpc', 'orpc'].includes(opts.api)
+    if (needsProvider) {
       const provider =
         opts.api === 'trpc' ? 'TrpcReactProvider' : 'OrpcReactProvider'
-
       layoutContent = layoutContent.replace(
         /({children}|<Outlet \/>)/g,
         `<${provider}>$1</${provider}>`,
@@ -191,7 +196,8 @@ async function updateLayoutFile(opts: ProjectOptions, layoutFile: string) {
       layoutContent += `\nimport { ${provider} } from '@/${opts.api}/react'`
     }
 
-    if (opts.auth === 'basic-auth' || opts.auth === 'next-auth') {
+    const needsAuth = ['basic-auth', 'next-auth'].includes(opts.auth)
+    if (needsAuth) {
       layoutContent = layoutContent.replace(
         /({children}|<Outlet \/>)/g,
         `<SessionProvider>$1</SessionProvider>`,

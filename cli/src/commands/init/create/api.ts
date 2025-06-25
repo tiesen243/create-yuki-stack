@@ -4,7 +4,7 @@ import type { ProjectOptions } from '@/commands/init/types'
 import { getPackageVersions } from '@/utils/get-package-version'
 
 export async function addApi(opts: ProjectOptions) {
-  if (opts.api === 'none' || opts.api === 'eden') return
+  if (['none', 'eden', 'hc'].includes(opts.api)) return
 
   const templatePath = new URL('../templates/packages/api/', import.meta.url)
   const destPath = opts.backend === 'none' ? 'packages/api' : 'apps/api'

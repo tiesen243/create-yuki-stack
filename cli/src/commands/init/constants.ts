@@ -15,6 +15,8 @@ export const DEFAULT_PROJECT_OPTIONS = {
 
   auth: 'none',
 
+  extras: [],
+
   packageManager: getPackageManager(),
   install: true,
   git: true,
