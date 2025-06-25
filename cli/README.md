@@ -61,6 +61,7 @@ bun create yuki-stack
 | `--backend [string]`         | Backend framework (choices: none, express, elysia, hono)                   |
 | `--api [string]`             | API type (choices: none, eden, trpc, orpc)                                 |
 | `--auth [string]`            | Authentication (choices: none, basic-auth, better-auth, next-auth)         |
+| `--extras [values...]`       | Add extra packages and tooling (choices: gh-actions, email)                |
 | `--package-manager [string]` | Package manager (choices: npm, yarn, pnpm, bun)                            |
 | `--install`                  | Install dependencies after setup                                           |
 | `--no-install`               | Negate `--install` option                                                  |
