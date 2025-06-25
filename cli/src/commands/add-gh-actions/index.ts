@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 
-import type { ProjectOptions } from '../init/types'
+import type { ProjectOptions } from '@/commands/init/types'
 import { procedure } from '@/trpc'
 import { getgetProjectMetadata } from '@/utils/get-project-metadata'
 
