@@ -130,6 +130,14 @@ bun create yuki-stack
 
 </details>
 
+<details>
+<summary><b>Extras</b></summary>
+
+- **Github Actions**: Automated CI/CD workflows for: `format`, `lint`, `typecheck` with reusable setup actions supporting multiple package managers (npm, yarn, pnpm, bun)
+- **Email**: Send transactional emails using `Resend` API with customizable `React Email` templates
+
+</details>
+
 ## Generated Project Structure
 
 The generated project follows a monorepo structure using Turborepo with:
