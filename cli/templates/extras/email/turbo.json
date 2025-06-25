@@ -3,8 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": { "outputs": ["dist/**"] },
-    "db:push": { "cache": false },
-    "db:studio": { "cache": false },
-    "dev": { "persistent": true }
+    "dev": { "persistent": true },
+    "dev:email": { "persistent": true }
   }
 }

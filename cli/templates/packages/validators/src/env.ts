@@ -14,19 +14,7 @@ export const env = createEnv({
   client: {
   },
 
-  runtimeEnv: {
-    // Server-side environment variables
-    NODE_ENV: process.env.NODE_ENV,
-
-
-    // Client-side environment variables
-
-    // Vercel environment variables
-    VERCEL: process.env.VERCEL,
-    VERCEL_ENV: process.env.VERCEL_ENV,
-    VERCEL_URL: process.env.VERCEL_URL,
-    VERCEL_PROJECT_PRODUCTION_URL: process.env.VERCEL_PROJECT_PRODUCTION_URL,
-  },
+  runtimeEnv: process.env,
 
   skipValidation:
     !!process.env.SKIP_ENV_VALIDATION ||
@@ -52,7 +40,9 @@ function createEnv<
       ? TClient[TKey]
       : `${TKey extends string ? TKey : never} should prefix with ${TPrefix}`
   }
-  runtimeEnv: { [TKey in keyof TResult]: string | undefined }
+  runtimeEnv:
+    | { [TKey in keyof TResult]: string | undefined }
+    | Record<string, unknown>
   skipValidation: boolean
 }): TResult {
   for (const [key, value] of Object.entries(opts.runtimeEnv)) {

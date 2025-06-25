@@ -2,33 +2,10 @@ import fs from 'node:fs/promises'
 
 import type { ProjectOptions } from '../init/types'
 import { procedure } from '@/trpc'
-
-const lockFilemap = new Map([
-  ['package-lock.json', 'npm'],
-  ['yarn.lock', 'yarn'],
-  ['pnpm-lock.yaml', 'pnpm'],
-  ['bun.lock', 'bun'],
-] as const)
+import { getgetProjectMetadata } from '@/utils/get-project-metadata'
 
 export const addGhActionsCommand = procedure.mutation(async () => {
-  let packageManager: ProjectOptions['packageManager'] = 'npm'
-
-  const packageJson = (await fs
-    .readFile('package.json', 'utf-8')
-    .then(JSON.parse)) as PackageJson
-  const name = packageJson.name
-
-  for (const [lockFile, pm] of lockFilemap) {
-    if (
-      await fs
-        .access(lockFile)
-        .then(() => true)
-        .catch(() => false)
-    ) {
-      packageManager = pm
-      break
-    }
-  }
+  const { name, packageManager } = await getgetProjectMetadata()
 
   await addGhActions({ packageManager } as ProjectOptions)
 
