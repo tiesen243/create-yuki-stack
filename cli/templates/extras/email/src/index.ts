@@ -15,7 +15,7 @@ export interface SendEmailParams {
 
 async function sendEmail(params: SendEmailParams) {
   await resend.emails.send({
-    from: '',
+    from: 'noreply@{{ name }}.com',
     to: params.to,
     subject: params.subject,
     react: email[params.email](params),

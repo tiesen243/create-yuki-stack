@@ -12,4 +12,5 @@ interface PackageJson {
   dependencies?: Record<string, string>
   devDependencies?: Record<string, string>
   packageManager?: string
+  engines?: Record<string, string>
 }

@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 
 import type { ProjectOptions } from '@/commands/init/types'
 
-export async function getgetProjectMetadata() {
+export async function getProjectMetadata() {
   const lockFilemap = new Map([
     ['package-lock.json', 'npm'],
     ['yarn.lock', 'yarn'],

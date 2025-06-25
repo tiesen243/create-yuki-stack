@@ -2,12 +2,12 @@ import fs from 'node:fs/promises'
 
 import { procedure } from '@/trpc'
 import { addEnv } from '@/utils/add-env'
-import { getgetProjectMetadata } from '@/utils/get-project-metadata'
+import { getProjectMetadata } from '@/utils/get-project-metadata'
 
 export const addEmailCommand = procedure.mutation(async () => {
   await addEmail()
 
-  const { name } = await getgetProjectMetadata()
+  const { name } = await getProjectMetadata()
 
   const needReplaces = [
     'eslint.config.js',
