@@ -1,13 +1,21 @@
+import { exec } from 'node:child_process'
 import fs from 'node:fs/promises'
+import { promisify } from 'node:util'
+import * as p from '@clack/prompts'
 
 import { procedure } from '@/trpc'
 import { addEnv } from '@/utils/add-env'
 import { getProjectMetadata } from '@/utils/get-project-metadata'
 
+const execAsync = promisify(exec)
+
 export const addEmailCommand = procedure.mutation(async () => {
+  const spinner = p.spinner()
+  spinner.start('Adding email package...')
+
   await addEmail()
 
-  const { name } = await getProjectMetadata()
+  const { name, packageManager } = await getProjectMetadata()
 
   const needReplaces = [
     'eslint.config.js',
@@ -26,6 +34,9 @@ export const addEmailCommand = procedure.mutation(async () => {
       )
     }),
   )
+  await execAsync(`${packageManager} install`, { cwd: 'packages/email' })
+
+  spinner.stop('Email package added successfully!')
 })
 
 export async function addEmail() {
