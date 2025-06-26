@@ -20,7 +20,7 @@ function generateReadmeContent(opts: ProjectOptions): string {
     generateDatabaseSection(opts),
     generateAuthSection(opts),
     generateExtrasSection(opts),
-    '## Scripts\n',
+    '\n## Scripts\n',
     generateScripts(opts),
   ]
 
