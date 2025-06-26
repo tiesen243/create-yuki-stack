@@ -44,16 +44,34 @@ export async function createProject(
     creatingSpinner.message(
       `Running ${pc.bold(opts.packageManager)} install...`,
     )
-    await execAsync(`${opts.packageManager} install`, { cwd })
-    await execAsync(`${opts.packageManager} run format:fix`, { cwd })
+    try {
+      await execAsync(`${opts.packageManager} install`, { cwd })
+      await execAsync(`${opts.packageManager} run format:fix`, { cwd })
+    } catch (error) {
+      creatingSpinner.stop(
+        `${pc.red('Error!')} Failed to install dependencies: ${error}`,
+      )
+      console.log(`You can manually run: ${opts.packageManager} install`)
+      creatingSpinner.start(`Continuing without installing dependencies...`)
+    }
   }
 
-  if (opts.git) {
-    await execAsync('git init', { cwd })
-    await execAsync('git add --all', { cwd })
-    await execAsync('git commit -m "Initial commit from Create Yuki Stack"', {
-      cwd,
-    })
+  try {
+    if (opts.git) {
+      await execAsync('git init', { cwd })
+      await execAsync('git add --all', { cwd })
+      await execAsync('git commit -m "Initial commit from Create Yuki Stack"', {
+        cwd,
+      })
+    }
+  } catch (error) {
+    creatingSpinner.stop(
+      `${pc.red('Error!')} Failed to initialize git repository: ${error}`,
+    )
+    console.log(
+      `You can manually run: git init && git add --all && git commit -m "Initial commit from Create Yuki Stack"`,
+    )
+    creatingSpinner.start(`Continuing without initializing git...`)
   }
 
   creatingSpinner.stop(

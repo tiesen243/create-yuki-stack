@@ -148,7 +148,7 @@ function generateGettingStarted(opts: ProjectOptions): string {
     '1. Clone the repository',
     '',
     '```bash',
-    `git clone git@github.com:{your name}/${opts.name}.git`,
+    `git clone git@github.com:your-username/${opts.name}.git`,
     `cd ${opts.name}`,
     '```',
     '',
