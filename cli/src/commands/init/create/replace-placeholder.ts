@@ -1,14 +1,10 @@
-import { exec } from 'node:child_process'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { promisify } from 'node:util'
 
 import type { ProjectOptions } from '@/commands/init/types'
 import { getExecutor } from '@/utils/get-package-manager'
 
-const execAsync = promisify(exec)
-
-export async function completeOperation(opts: ProjectOptions): Promise<void> {
+export async function replacePlaceholder(opts: ProjectOptions): Promise<void> {
   const cwd = process.cwd()
   const replaceMap = new Map<string, string>([
     ['{{ name }}', opts.name],
@@ -20,24 +16,6 @@ export async function completeOperation(opts: ProjectOptions): Promise<void> {
   await replaceInDirectory(cwd, replaceMap)
   if (opts.packageManager === 'npm' || opts.packageManager === 'yarn')
     await fixYarnAndNpmVersion(cwd)
-
-  await execAsync(
-    `${getExecutor(opts.packageManager)} sort-package-json@latest package.json apps/*/package.json packages/*/package.json tools/*/package.json`,
-    { cwd },
-  )
-
-  if (opts.install) {
-    await execAsync(`${opts.packageManager} install`, { cwd })
-    await execAsync(`${opts.packageManager} run format:fix`, { cwd })
-  }
-
-  if (opts.git) {
-    await execAsync('git init', { cwd })
-    await execAsync('git add --all', { cwd })
-    await execAsync('git commit -m "Initial commit from Create Yuki Stack"', {
-      cwd,
-    })
-  }
 }
 
 async function replaceInFile(

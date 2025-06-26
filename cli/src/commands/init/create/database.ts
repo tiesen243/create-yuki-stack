@@ -4,7 +4,7 @@ import type { ProjectOptions } from '@/commands/init/types'
 import { addEnv } from '@/utils/add-env'
 import { getPackageVersions } from '@/utils/get-package-version'
 
-export async function addDatabase(opts: ProjectOptions) {
+export async function addDatabase(opts: ProjectOptions): Promise<void> {
   if (opts.database === 'none') return
 
   const templatePath = new URL('../templates/packages/db/', import.meta.url)

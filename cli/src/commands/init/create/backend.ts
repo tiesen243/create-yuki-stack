@@ -7,7 +7,7 @@ import {
   getPackageVersions,
 } from '@/utils/get-package-version'
 
-export async function addBackend(opts: ProjectOptions) {
+export async function addBackend(opts: ProjectOptions): Promise<void> {
   if (opts.backend === 'none') return
 
   const templatePath = new URL('../templates/apps/api/', import.meta.url)

@@ -9,7 +9,7 @@ interface AppConfig {
   layoutFile: string
 }
 
-export async function addFrontend(opts: ProjectOptions) {
+export async function addFrontend(opts: ProjectOptions): Promise<void> {
   const templatePath = new URL('../templates/', import.meta.url)
 
   await Promise.all(

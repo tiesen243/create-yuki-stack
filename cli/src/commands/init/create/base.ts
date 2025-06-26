@@ -10,7 +10,7 @@ const versionMap = new Map<string, string>([
   ['bun', '1.2.16'],
 ])
 
-export async function addBase(opts: ProjectOptions) {
+export async function addBase(opts: ProjectOptions): Promise<void> {
   const templatePath = new URL('../templates/', import.meta.url)
   const copyOptions = { recursive: true, force: true }
 

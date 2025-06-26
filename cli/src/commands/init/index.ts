@@ -208,7 +208,7 @@ export const initCommand = procedure
 
           extras: () =>
             p.multiselect({
-              message: 'Would you like to add any extras?',
+              message: 'Would you like to add any extra packages?',
               options: [
                 {
                   value: 'gh-actions',

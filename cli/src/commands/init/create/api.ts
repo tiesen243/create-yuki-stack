@@ -3,7 +3,7 @@ import fs from 'node:fs/promises'
 import type { ProjectOptions } from '@/commands/init/types'
 import { getPackageVersions } from '@/utils/get-package-version'
 
-export async function addApi(opts: ProjectOptions) {
+export async function addApi(opts: ProjectOptions): Promise<void> {
   if (['none', 'eden', 'hc'].includes(opts.api)) return
 
   const templatePath = new URL('../templates/packages/api/', import.meta.url)
