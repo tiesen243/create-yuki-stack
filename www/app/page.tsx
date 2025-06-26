@@ -351,6 +351,9 @@ export default function HomePage() {
                 <div>◇ Which authentication method would you like to use?</div>
                 <div>│ &nbsp;Basic Auth</div>
                 <div>│</div>
+                <div>◇ Would you like to add any extra packages?</div>
+                <div>│ &nbsp;GitHub Actions, Email</div>
+                <div>│</div>
                 <div>◇ Which package manager would you like to use?</div>
                 <div>│ &nbsp;Bun</div>
                 <div>│</div>

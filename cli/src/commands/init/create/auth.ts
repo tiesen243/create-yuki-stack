@@ -4,7 +4,7 @@ import type { ProjectOptions } from '@/commands/init/types'
 import { addEnv } from '@/utils/add-env'
 import { getPackageVersions } from '@/utils/get-package-version'
 
-export async function addAuth(opts: ProjectOptions) {
+export async function addAuth(opts: ProjectOptions): Promise<void> {
   if (opts.auth === 'none') return
 
   const templatePath = new URL('../templates/packages/auth/', import.meta.url)
