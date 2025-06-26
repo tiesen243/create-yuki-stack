@@ -323,7 +323,7 @@ function generateAuthSection(opts: ProjectOptions): string {
 function generateExtrasSection(opts: ProjectOptions): string {
   if (opts.extras.length === 0) return ''
 
-  const sections = ['## Additional Features', '']
+  const sections = ['\n## Additional Features', '']
 
   if (opts.extras.includes('gh-actions')) {
     sections.push(
