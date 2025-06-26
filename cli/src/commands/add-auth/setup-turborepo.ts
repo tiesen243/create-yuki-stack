@@ -26,13 +26,22 @@ export async function setupMonorepo(opts: Options) {
   const name =
     /@([\w-]+)\//.exec(opts.dbInstance)?.at(1) ?? DEFAULT_PROJECT_NAME
 
-  const packageJson = await fs.readFile(
-    new URL('package.json', templatePath),
-    'utf-8',
-  )
+  const packageJson = (await fs
+    .readFile(new URL('package.json', templatePath), 'utf-8')
+    .then(JSON.parse)) as PackageJson
+  packageJson.name = `@${name}/auth`
+  packageJson.exports = packageJson.exports ?? {}
+  packageJson.exports['./csrf'] = {
+    types: './dist/csrf.d.ts',
+    default: './src/csrf.ts',
+  }
+  packageJson.exports['./rate-limit'] = {
+    types: './dist/rate-limit.d.ts',
+    default: './src/rate-limit.ts',
+  }
   await fs.writeFile(
     `${destPath}/package.json`,
-    packageJson.replace(/{{ name }}/g, name),
+    JSON.stringify(packageJson, null, 2),
   )
 
   const config = await fs.readFile(

@@ -48,11 +48,21 @@ export async function addAuth(opts: ProjectOptions) {
   ])
 
   packageJson.dependencies = packageJson.dependencies ?? {}
-  if (opts.auth === 'better-auth') {
+  if (opts.auth === 'basic-auth') {
+    packageJson.exports = packageJson.exports ?? {}
+    packageJson.exports['./csrf'] = {
+      types: './dist/csrf.d.ts',
+      default: './src/csrf.ts',
+    }
+    packageJson.exports['./rate-limit'] = {
+      types: './dist/rate-limit.d.ts',
+      default: './src/rate-limit.ts',
+    }
+  } else if (opts.auth === 'better-auth') {
     packageJson.dependencies['better-auth'] = versions['better-auth']
     if (opts.database === 'mongoose')
       packageJson.dependencies.mongodb = versions.mongodb
-  } else if (opts.auth === 'next-auth') {
+  } else {
     packageJson.dependencies['next-auth'] = versions['next-auth@beta']
     if (opts.database === 'drizzle')
       packageJson.dependencies['@auth/drizzle-adapter'] =
