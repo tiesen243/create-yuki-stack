@@ -1,120 +1,106 @@
 import { db } from '@{{ name }}/db'
 
-import type { Session, SessionResult } from './types'
-import { encodeHex, generateSecureString, hashSecret } from './crypto'
-import { Password } from './password'
+import type { AuthOptions } from './core/types'
+import Discord from './providers/discord'
 
-const SESSION_EXPIRES_IN = 1000 * 60 * 60 * 24 * 30 // 30 days in seconds
-const SESSION_EXPIRES_THRESHOLD = 1000 * 60 * 60 * 24 * 7 // 24 hours in seconds
+const adapter = {
+  user: {
+    async findOne(email) {
+      const user = await db.users.findOne({ email })
+      return user ? { ...user.toObject(), id: user._id } : null
+    },
+    async create(data) {
+      const user = await db.users.create(data)
+      return { ...user.toObject(), id: user._id }
+    },
+    async update(email, data) {
+      const user = await db.users.findOneAndUpdate(
+        { email },
+        { $set: data },
+        { new: true },
+      )
+      return user ? { ...user.toObject(), id: user._id } : null
+    },
+    async delete(email) {
+      const user = await db.users.findOneAndDelete({ email }, { new: true })
+      return user ? { ...user.toObject(), id: user._id } : null
+    },
+  },
+  account: {
+    async findOne(provider, accountId) {
+      const account = await db.accounts.findOne({ provider, accountId })
+      const password = account?.password ?? null
+      return account
+        ? { ...account.toObject(), id: account._id, password }
+        : null
+    },
+    async create(data) {
+      const account = await db.accounts.create(data)
+      return { ...account.toObject(), id: account._id, password: null }
+    },
+    async update(accountId, data) {
+      const account = await db.accounts.findOneAndUpdate(
+        { accountId },
+        { $set: data },
+        { new: true },
+      )
+      return account
+        ? { ...account.toObject(), id: account._id, password: null }
+        : null
+    },
+    async delete(provider, accountId) {
+      const account = await db.accounts.findOneAndDelete(
+        { provider, accountId },
+        { new: true },
+      )
+      return account
+        ? { ...account.toObject(), id: account._id, password: null }
+        : null
+    },
+  },
+  session: {
+    async findOne(token) {
+      const session = await db.sessions.findOne({ token })
+      const user = await db.users.findOne({ _id: session?.userId })
+      return {
+        user: user ? { ...user.toObject(), id: user._id } : null,
+        expires: new Date(session?.expires ?? 0),
+      }
+    },
+    async create(data) {
+      const session = await db.sessions.create(data)
+      return { ...session.toObject(), id: session._id }
+    },
+    async update(token, data) {
+      const session = await db.sessions.findOneAndUpdate(
+        { token },
+        { $set: data },
+        { new: true },
+      )
+      return session ? { ...session.toObject(), id: session._id } : null
+    },
+    async delete(token) {
+      const session = await db.sessions.findOneAndDelete(
+        { token },
+        { new: true },
+      )
+      return session ? { ...session.toObject(), id: session._id } : null
+    },
+  },
+} satisfies AuthOptions['adapter']
 
-async function createSession(userId: string): Promise<SessionResult> {
-  const token = generateSecureString()
-  const hashToken = await hashSecret(token)
-  const expires = new Date(Date.now() + SESSION_EXPIRES_IN)
+export const authOptions = {
+  adapter,
+  session: {
+    expiresIn: 60 * 60 * 24 * 30, // 30 days
+    expiresThreshold: 60 * 60 * 24 * 7, // 7 days
+  },
+  providers: {
+    discord: new Discord({
+      clientId: process.env.AUTH_DISCORD_ID ?? '',
+      clientSecret: process.env.AUTH_DISCORD_SECRET ?? '',
+    }),
+  },
+} satisfies AuthOptions
 
-  await db.sessions.create({
-    token: encodeHex(hashToken),
-    expires,
-    userId,
-  })
-
-  return { token, expires }
-}
-
-async function validateSessionToken(token: string): Promise<Session> {
-  const hashToken = encodeHex(await hashSecret(token))
-
-  const session = await db.sessions.findOne({ token: hashToken })
-  const user = await db.users.findOne({ _id: session?.userId })
-
-  if (!session || !user) return { user: null, expires: new Date() }
-
-  const now = Date.now()
-  if (now > session.expires.getTime()) {
-    await db.sessions.deleteOne({ token: hashToken })
-    return { user: null, expires: new Date() }
-  }
-
-  if (now >= session.expires.getTime() - SESSION_EXPIRES_THRESHOLD) {
-    const newExpires = new Date(now + SESSION_EXPIRES_IN)
-    await db.sessions.updateOne({ token: hashToken }, { expires: newExpires })
-    session.expires = newExpires
-  }
-
-  return { user, expires: session.expires }
-}
-
-async function authenticateCredentials(opts: {
-  email: string
-  password: string
-}): Promise<SessionResult> {
-  const user = await db.users.findOne({ email: opts.email })
-  if (!user) throw new Error('Invalid credentials')
-
-  const account = await db.accounts.findOne({
-    provider: 'credentials',
-    accountId: user._id,
-  })
-  if (!account) throw new Error('Invalid credentials')
-
-  const isValid = await new Password().verify(
-    account.password ?? '',
-    opts.password,
-  )
-  if (!isValid) throw new Error('Invalid credentials')
-
-  return createSession(user._id)
-}
-
-async function getOrCreateUser(opts: {
-  provider: string
-  accountId: string
-  email: string
-  name: string
-  image: string
-}): Promise<SessionResult> {
-  const { provider, accountId, ...userData } = opts
-
-  const [existingAccount, existingUser] = await Promise.all([
-    db.accounts.findOne({ provider, accountId }),
-    db.users.findOne({ email: userData.email }),
-  ])
-
-  if (existingAccount) return createSession(existingAccount.userId)
-
-  let userId: string
-
-  if (existingUser) userId = existingUser._id
-  else {
-    const userInTx = await db.users.findOne({ email: userData.email })
-
-    if (userInTx) userId = userInTx._id
-    else {
-      const newUser = await db.users.create(userData)
-      userId = newUser._id
-    }
-  }
-
-  await db.accounts.create({ accountId, provider, userId })
-
-  return createSession(userId)
-}
-
-async function invalidateSessionToken(token: string) {
-  const hashToken = encodeHex(await hashSecret(token))
-  await db.sessions.deleteOne({ where: { token: hashToken } })
-}
-
-async function invalidateSessionTokens(userId: string) {
-  await db.sessions.deleteMany({ userId })
-}
-
-export {
-  authenticateCredentials,
-  createSession,
-  getOrCreateUser,
-  validateSessionToken,
-  invalidateSessionToken,
-  invalidateSessionTokens,
-}
-
+export type Providers = keyof typeof authOptions.providers

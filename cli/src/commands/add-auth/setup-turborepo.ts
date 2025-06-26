@@ -49,7 +49,7 @@ export async function setupMonorepo(opts: Options) {
     'utf-8',
   )
   await fs.writeFile(
-    `${destPath}/src/core/adapter.ts`,
+    `${destPath}/src/config.ts`,
     config.replace(/{{ name }}/g, name),
   )
 }

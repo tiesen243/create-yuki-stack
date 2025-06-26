@@ -1,4 +1,4 @@
-import type { ProviderUserData } from '../core/types'
+import type { OauthAccount } from '../core/types'
 import { generateCodeChallenge } from '../core/crypto'
 
 export default abstract class BaseProvider {
@@ -10,7 +10,7 @@ export default abstract class BaseProvider {
   public abstract fetchUserData(
     code: string,
     codeVerifier: string,
-  ): Promise<ProviderUserData>
+  ): Promise<OauthAccount>
 
   protected createCallbackUrl(provider: string) {
     let baseUrl = `http://localhost:${process.env.PORT ?? 3000}`

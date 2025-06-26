@@ -1,4 +1,4 @@
-import { constantTimeEqual } from "./core/crypto"
+import { constantTimeEqual } from './core/crypto'
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -33,7 +33,7 @@ export function verifyRequestOrigin(
 export function generateCsrfToken(sessionToken: string): string {
   if (!sessionToken)
     throw new Error('Session token is required to generate CSRF token')
-  
+
   const randomBytes = new Uint8Array(32)
   crypto.getRandomValues(randomBytes)
   const randomPart = btoa(String.fromCharCode(...randomBytes))

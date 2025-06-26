@@ -1,4 +1,4 @@
-import type { OAuth2Token, ProviderUserData } from '../core/types'
+import type { OAuth2Token, OauthAccount } from '../core/types'
 import BaseProvider, { OAuthClient } from './base'
 
 export default class Github extends BaseProvider {
@@ -38,7 +38,7 @@ export default class Github extends BaseProvider {
   override async fetchUserData(
     code: string,
     codeVerifier: string | null,
-  ): Promise<ProviderUserData> {
+  ): Promise<OauthAccount> {
     const tokenResponse = await this.client.validateAuthorizationCode(
       this.tokenEndpoint,
       code,

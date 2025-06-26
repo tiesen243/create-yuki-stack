@@ -6,7 +6,7 @@ export class TokenBucketRateLimit<_KEY> {
     private refillIntervalSeconds: number,
   ) {
     if (max <= 0) throw new Error('Max must be greater than 0')
-    if (refillIntervalSeconds <= 0) 
+    if (refillIntervalSeconds <= 0)
       throw new Error('Refill interval must be greater than 0')
   }
 
@@ -27,7 +27,10 @@ export class TokenBucketRateLimit<_KEY> {
       return true
     }
 
-    if (now - bucket.refilledAtMilliseconds > this.refillIntervalSeconds * 1000) {
+    if (
+      now - bucket.refilledAtMilliseconds >
+      this.refillIntervalSeconds * 1000
+    ) {
       this.storage.delete(key)
       return this.consume(key, cost)
     }

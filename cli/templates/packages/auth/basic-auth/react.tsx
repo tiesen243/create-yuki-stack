@@ -3,7 +3,7 @@
 import * as React from 'react'
 
 import type { Providers } from './config'
-import type { Session, User } from './core/types'
+import type { SessionResult, User } from './core/types'
 
 type AuthProviders =
   | 'credentials'
@@ -18,9 +18,9 @@ type SessionContextValue = {
   ) => Promise<void>
   signOut: (opts?: { redirectUrl: string }) => Promise<void>
 } & (
-  | { status: 'loading'; session: Session }
-  | { status: 'unauthenticated'; session: Session & { user: null } }
-  | { status: 'authenticated'; session: Session & { user: User } }
+  | { status: 'loading'; session: SessionResult }
+  | { status: 'unauthenticated'; session: SessionResult & { user: null } }
+  | { status: 'authenticated'; session: SessionResult & { user: User } }
 )
 
 const SessionContext = React.createContext<SessionContextValue | null>(null)
@@ -33,12 +33,12 @@ function useSession() {
 }
 
 function SessionProvider(
-  props: Readonly<{ children: React.ReactNode; session?: Session }>,
+  props: Readonly<{ children: React.ReactNode; session?: SessionResult }>,
 ) {
   const hasInitialSession = !!props.session
 
   const [isLoading, startTransition] = React.useTransition()
-  const [session, setSession] = React.useState<Session>(() => {
+  const [session, setSession] = React.useState<SessionResult>(() => {
     if (hasInitialSession) return props.session
     return { user: null, expires: new Date() }
   })
@@ -60,7 +60,7 @@ function SessionProvider(
         })
 
         if (!res.ok) setSession({ user: null, expires: new Date() })
-        else setSession((await res.json()) as Session)
+        else setSession((await res.json()) as SessionResult)
       })
     },
     [startTransition],

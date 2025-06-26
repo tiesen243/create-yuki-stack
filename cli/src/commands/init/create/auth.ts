@@ -28,9 +28,7 @@ export async function addAuth(opts: ProjectOptions): Promise<void> {
     }),
     fs.copyFile(
       new URL(`configs/${opts.auth}.${opts.database}.ts`, templatePath),
-      opts.auth === 'basic-auth'
-        ? `${destPath}/src/core/adapter.ts`
-        : `${destPath}/src/config.ts`,
+      `${destPath}/src/config.ts`,
     ),
   ])
 

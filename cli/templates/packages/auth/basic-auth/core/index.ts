@@ -1,12 +1,18 @@
-import type { AuthOptions, Session } from './types'
-import {
-  authenticateCredentials,
-  getOrCreateUser,
-  invalidateSessionToken,
-  validateSessionToken,
-} from './adapter'
+import type {
+  Account,
+  AuthOptions,
+  OauthAccount,
+  Session,
+  SessionResult,
+} from './types'
 import Cookies from './cookies'
-import { generateStateOrCode } from './crypto'
+import {
+  encodeHex,
+  generateSecureString,
+  generateStateOrCode,
+  hashSecret,
+} from './crypto'
+import { Password } from './password'
 
 export function Auth(opts: AuthOptions) {
   const options = {
@@ -16,52 +22,123 @@ export function Auth(opts: AuthOptions) {
     cookieOptions: { ...DEFAULT_OPTIONS.cookieOptions, ...opts.cookieOptions },
   } satisfies Required<AuthOptions>
 
-  const { cookieKeys, cookieOptions, providers } = options
+  const { adapter, cookieKeys, cookieOptions, providers, session } = options
 
-  /**
-   * Auth
-   * Returns the current session if it exists.
-   *
-   * @param opts - Options object containing request headers
-   * @param opts.headers - HTTP headers from the incoming request
-   * @returns Promise that resolves to a Session object (either valid with user data or invalid with null user)
-   */
-  const auth = async (opts: { headers: Headers }): Promise<Session> => {
-    const cookies = new Cookies(opts as Request)
-    const token = cookies.get(cookieKeys.token) ?? ''
-    return await validateSessionToken(token)
+  async function createSession(userId: string): Promise<Session> {
+    const token = generateSecureString()
+    const hashToken = await hashSecret(token)
+    const expires = new Date(Date.now() + session.expiresIn * 1000)
+    await adapter.session.create({
+      token: encodeHex(hashToken),
+      expires,
+      userId,
+    })
+    return { token, expires, userId }
   }
 
-  /**
-   * Sign Out
-   * Invalidates the current session token and removes it from cookies.
-   *
-   * @param opts - Options object containing request headers
-   * @param opts.headers - HTTP headers from the incoming request
-   * @returns Promise that resolves to a success message or throws an error if the token is invalid
-   */
-  const signOut = async (opts: { headers: Headers }): Promise<void> => {
-    const cookies = new Cookies(opts as Request)
+  async function validateSessionToken(token: string): Promise<SessionResult> {
+    const hashToken = encodeHex(await hashSecret(token))
+    const result = await adapter.session.findOne(hashToken)
+    if (!result) return { user: null, expires: new Date() }
+
+    const now = Date.now()
+    const expiresTime = result.expires.getTime()
+
+    if (now > expiresTime) {
+      await adapter.session.delete(hashToken)
+      return { user: null, expires: new Date() }
+    }
+
+    if (now >= expiresTime - session.expiresThreshold * 1000) {
+      const newExpires = new Date(now + session.expiresIn * 1000)
+      await adapter.session.update(hashToken, { expires: newExpires })
+      result.expires = newExpires
+    }
+
+    return result
+  }
+
+  async function invalidateSessionToken(token: string): Promise<void> {
+    const hashToken = encodeHex(await hashSecret(token))
+    await adapter.session.delete(hashToken)
+  }
+
+  async function auth(request: Request) {
+    const cookies = new Cookies(request)
+    const token = cookies.get(cookieKeys.token) ?? ''
+    return validateSessionToken(token)
+  }
+
+  async function signIn(opts: {
+    email: string
+    password: string
+  }): Promise<Session> {
+    const { email, password } = opts
+
+    const user = await adapter.user.findOne(email)
+    if (!user) throw new Error('Invalid credentials')
+
+    const account = await adapter.account.findOne('credentials', user.id)
+    if (!account?.password) throw new Error('Invalid credentials')
+
+    const isValid = await new Password().verify(account.password, password)
+    if (!isValid) throw new Error('Invalid credentials')
+
+    return createSession(user.id)
+  }
+
+  async function signOut(request: Request) {
+    const cookies = new Cookies(request)
     const token = cookies.get(cookieKeys.token) ?? ''
     await invalidateSessionToken(token)
   }
 
+  async function getOrCreateUser(
+    opts: Omit<OauthAccount & Account, 'userId'>,
+  ): Promise<Session> {
+    const { provider, accountId, ...userData } = opts
+    const existingAccount = await adapter.account.findOne(provider, accountId)
+    if (existingAccount) return createSession(existingAccount.userId)
+
+    const existingUser = await adapter.user.findOne(userData.email)
+    const userId =
+      existingUser?.id ?? (await adapter.user.create(userData))?.id ?? ''
+
+    await adapter.account.create({
+      provider,
+      accountId,
+      userId,
+      password: null,
+    })
+    return createSession(userId)
+  }
+
   return {
     auth,
-    signIn: authenticateCredentials,
+    signIn,
     signOut,
+    validateSessionToken,
+    invalidateSessionToken,
     handlers: {
       GET: async (request: Request) => {
-        let response = new Response(null, { status: 404 })
         const { pathname, searchParams } = new URL(request.url)
         const cookies = new Cookies(request)
 
         try {
+          /**
+           * [GET] /api/auth/get-session: Get current session
+           */
           if (pathname === '/api/auth/get-session') {
             const session = await auth(request)
-            response = Response.json(session)
-          } else if (/^\/api\/auth\/[^/]+$/.test(pathname)) {
-            const provider = pathname.split('/').pop() ?? ''
+            return setCorsHeaders(Response.json(session))
+          }
+
+          /**
+           * [GET] /api/auth/:provider: Start OAuth flow
+           */
+          const oauthMatch = /^\/api\/auth\/([^/]+)$/.exec(pathname)
+          if (oauthMatch) {
+            const [, provider = ''] = oauthMatch
             const instance = providers[provider]
             if (!instance) throw new Error(`Provider ${provider} not found`)
 
@@ -73,17 +150,26 @@ export function Auth(opts: AuthOptions) {
               state,
               codeVerifier,
             )
-            response = new Response(null, {
+            const response = new Response(null, {
               status: 302,
               headers: { Location: callbackUrl.toString() },
             })
 
-            const opts = { Path: '/', MaxAge: 1000 * 60 * 5 }
+            const opts = { Path: '/', MaxAge: 60 * 5 }
             cookies.set(response, cookieKeys.state, state, opts)
             cookies.set(response, cookieKeys.code, codeVerifier, opts)
             cookies.set(response, cookieKeys.redirect, redirectUrl, opts)
-          } else if (/^\/api\/auth\/callback\/[^/]+$/.test(pathname)) {
-            const provider = pathname.split('/').pop() ?? ''
+            return setCorsHeaders(response)
+          }
+
+          /**
+           * [GET] /api/auth/callback/:provider: Handle OAuth callback
+           */
+          const callbackMatch = /^\/api\/auth\/callback\/([^/]+)$/.exec(
+            pathname,
+          )
+          if (callbackMatch) {
+            const [, provider = ''] = callbackMatch
             const instance = options.providers[provider]
             if (!instance) throw new Error(`Provider ${provider} not found`)
 
@@ -96,60 +182,70 @@ export function Auth(opts: AuthOptions) {
               throw new Error('Invalid state or code')
 
             const userData = await instance.fetchUserData(code, codeVerifier)
-            const session = await getOrCreateUser({ ...userData, provider })
-
-            const redirectUrl = new URL(redirectTo, request.url)
-            response = new Response(null, {
-              status: 302,
-              headers: { Location: redirectUrl.toString() },
+            const session = await getOrCreateUser({
+              ...userData,
+              provider,
+              password: null,
             })
+
+            const Location = new URL(redirectTo, request.url).toString()
+            const response = new Response(null, {
+              status: 302,
+              headers: { Location },
+            })
+            for (const key of Object.values(cookieKeys))
+              cookies.delete(response, key)
             cookies.set(response, cookieKeys.token, session.token, {
               ...cookieOptions,
               expires: session.expires,
             })
-            cookies.delete(response, cookieKeys.state)
-            cookies.delete(response, cookieKeys.code)
-            cookies.delete(response, cookieKeys.redirect)
+            return setCorsHeaders(response)
           }
-        } catch (error) {
-          if (error instanceof Error)
-            response = new Response(error.message, { status: 500 })
-          else response = new Response('Internal Server Error', { status: 500 })
-        }
 
-        return setCorsHeaders(response)
+          return setCorsHeaders(new Response('Not Found', { status: 404 }))
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : 'Internal Server Error'
+          return setCorsHeaders(new Response(message, { status: 500 }))
+        }
       },
       POST: async (request: Request) => {
-        let response = new Response(null, { status: 404 })
         const cookies = new Cookies(request)
         const { pathname } = new URL(request.url)
 
         try {
+          /**
+           * [POST] /api/auth/sign-in: Sign in with email and password
+           */
           if (pathname === '/api/auth/sign-in') {
             const body = (await request.json()) as never
-            const result = await authenticateCredentials(body)
+            const result = await signIn(body)
 
-            response = Response.json(result)
+            const response = Response.json(result)
             cookies.set(response, cookieKeys.token, result.token, {
               ...cookieOptions,
               expires: result.expires,
             })
-          } else if (pathname === '/api/auth/sign-out') {
+            return setCorsHeaders(response)
+          }
+
+          /**
+           * [POST] /api/auth/sign-out: Sign out current session
+           */
+          if (pathname === '/api/auth/sign-out') {
             await signOut(request)
-            response = Response.json({ error: 'Signed out successfully' })
+            const response = Response.json({
+              message: 'Signed out successfully',
+            })
             cookies.delete(response, cookieKeys.token)
           }
-        } catch (error) {
-          if (error instanceof Error)
-            response = Response.json({ error: error.message }, { status: 500 })
-          else
-            response = Response.json(
-              { error: 'Internal Server Error' },
-              { status: 500 },
-            )
-        }
 
-        return setCorsHeaders(response)
+          return setCorsHeaders(new Response('Not Found', { status: 404 }))
+        } catch (error) {
+          const message =
+            error instanceof Error ? error.message : 'Internal Server Error'
+          return setCorsHeaders(new Response(message, { status: 500 }))
+        }
       },
     },
   }
@@ -176,5 +272,7 @@ const DEFAULT_OPTIONS = {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'Lax',
   },
-  providers: {},
-} as const satisfies Required<AuthOptions>
+} as const satisfies Omit<
+  Required<AuthOptions>,
+  'adapter' | 'providers' | 'session'
+>

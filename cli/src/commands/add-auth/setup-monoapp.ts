@@ -41,5 +41,5 @@ export async function setupMonoapp(opts: Options) {
     )
   }
 
-  await fs.writeFile(`${destPath}/core/adapter.ts`, modifiedConfig)
+  await fs.writeFile(`${destPath}/config.ts`, modifiedConfig)
 }

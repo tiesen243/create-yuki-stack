@@ -98,7 +98,7 @@ export const initCommand = procedure
               initialValue: DEFAULT_PROJECT_OPTIONS.database,
             }),
           adapter: ({ results }) =>
-            results.database !== 'none'
+            results.database !== 'none' && results.database !== 'mongoose'
               ? p.select({
                   message: 'Which database adapter would you like to use?',
                   options: [
