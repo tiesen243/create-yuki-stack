@@ -31,6 +31,9 @@ export function verifyRequestOrigin(
 }
 
 export function generateCsrfToken(sessionToken: string): string {
+  if (!sessionToken)
+    throw new Error('Session token is required to generate CSRF token')
+  
   const randomBytes = new Uint8Array(32)
   crypto.getRandomValues(randomBytes)
   const randomPart = btoa(String.fromCharCode(...randomBytes))
@@ -38,7 +41,15 @@ export function generateCsrfToken(sessionToken: string): string {
     .replace(/\//g, '_')
     .replace(/=/g, '')
 
-  return `${randomPart}.${btoa(sessionToken).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')}`
+  try {
+    const encodedToken = btoa(sessionToken)
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '')
+    return `${randomPart}.${encodedToken}`
+  } catch {
+    throw new Error('Failed to encode session token for CSRF token generation')
+  }
 }
 
 export function verifyCsrfToken(
