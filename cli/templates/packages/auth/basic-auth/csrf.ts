@@ -1,3 +1,5 @@
+import { constantTimeEqual } from "./core/crypto"
+
 const isProd = process.env.NODE_ENV === 'production'
 
 export function verifyRequestOrigin(
@@ -10,7 +12,7 @@ export function verifyRequestOrigin(
 
   // check for session token and CSRF token
   const csrfToken = request.headers.get('__csrf') ?? ''
-  if (sessionToken && !verifyCsrfToken(sessionToken, csrfToken)) return false
+  if (sessionToken && verifyCsrfToken(sessionToken, csrfToken)) return true
 
   // check for origin header and host header
   const originHeader = request.headers.get('origin') ?? ''
@@ -52,5 +54,9 @@ export function verifyCsrfToken(
     .replace(/\//g, '_')
     .replace(/=/g, '')
 
-  return expectedSessionToken === encodedSessionToken
+  const textEncoder = new TextEncoder()
+  return constantTimeEqual(
+    textEncoder.encode(encodedSessionToken),
+    textEncoder.encode(expectedSessionToken),
+  )
 }
