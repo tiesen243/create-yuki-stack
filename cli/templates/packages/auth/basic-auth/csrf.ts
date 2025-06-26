@@ -11,8 +11,8 @@ export function verifyRequestOrigin(
     return true
 
   // check for session token and CSRF token
-  const csrfToken = request.headers.get('__csrf') ?? ''
-  if (sessionToken && verifyCsrfToken(sessionToken, csrfToken)) return true
+  const csrfToken = request.headers.get('auth.csrf') ?? ''
+  if (sessionToken && csrfToken) return verifyCsrfToken(sessionToken, csrfToken)
 
   // check for origin header and host header
   const originHeader = request.headers.get('origin') ?? ''
