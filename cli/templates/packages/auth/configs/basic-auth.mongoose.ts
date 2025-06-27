@@ -47,7 +47,6 @@ function getAdapter(): AuthOptions['adapter'] {
       if (!account) return null
       return {
         ...account.toObject(),
-        id: account._id,
         password: account.password ?? null,
       }
     },
@@ -55,7 +54,6 @@ function getAdapter(): AuthOptions['adapter'] {
       const account = await db.accounts.create(data)
       return {
         ...account.toObject(),
-        id: account._id,
         password: account.password ?? null,
       }
     },
@@ -71,7 +69,7 @@ function getAdapter(): AuthOptions['adapter'] {
     },
     createSession: async (data) => {
       const session = await db.sessions.create(data)
-      return { ...session.toObject(), id: session._id }
+      return session.toObject()
     },
     updateSession: async (token, data) => {
       const session = await db.sessions.findOneAndUpdate(
@@ -80,7 +78,7 @@ function getAdapter(): AuthOptions['adapter'] {
         { new: true },
       )
       if (!session) return null
-      return { ...session.toObject(), id: session._id }
+      return session.toObject()
     },
     deleteSession: async (token) => {
       await db.sessions.deleteOne({ token })
