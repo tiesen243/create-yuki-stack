@@ -1,6 +1,6 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.1.26",
+  "version": "0.1.27",
   "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
     "cli",
@@ -42,13 +42,14 @@
   "prettier": "../tools/prettier/index.js",
   "dependencies": {
     "@clack/prompts": "^0.11.0",
+    "gradient-string": "^3.0.0",
     "picocolors": "^1.1.1",
     "trpc-cli": "^0.9.2"
   },
   "devDependencies": {
     "@types/node": "24.0.4",
     "eslint": "^9.29.0",
-    "prettier": "^3.6.1",
+    "prettier": "^3.6.2",
     "tsdown": "^0.12.9",
     "typescript": "^5.8.3"
   },

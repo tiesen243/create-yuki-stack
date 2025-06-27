@@ -50,27 +50,16 @@ export interface SessionResult {
 }
 
 export interface DatabaseAdapter {
-  user: {
-    findOne: (email: string) => Promise<User | null>
-    create: (data: Omit<User, 'id'>) => Promise<User | null>
-    update: (email: string, data: Partial<User>) => Promise<User | null>
-    delete: (email: string) => Promise<User | null>
-  }
-  account: {
-    findOne: (provider: string, accountId: string) => Promise<Account | null>
-    create: (data: Account) => Promise<Account | null>
-    update: (
-      accountId: string,
-      data: Partial<Account>,
-    ) => Promise<Account | null>
-    delete: (provider:string, accountId: string) => Promise<Account | null>
-  }
-  session: {
-    findOne: (token: string) => Promise<SessionResult | null>
-    create: (data: Session) => Promise<Session | null>
-    update: (token: string, data: Partial<Session>) => Promise<Session | null>
-    delete: (token: string) => Promise<Session | null>
-  }
+  getUserByEmail(email: string): Promise<User | null>
+  createUser(data: Omit<User, 'id'>): Promise<User | null>
+
+  getAccount(provider: string, accountId: string): Promise<Account | null>
+  createAccount(data: Account): Promise<Account | null>
+
+  getSessionAndUser(token: string): Promise<SessionResult | null>
+  createSession(data: Session): Promise<Session | null>
+  updateSession(token: string, data: Partial<Session>): Promise<Session | null>
+  deleteSession(token: string): Promise<void>
 }
 
 export interface AuthOptions {

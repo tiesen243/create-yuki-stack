@@ -17,8 +17,8 @@
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "@tanstack/react-router": "^1.121.34",
-    "@tanstack/react-start": "^1.121.35",
+    "@tanstack/react-router": "^1.121.41",
+    "@tanstack/react-start": "^1.121.41",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
@@ -26,14 +26,14 @@
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "@tailwindcss/vite": "^4.1.10",
+    "@tailwindcss/vite": "^4.1.11",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "dotenv-cli": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "tailwindcss": "^4.1.10",
+    "tailwindcss": "^4.1.11",
     "typescript": "catalog:",
     "vite": "^7.0.0",
     "vite-tsconfig-paths": "^5.1.4"

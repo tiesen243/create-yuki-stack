@@ -1,9 +1,14 @@
 import fs from 'node:fs/promises'
 import * as p from '@clack/prompts'
+import gradient from 'gradient-string'
 import pc from 'picocolors'
 import { zod as z } from 'trpc-cli'
 
-import { DEFAULT_PROJECT_OPTIONS } from '@/commands/init/constants'
+import {
+  APP_COLORS,
+  APP_TITLE,
+  DEFAULT_PROJECT_OPTIONS,
+} from '@/commands/init/constants'
 import { projectName, projectOptions } from '@/commands/init/types'
 import { procedure } from '@/trpc'
 import { checkDir } from './check-dir'
@@ -13,7 +18,7 @@ export const initCommand = procedure
   .meta({ aliases: { options: { yes: 'y' } }, default: true })
   .input(z.tuple([projectName.optional(), projectOptions]))
   .mutation(async ({ input: [inputName, inputOptions] }) => {
-    p.intro(pc.bold(pc.magenta('Creating new Yuki project...')))
+    renderTitle()
 
     const project = {
       ...DEFAULT_PROJECT_OPTIONS,
@@ -292,3 +297,8 @@ export const initCommand = procedure
         `      ${project.packageManager} run dev`,
     )
   })
+
+function renderTitle() {
+  const g = gradient(APP_COLORS)
+  console.log(g.multiline(APP_TITLE))
+}
