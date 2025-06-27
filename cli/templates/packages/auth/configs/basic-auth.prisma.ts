@@ -1,65 +1,10 @@
 import { db } from '@{{ name }}/db'
 
 import type { AuthOptions } from './core/types'
+import { encodeHex, hashSecret } from './core/crypto'
 import Discord from './providers/discord'
 
-const adapter = {
-  user: {
-    async findOne(email) {
-      return db.user.findUnique({ where: { email } })
-    },
-    async create(data) {
-      return db.user.create({ data })
-    },
-    async update(email, data) {
-      return db.user.update({ where: { email }, data })
-    },
-    async delete(email) {
-      return db.user.delete({ where: { email } })
-    },
-  },
-  account: {
-    async findOne(provider, accountId) {
-      return await db.account.findUnique({
-        where: { provider_accountId: { provider, accountId } },
-      })
-    },
-    async create(data) {
-      return db.account.create({ data })
-    },
-    async update(accountId, data) {
-      return db.account.update({
-        where: {
-          provider_accountId: { provider: data.provider ?? '', accountId },
-        },
-        data,
-      })
-    },
-    async delete(provider, accountId) {
-      return db.account.delete({
-        where: { provider_accountId: { provider, accountId } },
-      })
-    },
-  },
-  session: {
-    async findOne(token) {
-      return db.session.findUnique({
-        where: { token },
-        select: { user: true, expires: true },
-      })
-    },
-    async create(data) {
-      return db.session.create({ data })
-    },
-    async update(token, data) {
-      return db.session.update({ where: { token }, data })
-    },
-    async delete(token) {
-      return db.session.delete({ where: { token } })
-    },
-  },
-} satisfies AuthOptions['adapter']
-
+const adapter = getAdapter()
 export const authOptions = {
   adapter,
   session: {
@@ -75,3 +20,53 @@ export const authOptions = {
 } satisfies AuthOptions
 
 export type Providers = keyof typeof authOptions.providers
+
+export async function validateSessionToken(token: string) {
+  const hashToken = encodeHex(await hashSecret(token))
+  return await adapter.getSessionAndUser(hashToken)
+}
+
+export async function invalidateSessionToken(token: string) {
+  const hashToken = encodeHex(await hashSecret(token))
+  await adapter.deleteSession(hashToken)
+}
+
+function getAdapter(): AuthOptions['adapter'] {
+  return {
+    getUserByEmail: async (email) => {
+      return await db.user.findUnique({ where: { email } })
+    },
+    createUser: async (data) => {
+      return await db.user.create({ data })
+    },
+    getAccount: async (provider, accountId) => {
+      return await db.account.findUnique({
+        where: { provider_accountId: { provider, accountId } },
+      })
+    },
+    createAccount: async (data) => {
+      return await db.account.create({ data })
+    },
+    getSessionAndUser: async (token) => {
+      return await db.session.findUnique({
+        where: { token },
+        select: {
+          user: true,
+          expires: true,
+        },
+      })
+    },
+    createSession: async (data) => {
+      return await db.session.create({ data })
+    },
+    updateSession: async (token, data) => {
+      return await db.session.update({
+        where: { token },
+        data,
+      })
+    },
+    deleteSession: async (token) => {
+      await db.session.delete({ where: { token } })
+    },
+  }
+}

@@ -28,30 +28,31 @@ export function Auth(opts: AuthOptions) {
     const token = generateSecureString()
     const hashToken = await hashSecret(token)
     const expires = new Date(Date.now() + session.expiresIn * 1000)
-    await adapter.session.create({
-      token: encodeHex(hashToken),
-      expires,
-      userId,
-    })
-    return { token, expires, userId }
+    return (
+      (await adapter.createSession({
+        token: encodeHex(hashToken),
+        expires,
+        userId,
+      })) ?? { token: '', expires: new Date(), userId }
+    )
   }
 
   async function validateSessionToken(token: string): Promise<SessionResult> {
     const hashToken = encodeHex(await hashSecret(token))
-    const result = await adapter.session.findOne(hashToken)
+    const result = await adapter.getSessionAndUser(hashToken)
     if (!result) return { user: null, expires: new Date() }
 
     const now = Date.now()
     const expiresTime = result.expires.getTime()
 
     if (now > expiresTime) {
-      await adapter.session.delete(hashToken)
+      await adapter.deleteSession(hashToken)
       return { user: null, expires: new Date() }
     }
 
     if (now >= expiresTime - session.expiresThreshold * 1000) {
       const newExpires = new Date(now + session.expiresIn * 1000)
-      await adapter.session.update(hashToken, { expires: newExpires })
+      await adapter.updateSession(hashToken, { expires: newExpires })
       result.expires = newExpires
     }
 
@@ -60,7 +61,7 @@ export function Auth(opts: AuthOptions) {
 
   async function invalidateSessionToken(token: string): Promise<void> {
     const hashToken = encodeHex(await hashSecret(token))
-    await adapter.session.delete(hashToken)
+    await adapter.deleteSession(hashToken)
   }
 
   async function auth(request: Request) {
@@ -75,10 +76,10 @@ export function Auth(opts: AuthOptions) {
   }): Promise<Session> {
     const { email, password } = opts
 
-    const user = await adapter.user.findOne(email)
+    const user = await adapter.getUserByEmail(email)
     if (!user) throw new Error('Invalid credentials')
 
-    const account = await adapter.account.findOne('credentials', user.id)
+    const account = await adapter.getAccount('credentials', user.id)
     if (!account?.password) throw new Error('Invalid credentials')
 
     const isValid = await new Password().verify(account.password, password)
@@ -97,14 +98,14 @@ export function Auth(opts: AuthOptions) {
     opts: Omit<OauthAccount & Account, 'userId'>,
   ): Promise<Session> {
     const { provider, accountId, ...userData } = opts
-    const existingAccount = await adapter.account.findOne(provider, accountId)
+    const existingAccount = await adapter.getAccount(provider, accountId)
     if (existingAccount) return createSession(existingAccount.userId)
 
-    const existingUser = await adapter.user.findOne(userData.email)
+    const existingUser = await adapter.getUserByEmail(userData.email)
     const userId =
-      existingUser?.id ?? (await adapter.user.create(userData))?.id ?? ''
+      existingUser?.id ?? (await adapter.createUser(userData))?.id ?? ''
 
-    await adapter.account.create({
+    await adapter.createAccount({
       provider,
       accountId,
       userId,
@@ -117,8 +118,6 @@ export function Auth(opts: AuthOptions) {
     auth,
     signIn,
     signOut,
-    validateSessionToken,
-    invalidateSessionToken,
     handlers: {
       GET: async (request: Request) => {
         const { pathname, searchParams } = new URL(request.url)

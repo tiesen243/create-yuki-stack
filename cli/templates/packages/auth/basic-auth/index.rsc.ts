@@ -3,14 +3,7 @@ import { cache } from 'react'
 import { authOptions } from './config'
 import { Auth } from './core'
 
-const {
-  auth: uncachedAuth,
-  signIn,
-  signOut,
-  validateSessionToken,
-  invalidateSessionToken,
-  handlers,
-} = Auth(authOptions)
+const { auth: uncachedAuth, signIn, signOut, handlers } = Auth(authOptions)
 
 /**
  * This is the main way to get session data for your RSCs.
@@ -19,12 +12,6 @@ const {
 const auth = cache(uncachedAuth)
 
 export type { Session, User } from './core/types'
-export { Password } from './core/password/index'
-export {
-  auth,
-  signIn,
-  signOut,
-  validateSessionToken,
-  invalidateSessionToken,
-  handlers,
-}
+export { validateSessionToken, invalidateSessionToken } from './config'
+export { Password } from './core/password'
+export { auth, signIn, signOut, handlers }

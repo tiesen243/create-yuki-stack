@@ -1,94 +1,10 @@
 import { db } from '@{{ name }}/db'
 
 import type { AuthOptions } from './core/types'
+import { encodeHex, hashSecret } from './core/crypto'
 import Discord from './providers/discord'
 
-const adapter = {
-  user: {
-    async findOne(email) {
-      const user = await db.users.findOne({ email })
-      return user ? { ...user.toObject(), id: user._id } : null
-    },
-    async create(data) {
-      const user = await db.users.create(data)
-      return { ...user.toObject(), id: user._id }
-    },
-    async update(email, data) {
-      const user = await db.users.findOneAndUpdate(
-        { email },
-        { $set: data },
-        { new: true },
-      )
-      return user ? { ...user.toObject(), id: user._id } : null
-    },
-    async delete(email) {
-      const user = await db.users.findOneAndDelete({ email }, { new: true })
-      return user ? { ...user.toObject(), id: user._id } : null
-    },
-  },
-  account: {
-    async findOne(provider, accountId) {
-      const account = await db.accounts.findOne({ provider, accountId })
-      const password = account?.password ?? null
-      return account
-        ? { ...account.toObject(), id: account._id, password }
-        : null
-    },
-    async create(data) {
-      const account = await db.accounts.create(data)
-      return { ...account.toObject(), id: account._id, password: null }
-    },
-    async update(accountId, data) {
-      const account = await db.accounts.findOneAndUpdate(
-        { accountId },
-        { $set: data },
-        { new: true },
-      )
-      return account
-        ? { ...account.toObject(), id: account._id, password: null }
-        : null
-    },
-    async delete(provider, accountId) {
-      const account = await db.accounts.findOneAndDelete(
-        { provider, accountId },
-        { new: true },
-      )
-      return account
-        ? { ...account.toObject(), id: account._id, password: null }
-        : null
-    },
-  },
-  session: {
-    async findOne(token) {
-      const session = await db.sessions.findOne({ token })
-      const user = await db.users.findOne({ _id: session?.userId })
-      return {
-        user: user ? { ...user.toObject(), id: user._id } : null,
-        expires: new Date(session?.expires ?? 0),
-      }
-    },
-    async create(data) {
-      const session = await db.sessions.create(data)
-      return { ...session.toObject(), id: session._id }
-    },
-    async update(token, data) {
-      const session = await db.sessions.findOneAndUpdate(
-        { token },
-        { $set: data },
-        { new: true },
-      )
-      return session ? { ...session.toObject(), id: session._id } : null
-    },
-    async delete(token) {
-      const session = await db.sessions.findOneAndDelete(
-        { token },
-        { new: true },
-      )
-      return session ? { ...session.toObject(), id: session._id } : null
-    },
-  },
-} satisfies AuthOptions['adapter']
-
+const adapter = getAdapter()
 export const authOptions = {
   adapter,
   session: {
@@ -104,3 +20,68 @@ export const authOptions = {
 } satisfies AuthOptions
 
 export type Providers = keyof typeof authOptions.providers
+
+export async function validateSessionToken(token: string) {
+  const hashToken = encodeHex(await hashSecret(token))
+  return await adapter.getSessionAndUser(hashToken)
+}
+
+export async function invalidateSessionToken(token: string) {
+  const hashToken = encodeHex(await hashSecret(token))
+  await adapter.deleteSession(hashToken)
+}
+
+function getAdapter(): AuthOptions['adapter'] {
+  return {
+    getUserByEmail: async (email) => {
+      const user = await db.users.findOne({ email })
+      if (!user) return null
+      return { ...user.toObject(), id: user._id }
+    },
+    createUser: async (data) => {
+      const user = await db.users.create(data)
+      return { ...user.toObject(), id: user._id }
+    },
+    getAccount: async (provider, accountId) => {
+      const account = await db.accounts.findOne({ provider, accountId })
+      if (!account) return null
+      return {
+        ...account.toObject(),
+        password: account.password ?? null,
+      }
+    },
+    createAccount: async (data) => {
+      const account = await db.accounts.create(data)
+      return {
+        ...account.toObject(),
+        password: account.password ?? null,
+      }
+    },
+    getSessionAndUser: async (token) => {
+      const session = await db.sessions.findOne({ token })
+      if (!session) return null
+      const user = await db.users.findById(session.userId)
+      if (!user) return null
+      return {
+        user: { ...user.toObject(), id: user._id },
+        expires: session.expires,
+      }
+    },
+    createSession: async (data) => {
+      const session = await db.sessions.create(data)
+      return session.toObject()
+    },
+    updateSession: async (token, data) => {
+      const session = await db.sessions.findOneAndUpdate(
+        { token },
+        { $set: data },
+        { new: true },
+      )
+      if (!session) return null
+      return session.toObject()
+    },
+    deleteSession: async (token) => {
+      await db.sessions.deleteOne({ token })
+    },
+  }
+}
