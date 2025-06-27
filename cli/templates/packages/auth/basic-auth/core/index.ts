@@ -23,13 +23,13 @@ export function Auth(opts: AuthOptions) {
     const hashToken = await hashSecret(token)
     const expires = new Date(Date.now() + session.expiresIn * 1000)
 
-    return (
-      (await adapter.createSession({
-        token: encodeHex(hashToken),
-        expires,
-        userId,
-      })) ?? { token: '', expires: new Date(), userId }
-    )
+    await adapter.createSession({
+      token: encodeHex(hashToken),
+      expires,
+      userId,
+    })
+
+    return { token, userId, expires }
   }
 
   async function auth(request: Request) {
@@ -93,6 +93,7 @@ export function Auth(opts: AuthOptions) {
     const existingUser = await adapter.getUserByEmail(userData.email)
     const userId =
       existingUser?.id ?? (await adapter.createUser(userData))?.id ?? ''
+    if (!userId) throw new Error('Failed to create user')
 
     await adapter.createAccount({
       provider,
