@@ -1,10 +1,4 @@
-import type {
-  Account,
-  AuthOptions,
-  OauthAccount,
-  Session,
-  SessionResult,
-} from './types'
+import type { Account, AuthOptions, OauthAccount, Session } from './types'
 import Cookies from './cookies'
 import {
   encodeHex,
@@ -28,6 +22,7 @@ export function Auth(opts: AuthOptions) {
     const token = generateSecureString()
     const hashToken = await hashSecret(token)
     const expires = new Date(Date.now() + session.expiresIn * 1000)
+
     return (
       (await adapter.createSession({
         token: encodeHex(hashToken),
@@ -37,7 +32,10 @@ export function Auth(opts: AuthOptions) {
     )
   }
 
-  async function validateSessionToken(token: string): Promise<SessionResult> {
+  async function auth(request: Request) {
+    const cookies = new Cookies(request)
+    const token = cookies.get(cookieKeys.token) ?? ''
+
     const hashToken = encodeHex(await hashSecret(token))
     const result = await adapter.getSessionAndUser(hashToken)
     if (!result) return { user: null, expires: new Date() }
@@ -57,17 +55,6 @@ export function Auth(opts: AuthOptions) {
     }
 
     return result
-  }
-
-  async function invalidateSessionToken(token: string): Promise<void> {
-    const hashToken = encodeHex(await hashSecret(token))
-    await adapter.deleteSession(hashToken)
-  }
-
-  async function auth(request: Request) {
-    const cookies = new Cookies(request)
-    const token = cookies.get(cookieKeys.token) ?? ''
-    return validateSessionToken(token)
   }
 
   async function signIn(opts: {
@@ -91,7 +78,9 @@ export function Auth(opts: AuthOptions) {
   async function signOut(request: Request) {
     const cookies = new Cookies(request)
     const token = cookies.get(cookieKeys.token) ?? ''
-    await invalidateSessionToken(token)
+
+    const hashToken = encodeHex(await hashSecret(token))
+    await adapter.deleteSession(hashToken)
   }
 
   async function getOrCreateUser(
