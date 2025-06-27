@@ -188,10 +188,13 @@ async function updateLayoutFile(opts: ProjectOptions, layoutFile: string) {
     const needsProvider = ['trpc', 'orpc'].includes(opts.api)
     if (needsProvider) {
       const provider =
-        opts.api === 'trpc' ? 'TrpcReactProvider' : 'OrpcReactProvider'
+        opts.api === 'trpc' ? 'TRPCReactProvider' : 'ORPCReactProvider'
       layoutContent = layoutContent.replace(
-        /({children}|<Outlet \/>)/g,
-        `<${provider}>$1</${provider}>`,
+        /{children}|<Outlet \/>/g,
+        (match) =>
+          layoutContent.includes('{children}') && match === '<Outlet />'
+            ? match
+            : `<${provider}>${match}</${provider}>`,
       )
       layoutContent += `\nimport { ${provider} } from '@/${opts.api}/react'`
     }
@@ -199,8 +202,11 @@ async function updateLayoutFile(opts: ProjectOptions, layoutFile: string) {
     const needsAuth = ['basic-auth', 'next-auth'].includes(opts.auth)
     if (needsAuth) {
       layoutContent = layoutContent.replace(
-        /({children}|<Outlet \/>)/g,
-        `<SessionProvider>$1</SessionProvider>`,
+        /{children}|<Outlet \/>/g,
+        (match) =>
+          layoutContent.includes('{children}') && match === '<Outlet />'
+            ? match
+            : `<SessionProvider>${match}</SessionProvider>`,
       )
       layoutContent += `\nimport { SessionProvider } from '@{{ name }}/auth/react'`
     }

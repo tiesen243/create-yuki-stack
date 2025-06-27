@@ -1,3 +1,5 @@
+'use client'
+
 import type { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
 import { useState } from 'react'
