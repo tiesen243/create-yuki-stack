@@ -143,16 +143,21 @@ async function addApiClient(
   )
 
   const reactContent = await fs.readFile(`${clientPath}/react.tsx`, 'utf-8')
+
   let modifiedReactContent = reactContent.replace(
     /{{ app }}/g,
     appMap.get(app) ?? app,
   )
-  if (opts.backend !== 'none') {
+
+  if (app === 'nextjs')
+    modifiedReactContent = `'use client'\n\n${modifiedReactContent}`
+
+  if (opts.backend !== 'none')
     modifiedReactContent = `${modifiedReactContent.replace(
       `import { getBaseUrl } from '@/lib/utils'`,
       `import { env } from '@{{ name }}/validators/env'`,
     )}\nfunction getBaseUrl() {\n  if (env.NEXT_PUBLIC_API_URL) return \`https://\${env.NEXT_PUBLIC_API_URL}\`\n  return 'http://localhost:8080'\n}`
-  }
+
   await fs.writeFile(`${clientPath}/react.tsx`, modifiedReactContent)
 }
 
