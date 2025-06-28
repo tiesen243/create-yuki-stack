@@ -284,8 +284,8 @@ const API_ROUTES_CONTENT = {
   },
   'react-router': {
     api: {
-      trpc: `export { handler } from '@{{ name }}/api'\n\nimport type { Route } from './+types/api.trpc.$'\n\nexport const loader = ({ request }: Route.LoaderArgs) => handler(request)\nexport const action = ({ request }: Route.ActionArgs) => handler(request)`,
-      orpc: `export { handler } from '@{{ name }}/api'\n\nimport type { Route } from './+types/api.orpc.$'\n\nexport const loader = ({ request }: Route.LoaderArgs) => handler(request)\nexport const action = ({ request }: Route.ActionArgs) => handler(request)`,
+      trpc: `import { handler } from '@{{ name }}/api'\n\nimport type { Route } from './+types/api.trpc.$'\n\nexport const loader = ({ request }: Route.LoaderArgs) => handler(request)\nexport const action = ({ request }: Route.ActionArgs) => handler(request)`,
+      orpc: `import { handler } from '@{{ name }}/api'\n\nimport type { Route } from './+types/api.orpc.$'\n\nexport const loader = ({ request }: Route.LoaderArgs) => handler(request)\nexport const action = ({ request }: Route.ActionArgs) => handler(request)`,
     },
     auth: {
       'basic-auth': `import { handlers } from '@{{ name }}/auth'\n\nimport type { Route } from './+types/api.auth.$'\n\nconst { GET, POST } = handlers\nexport const loader = ({ request }: Route.LoaderArgs) => GET(request)\nexport const action = ({ request }: Route.ActionArgs) => POST(request)`,
