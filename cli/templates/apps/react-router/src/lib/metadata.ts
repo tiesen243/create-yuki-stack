@@ -1,5 +1,3 @@
-import type { MetaDescriptor } from 'react-router'
-
 import { getBaseUrl } from '@/lib/utils'
 
 export interface Metadata {
@@ -11,7 +9,7 @@ export interface Metadata {
   }
 }
 
-export function createMetadata(override: Metadata = {}): MetaDescriptor[] {
+export function createMetadata(override: Metadata = {}) {
   const siteName = '{{ name }}'
   const baseUrl = getBaseUrl()
 
