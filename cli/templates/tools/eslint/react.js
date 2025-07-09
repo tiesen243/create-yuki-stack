@@ -1,28 +1,28 @@
+import reactPlugin from '@eslint-react/eslint-plugin'
 import a11yPlugin from 'eslint-plugin-jsx-a11y'
-import reactPlugin from 'eslint-plugin-react'
-import hooksPlugin from 'eslint-plugin-react-hooks'
 
-/**
- * A custom ESLint configuration for libraries that use React.
- *
- * @type {Awaited<import('typescript-eslint').Config>} */
+/** @type {Awaited<import('typescript-eslint').Config>} */
 export default [
   {
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
-      react: reactPlugin,
+      ...reactPlugin.configs['recommended-typescript'].plugins,
       'jsx-a11y': a11yPlugin,
-      'react-hooks': hooksPlugin,
     },
-    settings: { react: { version: 'detect' } },
     rules: {
-      ...reactPlugin.configs.flat.recommended.rules,
+      ...reactPlugin.configs['recommended-typescript'].rules,
       ...a11yPlugin.flatConfigs.strict.rules,
-      ...hooksPlugin.configs['recommended-latest'].rules,
 
-      'react/no-unknown-property': 'off',
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
+      '@eslint-react/naming-convention/component-name': [
+        'warn',
+        { rule: 'PascalCase', allowAllCaps: true },
+      ],
+      '@eslint-react/naming-convention/filename': ['warn', 'kebab-case'],
+      '@eslint-react/naming-convention/filename-extension': [
+        'warn',
+        'as-needed',
+      ],
     },
+    settings: reactPlugin.configs['recommended-typescript'].settings,
   },
 ]

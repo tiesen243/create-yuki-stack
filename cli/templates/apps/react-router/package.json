@@ -8,7 +8,7 @@
     "clean": "git clean -xdf .cache .react-router .turbo .vercel build node_modules",
     "dev": "{{ pkm }} run with-env react-router dev {{ hyphen }} --port 3001",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
+    "lint": "{{ pkm }} run with-env react-router typegen && eslint",
     "start": "PORT=3001 {{ pkm }} run with-env react-router-serve ./build/server/nodejs_*/index.js",
     "typecheck": "{{ pkm }} run with-env react-router typegen && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
@@ -17,30 +17,30 @@
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "@react-router/fs-routes": "^7.6.2",
-    "@react-router/node": "^7.6.2",
-    "@react-router/serve": "^7.6.2",
+    "@react-router/fs-routes": "^7.6.3",
+    "@react-router/node": "^7.6.3",
+    "@react-router/serve": "^7.6.3",
     "isbot": "^5.1.28",
     "react": "catalog:react",
     "react-dom": "catalog:react",
-    "react-router": "^7.6.2"
+    "react-router": "^7.6.3"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "@react-router/dev": "^7.6.2",
+    "@react-router/dev": "^7.6.3",
     "@tailwindcss/vite": "^4.1.11",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "@vercel/react-router": "^1.1.2",
+    "@vercel/react-router": "^1.2.0",
     "dotenv-cli": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "tailwindcss": "^4.1.11",
     "typescript": "catalog:",
-    "vite": "^7.0.0",
+    "vite": "^7.0.3",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }

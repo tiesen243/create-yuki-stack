@@ -18,7 +18,7 @@ interface Options {
  * This wraps the `createORPCContext` helper and provides the required context for the oRPC API when
  * handling a oRPC call from a React Server Component.
  */
-const createContext = cache((opts: Options) => {
+const createRscContext = cache((opts: Options) => {
   const heads = new Headers(opts.headers)
   heads.set('x-orpc-source', 'rsc')
 
@@ -29,7 +29,7 @@ const getQueryClient = cache(createQueryClient)
 
 const createApi = (opts: Options) =>
   createCallerFactory(appRouter, {
-    context: createContext(opts),
+    context: createRscContext(opts),
   })
 
 const createORPC = (opts: Options) => createRouterUtils(createApi(opts))

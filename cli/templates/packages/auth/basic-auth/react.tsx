@@ -105,13 +105,12 @@ function SessionProvider(
     fetchSession()
   }, [hasInitialSession, fetchSession])
 
-  return (
-    <SessionContext
-      value={{ status, session, signIn, signOut } as SessionContextValue}
-    >
-      {props.children}
-    </SessionContext>
-  )
+  const value = React.useMemo(
+    () => ({ status, session, signIn, signOut }),
+    [status, session, signIn, signOut],
+  ) as SessionContextValue
+
+  return <SessionContext value={value}>{props.children}</SessionContext>
 }
 
 export { useSession, SessionProvider }

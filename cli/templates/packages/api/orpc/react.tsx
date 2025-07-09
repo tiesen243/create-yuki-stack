@@ -58,11 +58,16 @@ function ORPCReactProvider({
     createTanstackQueryUtils<AppRouter>(orpcClient),
   )
 
+  const value = React.useMemo(
+    () => ({ orpc, orpcClient, queryClient }),
+    [orpc, orpcClient, queryClient],
+  )
+
   return (
     <QueryClientProvider client={queryClient}>
-      <ORPCContext.Provider value={{ orpc, orpcClient, queryClient }}>
+      <ORPCContext value={value}>
         {children}
-      </ORPCContext.Provider>
+      </ORPCContext>
     </QueryClientProvider>
   )
 }

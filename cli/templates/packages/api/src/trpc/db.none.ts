@@ -1,4 +1,4 @@
-import { initTRPC, TRPCError } from '@trpc/server'
+import { initTRPC } from '@trpc/server'
 import SuperJSON from 'superjson'
 
 import { db } from '@{{ name }}/db'

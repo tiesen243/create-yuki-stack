@@ -1,6 +1,5 @@
 import type { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
-import { useState } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import {
   createTRPCClient,
@@ -42,7 +41,7 @@ function TRPCReactProvider({
 }: Readonly<{ children: React.ReactNode }>) {
   const queryClient = getQueryClient()
 
-  const [trpcClient] = useState(() =>
+  const [trpcClient] = React.useState(() =>
     createTRPCClient<AppRouter>({
       links: [
         splitLink({
@@ -73,13 +72,18 @@ function TRPCReactProvider({
     }),
   )
 
-  const [trpc] = useState(() =>
+  const [trpc] = React.useState(() =>
     createTRPCOptionsProxy<AppRouter>({ client: trpcClient, queryClient }),
+  )
+
+  const value = React.useMemo(
+    () => ({ trpc, trpcClient, queryClient }),
+    [trpc, trpcClient, queryClient],
   )
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TRPCContext value={{ trpc, trpcClient, queryClient }}>
+      <TRPCContext value={value}>
         {children}
       </TRPCContext>
     </QueryClientProvider>

@@ -18,7 +18,7 @@ interface Options {
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
  * handling a tRPC call from a React Server Component.
  */
-const createContext = cache((opts: Options) => {
+const createRscContext = cache((opts: Options) => {
   const heads = new Headers(opts.headers)
   heads.set('x-trpc-source', 'rsc')
 
@@ -28,11 +28,11 @@ const createContext = cache((opts: Options) => {
 const getQueryClient = cache(createQueryClient)
 
 const createApi = (opts: Options) =>
-  createCallerFactory(appRouter)(() => createContext(opts))
+  createCallerFactory(appRouter)(() => createRscContext(opts))
 
 const createTRPC = (opts: Options) =>
   createTRPCOptionsProxy({
-    ctx: () => createContext(opts),
+    ctx: () => createRscContext(opts),
     queryClient: getQueryClient,
     router: appRouter,
   })
