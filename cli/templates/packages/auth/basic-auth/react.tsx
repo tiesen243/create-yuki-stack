@@ -26,7 +26,7 @@ type SessionContextValue = {
 const SessionContext = React.createContext<SessionContextValue | null>(null)
 
 function useSession() {
-  const context = React.useContext(SessionContext)
+  const context = React.use(SessionContext)
   if (!context)
     throw new Error('useSession must be used within a SessionProvider')
   return context
