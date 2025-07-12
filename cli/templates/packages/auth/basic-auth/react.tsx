@@ -32,14 +32,15 @@ function useSession() {
   return context
 }
 
-function SessionProvider(
-  props: Readonly<{ children: React.ReactNode; session?: SessionResult }>,
-) {
-  const hasInitialSession = !!props.session
+function SessionProvider({
+  session: _session,
+  children,
+}: Readonly<{ children: React.ReactNode; session?: SessionResult }>) {
+  const hasInitialSession = !!_session
 
   const [isLoading, startTransition] = React.useTransition()
   const [session, setSession] = React.useState<SessionResult>(() => {
-    if (hasInitialSession) return props.session
+    if (hasInitialSession) return _session
     return { user: null, expires: new Date() }
   })
 
@@ -110,7 +111,8 @@ function SessionProvider(
     [status, session, signIn, signOut],
   ) as SessionContextValue
 
-  return <SessionContext value={value}>{props.children}</SessionContext>
+  return <SessionContext value={value}>{children}</SessionContext>
 }
 
 export { useSession, SessionProvider }
+

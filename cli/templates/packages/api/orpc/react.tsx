@@ -37,6 +37,7 @@ function ORPCReactProvider({
 }: Readonly<{ children: React.ReactNode }>) {
   const queryClient = getQueryClient()
 
+  // eslint-disable-next-line @eslint-react/naming-convention/use-state
   const [orpcClient] = React.useState(() => {
     const link = new RPCLink({
       url: getBaseUrl() + '/api/orpc',
@@ -54,6 +55,7 @@ function ORPCReactProvider({
     return createORPCClient<AppRouter>(link)
   })
 
+  // eslint-disable-next-line @eslint-react/naming-convention/use-state
   const [orpc] = React.useState(() =>
     createTanstackQueryUtils<AppRouter>(orpcClient),
   )
