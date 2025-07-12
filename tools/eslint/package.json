@@ -19,13 +19,14 @@
     "@next/eslint-plugin-next": "^15.3.5",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-turbo": "^2.5.4",
     "typescript-eslint": "^8.36.0"
   },
   "devDependencies": {
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "eslint": "^9.30.1",
+    "eslint": "^9.31.0",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3"
   }
