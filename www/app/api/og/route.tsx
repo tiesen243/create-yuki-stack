@@ -1,5 +1,3 @@
-/* eslint-disable @eslint-react/dom/no-unknown-property */
-
 import type { NextRequest } from 'next/server'
 import { ImageResponse } from 'next/og'
 
@@ -21,14 +19,14 @@ export function GET(req: NextRequest) {
           backgroundColor: '#0c0c0c',
           backgroundImage: `linear-gradient(to top right, #a96249, transparent)`,
         }}
-        tw="flex flex-col w-full h-full p-12 text-white"
+        tw='flex h-full w-full flex-col p-12 text-white'
       >
-        <div tw="flex flex-row items-center mb-3 text-white">
+        <div tw='mb-3 flex flex-row items-center text-white'>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`${getBaseUrl()}/logo.svg`}
-            alt="Logo"
-            tw="w-20 h-20 mr-4"
+            alt='Logo'
+            tw='mr-4 h-20 w-20'
             style={{ filter: 'invert(1)' }}
           />
 

@@ -29,12 +29,12 @@ export const Route = createRootRoute({
 
 function RootLayout() {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body className="flex min-h-dvh flex-col font-sans antialiased">
-        <ThemeProvider attribute="class" disableTransitionOnChange enableSystem>
+      <body className='flex min-h-dvh flex-col font-sans antialiased'>
+        <ThemeProvider attribute='class' disableTransitionOnChange enableSystem>
           <Outlet />
         </ThemeProvider>
 

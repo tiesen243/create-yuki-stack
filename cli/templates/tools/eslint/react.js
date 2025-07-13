@@ -26,7 +26,7 @@ export default [
       '@eslint-react/prefer-react-namespace-import': 'warn',
       '@eslint-react/prefer-shorthand-boolean': 'warn',
       '@eslint-react/prefer-shorthand-fragment': 'warn',
-      '@eslint-react/dom/no-unknown-property': 'error',
+      '@eslint-react/dom/no-unknown-property': ['error', { ignore: ['tw'] }],
       '@eslint-react/naming-convention/component-name': [
         'warn',
         { rule: 'PascalCase', allowAllCaps: true },

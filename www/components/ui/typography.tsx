@@ -20,7 +20,7 @@ const typographyVariants = cva(
         ol: '"my-4 ml-6 list-decimal [&>li]:mt-2',
         blockquote:
           'mt-6 border-l-2 pl-6 italic before:content-["“"] after:content-["”"]',
-        code: 'bg-muted relative w-fit rounded-md px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium',
+        code: 'relative w-fit rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium',
         caption: 'block text-sm tracking-wide',
       },
     },
@@ -46,7 +46,7 @@ function Typography({
 
   return (
     <Comp
-      data-slot="typography"
+      data-slot='typography'
       className={cn(typographyVariants({ variant }), className)}
       {...props}
     />

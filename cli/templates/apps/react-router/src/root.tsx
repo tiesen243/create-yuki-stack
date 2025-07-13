@@ -16,15 +16,15 @@ import { createMetadata } from '@/lib/metadata'
 
 export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
         <Meta />
         <Links />
       </head>
-      <body className="flex min-h-dvh flex-col font-sans antialiased">
-        <ThemeProvider attribute="class" disableTransitionOnChange enableSystem>
+      <body className='flex min-h-dvh flex-col font-sans antialiased'>
+        <ThemeProvider attribute='class' disableTransitionOnChange enableSystem>
           {children}
         </ThemeProvider>
 
@@ -61,11 +61,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="container mx-auto p-4 pt-16">
+    <main className='container mx-auto p-4 pt-16'>
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
-        <pre className="w-full overflow-x-auto p-4">
+        <pre className='w-full overflow-x-auto p-4'>
           <code>{stack}</code>
         </pre>
       )}
@@ -80,4 +80,5 @@ export const links: Route.LinksFunction = () => [
   { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&display=swap' },
 ]
 
-export const meta: Route.MetaFunction = () => createMetadata({ title: 'React Router' })
+export const meta: Route.MetaFunction = () =>
+  createMetadata({ title: 'React Router' })

@@ -20,7 +20,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang='en' suppressHydrationWarning>
       <body
         className={cn(
           'flex min-h-dvh flex-col font-sans antialiased',
@@ -28,7 +28,7 @@ export default function RootLayout({
           geistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" disableTransitionOnChange enableSystem>
+        <ThemeProvider attribute='class' disableTransitionOnChange enableSystem>
           {children}
         </ThemeProvider>
       </body>

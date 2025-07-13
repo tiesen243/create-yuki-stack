@@ -7,7 +7,7 @@ export default function Welcome({ data }: SendEmailParams) {
   const name = data?.name ?? 'Yuki'
 
   return (
-    <EmailLayout previewText="Welcome to my app!">
+    <EmailLayout previewText='Welcome to my app!'>
       <Text>Welcome to my app, {name}!</Text>
     </EmailLayout>
   )

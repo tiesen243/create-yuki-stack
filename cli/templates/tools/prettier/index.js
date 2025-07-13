@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url'
+
 /** @typedef {import("prettier").Config} PrettierConfig */
 /** @typedef {import("prettier-plugin-tailwindcss").PluginOptions} TailwindConfig */
 /** @typedef {import("@ianvs/prettier-plugin-sort-imports").PluginConfig} SortImportsConfig */
@@ -9,6 +11,7 @@ const config = {
   tabWidth: 2,
   printWidth: 80,
   singleQuote: true,
+  jsxSingleQuote: true,
   trailingComma: 'all',
 
   plugins: [
@@ -18,6 +21,9 @@ const config = {
 
   tailwindFunctions: ['cn', 'cva'],
   tailwindAttributes: ['className', 'tw'],
+  tailwindStylesheet: fileURLToPath(
+    new URL('../../packages/ui/src/tailwind.css', import.meta.url),
+  ),
 
   importOrder: [
     '<TYPES>',
