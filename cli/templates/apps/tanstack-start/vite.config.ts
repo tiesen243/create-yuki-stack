@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
   process.env = { ...process.env, ...env, PORT: '3002' }
 
   return {
+    server: { port: 3002 },
     define: { 'process.env': JSON.stringify(process.env) },
     plugins: [tailwindcss(), tanstackStart(), tsconfigPaths()],
   }

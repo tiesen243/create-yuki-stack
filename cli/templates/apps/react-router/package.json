@@ -6,7 +6,7 @@
   "scripts": {
     "build": "{{ pkm }} run with-env react-router build",
     "clean": "git clean -xdf .cache .react-router .turbo .vercel build node_modules",
-    "dev": "{{ pkm }} run with-env react-router dev {{ hyphen }} --port 3001",
+    "dev": "{{ pkm }} run with-env react-router dev",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "{{ pkm }} run with-env react-router typegen && eslint",
     "start": "PORT=3001 {{ pkm }} run with-env react-router-serve ./build/server/nodejs_*/index.js",

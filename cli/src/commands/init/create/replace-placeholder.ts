@@ -10,7 +10,9 @@ export async function replacePlaceholder(opts: ProjectOptions): Promise<void> {
     ['{{ name }}', opts.name],
     ['{{ pkm }}', opts.packageManager],
     ['{{ pkme }}', getExecutor(opts.packageManager)],
-    ['{{ hyphen }}', opts.packageManager === 'npm' ? '--' : ''],
+    ...(opts.packageManager === 'npm'
+      ? [['--turbopack', '-- --turbopack'] as const]
+      : []),
   ])
 
   await replaceInDirectory(cwd, replaceMap)

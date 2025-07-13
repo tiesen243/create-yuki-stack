@@ -6,10 +6,10 @@
   "scripts": {
     "build": "{{ pkm }} run with-env next build",
     "clean": "git clean -xdf .cache .next .turbo node_modules",
-    "dev": "{{ pkm }} run with-env next dev {{ hyphen }} --turbopack --port 3000",
+    "dev": "{{ pkm }} run with-env next dev --turbopack",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "{{ pkm }} run with-env next start {{ hyphen }} --port 3000",
+    "start": "{{ pkm }} run with-env next start",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
