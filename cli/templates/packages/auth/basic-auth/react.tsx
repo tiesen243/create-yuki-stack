@@ -10,9 +10,9 @@ type AuthProviders =
   | (Providers extends never ? undefined : Providers)
 
 type SessionContextValue = {
-  signIn: <TProviders extends AuthProviders>(
-    provider: TProviders,
-    ...args: TProviders extends 'credentials'
+  signIn: <TProvider extends AuthProviders>(
+    provider: TProvider,
+    ...args: TProvider extends 'credentials'
       ? [{ email: string; password: string }]
       : [{ redirectUrl?: string }?]
   ) => Promise<void>
@@ -68,9 +68,9 @@ function SessionProvider({
   )
 
   const signIn = React.useCallback(
-    async <TProviders extends AuthProviders>(
-      provider: TProviders,
-      ...args: TProviders extends 'credentials'
+    async <TProvider extends AuthProviders>(
+      provider: TProvider,
+      ...args: TProvider extends 'credentials'
         ? [{ email: string; password: string }]
         : [{ redirectUrl?: string }?]
     ): Promise<void> => {
