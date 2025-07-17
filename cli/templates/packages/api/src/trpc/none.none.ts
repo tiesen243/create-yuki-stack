@@ -1,8 +1,8 @@
-import { initTRPC, TRPCError } from '@trpc/server'
+import { initTRPC } from '@trpc/server'
 import SuperJSON from 'superjson'
 
 // eslint-disable-next-line @typescript-eslint/require-await
-const createTRPCContext = (opts: { headers: Headers }) => {
+const createTRPCContext = async (opts: { headers: Headers }) => {
   console.log(
     '>>> tRPC Request from',
     opts.headers.get('x-trpc-source') ?? 'unknown',

@@ -1,5 +1,5 @@
 import type { ResponseHeadersPluginContext } from '@orpc/server/plugins'
-import { createRouterClient, ORPCError, os } from '@orpc/server'
+import { ORPCError, os } from '@orpc/server'
 
 import { auth } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
@@ -24,8 +24,6 @@ const o = os.$context<
   Awaited<ReturnType<typeof createORPCContext>> & ResponseHeadersPluginContext
 >()
 
-const createCallerFactory = createRouterClient
-
 const timingMiddleware = o.middleware(async ({ next, path }) => {
   const start = Date.now()
   const result = await next()
@@ -46,7 +44,6 @@ const protectedProcedure = o.use(timingMiddleware).use(({ context, next }) => {
 
 export {
   o,
-  createCallerFactory,
   createORPCContext,
   publicProcedure,
   protectedProcedure,

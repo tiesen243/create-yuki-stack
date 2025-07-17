@@ -1,8 +1,9 @@
 import type { ResponseHeadersPluginContext } from '@orpc/server/plugins'
-import { createRouterClient, os } from '@orpc/server'
+import { os } from '@orpc/server'
 
 import { db } from '@{{ name }}/db'
 
+// eslint-disable-next-line @typescript-eslint/require-await
 const createORPCContext = async (opts: { headers: Headers }) => {
   console.log(
     '>>> oRPC Request from',
@@ -20,8 +21,6 @@ const o = os.$context<
   Awaited<ReturnType<typeof createORPCContext>> & ResponseHeadersPluginContext
 >()
 
-const createCallerFactory = createRouterClient
-
 const timingMiddleware = o.middleware(async ({ next, path }) => {
   const start = Date.now()
   const result = await next()
@@ -32,9 +31,4 @@ const timingMiddleware = o.middleware(async ({ next, path }) => {
 
 const publicProcedure = o.use(timingMiddleware)
 
-export {
-  o,
-  createCallerFactory,
-  createORPCContext,
-  publicProcedure,
-}
+export { o, createORPCContext, publicProcedure }

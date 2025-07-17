@@ -4,6 +4,8 @@ import type { AuthOptions } from './core/types'
 import { encodeHex, hashSecret } from './core/crypto'
 import Discord from './providers/discord'
 
+import { env } from '@{{ name }}/validators/env'
+
 const adapter = getAdapter()
 export const authOptions = {
   adapter,
@@ -13,8 +15,8 @@ export const authOptions = {
   },
   providers: {
     discord: new Discord({
-      clientId: process.env.AUTH_DISCORD_ID ?? '',
-      clientSecret: process.env.AUTH_DISCORD_SECRET ?? '',
+      clientId: env.AUTH_DISCORD_ID,
+      clientSecret: env.AUTH_DISCORD_SECRET,
     }),
   },
 } satisfies AuthOptions

@@ -18,19 +18,24 @@ A modern Next.js application built with TypeScript, Tailwind CSS, and integrated
 ### Prerequisites
 
 Make sure you have the following installed:
+
 - Node.js (LTS version recommended)
 - Your preferred package manager (npm, yarn, pnpm, or bun)
 
 ### Development
 
 1. Install dependencies from the root of the monorepo:
+
    ```bash
    {{ pkm }} install
    ```
 
 2. Start the development server:
+
    ```bash
    {{ pkm }} run dev
+   # or
+   {{ pkm }} run dev -F @{{ name }}/nextjs...
    ```
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser
@@ -58,11 +63,13 @@ The application will hot-reload as you make changes to the code.
 ### Other Platforms
 
 1. Build the application:
+
    ```bash
    {{ pkm }} run build
    ```
 
 2. Start the production server:
+
    ```bash
    {{ pkm }} run start
    ```

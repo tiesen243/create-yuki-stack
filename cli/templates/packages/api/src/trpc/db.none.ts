@@ -3,7 +3,8 @@ import SuperJSON from 'superjson'
 
 import { db } from '@{{ name }}/db'
 
-const createTRPCContext = (opts: { headers: Headers }) => {
+// eslint-disable-next-line @typescript-eslint/require-await
+const createTRPCContext = async (opts: { headers: Headers }) => {
   console.log(
     '>>> tRPC Request from',
     opts.headers.get('x-trpc-source') ?? 'unknown',

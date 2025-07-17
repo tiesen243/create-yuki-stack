@@ -10,7 +10,6 @@ A modern React application built with TanStack Router, featuring type-safe routi
 - 📱 **Responsive Design** - Mobile-first approach
 - 🔧 **TypeScript** - Full type safety
 - 🎯 **ESLint & Prettier** - Code quality and formatting
-- 🚀 **Turbopack** - Fast development builds
 - 📦 **Workspace Integration** - Shared UI components and validators
 
 ## Getting Started
@@ -18,19 +17,24 @@ A modern React application built with TanStack Router, featuring type-safe routi
 ### Prerequisites
 
 Make sure you have the following installed:
+
 - Node.js (LTS version recommended)
 - Your preferred package manager (npm, yarn, pnpm, or bun)
 
 ### Development
 
 1. Install dependencies from the root of the monorepo:
+
    ```bash
    {{ pkm }} install
    ```
 
 2. Start the development server:
+
    ```bash
    {{ pkm }} run dev
+   # or
+   {{ pkm }} run dev -F @{{ name }}/tanstack-start...  
    ```
 
 3. Open [http://localhost:3002](http://localhost:3002) in your browser
@@ -64,11 +68,13 @@ tanstackStart({ target: 'vercel' }),
 ### Other Platforms
 
 1. Build the application:
+
    ```bash
    {{ pkm }} run build
    ```
 
 2. Start the production server:
+
    ```bash
    {{ pkm }} run start
    ```

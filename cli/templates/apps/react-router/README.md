@@ -9,7 +9,6 @@ A modern React application built with React Router v7, featuring file-based rout
 - 📱 **Responsive Design** - Mobile-first approach
 - 🔧 **TypeScript** - Full type safety
 - 🎯 **ESLint & Prettier** - Code quality and formatting
-- 🚀 **Turbopack** - Fast development builds
 - 📦 **Workspace Integration** - Shared UI components and validators
 
 ## Getting Started
@@ -17,19 +16,24 @@ A modern React application built with React Router v7, featuring file-based rout
 ### Prerequisites
 
 Make sure you have the following installed:
+
 - Node.js (LTS version recommended)
 - Your preferred package manager (npm, yarn, pnpm, or bun)
 
 ### Development
 
 1. Install dependencies from the root of the monorepo:
+
    ```bash
    {{ pkm }} install
    ```
 
 2. Start the development server:
+
    ```bash
    {{ pkm }} run dev
+   # or
+   {{ pkm }} run dev -F @{{ name }}/react-router...
    ```
 
 3. Open [http://localhost:3001](http://localhost:3001) in your browser
@@ -86,12 +90,13 @@ export default {
 ### Other Platforms
 
 1. Build the application:
+
    ```bash
    {{ pkm }} run build
    ```
 
 2. Start the production server:
+
    ```bash
    {{ pkm }} run start
    ```
-

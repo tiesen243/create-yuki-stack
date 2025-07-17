@@ -6,7 +6,7 @@ import {
   ResponseHeadersPlugin,
 } from '@orpc/server/plugins'
 
-import { createCallerFactory, createORPCContext } from './orpc'
+import { createORPCContext } from './orpc'
 import { appRouter } from './routers/_app'
 
 const handler = async (request: Request) => {

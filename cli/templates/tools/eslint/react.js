@@ -31,10 +31,6 @@ export default [
         'warn',
         { rule: 'PascalCase', allowAllCaps: true },
       ],
-      '@eslint-react/naming-convention/filename-extension': [
-        'warn',
-        'as-needed',
-      ],
       '@eslint-react/naming-convention/use-state': 'error',
     },
     settings: reactPlugin.configs['recommended-typescript'].settings,
