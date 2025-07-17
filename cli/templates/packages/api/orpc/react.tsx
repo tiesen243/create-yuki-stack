@@ -20,14 +20,13 @@ const getQueryClient = () => {
 const ORPCContext = React.createContext<
   | {
       orpc: ReturnType<typeof createTanstackQueryUtils<AppRouter>>
-      orpcClient: ReturnType<typeof createORPCClient<AppRouter>>
       queryClient: QueryClient
     }
   | undefined
 >(undefined)
 
 const useORPC = () => {
-  const context = React.useContext(ORPCContext)
+  const context = React.use(ORPCContext)
   if (!context) throw new Error('useORPC must be used within an ORPCProvider')
   return context
 }
@@ -55,21 +54,17 @@ function ORPCReactProvider({
     return createORPCClient<AppRouter>(link)
   })
 
-  // eslint-disable-next-line @eslint-react/naming-convention/use-state
-  const [orpc] = React.useState(() =>
-    createTanstackQueryUtils<AppRouter>(orpcClient),
-  )
-
   const value = React.useMemo(
-    () => ({ orpc, orpcClient, queryClient }),
-    [orpc, orpcClient, queryClient],
+    () => ({
+      orpc: createTanstackQueryUtils<AppRouter>(orpcClient),
+      queryClient,
+    }),
+    [orpcClient, queryClient],
   )
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ORPCContext value={value}>
-        {children}
-      </ORPCContext>
+      <ORPCContext value={value}>{children}</ORPCContext>
     </QueryClientProvider>
   )
 }

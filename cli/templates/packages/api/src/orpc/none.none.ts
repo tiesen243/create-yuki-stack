@@ -1,10 +1,11 @@
 import type { ResponseHeadersPluginContext } from '@orpc/server/plugins'
 import { createRouterClient, os } from '@orpc/server'
 
+// eslint-disable-next-line @typescript-eslint/require-await
 const createORPCContext = async (opts: { headers: Headers }) => {
   console.log(
     '>>> oRPC Request from',
-    opts.headers.get('x-trpc-source') ?? 'unknown',
+    opts.headers.get('x-orpc-source') ?? 'unknown',
     'by',
     'anonymous',
   )

@@ -1,3 +1,4 @@
+import { createRouterClient } from '@orpc/server'
 import { RPCHandler } from '@orpc/server/fetch'
 import {
   BatchHandlerPlugin,
@@ -19,7 +20,7 @@ const handler = async (request: Request) => {
 
   const { matched, response } = await handler.handle(request, {
     prefix: '/api/orpc',
-    context: await createORPCContext(),
+    context: await createORPCContext(request),
   })
 
   if (!matched) return new Response('Not Found', { status: 404 })
@@ -27,4 +28,4 @@ const handler = async (request: Request) => {
 }
 
 export type { AppRouter, RouterInputs, RouterOutputs } from './routers/_app'
-export { appRouter, createCallerFactory, createORPCContext, handler }
+export { appRouter, createORPCContext, createRouterClient, handler }

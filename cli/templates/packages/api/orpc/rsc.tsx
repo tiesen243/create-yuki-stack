@@ -4,8 +4,8 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 
 import {
   appRouter,
-  createCallerFactory,
   createORPCContext,
+  createRouterClient,
 } from '@{{ name }}/api'
 
 import { createQueryClient } from '@/orpc/query-client'
@@ -27,12 +27,12 @@ const createRscContext = cache((opts: Options) => {
 
 const getQueryClient = cache(createQueryClient)
 
-const createApi = (opts: Options) =>
-  createCallerFactory(appRouter, {
-    context: createRscContext(opts),
-  })
-
-const createORPC = (opts: Options) => createRouterUtils(createApi(opts))
+const createORPC = (opts: Options) =>
+  createRouterUtils(
+    createRouterClient(appRouter, {
+      context: createRscContext(opts),
+    }),
+  )
 
 function HydrateClient({ children }: Readonly<{ children: React.ReactNode }>) {
   const queryClient = getQueryClient()
@@ -44,4 +44,4 @@ function HydrateClient({ children }: Readonly<{ children: React.ReactNode }>) {
   )
 }
 
-export { createApi, createORPC, getQueryClient, HydrateClient }
+export { createORPC, getQueryClient, HydrateClient }

@@ -1,4 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query'
+import type { TRPCClient } from '@trpc/client'
+import type { TRPCOptionsProxy } from '@trpc/tanstack-react-query'
 import * as React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import {
@@ -23,8 +25,8 @@ const getQueryClient = () => {
 
 const TRPCContext = React.createContext<
   | {
-      trpc: ReturnType<typeof createTRPCOptionsProxy<AppRouter>>
-      trpcClient: ReturnType<typeof createTRPCClient<AppRouter>>
+      trpc: TRPCOptionsProxy<AppRouter>
+      trpcClient: TRPCClient<AppRouter>
       queryClient: QueryClient
     }
   | undefined
@@ -73,21 +75,21 @@ function TRPCReactProvider({
     }),
   )
 
-  // eslint-disable-next-line @eslint-react/naming-convention/use-state
-  const [trpc] = React.useState(() =>
-    createTRPCOptionsProxy<AppRouter>({ client: trpcClient, queryClient }),
-  )
-
   const value = React.useMemo(
-    () => ({ trpc, trpcClient, queryClient }),
-    [trpc, trpcClient, queryClient],
+    () => ({
+      trpc: createTRPCOptionsProxy<AppRouter>({
+        client: trpcClient,
+        queryClient,
+      }),
+      trpcClient,
+      queryClient,
+    }),
+    [trpcClient, queryClient],
   )
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TRPCContext value={value}>
-        {children}
-      </TRPCContext>
+      <TRPCContext value={value}>{children}</TRPCContext>
     </QueryClientProvider>
   )
 }
