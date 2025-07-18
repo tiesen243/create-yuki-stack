@@ -30,6 +30,7 @@ const config = {
     '^(react/(.*)$)|^(react$)|^(react-native(.*)$)',
     '^(next/(.*)$)|^(next$)',
     '^(expo(.*)$)|^(expo$)',
+    '^(vue(.*)$)|^(vue$)',
     '<THIRD_PARTY_MODULES>',
     '',
     '<TYPES>^@yuki',

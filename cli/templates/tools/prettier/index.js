@@ -11,8 +11,8 @@ const config = {
   tabWidth: 2,
   printWidth: 80,
   singleQuote: true,
-  jsxSingleQuote: true,
   trailingComma: 'all',
+  jsxSingleQuote: true,
 
   plugins: [
     '@ianvs/prettier-plugin-sort-imports',
@@ -30,6 +30,7 @@ const config = {
     '^(react/(.*)$)|^(react$)|^(react-native(.*)$)',
     '^(next/(.*)$)|^(next$)',
     '^(expo(.*)$)|^(expo$)',
+    '^(vue(.*)$)|^(vue$)',
     '<THIRD_PARTY_MODULES>',
     '',
     '<TYPES>^@{{ name }}',

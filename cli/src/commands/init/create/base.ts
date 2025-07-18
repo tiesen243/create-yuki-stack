@@ -7,7 +7,7 @@ const versionMap = new Map<string, string>([
   ['npm', '11.4.0'],
   ['yarn', '1.22.22'],
   ['pnpm', '10.12.0'],
-  ['bun', '1.2.16'],
+  ['bun', '1.2.18'],
 ])
 
 export async function addBase(opts: ProjectOptions): Promise<void> {
@@ -66,10 +66,7 @@ async function setupPackageManager(
       break
 
     case 'bun':
-      await fs.writeFile(
-        'bunfig.toml',
-        '[install]\nlinkWorkspacePackages = true\n\n[run]\nbun = true',
-      )
+      await fs.copyFile(new URL('bunfig.toml', templatePath), 'bunfig.toml')
       packageJson.engines = {
         node: `>=${versionMap.get('node')}`,
         bun: `>=${versionMap.get('bun')}`,
