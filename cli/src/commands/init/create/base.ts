@@ -73,7 +73,7 @@ async function setupPackageManager(
       }
       break
 
-    default: {
+    default:
       packageJson.workspaces = ['apps/*', 'packages/*', 'tools/*']
       packageJson.engines = {
         node: `>=${versionMap.get('node')}`,
@@ -82,7 +82,6 @@ async function setupPackageManager(
           : { yarn: `>=${versionMap.get('yarn')}` }),
       }
       break
-    }
   }
 
   packageJson.packageManager = `${packageManager}@${versionMap.get(packageManager)}`
