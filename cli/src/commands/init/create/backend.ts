@@ -32,6 +32,10 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
     (opts.api === 'eden' || opts.api === 'none')
   ) {
     await fs.mkdir(`${srcDir}/plugins`, { recursive: true })
+    filesToCopy.push({
+      src: 'src/plugins/logger.ts',
+      dest: `${srcDir}/plugins/logger.ts`,
+    })
 
     if (opts.auth !== 'none')
       filesToCopy.push({
