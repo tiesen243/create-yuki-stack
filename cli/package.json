@@ -1,6 +1,6 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.1.49",
+  "version": "0.1.51",
   "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
     "cli",
@@ -26,7 +26,8 @@
   "bin": "./dist/index.js",
   "files": [
     "dist",
-    "templates"
+    "templates",
+    "templates/bunfig.toml"
   ],
   "scripts": {
     "build": "tsdown",
