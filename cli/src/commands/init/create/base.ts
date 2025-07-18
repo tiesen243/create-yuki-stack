@@ -66,7 +66,11 @@ async function setupPackageManager(
       break
 
     case 'bun':
-      await fs.copyFile(new URL('bunfig.toml', templatePath), 'bunfig.toml')
+      await fs.writeFile(
+        'bunfig.toml',
+        `[install]\nlinkWorkspacePackages = true\n\n[run]\nbun = true\n`,
+        'utf-8',
+      )
       packageJson.engines = {
         node: `>=${versionMap.get('node')}`,
         bun: `>=${versionMap.get('bun')}`,

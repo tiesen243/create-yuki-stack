@@ -23,7 +23,7 @@
   "dependencies": {
     "@{{ name }}/validators": "workspace:*",
     "@react-email/components": "^0.3.1",
-    "resend": "^4.6.0"
+    "resend": "^4.7.0"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
@@ -31,7 +31,7 @@
     "@{{ name }}/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "react-email": "^4.1.3",
+    "react-email": "^4.2.3",
     "typescript": "catalog:"
   }
 }
