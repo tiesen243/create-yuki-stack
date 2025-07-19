@@ -22,7 +22,7 @@
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/validators": "workspace:*",
-    "@react-email/components": "^0.3.1",
+    "@react-email/components": "^0.3.2",
     "resend": "^4.7.0"
   },
   "devDependencies": {
