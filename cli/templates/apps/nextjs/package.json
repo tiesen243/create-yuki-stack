@@ -25,12 +25,14 @@
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "^4.1.11",
+    "@tailwindcss/postcss": "catalog:tailwind",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "dotenv-cli": "catalog:",
-    "tailwindcss": "^4.1.11",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:"
   }
 }
