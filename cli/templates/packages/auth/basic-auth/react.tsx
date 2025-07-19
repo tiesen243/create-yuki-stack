@@ -81,10 +81,13 @@ function SessionProvider({
           body: JSON.stringify(args[0]),
         })
 
-        const json = (await res.json()) as { token: string; expires: string }
         if (!res.ok) {
-          console.error('Sign in failed', json)
-        } else fetchSession(json.token)
+          const text = await res.text()
+          throw new Error(text)
+        } else {
+          const json = (await res.json()) as { token: string; expires: string }
+          fetchSession(json.token)
+        }
       } else {
         const redirectUrl = (args[0] as { redirectUrl?: string }).redirectUrl
         window.location.href = `/api/auth/${provider}${
@@ -115,4 +118,3 @@ function SessionProvider({
 }
 
 export { useSession, SessionProvider }
-
