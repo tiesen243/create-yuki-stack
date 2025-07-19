@@ -68,7 +68,8 @@ async function setupPackageManager(
     case 'bun':
       await fs.writeFile(
         'bunfig.toml',
-        `[install]\nlinkWorkspacePackages = true\nlinker = "isolated"\n\n[run]\nbun = true\n`,
+        // `[install]\nlinkWorkspacePackages = true\nlinker = "isolated"\n\n[run]\nbun = true\n`,
+        `[install]\nlinkWorkspacePackages = true\n\n[run]\nbun = true\n`,
         'utf-8',
       )
       packageJson.engines = {
