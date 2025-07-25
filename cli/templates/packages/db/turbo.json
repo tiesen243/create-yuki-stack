@@ -12,10 +12,6 @@
     "db:studio": { 
       "cache": false,
       "persistent": true
-    },
-    "dev": { 
-      "cache": false,
-      "persistent": true
     }
   }
 }

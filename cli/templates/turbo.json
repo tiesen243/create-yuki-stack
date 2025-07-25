@@ -2,13 +2,34 @@
   "$schema": "./node_modules/turbo/schema.json",
   "ui": "tui",
   "tasks": {
-    "build": { "outputs": [".cache/tsbuildinfo.json", "dist/**"] },
-    "clean": { "cache": false },
-    "//#clean": { "cache": false },
-    "dev": { "persistent": true },
-    "format": { "outputs": [".cache/prettiercache"] },
-    "lint": { "outputs": [".cache/eslintcache"] },
-    "typecheck": { "outputs": [".cache/tsbuildinfo.json"] }
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".cache/tsbuildinfo.json", "dist/**"]
+    },
+    "clean": {
+      "dependsOn": ["^clean"],
+      "cache": false
+    },
+    "//#clean": {
+      "cache": false
+    },
+    "dev": {
+      "dependsOn": ["^dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "format": {
+      "dependsOn": ["^format"],
+      "outputs": [".cache/prettiercache"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "outputs": [".cache/eslintcache"]
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": [".cache/tsbuildinfo.json"]
+    }
   },
   "globalEnv": [
     "AUTH_DISCORD_ID",
@@ -28,3 +49,4 @@
     "npm_lifecycle_event"
   ]
 }
+

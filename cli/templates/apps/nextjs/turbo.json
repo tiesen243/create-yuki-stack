@@ -5,10 +5,6 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "next-env.d.ts"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
     }
   }
 }

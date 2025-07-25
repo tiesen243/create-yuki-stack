@@ -5,10 +5,6 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["build/**", ".react-router/**"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
     }
   }
 }
