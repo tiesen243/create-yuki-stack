@@ -1,4 +1,5 @@
 {
+  "name": "{{ name }}",
   "private": true,
   "workspaces": {
     "catalog": {
