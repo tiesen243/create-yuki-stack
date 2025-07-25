@@ -1,6 +1,4 @@
 {
-  "name": "create-yuki-stack",
-  "version": "1.0.0",
   "private": true,
   "description": "Clean and typesafe starter monorepo using Turborepo along with React and tRPC ",
   "license": "MIT",
@@ -28,14 +26,13 @@
   },
   "prettier": "@yuki/prettier-config",
   "devDependencies": {
-    "@turbo/gen": "^2.5.5",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
     "turbo": "^2.5.5"
   },
   "packageManager": "bun@1.2.19",
   "engines": {
-    "bun": ">=1.2.14",
+    "bun": ">=1.2.19",
     "node": ">=22.0.0"
   }
 }

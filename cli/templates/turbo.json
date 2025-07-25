@@ -14,21 +14,23 @@
       "cache": false
     },
     "dev": {
-      "dependsOn": ["^dev"],
       "cache": false,
       "persistent": true
     },
     "format": {
       "dependsOn": ["^format"],
-      "outputs": [".cache/prettiercache"]
+      "outputs": [".cache/prettiercache"],
+      "outputLogs": "new-only"
     },
     "lint": {
       "dependsOn": ["^lint"],
-      "outputs": [".cache/eslintcache"]
+      "outputs": [".cache/eslintcache"],
+      "outputLogs": "new-only"
     },
     "typecheck": {
       "dependsOn": ["^typecheck"],
-      "outputs": [".cache/tsbuildinfo.json"]
+      "outputs": [".cache/tsbuildinfo.json"],
+      "outputLogs": "new-only"
     }
   },
   "globalEnv": [
