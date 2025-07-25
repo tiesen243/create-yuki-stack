@@ -17,12 +17,12 @@ export function createMetadata(override: Metadata = {}): Metadata {
     : baseUrl
 
   const images = [
-    { url: '/api/og', alt: 'Open Graph Image' },
     ...(override.openGraph?.images
       ? Array.isArray(override.openGraph.images)
         ? override.openGraph.images
         : [override.openGraph.images]
       : []),
+    { url: '/api/og', alt: 'Open Graph Image' },
   ]
 
   return {
