@@ -48,6 +48,7 @@
     "VERCEL_ENV",
     "VERCEL_URL",
     "VERCEL_PROJECT_PRODUCTION_URL",
+    "npm_config_user_agent",
     "npm_lifecycle_event"
   ]
 }
