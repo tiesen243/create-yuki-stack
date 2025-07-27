@@ -28,7 +28,7 @@ export async function addEmailMonorepo(spinner?: ReturnType<typeof p.spinner>) {
 
   await fs.cp(templatePath, destPath, { recursive: true })
 
-  await addEnv('server', 'RESEND_KEY', 'z.string()')
+  await addEnv('server', 'RESEND_TOKEN', 'z.string()')
 
   const { name, packageManager } = await getProjectMetadata()
 

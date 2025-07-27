@@ -4,7 +4,7 @@ import { env } from '@{{ name }}/validators/env'
 
 import * as email from './emails'
 
-const resend = new Resend(env.RESEND_KEY)
+const resend = new Resend(env.RESEND_TOKEN)
 
 export interface SendEmailParams {
   to: string
