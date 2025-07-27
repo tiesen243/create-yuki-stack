@@ -4,7 +4,7 @@ import type { SendEmailParams } from '..'
 import { EmailLayout } from './_layout'
 
 export default function Welcome({ data }: SendEmailParams) {
-  const name = data?.name ?? 'Yuki'
+  const name = String(data?.name)
 
   return (
     <EmailLayout previewText='Welcome to my app!'>

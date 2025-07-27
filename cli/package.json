@@ -1,6 +1,6 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.1.64",
+  "version": "0.1.65",
   "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
     "cli",
@@ -44,11 +44,11 @@
     "@clack/prompts": "^0.11.0",
     "gradient-string": "^3.0.0",
     "picocolors": "^1.1.1",
-    "trpc-cli": "^0.10.0"
+    "trpc-cli": "^0.10.1"
   },
   "devDependencies": {
     "@types/node": "24.1.0",
-    "eslint": "^9.31.0",
+    "eslint": "^9.32.0",
     "prettier": "^3.6.2",
     "tsdown": "^0.13.0",
     "typescript": "^5.8.3"

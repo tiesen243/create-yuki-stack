@@ -2,6 +2,7 @@ import { exec } from 'node:child_process'
 import fs from 'node:fs/promises'
 import { promisify } from 'node:util'
 import * as p from '@clack/prompts'
+import pc from 'picocolors'
 
 import { procedure } from '@/trpc'
 import { addEnv } from '@/utils/add-env'
@@ -13,7 +14,21 @@ export const addEmailCommand = procedure.mutation(async () => {
   const spinner = p.spinner()
   spinner.start('Adding email package...')
 
-  await addEmail()
+  const { isTurbo } = await getProjectMetadata()
+
+  if (isTurbo) await addEmailMonorepo(spinner)
+  else await addEmailMonoapp(spinner)
+
+  spinner.stop(pc.cyan('✓ Email package setup complete!'))
+})
+
+export async function addEmailMonorepo(spinner?: ReturnType<typeof p.spinner>) {
+  const templatePath = new URL('../templates/extras/email/', import.meta.url)
+  const destPath = 'packages/email'
+
+  await fs.cp(templatePath, destPath, { recursive: true })
+
+  await addEnv('server', 'RESEND_KEY', 'z.string()')
 
   const { name, packageManager } = await getProjectMetadata()
 
@@ -34,18 +49,38 @@ export const addEmailCommand = procedure.mutation(async () => {
       )
     }),
   )
+
+  spinner?.message(`Installing dependencies for ${pc.bold('email')}...`)
   await execAsync(`${packageManager} install`, { cwd: 'packages/email' })
+}
 
-  spinner.stop('Email package added successfully!')
-})
+async function addEmailMonoapp(spinner: ReturnType<typeof p.spinner>) {
+  const templatePath = new URL(
+    '../templates/extras/email/src/',
+    import.meta.url,
+  )
+  let destPath = 'src/email'
+  try {
+    await fs.access('src')
+  } catch {
+    destPath = 'email'
+  }
 
-export async function addEmail() {
-  const templatePath = new URL('../templates/extras/email/', import.meta.url)
-  const destPath = 'packages/email'
+  await fs.mkdir(destPath, { recursive: true })
+  await fs.cp(templatePath, destPath, { recursive: true })
 
-  await fs.cp(templatePath, destPath, {
-    recursive: true,
+  const content = await fs.readFile(`${destPath}/index.ts`, 'utf-8')
+  const replacedContent = content
+    .replace(/import { env } from '@{{ name }}\/validators\/env'\n\n/g, '')
+    .replace(/env\.(\w+)/g, "process.env.$1 ?? ''")
+  await fs.writeFile(`${destPath}/index.ts`, replacedContent, 'utf-8')
+
+  const { packageManager } = await getProjectMetadata()
+  spinner.message(`Installing dependencies for ${pc.bold('email')}...`)
+  await execAsync(`${packageManager} install resend @react-email/components`, {
+    cwd: process.cwd(),
   })
-
-  await addEnv('server', 'RESEND_KEY', 'z.string()')
+  await execAsync(`${packageManager} install --dev react-email`, {
+    cwd: process.cwd(),
+  })
 }

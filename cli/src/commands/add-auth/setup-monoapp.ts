@@ -1,19 +1,20 @@
 import fs from 'node:fs/promises'
+import pc from 'picocolors'
 
 import type { Options } from './types'
 
 export async function setupMonoapp(opts: Options) {
   const templatePath = new URL('../templates/packages/auth/', import.meta.url)
-  let destPath = 'src/server/auth'
+  let destPath = 'src/server'
   try {
     await fs.access('src')
-    await fs.mkdir('src/server/auth', { recursive: true })
   } catch {
-    destPath = 'server/auth'
-    await fs.mkdir('server/auth', { recursive: true })
+    destPath = 'server'
   }
 
-  await fs.cp(new URL('basic-auth', templatePath), destPath, {
+  await fs.mkdir(`${destPath}/auth`, { recursive: true })
+
+  await fs.cp(new URL('basic-auth', templatePath), `${destPath}/auth`, {
     recursive: true,
   })
 
@@ -26,14 +27,14 @@ export async function setupMonoapp(opts: Options) {
   if (opts.db === 'drizzle') {
     modifiedConfig = modifiedConfig
       .replace(
-        /import { db, eq } from '@{{ name }}\/db'/g,
+        /import { and, db, eq } from '@{{ name }}\/db'/g,
         `import { db } from '${opts.dbInstance}'`,
       )
       .replace(
         /import { accounts, sessions, users } from '@{{ name }}\/db\/schema'/g,
         `import { accounts, sessions, users } from '${opts.dbInstance}/schema'`,
       )
-    modifiedConfig = `import { eq } from 'drizzle-orm'\n\n${modifiedConfig}`
+    modifiedConfig = `import { and, eq } from 'drizzle-orm'\n\n${modifiedConfig}`
   } else {
     modifiedConfig = modifiedConfig.replace(
       /import { db } from '@{{ name }}\/db'/g,
@@ -41,5 +42,27 @@ export async function setupMonoapp(opts: Options) {
     )
   }
 
-  await fs.writeFile(`${destPath}/config.ts`, modifiedConfig)
+  modifiedConfig = modifiedConfig
+    .replace(/import { env } from '@{{ name }}\/validators\/env'\n\n/g, '')
+    .replace(/env\.(\w+)/g, "process.env.$1 ?? ''")
+
+  await fs.writeFile(`${destPath}/auth/config.ts`, modifiedConfig)
+
+  const schemaPath =
+    opts.db === 'prisma'
+      ? 'prisma/auth-schema.prisma'
+      : `${destPath}/db/auth-schema.ts`
+
+  await fs.copyFile(
+    new URL(
+      `../templates/packages/db/src/schema/${opts.db}.basic-auth.ts`,
+      import.meta.url,
+    ),
+    schemaPath,
+  )
+
+  console.log(
+    pc.green(`✓ Auth package setup complete!`),
+    `\n${pc.cyan('Next step:')} Copy auth schema from ${pc.bold(schemaPath)} to your main schema file.`,
+  )
 }

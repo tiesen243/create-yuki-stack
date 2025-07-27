@@ -11,6 +11,7 @@ export async function getProjectMetadata() {
   ] as const)
 
   let packageManager: ProjectOptions['packageManager'] = 'npm'
+  let isTurbo = true
 
   const packageJson = (await fs
     .readFile('package.json', 'utf-8')
@@ -29,5 +30,11 @@ export async function getProjectMetadata() {
     }
   }
 
-  return { packageManager, name }
+  try {
+    await fs.access('turbo.json')
+  } catch {
+    isTurbo = false
+  }
+
+  return { name, packageManager, isTurbo }
 }

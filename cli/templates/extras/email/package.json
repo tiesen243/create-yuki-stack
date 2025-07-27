@@ -31,7 +31,7 @@
     "@{{ name }}/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "react-email": "^4.2.3",
+    "react-email": "^4.2.4",
     "typescript": "catalog:"
   }
 }

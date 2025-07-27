@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import * as p from '@clack/prompts'
 
 import type { Options } from './types'
+import { DEFAULT_PROJECT_NAME } from '@/commands/init/constants'
 import { procedure } from '@/trpc'
 import { setupMonoapp } from './setup-monoapp'
 import { setupMonorepo } from './setup-turborepo'
@@ -9,6 +10,7 @@ import { setupMonorepo } from './setup-turborepo'
 export const addAuthCommand = procedure.mutation(async () => {
   const options: Options = {
     turbo: false,
+    name: DEFAULT_PROJECT_NAME,
     db: 'drizzle',
     dbInstance: '@/server/db',
   }
@@ -24,6 +26,11 @@ export const addAuthCommand = procedure.mutation(async () => {
         .then(JSON.parse)) as PackageJson
 
       options.dbInstance = dbPackageJson.name
+      options.name =
+        (dbPackageJson.name.startsWith('@')
+          ? dbPackageJson.name.split('/')[0]?.substring(1)
+          : dbPackageJson.name) ?? DEFAULT_PROJECT_NAME
+
       if (dbPackageJson.dependencies?.['drizzle-orm']) options.db = 'drizzle'
       else if (dbPackageJson.dependencies?.['@prisma/client'])
         options.db = 'prisma'
@@ -51,7 +58,7 @@ export const addAuthCommand = procedure.mutation(async () => {
       dbInstance: () =>
         p.text({
           message: 'Where is your db package located?',
-          initialValue: '@/server/db',
+          initialValue: options.turbo ? `@${options.name}/db` : '@/server/db',
         }),
     })
     options.db = db as 'drizzle' | 'prisma' | 'mongoose'

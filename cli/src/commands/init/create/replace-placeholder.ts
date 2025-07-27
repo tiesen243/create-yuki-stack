@@ -36,7 +36,7 @@ async function replaceInFile(
   }
 }
 
-async function replaceInDirectory(
+export async function replaceInDirectory(
   dirPath: string,
   replaceMap: Map<string, string>,
 ): Promise<void> {

@@ -17,7 +17,7 @@
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "next": "15.4.3",
+    "next": "^15.4.4",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },

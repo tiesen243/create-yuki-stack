@@ -1,7 +1,9 @@
 import fs from 'node:fs/promises'
+import pc from 'picocolors'
 
 import type { Options } from './types'
-import { DEFAULT_PROJECT_NAME } from '../init/constants'
+import { replaceInDirectory } from '@/commands/init/create/replace-placeholder'
+import { addEnv } from '@/utils/add-env'
 
 export async function setupMonorepo(opts: Options) {
   const templatePath = new URL('../templates/packages/auth/', import.meta.url)
@@ -23,13 +25,9 @@ export async function setupMonorepo(opts: Options) {
     }),
   ])
 
-  const name =
-    /@([\w-]+)\//.exec(opts.dbInstance)?.at(1) ?? DEFAULT_PROJECT_NAME
-
   const packageJson = (await fs
     .readFile(new URL('package.json', templatePath), 'utf-8')
     .then(JSON.parse)) as PackageJson
-  packageJson.name = `@${name}/auth`
   packageJson.exports = packageJson.exports ?? {}
   packageJson.exports['./csrf'] = {
     types: './dist/csrf.d.ts',
@@ -44,12 +42,29 @@ export async function setupMonorepo(opts: Options) {
     JSON.stringify(packageJson, null, 2),
   )
 
-  const config = await fs.readFile(
+  await fs.copyFile(
     new URL(`configs/basic-auth.${opts.db}.ts`, templatePath),
-    'utf-8',
-  )
-  await fs.writeFile(
     `${destPath}/src/config.ts`,
-    config.replace(/{{ name }}/g, name),
+  )
+
+  await replaceInDirectory(destPath, new Map([['{{ name }}', opts.name]]))
+
+  const schemaPath =
+    opts.db === 'prisma' ? 'prisma/auth-schema.prisma' : 'src/auth-schema.ts'
+
+  await fs.copyFile(
+    new URL(
+      `../templates/packages/db/src/schema/${opts.db}.basic-auth.ts`,
+      import.meta.url,
+    ),
+    `packages/db/${schemaPath}`,
+  )
+
+  await addEnv('server', 'AUTH_DISCORD_ID', 'z.string()')
+  await addEnv('server', 'AUTH_DISCORD_SECRET', 'z.string()')
+
+  console.log(
+    pc.green(`✓ Auth package setup complete!`),
+    `\n${pc.cyan('Next step:')} Copy auth schema from ${pc.bold(`packages/db/${schemaPath}`)} to your main schema file.`,
   )
 }
