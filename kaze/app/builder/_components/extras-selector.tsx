@@ -2,7 +2,7 @@
 
 import { TerminalIcon } from 'lucide-react'
 
-import { usePage } from '@/app/builder/components/context'
+import { usePage } from '@/app/builder/_components/context'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import { Typography } from '@/components/ui/typography'
@@ -27,7 +27,7 @@ export function ExtrasSelector() {
             key={option.id}
             htmlFor={option.id}
             className={cn(
-              'flex h-20 flex-col items-start justify-center rounded-md border bg-card px-4 py-2',
+              'bg-card flex h-20 flex-col items-start justify-center rounded-md border px-4 py-2',
               options.extras.includes(option.id) && option.color,
             )}
           >
@@ -45,7 +45,7 @@ export function ExtrasSelector() {
               hidden
             />
             <span className='text-sm font-semibold'>{option.label}</span>
-            <span className='line-clamp-2 flex-1 text-xs text-muted-foreground'>
+            <span className='text-muted-foreground line-clamp-2 flex-1 text-xs'>
               {option.description}
             </span>
           </Label>

@@ -5,7 +5,7 @@ import { CheckIcon, CopyIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
-interface PageContextValue {
+export interface PageContextValue {
   options: {
     name: string
     frontend: ('nextjs' | 'react-router' | 'tanstack-start')[]
@@ -19,6 +19,7 @@ interface PageContextValue {
     install: boolean
     git: boolean
   }
+  setOptions: React.Dispatch<React.SetStateAction<PageContextValue['options']>>
   handleSetOptions: (
     key: keyof PageContextValue['options'],
     value: PageContextValue['options'][keyof PageContextValue['options']],
@@ -59,7 +60,7 @@ function PageProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   )
 
   const value = React.useMemo(
-    () => ({ options, handleSetOptions }),
+    () => ({ options, setOptions, handleSetOptions }),
     [handleSetOptions, options],
   )
   return <PageContext value={value}>{children}</PageContext>
@@ -115,13 +116,15 @@ function BuildPrompt() {
   }, [prompt])
 
   return (
-    <div className='flex flex-col items-end gap-4 rounded-md border p-4'>
-      <code className='w-full text-sm'>{prompt}</code>
+    <div className='flex-1'>
+      <div className='flex flex-col items-end gap-4 rounded-md border p-4'>
+        <code className='w-full text-sm'>{prompt}</code>
 
-      <Button size='sm' variant='outline' onClick={handleCopy}>
-        {isCopied ? <CheckIcon /> : <CopyIcon />}
-        Copy
-      </Button>
+        <Button size='sm' variant='outline' onClick={handleCopy}>
+          {isCopied ? <CheckIcon /> : <CopyIcon />}
+          Copy
+        </Button>
+      </div>
     </div>
   )
 }

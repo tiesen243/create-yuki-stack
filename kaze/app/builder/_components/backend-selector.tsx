@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { TerminalIcon } from 'lucide-react'
 
-import { usePage } from '@/app/builder/components/context'
+import { usePage } from '@/app/builder/_components/context'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Typography } from '@/components/ui/typography'
@@ -37,13 +37,13 @@ export function BackendSelector() {
               key={option.id}
               htmlFor={id}
               className={cn(
-                'flex h-20 flex-col items-start justify-center rounded-md border bg-card px-4 py-2',
+                'bg-card flex h-20 flex-col items-start justify-center rounded-md border px-4 py-2',
                 options.backend === option.id && option.color,
               )}
             >
               <RadioGroupItem id={id} value={option.id} hidden />
               <span className='text-sm font-semibold'>{option.label}</span>
-              <span className='line-clamp-2 flex-1 text-xs text-muted-foreground'>
+              <span className='text-muted-foreground line-clamp-2 flex-1 text-xs'>
                 {option.description}
               </span>
             </Label>

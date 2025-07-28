@@ -1,6 +1,6 @@
 'use client'
 
-import { usePage } from '@/app/builder/components/context'
+import { usePage } from '@/app/builder/_components/context'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 

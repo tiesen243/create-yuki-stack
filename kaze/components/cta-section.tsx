@@ -10,14 +10,14 @@ export const CtaSection: React.FC = () => (
     <Typography variant='h3' component='h2' className='text-center'>
       Ready to build your next project?
     </Typography>
-    <Typography className='text-center text-muted-foreground'>
+    <Typography className='text-muted-foreground text-center'>
       Join thousands of developers who are building faster and better with Yuki
       Stack. Get started today and see the difference.
     </Typography>
 
     <div className='mt-10 flex flex-col justify-center gap-4 sm:flex-row'>
       <Button size='lg' className='text-purple-600' asChild>
-        <Link href='#getting-started' className='group/get-started'>
+        <Link href='/builder' className='group/get-started'>
           <RocketIcon /> Get Started Now
           <ArrowRightIcon className='transition-[translate] ease-in-out group-hover/get-started:translate-x-0.5' />
         </Link>
