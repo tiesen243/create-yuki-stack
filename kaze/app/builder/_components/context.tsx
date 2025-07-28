@@ -78,7 +78,7 @@ function BuildPrompt() {
 
     if (options.database !== 'none') prompt += ` --database ${options.database}`
     if (options.database === 'prisma' || options.database === 'drizzle')
-      prompt += ` --database-adapter ${options.databaseAdapter}`
+      prompt += ` --adapter ${options.databaseAdapter}`
 
     if (options.backend !== 'none') prompt += ` --backend ${options.backend}`
     if (options.api !== 'none') prompt += ` --api ${options.api}`
