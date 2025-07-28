@@ -37,7 +37,7 @@ export function OptionsShowcase() {
         {options.map((option) => (
           <Card
             key={option.category}
-            className='border-transparent shadow-md transition-shadow hover:border-border hover:shadow-lg'
+            className='hover:border-border border-transparent shadow-md transition-shadow hover:shadow-lg'
           >
             <CardHeader>
               <div className='mb-4 flex items-center space-x-3'>
@@ -64,7 +64,7 @@ export function OptionsShowcase() {
       </div>
 
       <div className='mt-12 text-center'>
-        <div className='inline-flex items-center space-x-4 rounded-lg bg-popover p-6 shadow-lg'>
+        <div className='bg-popover inline-flex items-center space-x-4 rounded-lg p-6 shadow-lg'>
           <div className='flex items-center space-x-2'>
             <PackageIcon className='size-5' />
             <span className='text-sm font-medium'>Package Managers:</span>
