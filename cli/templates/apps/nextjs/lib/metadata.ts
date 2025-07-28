@@ -39,8 +39,11 @@ export function createMetadata(override: Metadata = {}): Metadata {
       url,
       images,
     },
-    twitter: { card: 'summary_large_image' },
+    twitter: { 
+      ...override.twitter,
+      card: 'summary_large_image'
+    },
     icons: { icon: '/favicon.ico' },
-    alternates: { canonical: url },
+    alternates: { ...override.alternates, canonical: url },
   }
 }

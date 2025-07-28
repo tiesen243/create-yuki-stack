@@ -34,11 +34,5 @@ export default [
       '@eslint-react/naming-convention/use-state': 'error',
     },
     settings: reactPlugin.configs['recommended-typescript'].settings,
-  },
-  {
-    files: ['**/use-*.tsx'],
-    rules: {
-      '@eslint-react/naming-convention/filename-extension': ['warn', 'always'],
-    },
-  },
+  }
 ]

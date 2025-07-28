@@ -3,6 +3,8 @@ import '@/app/globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 
+import { Footer } from '@/components/footer'
+import { Header } from '@/components/header'
 import { createMetadata } from '@/lib/metadata'
 import { cn } from '@/lib/utils'
 
@@ -32,7 +34,9 @@ export default function RootLayout({
           defaultTheme='dark'
           disableTransitionOnChange
         >
+          <Header />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
