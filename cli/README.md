@@ -155,6 +155,17 @@ packages/
   └─ validators/  # Shared validation schemas
 ```
 
+## Notes
+
+- If your packages or apps use `env` from `packages/validators`, you need to add `DOM` to your `tsconfig.json` file because the validators package uses browser APIs:
+  ```json
+  {
+    "compilerOptions": {
+      "lib": ["DOM", "ES2022"]
+    }
+  }
+  ```
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
