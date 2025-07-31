@@ -16,6 +16,7 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
       'apps/api',
       { recursive: true, force: true },
     )
+    await addEnv('client', 'NEXT_PUBLIC_API_URL', 'z.optional(z.string())')
     return
   }
 

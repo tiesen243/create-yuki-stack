@@ -15,11 +15,29 @@ next-env.d.ts
 .react-router/
 
 # tanstack start
-.nitro/
 .output/
 .tanstack/
 routeTree.gen.ts
 app.config.timestamp_*.js
+
+# nitro
+.nitro/
+
+# java
+.gradle
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
 # production
 build/
