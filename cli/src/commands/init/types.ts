@@ -46,6 +46,11 @@ export const projectOptions = z.object({
     .enum(['npm', 'yarn', 'pnpm', 'bun'])
     .describe('Package manager')
     .optional(),
+  javaBuildTool: z
+    .enum(['gradle', 'maven'])
+    .describe('Java build tool for Spring Boot')
+    .optional(),
+
   install: z.boolean().describe('Install dependencies after setup').optional(),
   git: z.boolean().describe('Initialize a git repository').optional(),
 })

@@ -18,6 +18,8 @@ export const DEFAULT_PROJECT_OPTIONS = {
   extras: [],
 
   packageManager: getPackageManager(),
+  javaBuildTool: 'gradle',
+
   install: true,
   git: true,
 } satisfies ProjectOptions

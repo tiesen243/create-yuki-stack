@@ -265,6 +265,26 @@ export const initCommand = procedure
               ],
               initialValue: DEFAULT_PROJECT_OPTIONS.packageManager,
             }),
+          javaBuildTool: ({ results }) =>
+            results.backend === 'spring-boot'
+              ? p.select({
+                  message: 'Which Java build tool would you like to use?',
+                  options: [
+                    {
+                      value: 'maven',
+                      label: 'Maven',
+                      hint: 'A software project management and comprehension tool',
+                    },
+                    {
+                      value: 'gradle',
+                      label: 'Gradle',
+                      hint: 'A modern build automation tool for Java projects',
+                    },
+                  ],
+                  initialValue: DEFAULT_PROJECT_OPTIONS.javaBuildTool,
+                })
+              : Promise.resolve(undefined),
+
           install: () =>
             p.confirm({
               message: 'Would you like to install dependencies?',

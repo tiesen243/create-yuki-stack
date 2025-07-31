@@ -24,10 +24,11 @@ app.config.timestamp_*.js
 .nitro/
 
 # java
-.gradle
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 .apt_generated
 .classpath
 .factorypath
@@ -35,13 +36,24 @@ app.config.timestamp_*.js
 .settings
 .springBeans
 .sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+
+# java (gradle)
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# java (maven)
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
 # production
 build/
 dist/
+bin/
 
 # misc
 .cache/
@@ -68,3 +80,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# vscode
+.vscode/
