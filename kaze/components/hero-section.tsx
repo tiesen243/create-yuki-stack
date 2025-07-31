@@ -111,50 +111,48 @@ export const HeroSection: React.FC = () => (
           <div className='text-muted-foreground mb-2'>│ &nbsp;Drizzle</div>
 
           <div className='text-muted-foreground mb-1'>│</div>
-          <div className='text-muted-foreground mb-1'>
+          <div className='mb-1'>
             ◇ Which database adapter would you like to use?
           </div>
           <div className='text-muted-foreground mb-2'>│ &nbsp;None</div>
 
           <div className='text-muted-foreground mb-1'>│</div>
-          <div className='text-muted-foreground mb-1'>
-            ◆ Which backend framework would you like to use?
+          <div className='mb-1'>
+            ◇ Which backend framework would you like to use?
           </div>
           <div className='text-muted-foreground mb-2'>│ &nbsp;None</div>
 
           <div className='text-muted-foreground mb-1'>│</div>
-          <div className='text-muted-foreground mb-1'>
-            ◆ Which API framework would you like to use?
+          <div className='mb-1'>
+            ◇ Which API framework would you like to use?
           </div>
           <div className='text-muted-foreground mb-2'>│ &nbsp;tRPC</div>
 
           <div className='text-muted-foreground mb-1'>│</div>
-          <div className='text-muted-foreground mb-1'>
+          <div className='mb-1'>
             ◇ Which authentication method would you like to use?
           </div>
           <div className='text-muted-foreground mb-2'>│ &nbsp;Basic Auth</div>
 
           <div className='text-muted-foreground mb-1'>│</div>
-          <div className='text-muted-foreground mb-1'>
-            ◆ Would you like to add any extra packages?
+          <div className='mb-1'>
+            ◇ Would you like to add any extra packages?
           </div>
           <div className='text-muted-foreground mb-2'>│ &nbsp;none</div>
 
           <div className='text-muted-foreground mb-1'>│</div>
-          <div className='text-muted-foreground mb-1'>
-            ◆ Which package manager would you like to use?
+          <div className='mb-1'>
+            ◇ Which package manager would you like to use?
           </div>
           <div className='text-muted-foreground mb-2'>│ &nbsp;Bun</div>
 
           <div className='text-muted-foreground mb-1'>│</div>
-          <div className='text-muted-foreground mb-1'>
-            ◆ Would you like to install dependencies?
-          </div>
+          <div className='mb-1'>◇ Would you like to install dependencies?</div>
           <div className='text-muted-foreground mb-2'>│ &nbsp;Yes</div>
 
           <div className='text-muted-foreground mb-1'>│</div>
-          <div className='text-muted-foreground mb-1'>
-            ◆ Would you like to initialize a Git repository?
+          <div className='mb-1'>
+            ◇ Would you like to initialize a Git repository?
           </div>
           <div className='text-muted-foreground mb-2'>│ &nbsp;Yes</div>
 
@@ -166,11 +164,13 @@ export const HeroSection: React.FC = () => (
           </div>
 
           <div className='text-muted-foreground mb-1'>│</div>
-          <div className='text-muted-foreground mb-1'>└ Next steps:</div>
+          <div className='mb-1'>└ Next steps:</div>
 
-          <div className='pl-10'>cd my-yuki-app</div>
-          <div className='pl-10'>cp .env.example .env</div>
-          <div className='pl-10'>bun run dev</div>
+          <div className='text-muted-foreground pl-10'>
+            <div>cd my-yuki-app</div>
+            <div>cp .env.example .env</div>
+            <div>bun run dev</div>
+          </div>
         </div>
 
         <div className='to-muted-foreground dark:to-muted-foreground absolute -right-4 -top-4 size-24 rounded-full bg-gradient-to-br from-purple-800 opacity-20 blur-xl dark:from-purple-400' />

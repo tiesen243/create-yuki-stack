@@ -12,7 +12,10 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
 
   if (opts.backend === 'spring-boot') {
     await fs.cp(
-      new URL('../templates/apps/spring-boot', import.meta.url),
+      new URL(
+        `../templates/apps/spring-boot-${opts.javaBuildTool}`,
+        import.meta.url,
+      ),
       'apps/api',
       { recursive: true, force: true },
     )

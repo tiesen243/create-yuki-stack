@@ -49,11 +49,19 @@ export async function createProject(
       await execAsync(`${opts.packageManager} run format:fix`, { cwd })
 
       if (opts.backend === 'spring-boot') {
-        creatingSpinner.message(
-          `Generating Gradle wrapper and building Spring Boot app...`,
-        )
-        await execAsync('gradle wrapper', { cwd: `${cwd}/apps/api` })
-        await execAsync('./gradlew build', { cwd: `${cwd}/apps/api` })
+        if (opts.javaBuildTool === 'gradle') {
+          creatingSpinner.message(
+            `Generating Gradle wrapper and building Spring Boot app...`,
+          )
+          await execAsync('gradle wrapper', { cwd: `${cwd}/apps/api` })
+          await execAsync('./gradlew build', { cwd: `${cwd}/apps/api` })
+        } else {
+          creatingSpinner.message(
+            `Generating Maven wrapper and building Spring Boot app...`,
+          )
+          await execAsync('mvn wrapper:wrapper', { cwd: `${cwd}/apps/api` })
+          await execAsync('mvn clean package', { cwd: `${cwd}/apps/api` })
+        }
       }
     } catch (error) {
       creatingSpinner.stop(
