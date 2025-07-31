@@ -27,7 +27,7 @@ export const projectOptions = z.object({
   adapter: z.enum(['none', 'neon']).describe('Database adapter').optional(),
 
   backend: z
-    .enum(['none', 'express', 'elysia', 'hono'])
+    .enum(['none', 'express', 'elysia', 'hono', 'spring-boot'])
     .describe('Backend framework')
     .optional(),
   api: z

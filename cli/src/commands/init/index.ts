@@ -78,6 +78,74 @@ export const initCommand = procedure
               initialValues: DEFAULT_PROJECT_OPTIONS.frontend,
             }),
 
+          // Backend
+          backend: () =>
+            p.select({
+              message: 'Which backend framework would you like to use?',
+              options: [
+                { value: 'none', label: 'None' },
+                {
+                  value: 'elysia',
+                  label: 'Elysia',
+                  hint: 'Ergonomic Framework for Humans & Fox Girls',
+                },
+                {
+                  value: 'express',
+                  label: 'Express',
+                  hint: 'Fast, unopinionated, minimalist web framework for Node.js',
+                },
+                {
+                  value: 'hono',
+                  label: 'Hono',
+                  hint: 'Fast, lightweight, built on Web Standards. Support for any JavaScript runtime',
+                },
+                {
+                  value: 'spring-boot',
+                  label: 'Spring Boot',
+                  hint: 'Build production-ready applications with Spring Boot',
+                },
+              ],
+              initialValue: DEFAULT_PROJECT_OPTIONS.backend,
+            }),
+          api: ({ results }) =>
+            results.backend !== 'spring-boot'
+              ? p.select({
+                  message: 'Which API framework would you like to use?',
+                  options: [
+                    { value: 'none', label: 'None' },
+                    ...(results.backend === 'elysia'
+                      ? [
+                          {
+                            value: 'eden',
+                            label: 'Eden Treaty',
+                            hint: 'End-to-end type-safe APIs with Elysia',
+                          },
+                        ]
+                      : []),
+                    ...(results.backend === 'hono'
+                      ? [
+                          {
+                            value: 'hc',
+                            label: 'Hono Client',
+                            hint: 'The RPC feature allows sharing of the API specifications between the server and the client',
+                          },
+                        ]
+                      : []),
+                    {
+                      value: 'trpc',
+                      label: 'tRPC',
+                      hint: 'Move Fast and Break Nothing. End-to-end typesafe APIs made easy',
+                    },
+                    {
+                      value: 'orpc',
+                      label: 'oRPC',
+                      hint: 'Easy to build APIs that are end-to-end type-safe and adhere to OpenAPI standards',
+                    },
+                  ],
+                  initialValue: DEFAULT_PROJECT_OPTIONS.api,
+                })
+              : Promise.resolve(DEFAULT_PROJECT_OPTIONS.api),
+
           // Database
           database: () =>
             p.select({
@@ -117,67 +185,6 @@ export const initCommand = procedure
                   initialValue: DEFAULT_PROJECT_OPTIONS.adapter,
                 })
               : Promise.resolve(DEFAULT_PROJECT_OPTIONS.adapter),
-
-          // Backend
-          backend: () =>
-            p.select({
-              message: 'Which backend framework would you like to use?',
-              options: [
-                { value: 'none', label: 'None' },
-                {
-                  value: 'elysia',
-                  label: 'Elysia',
-                  hint: 'Ergonomic Framework for Humans & Fox Girls',
-                },
-                {
-                  value: 'express',
-                  label: 'Express',
-                  hint: 'Fast, unopinionated, minimalist web framework for Node.js',
-                },
-                {
-                  value: 'hono',
-                  label: 'Hono',
-                  hint: 'Fast, lightweight, built on Web Standards. Support for any JavaScript runtime',
-                },
-              ],
-              initialValue: DEFAULT_PROJECT_OPTIONS.backend,
-            }),
-          api: ({ results }) =>
-            p.select({
-              message: 'Which API framework would you like to use?',
-              options: [
-                { value: 'none', label: 'None' },
-                ...(results.backend === 'elysia'
-                  ? [
-                      {
-                        value: 'eden',
-                        label: 'Eden Treaty',
-                        hint: 'End-to-end type-safe APIs with Elysia',
-                      },
-                    ]
-                  : []),
-                ...(results.backend === 'hono'
-                  ? [
-                      {
-                        value: 'hc',
-                        label: 'Hono Client',
-                        hint: 'The RPC feature allows sharing of the API specifications between the server and the client',
-                      },
-                    ]
-                  : []),
-                {
-                  value: 'trpc',
-                  label: 'tRPC',
-                  hint: 'Move Fast and Break Nothing. End-to-end typesafe APIs made easy',
-                },
-                {
-                  value: 'orpc',
-                  label: 'oRPC',
-                  hint: 'Easy to build APIs that are end-to-end type-safe and adhere to OpenAPI standards',
-                },
-              ],
-              initialValue: DEFAULT_PROJECT_OPTIONS.api,
-            }),
 
           // Auth
           auth: ({ results }) =>

@@ -10,6 +10,15 @@ import {
 export async function addBackend(opts: ProjectOptions): Promise<void> {
   if (opts.backend === 'none') return
 
+  if (opts.backend === 'spring-boot') {
+    await fs.cp(
+      new URL('../templates/apps/spring-boot', import.meta.url),
+      'apps/api',
+      { recursive: true, force: true },
+    )
+    return
+  }
+
   const templatePath = new URL('../templates/apps/api/', import.meta.url)
   const apiDir = 'apps/api'
   const srcDir = `${apiDir}/src`
