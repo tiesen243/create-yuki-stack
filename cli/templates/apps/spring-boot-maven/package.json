@@ -1,0 +1,12 @@
+{
+  "name": "@{{ name }}/api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "./mvnw clean package",
+    "clean": "git clean -xdf .cache .mvn .turbo target",
+    "dev": "./mvnw spring-boot:run -Dspring-boot.run.fork=false",
+    "start": "./mvnw spring-boot:run"
+  }
+}
