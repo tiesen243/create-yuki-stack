@@ -80,4 +80,11 @@ const backendOptions = [
       'Fast, lightweight, built on Web Standards. Support for any JavaScript runtime',
     color: 'border-yellow-500 bg-yellow-500/20',
   },
+  {
+    id: 'spring-boot',
+    label: 'Spring Boot',
+    description:
+      'Production-ready Java framework for building web applications',
+    color: 'border-red-500 bg-red-500/20',
+  },
 ] as const

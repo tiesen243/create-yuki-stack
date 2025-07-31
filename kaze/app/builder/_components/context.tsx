@@ -9,9 +9,9 @@ export interface PageContextValue {
   options: {
     name: string
     frontend: ('nextjs' | 'react-router' | 'tanstack-start')[]
+    backend: 'express' | 'elysia' | 'hono' | 'spring-boot' | 'none'
     database: 'prisma' | 'drizzle' | 'mongoose' | 'none'
     databaseAdapter: 'neon' | 'none'
-    backend: 'express' | 'elysia' | 'hono' | 'none'
     api: 'eden' | 'hc' | 'trpc' | 'orpc' | 'none'
     auth: 'basic-auth' | 'better-auth' | 'next-auth' | 'none'
     extras: ('gh-actions' | 'email')[]

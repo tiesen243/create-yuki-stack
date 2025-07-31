@@ -102,7 +102,7 @@ export const initCommand = procedure
                 {
                   value: 'spring-boot',
                   label: 'Spring Boot',
-                  hint: 'Build production-ready applications with Spring Boot',
+                  hint: 'Production-ready Java framework for building web applications',
                 },
               ],
               initialValue: DEFAULT_PROJECT_OPTIONS.backend,

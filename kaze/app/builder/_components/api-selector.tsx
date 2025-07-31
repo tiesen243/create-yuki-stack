@@ -31,17 +31,24 @@ export function ApiSelector() {
       >
         {apiOptions(options.backend).map((option) => {
           const id = `api-${option.id}`
+          const isDisabled = options.backend === 'spring-boot'
 
           return (
             <Label
               key={option.id}
               htmlFor={id}
+              aria-disabled={isDisabled}
               className={cn(
-                'bg-card flex h-20 flex-col items-start justify-center rounded-md border px-4 py-2',
+                'bg-card flex h-20 flex-col items-start justify-center rounded-md border px-4 py-2 aria-disabled:opacity-50',
                 options.api === option.id && option.color,
               )}
             >
-              <RadioGroupItem id={id} value={option.id} hidden />
+              <RadioGroupItem
+                id={id}
+                value={option.id}
+                disabled={isDisabled}
+                hidden
+              />
               <span className='text-sm font-semibold'>{option.label}</span>
               <span className='text-muted-foreground line-clamp-2 flex-1 text-xs'>
                 {option.description}
