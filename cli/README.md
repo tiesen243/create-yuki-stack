@@ -59,7 +59,7 @@ bun create yuki-stack
 | `--frontend [values...]`     | Frontend frameworks (choices: nextjs, react-router, tanstack-start)        |
 | `--database [string]`        | Database option (choices: none, drizzle, prisma, mongoose)                 |
 | `--adapter [string]`         | Database adapter (choices: none, neon)                                     |
-| `--backend [string]`         | Backend framework (choices: none, express, elysia, hono)                   |
+| `--backend [string]`         | Backend framework (choices: none, express, elysia, hono, spring-boot       |
 | `--api [string]`             | API type (choices: none, eden, trpc, orpc)                                 |
 | `--auth [string]`            | Authentication (choices: none, basic-auth, better-auth, next-auth)         |
 | `--extras [values...]`       | Add extra packages and tooling (choices: gh-actions, email)                |
