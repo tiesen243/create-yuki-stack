@@ -2,9 +2,13 @@ import { ApiSelector } from '@/app/builder/_components/api-selector'
 import { AuthSelector } from '@/app/builder/_components/auth-selector'
 import { BackendSelector } from '@/app/builder/_components/backend-selector'
 import { BuildPrompt, PageProvider } from '@/app/builder/_components/context'
-import { DatabaseSelector } from '@/app/builder/_components/database-selector'
+import {
+  DatabaseAdapterSelector,
+  DatabaseSelector,
+} from '@/app/builder/_components/database-selector'
 import { ExtrasSelector } from '@/app/builder/_components/extras-selector'
 import { FrontendSelector } from '@/app/builder/_components/frontend-selector'
+import { JavaBuildToolSelector } from '@/app/builder/_components/java-build-tool-selector'
 import { PackageManagerSelector } from '@/app/builder/_components/package-manager-selector'
 import { PresetSelect } from '@/app/builder/_components/preset-select'
 import { ProjectNameInput } from '@/app/builder/_components/project-name-input'
@@ -39,6 +43,8 @@ export default function BuilderPage() {
 
           <DatabaseSelector />
 
+          <DatabaseAdapterSelector />
+
           <BackendSelector />
 
           <ApiSelector />
@@ -48,6 +54,8 @@ export default function BuilderPage() {
           <ExtrasSelector />
 
           <PackageManagerSelector />
+
+          <JavaBuildToolSelector />
         </section>
       </main>
     </PageProvider>

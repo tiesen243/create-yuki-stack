@@ -11,11 +11,12 @@ import {
 
 export const PresetSelect: React.FC = () => {
   const { setOptions } = usePage()
+
   return (
     <div className='grid max-h-[calc(100dvh-35rem)] gap-4 overflow-y-auto'>
       {Object.entries(presets).map(([key, preset]) => (
         <Card
-          key={key}
+          key={`preset-${key}`}
           className='hover:bg-accent hover:text-accent-foreground cursor-pointer capitalize'
           onClick={() => {
             setOptions(preset.options)

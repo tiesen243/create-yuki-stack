@@ -16,6 +16,7 @@ export interface PageContextValue {
     auth: 'basic-auth' | 'better-auth' | 'next-auth' | 'none'
     extras: ('gh-actions' | 'email')[]
     packageManager: 'npm' | 'yarn' | 'pnpm' | 'bun'
+    javaBuildTool: 'gradle' | 'maven'
     install: boolean
     git: boolean
   }
@@ -45,6 +46,7 @@ function PageProvider({ children }: Readonly<{ children: React.ReactNode }>) {
     auth: 'none',
     extras: [],
     packageManager: 'bun',
+    javaBuildTool: 'gradle',
     install: true,
     git: true,
   })
@@ -89,6 +91,10 @@ function BuildPrompt() {
     if (options.extras.length > 0)
       prompt += ` --extras ${options.extras.join(' ')}`
 
+    prompt += ` --package-manager ${options.packageManager}`
+    if (options.backend === 'spring-boot')
+      prompt += ` --java-build-tool ${options.javaBuildTool}`
+
     if (options.install) prompt += ' --install'
     if (options.git) prompt += ' --git'
 
@@ -103,6 +109,7 @@ function BuildPrompt() {
     options.frontend,
     options.git,
     options.install,
+    options.javaBuildTool,
     options.name,
     options.packageManager,
   ])

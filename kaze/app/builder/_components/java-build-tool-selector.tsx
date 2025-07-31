@@ -8,8 +8,9 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Typography } from '@/components/ui/typography'
 import { cn } from '@/lib/utils'
 
-export function PackageManagerSelector() {
+export function JavaBuildToolSelector() {
   const { options, handleSetOptions } = usePage()
+  if (options.backend !== 'spring-boot') return null
 
   return (
     <section>
@@ -17,19 +18,19 @@ export function PackageManagerSelector() {
         <TerminalIcon />
 
         <Typography variant='h5' component='h3' className='mb-0'>
-          Select Package Manager
+          Select Java Build Tool
         </Typography>
       </div>
 
       <RadioGroup
-        defaultValue={options.packageManager}
+        defaultValue={options.javaBuildTool}
         onValueChange={(value) => {
-          handleSetOptions('packageManager', value)
+          handleSetOptions('javaBuildTool', value)
         }}
         className='grid grid-cols-4 gap-4'
       >
-        {packageManagerOptions.map((option) => {
-          const id = `package-manager-${option.id}`
+        {javaBuildToolOptions.map((option) => {
+          const id = `java-build-tool-${option.id}`
 
           return (
             <Label
@@ -37,7 +38,7 @@ export function PackageManagerSelector() {
               htmlFor={id}
               className={cn(
                 'bg-card flex h-20 flex-col items-start justify-center rounded-md border px-4 py-2',
-                options.packageManager === option.id && option.color,
+                options.javaBuildTool === option.id && option.color,
               )}
             >
               <RadioGroupItem id={id} value={option.id} hidden />
@@ -53,29 +54,17 @@ export function PackageManagerSelector() {
   )
 }
 
-const packageManagerOptions = [
+const javaBuildToolOptions = [
   {
-    id: 'npm',
-    label: 'NPM',
-    description: 'The default package manager for Node.js',
-    color: 'border-primary bg-primary/20',
-  },
-  {
-    id: 'yarn',
-    label: 'Yarn',
-    description: 'Safe, stable, reproducible projects',
+    id: 'gradle',
+    label: 'Gradle',
+    description: 'A flexible build automation tool for Java projects',
     color: 'border-blue-500 bg-blue-500/20',
   },
   {
-    id: 'pnpm',
-    label: 'PNPM',
-    description: 'Fast, disk space efficient package manager',
-    color: 'border-green-500 bg-green-500/20',
-  },
-  {
-    id: 'bun',
-    label: 'Bun',
-    description: 'A fast JavaScript all-in-one toolkit',
-    color: 'border-purple-500 bg-purple-500/20',
+    id: 'maven',
+    label: 'Maven',
+    description: 'A powerful build automation tool for Java projects',
+    color: 'border-red-500 bg-red-500/20',
   },
 ] as const
