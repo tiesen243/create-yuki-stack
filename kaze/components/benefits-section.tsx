@@ -52,7 +52,7 @@ export const BenefitsSection: React.FC = () => (
 
         <div className='relative'>
           <Image
-            src='/assets/yukikaze.gif'
+            src='/assets/images/yukikaze.gif'
             width={500}
             height={400}
             alt='Developer Experience'

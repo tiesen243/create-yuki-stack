@@ -9,7 +9,7 @@ export const Header: React.FC = () => (
     <div className='container flex items-center justify-between'>
       <Link href='/' className='flex items-center space-x-2'>
         <Image
-          src='/assets/logo.svg'
+          src='/assets/images/logo.svg'
           alt='Logo'
           width={36}
           height={36}

@@ -14,6 +14,22 @@ import { PresetSelect } from '@/app/builder/_components/preset-select'
 import { ProjectNameInput } from '@/app/builder/_components/project-name-input'
 import { ProjectOptions } from '@/app/builder/_components/project-options'
 import { Typography } from '@/components/ui/typography'
+import { createMetadata } from '@/lib/metadata'
+
+const TITLE = 'Builder'
+const DESCRIPTION =
+  'A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.'
+
+export const metadata = createMetadata({
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    images: [
+      `/api/og?title=${encodeURIComponent(TITLE)}&description=${encodeURIComponent(DESCRIPTION)}`,
+    ],
+    url: '/builder',
+  },
+})
 
 export default function BuilderPage() {
   return (
