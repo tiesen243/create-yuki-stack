@@ -227,6 +227,7 @@ export function Auth(opts: AuthOptions) {
               message: 'Signed out successfully',
             })
             cookies.delete(response, cookieKeys.token)
+            return setCorsHeaders(response)
           }
 
           return setCorsHeaders(new Response('Not Found', { status: 404 }))
