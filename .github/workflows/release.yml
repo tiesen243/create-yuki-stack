@@ -1,0 +1,74 @@
+on:
+  push:
+    branches:
+      - main
+      - next
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun ci
+
+      - name: Changeset version
+        run: bun changeset version
+
+      - name: Check version changes
+        id: version_check
+        run: |
+          if git diff --name-only | grep -qE 'packages/yuki-db/package.json'; then
+            echo "changed=true" >> $GITHUB_OUTPUT 
+          else      
+            echo "changed=false" >> $GITHUB_OUTPUT 
+          fi
+
+      - name: Set npm tag
+        id: set_tag
+        run: |
+          if [ "${GITHUB_REF##*/}" = "main" ]; then
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          elif [ "${GITHUB_REF##*/}" = "next" ]; then
+            echo "tag=next" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Debug version changed output
+        run: |
+          echo "Version changed: ${{ steps.version_check.outputs.changed }}"
+          echo "NPM Tag: ${{ steps.set_tag.outputs.tag }}"
+
+      - name: Build
+        if: steps.version_check.outputs.changed == 'true'
+        run: bun run build -F yuki-db
+
+      - name: Set API key
+        if: steps.version_check.outputs.changed == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
+
+      - name: Publish
+        if: steps.version_check.outputs.changed == 'true'
+        run: |
+          cd packages/yuki-db
+          bun publish --access public --tag ${{ steps.set_tag.outputs.tag }}
+
+      - name: Commit and push changelog and version bump
+        if: steps.version_check.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add --all
+          git diff --staged --quiet || git commit -m "chore(release): version bump and changelog"
+          git push origin main

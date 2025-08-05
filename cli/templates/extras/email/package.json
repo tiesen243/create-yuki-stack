@@ -22,8 +22,8 @@
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/validators": "workspace:*",
-    "@react-email/components": "^0.3.2",
-    "resend": "^4.7.0"
+    "@react-email/components": "^0.4.0",
+    "resend": "^4.8.0"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
@@ -31,7 +31,7 @@
     "@{{ name }}/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "react-email": "^4.2.4",
+    "react-email": "^4.2.7",
     "typescript": "catalog:"
   }
 }

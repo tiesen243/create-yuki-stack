@@ -16,8 +16,8 @@ export const authOptions = {
   },
   providers: {
     discord: new Discord({
-      clientId: env.AUTH_DISCORD_ID,
-      clientSecret: env.AUTH_DISCORD_SECRET,
+      clientId: env.AUTH_DISCORD_ID ?? '',
+      clientSecret: env.AUTH_DISCORD_SECRET ?? '',
     }),
   },
 } satisfies AuthOptions
@@ -57,8 +57,7 @@ function getAdapter(): AuthOptions['adapter'] {
       return account ?? null
     },
     createAccount: async (data) => {
-      const [account] = await db.insert(accounts).values(data).returning()
-      return account ?? null
+      await db.insert(accounts).values(data)
     },
     getSessionAndUser: async (token) => {
       const [session] = await db
@@ -72,19 +71,23 @@ function getAdapter(): AuthOptions['adapter'] {
       return session ?? null
     },
     createSession: async (data) => {
-      const [session] = await db.insert(sessions).values(data).returning()
-      return session ?? null
+      await db.insert(sessions).values(data)
     },
     updateSession: async (token, data) => {
-      const [updatedSession] = await db
-        .update(sessions)
-        .set(data)
-        .where(eq(sessions.token, token))
-        .returning()
-      return updatedSession ?? null
+      await db.update(sessions).set(data).where(eq(sessions.token, token))
     },
     deleteSession: async (token) => {
       await db.delete(sessions).where(eq(sessions.token, token))
     },
   }
+}
+
+declare module './core/types.d.ts' {
+  type IUser = typeof users.$inferInsert
+  type ISession = typeof sessions.$inferInsert
+
+  interface User extends IUser {
+    id: string
+  }
+  interface Session extends ISession {}
 }

@@ -1,3 +1,4 @@
+import type { SessionModel, UserModel } from '@{{ name }}/db'
 import { db } from '@{{ name }}/db'
 
 import type { AuthOptions } from './core/types'
@@ -7,6 +8,7 @@ import Discord from './providers/discord'
 import { env } from '@{{ name }}/validators/env'
 
 const adapter = getAdapter()
+
 export const authOptions = {
   adapter,
   session: {
@@ -59,10 +61,10 @@ function getAdapter(): AuthOptions['adapter'] {
       })
     },
     createSession: async (data) => {
-      return await db.session.create({ data })
+      await db.session.create({ data })
     },
     updateSession: async (token, data) => {
-      return await db.session.update({
+      await db.session.update({
         where: { token },
         data,
       })
@@ -70,5 +72,14 @@ function getAdapter(): AuthOptions['adapter'] {
     deleteSession: async (token) => {
       await db.session.delete({ where: { token } })
     },
+  }
+}
+
+declare module './core/types.d.ts' {
+  interface User extends UserModel {
+    id: string
+  }
+  interface Session extends SessionModel {
+    token: string
   }
 }

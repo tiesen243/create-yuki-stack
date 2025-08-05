@@ -32,8 +32,8 @@ export function Auth(opts: AuthOptions) {
     return { token, userId, expires }
   }
 
-  async function auth(request: Request) {
-    const cookies = new Cookies(request)
+  async function auth(opts: { headers: Headers }) {
+    const cookies = new Cookies(opts as Request)
     const token = cookies.get(cookieKeys.token) ?? ''
 
     const hashToken = encodeHex(await hashSecret(token))
@@ -75,8 +75,8 @@ export function Auth(opts: AuthOptions) {
     return createSession(user.id)
   }
 
-  async function signOut(request: Request) {
-    const cookies = new Cookies(request)
+  async function signOut(opts: { headers: Headers }): Promise<void> {
+    const cookies = new Cookies(opts as Request)
     const token = cookies.get(cookieKeys.token) ?? ''
 
     const hashToken = encodeHex(await hashSecret(token))

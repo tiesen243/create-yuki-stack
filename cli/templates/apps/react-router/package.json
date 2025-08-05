@@ -20,7 +20,7 @@
     "@react-router/fs-routes": "^7.7.1",
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
-    "isbot": "^5.1.28",
+    "isbot": "^5.1.29",
     "react": "catalog:react",
     "react-dom": "catalog:react",
     "react-router": "^7.7.1"

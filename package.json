@@ -26,6 +26,7 @@
   },
   "prettier": "@yuki/prettier-config",
   "devDependencies": {
+    "@changesets/cli": "^2.29.5",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
     "turbo": "^2.5.5"
