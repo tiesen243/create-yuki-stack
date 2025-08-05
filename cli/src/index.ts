@@ -1,6 +1,5 @@
 import { createCli } from 'trpc-cli'
 
-import { addAuthCommand } from '@/commands/add-auth'
 import { addGhActionsCommand } from '@/commands/add-gh-actions'
 import { initCommand } from '@/commands/init'
 import { createTRPCRouter } from '@/trpc'
@@ -14,7 +13,6 @@ process.on('SIGTERM', exit)
 const router = createTRPCRouter({
   init: initCommand,
   add: {
-    auth: addAuthCommand,
     email: addEmailCommand,
     gh: addGhActionsCommand,
   },
