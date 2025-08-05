@@ -59,6 +59,7 @@ bin/
 .cache/
 generated/
 .DS_Store
+.npmrc
 *.pem
 
 # debug
