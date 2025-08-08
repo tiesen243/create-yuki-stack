@@ -85,5 +85,7 @@ declare module './core/types.d.ts' {
     id: string
   }
 
-  interface Session extends ISession {}
+  interface Session extends ISession {
+    token: string
+  }
 }

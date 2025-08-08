@@ -37,24 +37,29 @@ export function Auth(opts: AuthOptions) {
     const token = cookies.get(cookieKeys.token) ?? ''
 
     const hashToken = encodeHex(await hashSecret(token))
-    const result = await adapter.getSessionAndUser(hashToken)
-    if (!result) return { user: null, expires: new Date() }
 
-    const now = Date.now()
-    const expiresTime = result.expires.getTime()
+    try {
+      const result = await adapter.getSessionAndUser(hashToken)
+      if (!result) return { user: null, expires: new Date() }
 
-    if (now > expiresTime) {
-      await adapter.deleteSession(hashToken)
-      return { user: null, expires: new Date() }
+      const now = Date.now()
+      const expiresTime = result.expires.getTime()
+
+      if (now > expiresTime) {
+        await adapter.deleteSession(hashToken)
+        return { user: null, expires: new Date() }
+      }
+
+      if (now >= expiresTime - session.expiresThreshold * 1000) {
+        const newExpires = new Date(now + session.expiresIn * 1000)
+        await adapter.updateSession(hashToken, { expires: newExpires })
+        result.expires = newExpires
+      }
+
+      return result
+    } catch {
+      return { user: null, expires: new Date()
     }
-
-    if (now >= expiresTime - session.expiresThreshold * 1000) {
-      const newExpires = new Date(now + session.expiresIn * 1000)
-      await adapter.updateSession(hashToken, { expires: newExpires })
-      result.expires = newExpires
-    }
-
-    return result
   }
 
   async function signIn(opts: {
