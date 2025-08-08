@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.75
+
+### Patch Changes
+
+- f852021: catch error in validate session
+
 ## 0.1.74
 
 ### Patch Changes
