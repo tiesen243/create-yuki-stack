@@ -26,12 +26,12 @@
   },
   "prettier": "@yuki/prettier-config",
   "devDependencies": {
-    "@changesets/cli": "^2.29.5",
+    "@changesets/cli": "^2.29.6",
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
-    "turbo": "^2.5.5"
+    "turbo": "^2.5.6"
   },
-  "packageManager": "bun@1.2.19",
+  "packageManager": "bun@1.2.20",
   "engines": {
     "bun": ">=1.2.19",
     "node": ">=22.0.0"

@@ -8,16 +8,16 @@
     "clean": "git clean -xdf .cache .next .turbo node_modules",
     "dev": "{{ pkm }} run with-env next dev --turbopack",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
+    "lint": "bun with-env next typegen && eslint",
     "start": "{{ pkm }} run with-env next start",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "bun with-env next typegen && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "next": "^15.4.5",
+    "next": "^15.5.0",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
