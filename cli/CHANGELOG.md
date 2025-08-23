@@ -1,5 +1,12 @@
 # create-yuki-stack
 
+## 0.1.76
+
+### Patch Changes
+
+- 0e7e118: bump deps
+- be3b9b6: update badge
+
 ## 0.1.75
 
 ### Patch Changes
