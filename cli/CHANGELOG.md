@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.77
+
+### Patch Changes
+
+- ac84faf: update auth package
+
 ## 0.1.76
 
 ### Patch Changes
