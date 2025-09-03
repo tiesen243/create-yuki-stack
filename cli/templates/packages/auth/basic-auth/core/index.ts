@@ -58,7 +58,7 @@ export function Auth(opts: AuthOptions) {
 
       return result
     } catch {
-      return { user: null, expires: new Date()
+      return { user: null, expires: new Date() }
     }
   }
 
@@ -74,7 +74,7 @@ export function Auth(opts: AuthOptions) {
     const account = await adapter.getAccount('credentials', user.id)
     if (!account?.password) throw new Error('Invalid credentials')
 
-    const isValid = await new Password().verify(account.password, password)
+    const isValid = await Password.verify(account.password, password)
     if (!isValid) throw new Error('Invalid credentials')
 
     return createSession(user.id)
