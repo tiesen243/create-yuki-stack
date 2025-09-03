@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.78
+
+### Patch Changes
+
+- 04953e5: minor changes
+
 ## 0.1.77
 
 ### Patch Changes
