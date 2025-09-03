@@ -16,8 +16,8 @@ export const authOptions = {
   },
   providers: {
     discord: new Discord({
-      clientId: env.AUTH_DISCORD_ID ?? '',
-      clientSecret: env.AUTH_DISCORD_SECRET ?? '',
+      clientId: env.AUTH_DISCORD_ID,
+      clientSecret: env.AUTH_DISCORD_SECRET,
     }),
   },
 } satisfies AuthOptions
