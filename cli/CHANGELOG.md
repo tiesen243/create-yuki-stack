@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.81
+
+### Patch Changes
+
+- b07b8db: bump react
+
 ## 0.1.80
 
 ### Patch Changes
