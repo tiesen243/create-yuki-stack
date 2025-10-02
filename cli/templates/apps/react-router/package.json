@@ -17,19 +17,19 @@
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "@react-router/fs-routes": "^7.8.2",
-    "@react-router/node": "^7.8.2",
-    "@react-router/serve": "^7.8.2",
-    "isbot": "^5.1.30",
+    "@react-router/fs-routes": "^7.9.3",
+    "@react-router/node": "^7.9.3",
+    "@react-router/serve": "^7.9.3",
+    "isbot": "^5.1.31",
     "react": "catalog:react",
     "react-dom": "catalog:react",
-    "react-router": "^7.8.2"
+    "react-router": "^7.9.3"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "@react-router/dev": "^7.8.2",
+    "@react-router/dev": "^7.9.3",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
@@ -39,7 +39,7 @@
     "prettier": "catalog:",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:",
-    "vite": "^7.1.4",
+    "vite": "^7.1.8",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }

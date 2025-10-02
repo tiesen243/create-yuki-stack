@@ -1,6 +1,11 @@
 {
   "private": true,
   "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*",
+      "tools/*"
+    ],
     "catalog": {
       "@types/node": "^24.3.0",
       "dotenv-cli": "^10.0.0",
@@ -20,14 +25,8 @@
         "@tailwindcss/vite": "^4.1.12",
         "tailwindcss": "^4.1.12"
       }
-    },
-    "packages": [
-      "apps/*",
-      "packages/*",
-      "tools/*"
-    ]
+    }
   },
-  "prettier": "@{{ name }}/prettier-config",
   "scripts": {
     "build": "turbo run build",
     "bump-deps": "{{ pkme }} npm-check-updates --deep -u && {{ pkm }} install",
@@ -42,11 +41,12 @@
     "lint:ws": "{{ pkme }} sherif@latest",
     "typecheck": "turbo run typecheck"
   },
+  "prettier": "@{{ name }}/prettier-config",
   "devDependencies": {
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "@turbo/gen": "^2.5.6",
-    "turbo": "^2.5.6"
+    "@turbo/gen": "^2.5.8",
+    "turbo": "^2.5.8"
   },
   "packageManager": ""
 }

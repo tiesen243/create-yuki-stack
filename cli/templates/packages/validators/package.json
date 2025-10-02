@@ -19,7 +19,7 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "zod": "^4.1.5"
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
