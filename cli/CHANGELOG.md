@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.79
+
+### Patch Changes
+
+- ecb8c3a: bump deps
+
 ## 0.1.78
 
 ### Patch Changes
