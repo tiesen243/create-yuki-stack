@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.80
+
+### Patch Changes
+
+- 49326a4: fix build error
+
 ## 0.1.79
 
 ### Patch Changes
