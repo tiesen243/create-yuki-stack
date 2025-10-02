@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 import * as p from '@clack/prompts'
 import gradient from 'gradient-string'
 import pc from 'picocolors'
-import { zod as z } from 'trpc-cli'
+import * as z from 'zod'
 
 import {
   APP_COLORS,

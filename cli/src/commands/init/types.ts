@@ -1,4 +1,4 @@
-import { zod as z } from 'trpc-cli'
+import * as z from 'zod'
 
 export const projectName = z
   .string()

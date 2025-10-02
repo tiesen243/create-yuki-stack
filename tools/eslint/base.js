@@ -1,4 +1,3 @@
-/// <reference types="./types.d.ts" />
 import jseslint from '@eslint/js'
 import importPlugin from 'eslint-plugin-import'
 import turboPlugin from 'eslint-plugin-turbo'
