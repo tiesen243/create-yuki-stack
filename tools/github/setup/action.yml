@@ -13,4 +13,4 @@ runs:
       run: bun add -g turbo
 
     - shell: bash
-      run: bun install
+      run: bun ci

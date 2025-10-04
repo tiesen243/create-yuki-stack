@@ -8,25 +8,16 @@ export default [
   {
     files: ['**/*.ts', '**/*.tsx'],
     plugins: {
-      ...reactPlugin.configs['recommended-typescript'].plugins,
+      ...reactPlugin.configs.all.plugins,
       'react-hooks': hooksPlugin,
       'jsx-a11y': a11yPlugin,
     },
     rules: {
       ...reactPlugin.configs['recommended-type-checked'].rules,
-      ...reactPlugin.configs['recommended-typescript'].rules,
+      // @ts-ignore
+      ...hooksPlugin.configs.recommended.rules,
       ...a11yPlugin.flatConfigs.strict.rules,
-
-      '@eslint-react/no-children-prop': 'error',
-      '@eslint-react/prefer-destructuring-assignment': 'warn',
-      '@eslint-react/prefer-namespace-import': 'warn',
-
-      '@eslint-react/naming-convention/component-name': [
-        'warn',
-        { rule: 'PascalCase', allowAllCaps: true },
-      ],
     },
     settings: reactPlugin.configs['recommended-typescript'].settings,
   },
 ]
-

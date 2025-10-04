@@ -10,6 +10,7 @@
   "scripts": {
     "build": "turbo run build",
     "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
+    "changeset": "changeset",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
     "dev": "turbo dev --continue",
@@ -19,10 +20,7 @@
     "lint": "turbo run lint --continue -- --cache --cache-location .cache/.eslintcache",
     "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/.eslintcache",
     "lint:ws": "bunx --bun sherif@latest",
-    "pub:dev": "turbo -F create-yuki-stack pub:dev",
-    "pub:release": "turbo -F create-yuki-stack pub:release",
-    "typecheck": "turbo run typecheck",
-    "ui-add": "turbo run ui-add"
+    "typecheck": "turbo run typecheck"
   },
   "prettier": "@yuki/prettier-config",
   "devDependencies": {
