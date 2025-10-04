@@ -36,6 +36,9 @@ jobs:
       - name: Install NPM Dependencies
         run: bun ci
 
+      - name: Build the package
+        run: bun --filter create-yuki-stack build
+
       - name: Create Version PR
         id: changesets
         uses: changesets/action@v1
@@ -43,6 +46,8 @@ jobs:
           commit: 'chore(release): version packages'
           title: 'chore(release): version packages'
           version: bun tools/github/scripts/changeset-version.js
-          publish: bun run build && bun run changeset publish
+          publish: bun run changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_ENV: 'production'
