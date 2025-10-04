@@ -1,5 +1,17 @@
 # create-yuki-stack
 
+## 0.1.82
+
+### Patch Changes
+
+- [`d915f17`](https://github.com/tiesen243/create-yuki-stack/commit/d915f17ed4e0f8473b800edb73e467f5f1c0a12f) Thanks [@tiesen243](https://github.com/tiesen243)! - add build step before publish
+
+- [`14f8b42`](https://github.com/tiesen243/create-yuki-stack/commit/14f8b427c696bae7269b6042ceb20cf1ac5b9ee6) Thanks [@tiesen243](https://github.com/tiesen243)! - update eslint react config
+
+- [`c02401b`](https://github.com/tiesen243/create-yuki-stack/commit/c02401b3095ca2e652dfa8fac7856588a058c44b) Thanks [@tiesen243](https://github.com/tiesen243)! - fix workflows
+
+- [`da9f296`](https://github.com/tiesen243/create-yuki-stack/commit/da9f296ffc320f08b754fe956d1b45cd4d57f71b) Thanks [@tiesen243](https://github.com/tiesen243)! - missing build before publish
+
 ## 0.1.81
 
 ### Patch Changes
