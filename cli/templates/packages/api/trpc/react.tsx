@@ -1,6 +1,6 @@
+'use client'
+
 import type { QueryClient } from '@tanstack/react-query'
-import type { TRPCClient } from '@trpc/client'
-import type { TRPCOptionsProxy } from '@trpc/tanstack-react-query'
 import * as React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import {
@@ -9,7 +9,7 @@ import {
   httpSubscriptionLink,
   splitLink,
 } from '@trpc/client'
-import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
+import { createTRPCContext } from '@trpc/tanstack-react-query'
 import SuperJSON from 'superjson'
 
 import type { AppRouter } from '@{{ name }}/api'
@@ -23,27 +23,13 @@ const getQueryClient = () => {
   else return (clientQueryClientSingleton ??= createQueryClient())
 }
 
-const TRPCContext = React.createContext<
-  | {
-      trpc: TRPCOptionsProxy<AppRouter>
-      trpcClient: TRPCClient<AppRouter>
-      queryClient: QueryClient
-    }
-  | undefined
->(undefined)
-
-const useTRPC = () => {
-  const context = React.use(TRPCContext)
-  if (!context) throw new Error('useTRPC must be used within a TRPCProvider')
-  return context
-}
+const { TRPCProvider, useTRPC, useTRPCClient } = createTRPCContext<AppRouter>()
 
 function TRPCReactProvider({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const queryClient = getQueryClient()
 
-  // eslint-disable-next-line @eslint-react/naming-convention/use-state
   const [trpcClient] = React.useState(() =>
     createTRPCClient<AppRouter>({
       links: [
@@ -75,23 +61,13 @@ function TRPCReactProvider({
     }),
   )
 
-  const value = React.useMemo(
-    () => ({
-      trpc: createTRPCOptionsProxy<AppRouter>({
-        client: trpcClient,
-        queryClient,
-      }),
-      trpcClient,
-      queryClient,
-    }),
-    [trpcClient, queryClient],
-  )
-
   return (
     <QueryClientProvider client={queryClient}>
-      <TRPCContext value={value}>{children}</TRPCContext>
+      <TRPCProvider queryClient={queryClient} trpcClient={trpcClient}>
+        {children}
+      </TRPCProvider>
     </QueryClientProvider>
   )
 }
 
-export { TRPCReactProvider, useTRPC }
+export { TRPCReactProvider, useTRPC, useTRPCClient }
