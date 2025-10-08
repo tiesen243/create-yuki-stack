@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.83
+
+### Patch Changes
+
+- [`941f330`](https://github.com/tiesen243/create-yuki-stack/commit/941f3300fd95f2100cd36dfb133b8e5b01a59abc) Thanks [@tiesen243](https://github.com/tiesen243)! - update trpc client setup
+
 ## 0.1.82
 
 ### Patch Changes
