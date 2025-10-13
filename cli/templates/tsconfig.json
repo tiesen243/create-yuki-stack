@@ -1,3 +1,6 @@
 {
-  "extends": "@{{ name }}/tsconfig/base.json"
+  "extends": "@{{ name }}/tsconfig/base.json",
+  "compilerOptions": {
+    "types": []
+  }
 }

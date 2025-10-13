@@ -62,4 +62,4 @@ const navItems = [
     title: 'Reviews',
     href: '/#testimonials',
   },
-]
+] as const

@@ -18,7 +18,10 @@
   },
   "devDependencies": {
     "@yuki/tsconfig": "workspace:*",
-    "eslint": "catalog:",
-    "prettier": "catalog:"
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@types/node": "catalog:"
   }
 }
