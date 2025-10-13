@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.88
+
+### Patch Changes
+
+- [`2f0ab13`](https://github.com/tiesen243/create-yuki-stack/commit/2f0ab1363743d0c928cc44db2db920e1718c5915) Thanks [@tiesen243](https://github.com/tiesen243)! - fix dependencies
+
 ## 0.1.87
 
 ### Patch Changes
