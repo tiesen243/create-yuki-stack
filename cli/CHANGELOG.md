@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.1.86
+
+### Patch Changes
+
+- [`863089d`](https://github.com/tiesen243/create-yuki-stack/commit/863089db247dd1a15e35c3f8ffc553a974de148d) Thanks [@tiesen243](https://github.com/tiesen243)! - fix ci error
+
+- [`6e2ac53`](https://github.com/tiesen243/create-yuki-stack/commit/6e2ac5328f2ced5b9bfa97544f889a9e5288af1c) Thanks [@tiesen243](https://github.com/tiesen243)! - change templates and bump deps
+
 ## 0.1.85
 
 ### Patch Changes
