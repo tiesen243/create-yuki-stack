@@ -2,6 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
+      "name": "create-yuki-stack",
       "devDependencies": {
         "@changesets/changelog-github": "^0.5.1",
         "@changesets/cli": "^2.29.7",
@@ -12,7 +13,7 @@
     },
     "cli": {
       "name": "create-yuki-stack",
-      "version": "0.1.86",
+      "version": "0.1.87",
       "bin": "./dist/index.js",
       "dependencies": {
         "@clack/prompts": "^0.11.0",
@@ -25,16 +26,11 @@
       "devDependencies": {
         "@types/node": "catalog:",
         "@yuki/eslint-config": "workspace:*",
-        "@yuki/prettier-config": "workspace:*",
         "@yuki/tsconfig": "workspace:*",
         "eslint": "catalog:",
         "prettier": "catalog:",
         "tsdown": "^0.15.6",
         "typescript": "catalog:",
-      },
-      "peerDependencies": {
-        "@ianvs/prettier-plugin-sort-imports": "catalog:",
-        "prettier-plugin-tailwindcss": "catalog:",
       },
     },
     "kaze": {

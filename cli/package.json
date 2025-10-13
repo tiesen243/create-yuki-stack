@@ -39,7 +39,6 @@
     "pub:release": "bun run build && bun publish --tag latest",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "@trpc/server": "^11.6.0",
@@ -51,16 +50,11 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@yuki/eslint-config": "workspace:*",
-    "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "tsdown": "^0.15.6",
     "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:"
   },
   "publishConfig": {
     "access": "public"
