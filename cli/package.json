@@ -39,10 +39,13 @@
     "pub:release": "bun run build && bun publish --tag latest",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "../tools/prettier/index.js",
+  "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "@trpc/server": "^11.6.0",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
     "gradient-string": "^3.0.0",
     "picocolors": "^1.1.1",
     "trpc-cli": "^0.11.0",

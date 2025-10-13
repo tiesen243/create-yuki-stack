@@ -1,5 +1,5 @@
 {
-  "extends": "../tools/typescript/internal-package.json",
+  "extends": "@yuki/tsconfig/internal-package.json",
   "compilerOptions": {
     "checkJs": true,
 

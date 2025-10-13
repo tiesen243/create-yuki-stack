@@ -13,11 +13,14 @@
     },
     "cli": {
       "name": "create-yuki-stack",
-      "version": "0.1.85",
+      "version": "0.1.86",
       "bin": "./dist/index.js",
       "dependencies": {
         "@clack/prompts": "^0.11.0",
         "@trpc/server": "^11.6.0",
+        "@yuki/eslint-config": "workspace:*",
+        "@yuki/prettier-config": "workspace:*",
+        "@yuki/tsconfig": "workspace:*",
         "gradient-string": "^3.0.0",
         "picocolors": "^1.1.1",
         "trpc-cli": "^0.11.0",

@@ -1,5 +1,5 @@
-import baseConfig from '../tools/eslint/base.js'
-import reactConfig from '../tools/eslint/react.js'
+import baseConfig from '@yuki/eslint-config/base'
+import reactConfig from '@yuki/eslint-config/react'
 
 export default [
   {
