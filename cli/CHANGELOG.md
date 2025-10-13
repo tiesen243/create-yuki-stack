@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.87
+
+### Patch Changes
+
+- [`8074995`](https://github.com/tiesen243/create-yuki-stack/commit/8074995da3da98ef1e1f64df4f1b95fd26f32376) Thanks [@tiesen243](https://github.com/tiesen243)! - fix peer dependencies error
+
 ## 0.1.86
 
 ### Patch Changes
