@@ -43,20 +43,20 @@
   "dependencies": {
     "@clack/prompts": "^0.11.0",
     "@trpc/server": "^11.6.0",
-    "@yuki/eslint-config": "workspace:*",
-    "@yuki/prettier-config": "workspace:*",
-    "@yuki/tsconfig": "workspace:*",
     "gradient-string": "^3.0.0",
     "picocolors": "^1.1.1",
     "trpc-cli": "^0.11.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@types/node": "24.7.2",
-    "eslint": "^9.37.0",
-    "prettier": "^3.6.2",
+    "@types/node": "catalog:",
+    "@yuki/eslint-config": "workspace:*",
+    "@yuki/prettier-config": "workspace:*",
+    "@yuki/tsconfig": "workspace:*",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
     "tsdown": "^0.15.6",
-    "typescript": "^5.9.3"
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "catalog:",
