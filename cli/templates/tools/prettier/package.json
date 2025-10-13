@@ -20,5 +20,8 @@
     "@{{ name }}/tsconfig": "workspace:*",
     "prettier": "catalog:",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@types/node": "catalog:"
   }
 }

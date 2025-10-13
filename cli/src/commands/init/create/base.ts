@@ -6,8 +6,8 @@ const versionMap = new Map<string, string>([
   ['node', '22.0.0'],
   ['npm', '11.4.0'],
   ['yarn', '1.22.22'],
-  ['pnpm', '10.12.0'],
-  ['bun', '1.2.19'],
+  ['pnpm', '10.18.0'],
+  ['bun', '1.3.0'],
 ])
 
 export async function addBase(opts: ProjectOptions): Promise<void> {
@@ -26,7 +26,7 @@ export async function addBase(opts: ProjectOptions): Promise<void> {
     fs.writeFile('.nvmrc', `v${versionMap.get('node')}`),
   ])
 
-  await setupPackageManager(opts.packageManager, templatePath)
+  await setupPackageManager(opts, templatePath)
 
   await Promise.all([
     fs.cp(new URL('packages/ui', templatePath), 'packages/ui', copyOptions),
@@ -38,15 +38,12 @@ export async function addBase(opts: ProjectOptions): Promise<void> {
   ])
 }
 
-async function setupPackageManager(
-  packageManager: ProjectOptions['packageManager'],
-  templatePath: URL,
-) {
+async function setupPackageManager(opts: ProjectOptions, templatePath: URL) {
   const packageJson = (await fs
     .readFile(new URL('package.json', templatePath), 'utf-8')
     .then(JSON.parse)) as PackageJson
 
-  switch (packageManager) {
+  switch (opts.packageManager) {
     case 'pnpm':
       delete packageJson.workspaces
       await Promise.all([
@@ -59,37 +56,22 @@ async function setupPackageManager(
           'node-linker=hoisted\nshared-workspace-lockfile=true',
         ),
       ])
-      packageJson.engines = {
-        node: `>=${versionMap.get('node')}`,
-        pnpm: `>=${versionMap.get('pnpm')}`,
-      }
       break
 
-    case 'bun':
-      await fs.writeFile(
-        'bunfig.toml',
-        // `[install]\nlinkWorkspacePackages = true\nlinker = "isolated"\n\n[run]\nbun = true\n`,
-        `[install]\nlinkWorkspacePackages = true\n\n[run]\nbun = true\n`,
-        'utf-8',
-      )
-      packageJson.engines = {
-        node: `>=${versionMap.get('node')}`,
-        bun: `>=${versionMap.get('bun')}`,
-      }
+    case 'bun': {
+      await fs.copyFile(new URL('bunfig.yaml', templatePath), 'bunfig.toml')
+      const bunJson = (await fs
+        .readFile(new URL('bun.json', templatePath), 'utf-8')
+        .then(JSON.parse)) as PackageJson
+      Object.assign(packageJson, bunJson)
       break
+    }
 
     default:
-      packageJson.workspaces = ['apps/*', 'packages/*', 'tools/*']
-      packageJson.engines = {
-        node: `>=${versionMap.get('node')}`,
-        ...(packageManager === 'npm'
-          ? { npm: `>=${versionMap.get('npm')}` }
-          : { yarn: `>=${versionMap.get('yarn')}` }),
-      }
       break
   }
 
-  packageJson.packageManager = `${packageManager}@${versionMap.get(packageManager)}`
+  packageJson.packageManager = `${opts.packageManager}@${versionMap.get(opts.packageManager)}`
   await fs.writeFile(
     'package.json',
     JSON.stringify(packageJson, null, 2) + '\n',

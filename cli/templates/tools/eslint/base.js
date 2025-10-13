@@ -1,12 +1,13 @@
 import jseslint from '@eslint/js'
 import importPlugin from 'eslint-plugin-import'
 import turboPlugin from 'eslint-plugin-turbo'
+import { defineConfig } from 'eslint/config'
 import tseslint from 'typescript-eslint'
 
 /**
- * All packages that leverage @yuki/env should use this rule
+ * All packages that leverage @{{ name }}/env should use this rule
  */
-export const restrictEnvAccess = tseslint.config(
+export const restrictEnvAccess = defineConfig(
   { ignores: ['**/env.ts'] },
   {
     files: ['**/*.js', '**/*.ts', '**/*.tsx'],
@@ -17,7 +18,7 @@ export const restrictEnvAccess = tseslint.config(
           object: 'process',
           property: 'env',
           message:
-            "Use `import { env } from '@yuki/env'` instead to ensure validated types.",
+            "Use `import { env } from '@{{ name }}/env'` instead to ensure validated types.",
         },
       ],
       'no-restricted-imports': [
@@ -26,14 +27,14 @@ export const restrictEnvAccess = tseslint.config(
           name: 'process',
           importNames: ['env'],
           message:
-            "Use `import { env } from '@yuki/env'` instead to ensure validated types.",
+            "Use `import { env } from '@{{ name }}/env'` instead to ensure validated types.",
         },
       ],
     },
   },
 )
 
-export default tseslint.config(
+export default defineConfig(
   { ignores: ['*.config.*'] },
   {
     files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
@@ -66,6 +67,12 @@ export default tseslint.config(
     },
   },
   {
+    files: ['next-env.d.ts'],
+    rules: {
+      '@typescript-eslint/triple-slash-reference': 'off',
+    },
+  },
+  {
     plugins: { turbo: turboPlugin },
     rules: {
       ...turboPlugin.configs.recommended.rules,
@@ -76,4 +83,3 @@ export default tseslint.config(
     languageOptions: { parserOptions: { projectService: true } },
   },
 )
-

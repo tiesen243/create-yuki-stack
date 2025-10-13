@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises'
 
 import type { ProjectOptions } from '@/commands/init/types'
-import { getPackageVersions } from '@/utils/get-package-version'
 
 export async function addApi(opts: ProjectOptions): Promise<void> {
   if (['none', 'eden', 'hc'].includes(opts.api)) return
@@ -58,9 +57,9 @@ export async function addApi(opts: ProjectOptions): Promise<void> {
 
   packageJson.dependencies = packageJson.dependencies ?? {}
   if (opts.api === 'trpc') {
-    packageJson.dependencies['@trpc/server'] = 'catalog:api'
-    packageJson.dependencies.superjson = 'catalog:api'
-  } else packageJson.dependencies['@orpc/server'] = 'catalog:api'
+    packageJson.dependencies['@trpc/server'] = 'catalog:trpc'
+    packageJson.dependencies.superjson = 'catalog:trpc'
+  } else packageJson.dependencies['@orpc/server'] = 'catalog:orpc'
 
   if (opts.backend === 'none') {
     if (opts.database !== 'none')
@@ -73,58 +72,4 @@ export async function addApi(opts: ProjectOptions): Promise<void> {
     `${destPath}/package.json`,
     JSON.stringify(packageJson, null, 2),
   )
-
-  await addCatalog(opts)
-}
-
-async function addCatalog(opts: ProjectOptions) {
-  const versions = await getPackageVersions([
-    '@tanstack/react-query',
-
-    '@trpc/server',
-    '@trpc/client',
-    '@trpc/tanstack-react-query',
-    'superjson',
-
-    '@orpc/server',
-    '@orpc/client',
-    '@orpc/react-query',
-  ])
-
-  const dependencies =
-    opts.api === 'trpc'
-      ? {
-          '@tanstack/react-query': versions['@tanstack/react-query'],
-          '@trpc/server': versions['@trpc/server'],
-          '@trpc/client': versions['@trpc/client'],
-          '@trpc/tanstack-react-query': versions['@trpc/tanstack-react-query'],
-          superjson: versions.superjson,
-        }
-      : {
-          '@tanstack/react-query': versions['@tanstack/react-query'],
-          '@orpc/server': versions['@orpc/server'],
-          '@orpc/client': versions['@orpc/client'],
-          '@orpc/react-query': versions['@orpc/react-query'],
-        }
-
-  if (opts.packageManager === 'bun') {
-    const rootPackageJson = (await fs
-      .readFile('package.json', 'utf-8')
-      .then(JSON.parse)) as PackageJson
-    // @ts-expect-error - bun workspaces's catalogs
-    Object.assign(rootPackageJson.workspaces?.catalogs, { api: dependencies })
-    await fs.writeFile('package.json', JSON.stringify(rootPackageJson, null, 2))
-  } else if (opts.packageManager === 'pnpm') {
-    const pnpmWorkspace = await fs.readFile('pnpm-workspace.yaml', 'utf-8')
-    const catalog = `\n  api:\n${Object.entries(dependencies)
-      .map(
-        ([name, version]) =>
-          `    ${name.startsWith('@') ? `'${name}'` : name}: ${version}`,
-      )
-      .join('\n')}\n`
-    await fs.writeFile(
-      'pnpm-workspace.yaml',
-      pnpmWorkspace.replace(/catalogs:/, `catalogs:${catalog}`),
-    )
-  }
 }

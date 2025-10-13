@@ -1,9 +1,10 @@
+import type { RouterUtils } from '@orpc/react-query'
 import type { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
 import { createORPCClient } from '@orpc/client'
 import { RPCLink } from '@orpc/client/fetch'
 import { BatchLinkPlugin, DedupeRequestsPlugin } from '@orpc/client/plugins'
-import { createTanstackQueryUtils } from '@orpc/tanstack-query'
+import { createORPCReactQueryUtils } from '@orpc/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import type { AppRouter } from '@{{ name }}/api'
@@ -17,13 +18,9 @@ const getQueryClient = () => {
   else return (clientQueryClientSingleton ??= createQueryClient())
 }
 
-const ORPCContext = React.createContext<
-  | {
-      orpc: ReturnType<typeof createTanstackQueryUtils<AppRouter>>
-      queryClient: QueryClient
-    }
-  | undefined
->(undefined)
+const ORPCContext = React.createContext<RouterUtils<AppRouter> | undefined>(
+  undefined,
+)
 
 const useORPC = () => {
   const context = React.use(ORPCContext)
@@ -40,7 +37,7 @@ function ORPCReactProvider({
   const [orpcClient] = React.useState(() => {
     const link = new RPCLink({
       url: getBaseUrl() + '/api/orpc',
-      headers: { 'x-orpc-source': '{{ app }}' },
+      headers: { 'x-orpc-source': 'react-nextjs' },
       plugins: [
         new BatchLinkPlugin({
           groups: [{ condition: () => true, context: {} }],
@@ -55,11 +52,8 @@ function ORPCReactProvider({
   })
 
   const value = React.useMemo(
-    () => ({
-      orpc: createTanstackQueryUtils<AppRouter>(orpcClient),
-      queryClient,
-    }),
-    [orpcClient, queryClient],
+    () => createORPCReactQueryUtils<AppRouter>(orpcClient),
+    [orpcClient],
   )
 
   return (

@@ -2,7 +2,6 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 
 import type { ProjectOptions } from '@/commands/init/types'
-import { getPackageVersion } from '@/utils/get-package-version'
 
 interface AppConfig {
   api: { path: string; auth: string }
@@ -27,39 +26,32 @@ export async function addFrontend(opts: ProjectOptions): Promise<void> {
 
   if (opts.api === 'trpc')
     Object.assign(deps, {
-      ['@{{ name }}/api']: 'workspace:*',
-      '@tanstack/react-query': 'catalog:api',
-      '@trpc/client': 'catalog:api',
-      '@trpc/tanstack-react-query': 'catalog:api',
+      '@{{ name }}/api': 'workspace:*',
+      '@tanstack/react-query': 'catalog:',
+      '@trpc/client': 'catalog:trpc',
+      '@trpc/tanstack-react-query': 'catalog:trpc',
+      superjson: 'catalog:trpc',
     })
   else if (opts.api === 'orpc')
     Object.assign(deps, {
-      ['@{{ name }}/api']: 'workspace:*',
-      '@tanstack/react-query': 'catalog:api',
-      '@orpc/client': 'catalog:api',
-      '@orpc/react-query': 'catalog:api',
+      '@{{ name }}/api': 'workspace:*',
+      '@tanstack/react-query': 'catalog:',
+      '@orpc/client': 'catalog:orpc',
+      '@orpc/react-query': 'catalog:orpc',
     })
 
-  const needsTanstackYarnFix =
-    opts.frontend.includes('tanstack-start') && opts.packageManager === 'yarn'
-
-  await Promise.all(
-    opts.frontend.map((app) =>
-      processApp(app, opts, deps, needsTanstackYarnFix),
-    ),
-  )
+  await Promise.all(opts.frontend.map((app) => processApp(app, opts, deps)))
 }
 
 async function processApp(
   app: ProjectOptions['frontend'][number],
   opts: ProjectOptions,
   workspaceDeps: Record<string, string>,
-  needsTanstackYarnFix: boolean,
 ) {
   const appConfig = getAppConfig(app)
 
   await Promise.all([
-    updatePackageJson(app, workspaceDeps, needsTanstackYarnFix),
+    updatePackageJson(app, workspaceDeps),
     createApiRoutes(app, opts, appConfig),
     addApiClient(app, opts),
     createAuthRoutes(app, opts, appConfig),
@@ -70,7 +62,6 @@ async function processApp(
 async function updatePackageJson(
   app: string,
   workspaceDeps: Record<string, string>,
-  needsTanstackYarnFix: boolean,
 ) {
   const packageJsonPath = `apps/${app}/package.json`
 
@@ -84,14 +75,6 @@ async function updatePackageJson(
         ...packageJson.dependencies,
         ...workspaceDeps,
       }
-
-    if (needsTanstackYarnFix) {
-      const viteReactVersion = await getPackageVersion('@vitejs/plugin-react')
-      packageJson.devDependencies = {
-        ...packageJson.devDependencies,
-        '@vitejs/plugin-react': viteReactVersion,
-      }
-    }
 
     await fs.writeFile(
       packageJsonPath,
@@ -295,12 +278,12 @@ const API_ROUTES_CONTENT = {
   },
   'tanstack-start': {
     api: {
-      trpc: `import { createServerFileRoute } from '@tanstack/react-start/server'\n\nimport { handler } from '@{{ name }}/api'\n\nexport const ServerRoute = createServerFileRoute('/api/trpc/$').methods({\n  GET: ({ request }) => handler(request),\n  POST: ({ request }) => handler(request),\n  OPTIONS: ({ request }) => handler(request),\n})`,
-      orpc: `import { createServerFileRoute } from '@tanstack/react-start/server'\n\nimport { handler } from '@{{ name }}/api'\n\nexport const ServerRoute = createServerFileRoute('/api/orpc/$').methods({\n  GET: ({ request }) => handler(request),\n  POST: ({ request }) => handler(request),\n  OPTIONS: ({ request }) => handler(request),\n})`,
+      trpc: `import { createFileRoute } from '@tanstack/react-router'\n\nimport { handler } from '@{{ name }}/api'\n\nexport const Route = createFileRoute('/api/trpc/$')({\nserver: {\nhandlers: {\nGET: ({ request }) => handler(request),\nPOST: ({ request }) => handler(request),\nOPTIONS: ({ request }) => handler(request),\n},\n},\n})`,
+      orpc: `import { createFileRoute } from '@tanstack/react-router'\n\nimport { handler } from '@{{ name }}/api'\n\nexport const Route = createFileRoute('/api/orpc/$')({\nserver: {\nhandlers: {\nGET: ({ request }) => handler(request),\nPOST: ({ request }) => handler(request),\nOPTIONS: ({ request }) => handler(request),\n},\n},\n})`,
     },
     auth: {
-      'basic-auth': `import { createServerFileRoute } from '@tanstack/react-start/server'\n\nimport { handlers } from '@{{ name }}/auth'\n\nconst { GET, POST } = handlers\nexport const ServerRoute = createServerFileRoute('/api/auth/$').methods({\n  GET: ({ request }) => GET(request),\n  POST: ({ request }) => POST(request),\n})`,
-      'better-auth': `import { createServerFileRoute } from '@tanstack/react-start/server'\n\nimport { handler } from '@{{ name }}/auth'\n\nexport const ServerRoute = createServerFileRoute('/api/auth/$').methods({\n  GET: ({ request }) => handler(request),\n  POST: ({ request }) => handler(request),\n})`,
+      'basic-auth': `import { createFileRoute } from '@tanstack/react-router'\n\nimport { handlers } from '@my-yuki-app/auth'\n\nconst { GET, POST } = handlers\nexport const Route = createFileRoute('/api/auth/$')({\nserver: {\nhandlers: {\nGET: ({ request }) => GET(request),\nPOST: ({ request }) => POST(request),\n},\n},\n})`,
+      'better-auth': `import { createFileRoute } from '@tanstack/react-router'\n\nimport { handler } from '@{{ name }}/auth'\n\nexport const Route = createFileRoute('/api/auth/$')({\nserver: {\nhandlers: {\nGET: ({ request }) => handler(request),\nPOST: ({ request }) => handler(request),\n},\n},\n})`,
       'next-auth': ``,
     },
   },

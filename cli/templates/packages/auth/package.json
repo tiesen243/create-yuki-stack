@@ -34,5 +34,12 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:react",
+    "prettier-plugin-tailwindcss": "catalog:",
+    "react": "catalog:react"
   }
 }

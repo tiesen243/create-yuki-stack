@@ -8,8 +8,6 @@ coverage
 
 # next.js
 .next/
-out/
-next-env.d.ts
 
 # react router
 .react-router/
@@ -20,22 +18,10 @@ next-env.d.ts
 routeTree.gen.ts
 app.config.timestamp_*.js
 
-# nitro
-.nitro/
-
 # java
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+*.class
+*.jar
+*.war
 
 # java (gradle)
 .gradle/
@@ -45,8 +31,8 @@ gradle/
 !**/src/test/**/build/
 
 # java (maven)
-.mvn/
 target/
+.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -54,19 +40,18 @@ target/
 build/
 dist/
 bin/
+out/
 
 # misc
 .cache/
-generated/
+tmp/
 .DS_Store
-.npmrc
+Thumbs.db
 *.pem
 
 # debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+logs/
+*.log*
 
 # local env files
 .env*
@@ -81,7 +66,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+expo-env.d.ts
 
-# vscode
+# ide
+.settings/
 .vscode/
-
+.idea/
+.project
+.classpath
+*.iml

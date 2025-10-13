@@ -8,7 +8,7 @@
     "clean": "git clean -xdf .cache .nitro .output .tanstack .turbo node_modules",
     "dev": "{{ pkm }} run with-env vite dev",
     "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
+    "lint": "tsr generate && eslint",
     "start": "PORT=3002 {{ pkm }} run with-env node ./.output/server/index.mjs",
     "typecheck": "tsr generate && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
@@ -17,8 +17,8 @@
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "@tanstack/react-router": "^1.132.33",
-    "@tanstack/react-start": "^1.132.36",
+    "@tanstack/react-router": "^1.132.47",
+    "@tanstack/react-start": "^1.132.56",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
@@ -27,7 +27,7 @@
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
     "@tailwindcss/vite": "catalog:tailwind",
-    "@tanstack/router-cli": "^1.132.33",
+    "@tanstack/router-cli": "^1.132.51",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
@@ -39,5 +39,9 @@
     "typescript": "catalog:",
     "vite": "^7.1.9",
     "vite-tsconfig-paths": "^5.1.4"
+  },
+  "peerDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:"
   }
 }

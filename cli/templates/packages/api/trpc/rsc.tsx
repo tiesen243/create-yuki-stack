@@ -14,10 +14,6 @@ interface Options {
   headers: Headers
 }
 
-/**
- * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
- * handling a tRPC call from a React Server Component.
- */
 const createRscContext = cache((opts: Options) => {
   const heads = new Headers(opts.headers)
   heads.set('x-trpc-source', 'rsc')

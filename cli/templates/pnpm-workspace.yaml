@@ -4,19 +4,31 @@ packages:
   - tools/*
 
 catalog:
-  '@types/node': 24.1.0
-  dotenv-cli: ^9.0.0
-  eslint: ^9.32.0
+  '@ianvs/prettier-plugin-sort-imports': ^4.7.0
+  '@tanstack/react-query': ^5.90.3
+  '@types/node': 24.7.2
+  dotenv-cli: ^10.0.0
+  eslint: ^9.37.0
   prettier: ^3.6.2
-  typescript: ^5.8.3
+  prettier-plugin-tailwindcss: ^0.6.14
+  typescript: ^5.9.3
 
 catalogs:
   react:
-    '@types/react': ^19.1.8
-    '@types/react-dom': ^19.1.6
-    react: ^19.1.1
-    react-dom: ^19.1.1
+    '@types/react': ^19.2.2
+    '@types/react-dom': ^19.2.2
+    react: ^19.2.0
+    react-dom: ^19.2.0
   tailwind:
-    '@tailwindcss/postcss': ^4.1.11
-    '@tailwindcss/vite': ^4.1.11
-    tailwindcss: ^4.1.11
+    '@tailwindcss/postcss': ^4.1.14
+    '@tailwindcss/vite': ^4.1.14
+    tailwindcss: ^4.1.14
+  trpc:
+    '@trpc/server': ^11.6.0
+    '@trpc/client': ^11.6.0
+    '@trpc/tanstack-react-query': ^11.6.0
+    superjson": ^2.2.2
+  orpc:
+    '@orpc/server': ^1.9.3
+    '@orpc/client': ^1.9.3
+    '@orpc/react-query': ^1.9.3

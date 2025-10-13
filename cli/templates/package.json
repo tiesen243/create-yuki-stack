@@ -1,32 +1,11 @@
 {
+  "name": "{{ name }}",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "packages/*",
-      "tools/*"
-    ],
-    "catalog": {
-      "@types/node": "^24.6.2",
-      "dotenv-cli": "^10.0.0",
-      "eslint": "^9.36.0",
-      "prettier": "^3.6.2",
-      "typescript": "^5.9.3"
-    },
-    "catalogs": {
-      "react": {
-        "@types/react": "^19.2.0",
-        "@types/react-dom": "^19.2.0",
-        "react": "^19.2.0",
-        "react-dom": "^19.2.0"
-      },
-      "tailwind": {
-        "@tailwindcss/postcss": "^4.1.14",
-        "@tailwindcss/vite": "^4.1.14",
-        "tailwindcss": "^4.1.14"
-      }
-    }
-  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "tools/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "bump-deps": "{{ pkme }} npm-check-updates --deep -u && {{ pkm }} install",
@@ -47,6 +26,5 @@
     "@{{ name }}/tsconfig": "workspace:*",
     "@turbo/gen": "^2.5.8",
     "turbo": "^2.5.8"
-  },
-  "packageManager": ""
+  }
 }

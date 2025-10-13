@@ -1,7 +1,7 @@
 {
   "extends": "@{{ name }}/tsconfig/react.json",
   "compilerOptions": {
-    "types": ["node", "vite/client"],
+    "types": ["vite/client"],
     "rootDirs": [".", "./.react-router/types"],
 
     "baseUrl": ".",

@@ -1,5 +1,3 @@
-'use client'
-
 import type { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -30,6 +28,7 @@ function TRPCReactProvider({
 }: Readonly<{ children: React.ReactNode }>) {
   const queryClient = getQueryClient()
 
+  // eslint-disable-next-line @eslint-react/naming-convention/use-state
   const [trpcClient] = React.useState(() =>
     createTRPCClient<AppRouter>({
       links: [

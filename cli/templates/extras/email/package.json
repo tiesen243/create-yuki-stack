@@ -22,7 +22,7 @@
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/validators": "workspace:*",
-    "@react-email/components": "^0.5.5",
+    "@react-email/components": "^0.5.6",
     "resend": "^6.1.2"
   },
   "devDependencies": {
@@ -31,7 +31,14 @@
     "@{{ name }}/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "react-email": "^4.2.12",
+    "react-email": "^4.3.0",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:react",
+    "prettier-plugin-tailwindcss": "catalog:",
+    "react": "catalog:react"
   }
 }

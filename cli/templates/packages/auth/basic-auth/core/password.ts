@@ -2,8 +2,9 @@ import { scrypt } from 'node:crypto'
 
 import { constantTimeEqual, decodeHex, encodeHex } from './crypto'
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class Password {
-  private static dkLen: number = 64
+  private static dkLen = 64
 
   static async hash(password: string): Promise<string> {
     const salt = encodeHex(crypto.getRandomValues(new Uint8Array(16)))

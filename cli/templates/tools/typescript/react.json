@@ -4,6 +4,6 @@
   "extends": "./internal-package.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "lib": ["ES2022", "dom", "dom.iterable"]
+    "lib": ["es2022", "dom", "dom.iterable"]
   }
 }

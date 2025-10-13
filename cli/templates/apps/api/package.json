@@ -21,8 +21,13 @@
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:"
   }
 }

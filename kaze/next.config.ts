@@ -1,14 +1,11 @@
 import type { NextConfig } from 'next'
 
 const nextConfig = {
+  typedRoutes: true,
   reactStrictMode: true,
-
-  /** Enables hot reloading for local packages without a build step */
-  transpilePackages: ['@yuki/ui'],
-
-  /** We already do linting and typechecking as separate tasks in CI */
-  eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
+
+  transpilePackages: ['@yuki/ui'],
 } satisfies NextConfig
 
 export default nextConfig

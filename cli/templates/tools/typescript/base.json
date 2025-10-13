@@ -5,8 +5,8 @@
     /** Base Options */
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "ES2022",
-    "lib": ["ES2022"],
+    "target": "es2022",
+    "lib": ["es2022"],
     "types": ["node"],
     "allowJs": true,
     "resolveJsonModule": true,
@@ -23,8 +23,8 @@
     "noImplicitOverride": true,
     "checkJs": true,
     /** Transpile using Bundler (not tsc) */
-    "module": "Preserve",
-    "moduleResolution": "Bundler",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "noEmit": true
   },
   "exclude": ["node_modules", "build", "dist", ".next", ".expo"]

@@ -23,7 +23,9 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "prettier": "@{{ name }}/prettier-config",
-  "dependencies": {},
+  "dependencies": {
+    "@{{ name }}/validators": "workspace:*"
+  },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
@@ -32,5 +34,10 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "@types/node": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:"
   }
 }

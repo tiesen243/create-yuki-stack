@@ -31,7 +31,7 @@
   "scripts": {
     "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsdown --watch",
+    "dev": "tsdown --watch src",
     "format": "prettier --check . --ignore-path ../.gitignore --ignore-path ./.prettierignore",
     "lint": "eslint",
     "pub:canary": "bun run build && bun publish --tag canary",
@@ -46,14 +46,18 @@
     "gradient-string": "^3.0.0",
     "picocolors": "^1.1.1",
     "trpc-cli": "^0.11.0",
-    "zod": "^4.1.11"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@types/node": "24.6.2",
+    "@types/node": "24.7.2",
     "eslint": "^9.37.0",
     "prettier": "^3.6.2",
     "tsdown": "^0.15.6",
     "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:"
   },
   "publishConfig": {
     "access": "public"

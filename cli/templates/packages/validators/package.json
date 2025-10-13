@@ -19,7 +19,7 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "zod": "^4.1.11"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
@@ -28,5 +28,10 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "@types/node": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:"
   }
 }

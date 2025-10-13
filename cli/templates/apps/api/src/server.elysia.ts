@@ -3,8 +3,6 @@ import '@{{ name }}/validators/env'
 import cors from '@elysiajs/cors'
 import Elysia from 'elysia'
 
-import { loggerPlugin } from './plugins/logger'
-
 const PORT = parseInt(process.env.PORT ?? '8080', 10)
 
 const server = new Elysia({ aot: true, prefix: '/api' })
@@ -18,7 +16,6 @@ const server = new Elysia({ aot: true, prefix: '/api' })
       credentials: true,
     }),
   )
-  .use(loggerPlugin)
   .get('/health', () => ({
     message: 'OK',
   }))

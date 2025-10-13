@@ -11,6 +11,7 @@ export const env = createEnv({
     VERCEL_PROJECT_PRODUCTION_URL: z.optional(z.string()),
   },
 
+  clientPrefix: 'NEXT_PUBLIC_',
   client: {
   },
 
@@ -23,7 +24,7 @@ export const env = createEnv({
 })
 
 function createEnv<
-  TPrefix extends 'NEXT_PUBLIC_',
+  TPrefix extends string,
   TServer extends Record<string, z.ZodMiniType>,
   TClient extends Record<string, z.ZodMiniType>,
   TResult extends {
@@ -37,6 +38,7 @@ function createEnv<
         ? `${TKey} should not prefix with ${TPrefix}`
         : TServer[TKey]
     }
+    clientPrefix: TPrefix
     client: {
       [TKey in keyof TClient]: TKey extends `${TPrefix}${string}`
         ? TClient[TKey]
@@ -78,4 +80,3 @@ function createEnv<
     },
   })
 }
-

@@ -17,7 +17,7 @@
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "next": "^15.5.4",
+    "next": "^15.5.5",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
@@ -34,5 +34,9 @@
     "prettier": "catalog:",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:"
   }
 }

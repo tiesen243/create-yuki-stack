@@ -47,7 +47,7 @@ export async function addAuth(opts: ProjectOptions): Promise<void> {
 
   packageJson.dependencies = packageJson.dependencies ?? {}
   if (opts.auth === 'basic-auth') {
-    packageJson.exports = packageJson.exports ?? {}
+    packageJson.exports ??= {}
     packageJson.exports['./csrf'] = {
       types: './dist/csrf.d.ts',
       default: './src/csrf.ts',
