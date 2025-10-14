@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.91
+
+### Patch Changes
+
+- [`2cdf293`](https://github.com/tiesen243/create-yuki-stack/commit/2cdf293afea4fd965dce61641589da541efbf1cb) Thanks [@tiesen243](https://github.com/tiesen243)! - update tsconfig
+
 ## 0.1.90
 
 ### Patch Changes
