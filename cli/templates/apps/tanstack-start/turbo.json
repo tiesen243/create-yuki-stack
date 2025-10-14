@@ -3,8 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".nitro/**", ".output/**", ".tanstack/**"]
+      "outputs": [".output/**", ".tanstack/**"]
     }
   }
 }

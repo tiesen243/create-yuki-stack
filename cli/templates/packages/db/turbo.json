@@ -3,11 +3,19 @@
   "extends": ["//"],
   "tasks": {
     "build": { 
-      "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
+    "db:generate": { 
+      "cache": false,
+      "interactive": true
+    },
+    "db:migrate": {
+      "cache": false,
+      "interactive": true
+    },
     "db:push": {
-      "cache": false
+      "cache": false,
+      "interactive": true
     },
     "db:studio": { 
       "cache": false,

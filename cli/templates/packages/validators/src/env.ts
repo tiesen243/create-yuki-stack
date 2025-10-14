@@ -56,9 +56,13 @@ function createEnv<
     if (value === '') delete opts.runtimeEnv[key]
   }
 
+  const globalThisForWindow = globalThis as unknown as {
+    window: Record<string, unknown> | undefined
+  }
+  const isServer = typeof globalThisForWindow.window === 'undefined'
+
   const _server = typeof opts.server === 'object' ? opts.server : {}
   const _client = typeof opts.client === 'object' ? opts.client : {}
-  const isServer = typeof window === 'undefined'
   const envs = isServer ? { ..._server, ..._client } : { ..._client }
 
   const parsedEnvs = z.object(envs).safeParse(opts.runtimeEnv)

@@ -1,8 +1,6 @@
 {
   "extends": "@yuki/tsconfig/internal-package.json",
   "compilerOptions": {
-    "checkJs": true,
-
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

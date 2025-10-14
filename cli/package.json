@@ -34,9 +34,6 @@
     "dev": "tsdown --watch src",
     "format": "prettier --check . --ignore-path ../.gitignore --ignore-path ./.prettierignore",
     "lint": "eslint",
-    "pub:canary": "bun run build && bun publish --tag canary",
-    "pub:dev": "bun run build && bun link",
-    "pub:release": "bun run build && bun publish --tag latest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

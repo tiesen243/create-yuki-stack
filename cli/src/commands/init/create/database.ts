@@ -96,6 +96,8 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
   Object.assign(packageJson.devDependencies ?? {}, config.devDependencies)
   if (opts.database === 'drizzle') {
     Object.assign(packageJson.scripts, {
+      'db:generate': '{{ pkm }} run with-env drizzle-kit generate',
+      'db:migrate': '{{ pkm }} run with-env drizzle-kit migrate',
       'db:push': '{{ pkm }} run with-env drizzle-kit push',
       'db:studio': '{{ pkm }} run with-env drizzle-kit studio',
     })
@@ -106,9 +108,11 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
       default: './src/generated/prisma/client.ts',
     })
     Object.assign(packageJson.scripts, {
+      'db:generate': '{{ pkm }} run with-env prisma generate',
+      'db:migrate': '{{ pkm }} run with-env prisma migrate dev',
       'db:push': '{{ pkm }} run with-env prisma db push',
       'db:studio': '{{ pkm }} run with-env prisma studio',
-      postinstall: '{{ pkm }} run with-env prisma generate',
+      postinstall: '{{ pkm }} run db:generate',
     })
   }
 

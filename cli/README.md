@@ -152,32 +152,6 @@ packages/
   └─ validators/  # Shared validation schemas
 ```
 
-## Notes
-
-- If your packages or apps use `env` from `packages/validators`, you need to add `DOM` to your `tsconfig.json` file because the validators package uses browser APIs:
-
-  ```json
-  {
-    "compilerOptions": {
-      "lib": ["DOM", "ES2022"]
-    }
-  }
-  ```
-
-- **Elysia.js Node Adapter Issue (2025-07-31)**: The `@elysiajs/node` adapter is missing the `stop` method which can cause graceful shutdown issues. To fix this, add a custom `stop` method to your adapter configuration:
-  ```typescript
-  new Elysia({
-    aot: true,
-    prefix: '/api',
-    adapter: {
-      ...node(),
-      async stop(app) {
-        await app.stop(true)
-      },
-    },
-  })
-  ```
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

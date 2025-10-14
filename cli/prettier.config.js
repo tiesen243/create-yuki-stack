@@ -1,5 +1,3 @@
-import { fileURLToPath } from 'node:url'
-
 /** @typedef {import("prettier").Config} PrettierConfig */
 
 /** @type { PrettierConfig } */

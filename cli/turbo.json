@@ -2,7 +2,8 @@
   "$schema": "../node_modules/turbo/schema.json",
   "extends": ["//"],
   "tasks": {
-    "pub:dev": { "cache": false },
-    "pub:release": { "cache": false }
+    "build": {
+      "outputs": ["dist/**"]
+    }
   }
 }
