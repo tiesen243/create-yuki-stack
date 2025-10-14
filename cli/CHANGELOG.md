@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.1.90
+
+### Patch Changes
+
+- [`dfec8ce`](https://github.com/tiesen243/create-yuki-stack/commit/dfec8cef8f08217e4b15d7008f4955391e07f1be) Thanks [@tiesen243](https://github.com/tiesen243)! - add type for eslint config
+
+- [`b76e05a`](https://github.com/tiesen243/create-yuki-stack/commit/b76e05ad4e7956b9f74514cd92143e5db15a8088) Thanks [@tiesen243](https://github.com/tiesen243)! - add react template for generator
+
 ## 0.1.89
 
 ### Patch Changes
