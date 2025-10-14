@@ -1,10 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Next.js",
-  "extends": "./internal-package.json",
+  "extends": "./react.json",
   "compilerOptions": {
-    "jsx": "preserve",
-    "lib": ["es2022", "dom", "dom.iterable"],
     "module": "esnext",
     "plugins": [{ "name": "next" }]
   }

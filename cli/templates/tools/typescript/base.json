@@ -7,7 +7,6 @@
     "skipLibCheck": true,
     "target": "es2022",
     "lib": ["es2022"],
-    "types": ["node"],
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
