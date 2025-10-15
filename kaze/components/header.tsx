@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { GithubIcon } from '@/components/ui/icons'
 
 export const Header: React.FC = () => (
-  <header className='bg-background/70 sticky inset-0 z-50 flex h-16 items-center border-b backdrop-blur-xl backdrop-saturate-150'>
+  <header className='sticky inset-0 z-50 flex h-16 items-center border-b bg-background/70 backdrop-blur-xl backdrop-saturate-150'>
     <div className='container flex items-center justify-between'>
       <Link href='/' className='flex items-center space-x-2'>
         <Image

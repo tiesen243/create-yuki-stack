@@ -18,7 +18,6 @@ export async function addBase(opts: ProjectOptions): Promise<void> {
     fs.copyFile(new URL('_gitignore', templatePath), '.gitignore'),
     fs.copyFile(new URL('tsconfig.json', templatePath), 'tsconfig.json'),
     fs.copyFile(new URL('turbo.json', templatePath), 'turbo.json'),
-    fs.cp(new URL('turbo', templatePath), 'turbo', copyOptions),
     fs.cp(new URL('tools', templatePath), 'tools', copyOptions),
     fs.mkdir('apps', { recursive: true }),
     fs.mkdir('packages', { recursive: true }),

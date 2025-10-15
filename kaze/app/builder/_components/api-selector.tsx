@@ -38,13 +38,13 @@ export function ApiSelector() {
               key={option.id}
               htmlFor={id}
               className={cn(
-                'bg-card flex h-20 flex-col items-start justify-center rounded-md border px-4 py-2',
+                'flex h-20 flex-col items-start justify-center rounded-md border bg-card px-4 py-2',
                 options.api === option.id && option.color,
               )}
             >
               <RadioGroupItem id={id} value={option.id} hidden />
               <span className='text-sm font-semibold'>{option.label}</span>
-              <span className='text-muted-foreground line-clamp-2 flex-1 text-xs'>
+              <span className='line-clamp-2 flex-1 text-xs text-muted-foreground'>
                 {option.description}
               </span>
             </Label>

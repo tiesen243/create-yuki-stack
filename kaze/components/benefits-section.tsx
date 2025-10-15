@@ -58,7 +58,7 @@ export const BenefitsSection: React.FC = () => (
             alt='Developer Experience'
             className='aspect-square rounded-lg object-cover shadow-2xl'
           />
-          <div className='absolute -right-4 -top-4 size-24 rounded-full bg-gradient-to-br from-purple-800 to-blue-800 opacity-20 blur-xl dark:from-purple-400 dark:to-blue-400' />
+          <div className='absolute -top-4 -right-4 size-24 rounded-full bg-gradient-to-br from-purple-800 to-blue-800 opacity-20 blur-xl dark:from-purple-400 dark:to-blue-400' />
           <div className='absolute -bottom-4 -left-4 size-32 rounded-full bg-gradient-to-br from-blue-800 to-indigo-800 opacity-20 blur-xl dark:from-blue-400 dark:to-indigo-400' />
         </div>
       </div>

@@ -10,7 +10,7 @@ export const CtaSection: React.FC = () => (
     <Typography variant='h3' component='h2' className='text-center'>
       Ready to build your next project?
     </Typography>
-    <Typography className='text-muted-foreground text-center'>
+    <Typography className='text-center text-muted-foreground'>
       Join thousands of developers who are building faster and better with Yuki
       Stack. Get started today and see the difference.
     </Typography>

@@ -17,7 +17,7 @@ export const PresetSelect: React.FC = () => {
       {Object.entries(presets).map(([key, preset]) => (
         <Card
           key={`preset-${key}`}
-          className='hover:bg-accent hover:text-accent-foreground cursor-pointer capitalize'
+          className='cursor-pointer capitalize hover:bg-accent hover:text-accent-foreground'
           onClick={() => {
             setOptions(preset.options)
           }}

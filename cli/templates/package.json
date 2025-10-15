@@ -28,7 +28,6 @@
   "devDependencies": {
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "@turbo/gen": "^2.5.8",
     "turbo": "^2.5.8"
   }
 }

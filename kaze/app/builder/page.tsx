@@ -52,7 +52,7 @@ export default function BuilderPage() {
           <PresetSelect />
         </aside>
 
-        <section className='container col-span-3 grid gap-6 overflow-y-auto py-4'>
+        <section className='col-span-3 container grid gap-6 overflow-y-auto py-4'>
           <h2 className='sr-only'>Selector section</h2>
 
           <FrontendSelector />

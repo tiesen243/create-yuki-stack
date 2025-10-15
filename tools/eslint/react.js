@@ -6,14 +6,12 @@ import { defineConfig } from 'eslint/config'
 
 export default defineConfig({
   files: ['**/*.ts', '**/*.tsx'],
+  extends: [reactPlugin.configs['recommended-type-checked']],
   plugins: {
-    ...reactPlugin.configs.all.plugins,
     'react-hooks': hooksPlugin,
     'jsx-a11y': a11yPlugin,
   },
   rules: {
-    ...reactPlugin.configs['recommended-type-checked'].rules,
-    // @ts-ignore
     ...hooksPlugin.configs.recommended.rules,
     ...a11yPlugin.flatConfigs.strict.rules,
 
@@ -29,5 +27,4 @@ export default defineConfig({
       { rule: 'PascalCase', allowAllCaps: true },
     ],
   },
-  settings: reactPlugin.configs['recommended-typescript'].settings,
 })

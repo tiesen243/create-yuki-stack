@@ -22,7 +22,7 @@ const config = {
   tailwindFunctions: ['cn', 'cva'],
   tailwindAttributes: ['className', 'tw'],
   tailwindStylesheet: fileURLToPath(
-    new URL('../../www/app/globals.css', import.meta.url),
+    new URL('../../kaze/app/globals.css', import.meta.url),
   ),
 
   importOrder: [

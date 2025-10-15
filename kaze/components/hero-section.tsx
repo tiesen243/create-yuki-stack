@@ -63,7 +63,7 @@ export const HeroSection: React.FC = () => (
           </Button>
         </div>
 
-        <div className='text-muted-foreground flex items-center space-x-6 text-sm'>
+        <div className='flex items-center space-x-6 text-sm text-muted-foreground'>
           <div className='flex items-center space-x-1'>
             <StarIcon className='size-4 fill-yellow-400 text-yellow-400' />
             <span>4 stars</span>
@@ -90,91 +90,91 @@ export const HeroSection: React.FC = () => (
           <div className='mb-2 text-green-400'>
             $ npx create-yuki-stack@latest
           </div>
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>
             ◇ What would you like to name your project?
           </div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;my-yuki-app</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;my-yuki-app</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>◇ Which language would you like to use?</div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;TypeScript</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;TypeScript</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>
             ◇ Which frontend framework would you like to use?
           </div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;Next.js</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;Next.js</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>◇ Which database would you like to use?</div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;Drizzle</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;Drizzle</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>
             ◇ Which database adapter would you like to use?
           </div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;None</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;None</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>
             ◇ Which backend framework would you like to use?
           </div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;None</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;None</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>
             ◇ Which API framework would you like to use?
           </div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;tRPC</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;tRPC</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>
             ◇ Which authentication method would you like to use?
           </div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;Basic Auth</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;Basic Auth</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>
             ◇ Would you like to add any extra packages?
           </div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;none</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;none</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>
             ◇ Which package manager would you like to use?
           </div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;Bun</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;Bun</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>◇ Would you like to install dependencies?</div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;Yes</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;Yes</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>
             ◇ Would you like to initialize a Git repository?
           </div>
-          <div className='text-muted-foreground mb-2'>│ &nbsp;Yes</div>
+          <div className='mb-2 text-muted-foreground'>│ &nbsp;Yes</div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div>
             ◇ <span className='text-green-400'>Success!</span> Created
             my-yuki-app at{' '}
             <span className='text-green-400'>/path/to/my-yuki-app</span>
           </div>
 
-          <div className='text-muted-foreground mb-1'>│</div>
+          <div className='mb-1 text-muted-foreground'>│</div>
           <div className='mb-1'>└ Next steps:</div>
 
-          <div className='text-muted-foreground pl-10'>
+          <div className='pl-10 text-muted-foreground'>
             <div>cd my-yuki-app</div>
             <div>cp .env.example .env</div>
             <div>bun run dev</div>
           </div>
         </div>
 
-        <div className='to-muted-foreground dark:to-muted-foreground absolute -right-4 -top-4 size-24 rounded-full bg-gradient-to-br from-purple-800 opacity-20 blur-xl dark:from-purple-400' />
-        <div className='from-muted-foreground dark:from-muted-foreground absolute -bottom-4 -left-4 size-32 rounded-full bg-gradient-to-br to-indigo-800 opacity-20 blur-xl dark:to-indigo-400' />
+        <div className='absolute -top-4 -right-4 size-24 rounded-full bg-gradient-to-br from-purple-800 to-muted-foreground opacity-20 blur-xl dark:from-purple-400 dark:to-muted-foreground' />
+        <div className='absolute -bottom-4 -left-4 size-32 rounded-full bg-gradient-to-br from-muted-foreground to-indigo-800 opacity-20 blur-xl dark:from-muted-foreground dark:to-indigo-400' />
       </div>
     </div>
   </section>
