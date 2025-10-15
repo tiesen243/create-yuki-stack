@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.92
+
+### Patch Changes
+
+- [`4638a53`](https://github.com/tiesen243/create-yuki-stack/commit/4638a5312fcf6d1289135a59b1b02205e2709f77) Thanks [@tiesen243](https://github.com/tiesen243)! - update eslint react config
+
 ## 0.1.91
 
 ### Patch Changes
