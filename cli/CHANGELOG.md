@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.93
+
+### Patch Changes
+
+- [`8dcdd20`](https://github.com/tiesen243/create-yuki-stack/commit/8dcdd20d615c6e2d24406c900b7fa9b6dea3c1e3) Thanks [@tiesen243](https://github.com/tiesen243)! - bump deps and change logo gradient color
+
 ## 0.1.92
 
 ### Patch Changes
