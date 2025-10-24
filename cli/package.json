@@ -41,7 +41,7 @@
     "@trpc/server": "^11.6.0",
     "gradient-string": "^3.0.0",
     "picocolors": "^1.1.1",
-    "trpc-cli": "^0.11.0",
+    "trpc-cli": "^0.12.0",
     "zod": "^4.1.12"
   },
   "devDependencies": {
@@ -50,7 +50,7 @@
     "@yuki/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "tsdown": "^0.15.7",
+    "tsdown": "^0.15.9",
     "typescript": "catalog:"
   },
   "publishConfig": {

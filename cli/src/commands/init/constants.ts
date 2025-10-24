@@ -38,4 +38,4 @@ export const APP_TITLE = `
  ╚════██║    ██║    ██╔══██║ ██║      ██╔═██╗ 
  ███████║    ██║    ██║  ██║ ╚██████╗ ██║  ██╗
  ╚══════╝    ╚═╝    ╚═╝  ╚═╝  ╚═════╝ ╚═╝  ╚═╝`
-export const APP_COLORS = ['#ff9966', '#ff5e62', '#ffa34e']
+export const APP_COLORS = ['#c3c0ff', '#c7c4dd', '#eab9d2']
