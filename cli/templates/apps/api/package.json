@@ -5,12 +5,12 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "bun run --hot --env-file=../../.env src/server.ts",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "start": "bun run --hot --env-file=../../.env src/server.ts",
+    "start": "node --env-file-if-exists=../../.env ./dist/server.mjs",
     "typecheck": "tsc --noEmit"
   },
   "prettier": "@{{ name }}/prettier-config",
@@ -24,6 +24,7 @@
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {

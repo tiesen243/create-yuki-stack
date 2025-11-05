@@ -1,12 +1,7 @@
 import type { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
-import {
-  createTRPCClient,
-  httpBatchStreamLink,
-  httpSubscriptionLink,
-  splitLink,
-} from '@trpc/client'
+import { createTRPCClient, httpBatchStreamLink, } from '@trpc/client'
 import { createTRPCContext } from '@trpc/tanstack-react-query'
 import SuperJSON from 'superjson'
 
@@ -32,29 +27,17 @@ function TRPCReactProvider({
   const [trpcClient] = React.useState(() =>
     createTRPCClient<AppRouter>({
       links: [
-        splitLink({
-          condition: (op) => op.type === 'subscription',
-          false: httpBatchStreamLink({
-            transformer: SuperJSON,
-            url: getBaseUrl() + '/api/trpc',
-            headers() {
-              const headers = new Headers()
-              headers.set('x-trpc-source', '{{ app }}')
-              return headers
-            },
-            fetch(input, init) {
-              return fetch(input, { ...init, credentials: 'include' })
-            },
-          }),
-          true: httpSubscriptionLink({
-            transformer: SuperJSON,
-            url: getBaseUrl() + '/api/trpc',
-            eventSourceOptions() {
-              const headers = new Headers()
-              headers.set('x-trpc-source', '{{ app }}')
-              return { headers }
-            },
-          }),
+         httpBatchStreamLink({
+          transformer: SuperJSON,
+          url: getBaseUrl() + '/api/trpc',
+          headers() {
+            const headers = new Headers()
+            headers.set('x-trpc-source', '{{ app }}')
+            return headers
+          },
+          fetch(input, init) {
+            return fetch(input, { ...init, credentials: 'include' })
+          },
         }),
       ],
     }),

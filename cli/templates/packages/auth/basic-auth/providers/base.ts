@@ -1,5 +1,5 @@
-import type { OauthAccount } from '../core/types'
-import { generateCodeChallenge } from '../core/crypto'
+import type { OauthAccount } from '@/types'
+import { generateCodeChallenge } from '@/core/crypto'
 
 export default abstract class BaseProvider {
   public abstract createAuthorizationUrl(

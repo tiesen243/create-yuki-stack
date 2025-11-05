@@ -1,4 +1,4 @@
-import type BaseProvider from '../providers/base'
+import type BaseProvider from '@/providers/base'
 
 export interface CookieOptions {
   domain?: string
@@ -17,14 +17,35 @@ export interface OAuth2Token {
   expires_in: number
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface User {}
+export interface User  {
+  id: string
+  name: string
+  email: string
+}
 
 export interface Account {
+  id: string
+  userId: string
   provider: string
   accountId: string
-  userId: string
   password: string | null
+}
+
+export interface NewAccount {
+  id?: string
+  userId: string
+  provider: string
+  accountId: string
+}
+
+export interface Session {
+  token: string
+  user: User | null
+  expires: Date 
+}
+
+export interface NewSession extends Session {
+  token: string
 }
 
 export interface OauthAccount {
@@ -34,27 +55,18 @@ export interface OauthAccount {
   image: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface Session {}
-
-export interface SessionResult {
-  user: User | null
-  expires: Date
-}
-
 export interface DatabaseAdapter {
-  getUserByEmail(email: string): Promise<User | null>
-  createUser(
-    data: Omit<User, 'id' | 'createdAt' | 'updatedAt'>,
-  ): Promise<User | null>
+  getUserByEmail(email: string): Promise<Pick<User, 'id'> | null>
+  createUser(data: Omit<OauthAccount, 'accountId'>): Promise<User['id'] | null>
 
   getAccount(provider: string, accountId: string): Promise<Account | null>
-  createAccount(data: Account): Promise<void>
+  createAccount(data: NewAccount): Promise<void>
 
-  getSessionAndUser(token: string): Promise<SessionResult | null>
-  createSession(data: Session): Promise<void>
-  updateSession(token: string, data: Partial<Session>): Promise<void>
+  getSessionAndUser(token: string): Promise<Omit<Session, 'token'> | null>
+  createSession(data: NewSession): Promise<void>
+  updateSession(token: string, data: Partial<NewSession>): Promise<void>
   deleteSession(token: string): Promise<void>
+  deleteSessionsByUserId(userId: string): Promise<void>
 }
 
 export interface AuthOptions {

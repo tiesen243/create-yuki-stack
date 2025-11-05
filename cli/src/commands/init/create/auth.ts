@@ -19,6 +19,10 @@ export async function addAuth(opts: ProjectOptions): Promise<void> {
       `${destPath}/eslint.config.js`,
     ),
     fs.copyFile(
+      new URL('tsdown.config.ts', templatePath),
+      `${destPath}/tsdown.config.ts`,
+    ),
+    fs.copyFile(
       new URL('tsconfig.json', templatePath),
       `${destPath}/tsconfig.json`,
     ),
@@ -46,17 +50,7 @@ export async function addAuth(opts: ProjectOptions): Promise<void> {
   ])
 
   packageJson.dependencies = packageJson.dependencies ?? {}
-  if (opts.auth === 'basic-auth') {
-    packageJson.exports ??= {}
-    packageJson.exports['./csrf'] = {
-      types: './dist/csrf.d.ts',
-      default: './src/csrf.ts',
-    }
-    packageJson.exports['./rate-limit'] = {
-      types: './dist/rate-limit.d.ts',
-      default: './src/rate-limit.ts',
-    }
-  } else if (opts.auth === 'better-auth') {
+  if (opts.auth === 'better-auth') {
     packageJson.dependencies['better-auth'] = versions['better-auth']
     if (opts.database === 'mongoose')
       packageJson.dependencies.mongodb = versions.mongodb

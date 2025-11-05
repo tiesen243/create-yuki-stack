@@ -2,7 +2,7 @@ import { hc } from 'hono/client'
 
 import { env } from '@{{ name }}/validators/env'
 
-import type { Server } from './server'
+import type { Server } from '@/server'
 
 export const { api } = hc<Server>(getApiUrl())
 

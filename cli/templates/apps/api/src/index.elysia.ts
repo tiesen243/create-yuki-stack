@@ -2,7 +2,7 @@ import { treaty } from '@elysiajs/eden'
 
 import { env } from '@{{ name }}/validators/env'
 
-import type { Server } from './server'
+import type { Server } from '@/server'
 
 export const { api } = treaty<Server>(getApiUrl())
 

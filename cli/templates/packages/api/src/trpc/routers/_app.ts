@@ -1,9 +1,11 @@
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
-import { createTRPCRouter, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '@/trpc'
 
 const appRouter = createTRPCRouter({
-  health: publicProcedure.query(() => ({ message: 'OK' })),
+  health: publicProcedure
+    .meta({ message: 'Health check successful' })
+    .query(() => ({ message: 'OK' })),
 })
 
 type AppRouter = typeof appRouter
@@ -13,3 +15,4 @@ type RouterOutputs = inferRouterOutputs<AppRouter>
 
 export type { AppRouter, RouterInputs, RouterOutputs }
 export { appRouter }
+

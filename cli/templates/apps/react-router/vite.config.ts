@@ -11,5 +11,16 @@ export default defineConfig(({ mode }) => {
     server: { port: 3001 },
     define: { 'process.env': JSON.stringify(process.env) },
     plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
+    build: {
+      rollupOptions: {
+        onwarn(warning, warn) {
+          if (warning.code === 'SOURCEMAP_ERROR') return
+          warn(warning)
+        },
+      },
+    },
+    ...(mode === 'production'
+      ? { resolve: { alias: { 'react-dom/server': 'react-dom/server.node' } } }
+      : {}),
   }
 })

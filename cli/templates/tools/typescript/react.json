@@ -3,7 +3,7 @@
   "display": "React",
   "extends": "./internal-package.json",
   "compilerOptions": {
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "lib": ["es2022", "dom", "dom.iterable"]
   }
 }

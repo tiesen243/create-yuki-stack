@@ -3,11 +3,9 @@ import { drizzle } from 'drizzle-orm/neon-serverless'
 
 import { env } from '@{{ name }}/validators/env'
 
-import * as schema from './schema'
-
 const createDrizzleClient = () => {
   const client = new Pool({ connectionString: env.DATABASE_URL })
-  return drizzle({ client, schema, casing: 'snake_case' })
+  return drizzle({ client, casing: 'snake_case' })
 }
 const globalForDrizzle = globalThis as unknown as {
   db: ReturnType<typeof createDrizzleClient> | undefined

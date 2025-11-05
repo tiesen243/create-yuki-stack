@@ -5,19 +5,22 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./src/index.ts",
-      "react-server": "./src/index.rsc.ts"
+      "default": "./dist/index.mjs",
+      "react-server": "./dist/index.rsc.mjs"
     },
     "./react": {
-      "types": "./dist/react.d.ts",
-      "default": "./src/react.tsx"
-    }
+      "default": "./dist/react.mjs",
+      "types": "./dist/react.d.mts"
+    },
+    "./package.json": "./package.json"
   },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsc --watch",
+    "dev": "tsdown --watch ./src",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
@@ -33,10 +36,12 @@
     "@{{ name }}/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "@tanstack/react-query": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "prettier-plugin-tailwindcss": "catalog:",

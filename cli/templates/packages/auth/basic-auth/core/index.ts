@@ -1,12 +1,12 @@
-import type { Account, AuthOptions, OauthAccount, Session } from './types'
-import Cookies from './cookies'
+import type { AuthOptions, NewAccount, OauthAccount, Session } from '@/types'
+import Cookies from '@/core/cookies'
 import {
   encodeHex,
   generateSecureString,
   generateStateOrCode,
   hashSecret,
-} from './crypto'
-import { Password } from './password'
+} from '@/core/crypto'
+import { Password } from '@/core/password'
 
 export function Auth(opts: AuthOptions) {
   const options = {
@@ -18,15 +18,18 @@ export function Auth(opts: AuthOptions) {
 
   const { adapter, cookieKeys, cookieOptions, providers, session } = options
 
-  async function createSession(userId: string): Promise<Session> {
+  async function createSession(
+    userId: string,
+    headers: Headers = new Headers(),
+  ): Promise<Omit<Session, 'user'>> {
     const token = generateSecureString()
     const hashToken = await hashSecret(token)
     const expires = new Date(Date.now() + session.expiresIn * 1000)
 
     await adapter.createSession({
       token: encodeHex(hashToken),
-      expires,
       userId,
+      expires,
     })
 
     return { token, userId, expires }
@@ -47,7 +50,7 @@ export function Auth(opts: AuthOptions) {
 
       if (now > expiresTime) {
         await adapter.deleteSession(hashToken)
-        return { user: null, expires: new Date() }
+        throw new Error('Session expired')
       }
 
       if (now >= expiresTime - session.expiresThreshold * 1000) {
@@ -62,10 +65,10 @@ export function Auth(opts: AuthOptions) {
     }
   }
 
-  async function signIn(opts: {
-    email: string
-    password: string
-  }): Promise<Session> {
+  async function signIn(
+    opts: { identifier: string; password: string },
+    headers: Headers = new Headers(),
+  ): Promise<Omit<Session, 'user'>> {
     const { email, password } = opts
 
     const user = await adapter.getUserByEmail(email)
@@ -74,7 +77,7 @@ export function Auth(opts: AuthOptions) {
     const account = await adapter.getAccount('credentials', user.id)
     if (!account?.password) throw new Error('Invalid credentials')
 
-    const isValid = await Password.verify(account.password, password)
+    const isValid = await new Password().verify(account.password, password)
     if (!isValid) throw new Error('Invalid credentials')
 
     return createSession(user.id)
@@ -89,7 +92,7 @@ export function Auth(opts: AuthOptions) {
   }
 
   async function getOrCreateUser(
-    opts: Omit<OauthAccount & Account, 'userId'>,
+    opts: Omit<OauthAccount & NewAccount, 'userId'>,
   ): Promise<Session> {
     const { provider, accountId, ...userData } = opts
     const existingAccount = await adapter.getAccount(provider, accountId)
@@ -100,12 +103,7 @@ export function Auth(opts: AuthOptions) {
       existingUser?.id ?? (await adapter.createUser(userData))?.id ?? ''
     if (!userId) throw new Error('Failed to create user')
 
-    await adapter.createAccount({
-      provider,
-      accountId,
-      userId,
-      password: null,
-    })
+    await adapter.createAccount({ userId, provider, accountId, password: null })
     return createSession(userId)
   }
 
@@ -125,6 +123,26 @@ export function Auth(opts: AuthOptions) {
           if (pathname === '/api/auth/get-session') {
             const session = await auth(request)
             return setCorsHeaders(Response.json(session))
+          }
+
+          /**
+           * [GET] /api/auth/set-cookie: Set a cookies
+           * Query parameters:
+           * - token: string (session token)
+           * - expires: ISO 8601 date string (cookie expiration)
+           */
+          if (pathname === '/api/auth/set-session') {
+            const response = new Response(null, {
+              status: 302,
+              headers: { Location: '/' },
+            })
+            const token = searchParams.get('token') ?? ''
+            const expires = searchParams.get('expires') ?? ''
+            cookies.set(response, cookieKeys.token, token, {
+              ...cookieOptions,
+              expires,
+            })
+            return setCorsHeaders(response)
           }
 
           /**

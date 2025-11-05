@@ -1,5 +1,5 @@
-import type { OAuth2Token, OauthAccount } from '../core/types'
-import BaseProvider, { OAuthClient } from './base'
+import type { OAuth2Token, OauthAccount } from '@/types'
+import BaseProvider, { OAuthClient } from '@/providers/base'
 
 export default class Github extends BaseProvider {
   private client: OAuthClient

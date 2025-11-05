@@ -19,6 +19,7 @@
     "@{{ name }}/validators": "workspace:*",
     "@tanstack/react-router": "^1.134.12",
     "@tanstack/react-start": "^1.134.12",
+    "@tanstack/react-query": "catalog:",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },

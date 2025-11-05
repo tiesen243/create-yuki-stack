@@ -20,6 +20,10 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
       `${destPath}/eslint.config.js`,
     ),
     fs.copyFile(
+      new URL('tsdown.config.ts', templatePath),
+      `${destPath}/tsdown.config.ts`,
+    ),
+    fs.copyFile(
       new URL('tsconfig.json', templatePath),
       `${destPath}/tsconfig.json`,
     ),

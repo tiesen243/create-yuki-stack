@@ -1,11 +1,8 @@
-import { constantTimeEqual } from './core/crypto'
+import { constantTimeEqual } from '@/core/crypto'
 
 const isProd = process.env.NODE_ENV === 'production'
 
-export function verifyRequestOrigin(
-  request: Request,
-  sessionToken?: string,
-): boolean {
+function verifyRequestOrigin(request: Request, sessionToken?: string): boolean {
   // skip checks in development or for GET/HEAD requests
   if (!isProd || request.method === 'GET' || request.method === 'HEAD')
     return true
@@ -30,7 +27,7 @@ export function verifyRequestOrigin(
   return originUrl.host === hostHeader
 }
 
-export function generateCsrfToken(sessionToken: string): string {
+function generateCsrfToken(sessionToken: string): string {
   if (!sessionToken)
     throw new Error('Session token is required to generate CSRF token')
 
@@ -52,10 +49,7 @@ export function generateCsrfToken(sessionToken: string): string {
   }
 }
 
-export function verifyCsrfToken(
-  sessionToken: string,
-  csrfToken: string,
-): boolean {
+function verifyCsrfToken(sessionToken: string, csrfToken: string): boolean {
   const parts = csrfToken.split('.')
   if (parts.length !== 2) return false
 
@@ -71,3 +65,5 @@ export function verifyCsrfToken(
     textEncoder.encode(expectedSessionToken),
   )
 }
+
+export { generateCsrfToken, verifyRequestOrigin }

@@ -1,14 +1,12 @@
 import type { SessionModel, UserModel } from '@{{ name }}/db'
 import { db } from '@{{ name }}/db'
-
-import type { AuthOptions } from './core/types'
-import { encodeHex, hashSecret } from './core/crypto'
-import Discord from './providers/discord'
-
 import { env } from '@{{ name }}/validators/env'
 
-const adapter = getAdapter()
+import type { AuthOptions } from '@/types'
+import { encodeHex, hashSecret } from '@/core/crypto'
+import Discord from '@/providers/discord'
 
+const adapter = getAdapter()
 export const authOptions = {
   adapter,
   session: {
@@ -35,22 +33,30 @@ export async function invalidateSessionToken(token: string) {
   await adapter.deleteSession(hashToken)
 }
 
+export async function invalidateSessionTokens(userId: string) {
+  await adapter.deleteSessionsByUserId(userId)
+}
+
 function getAdapter(): AuthOptions['adapter'] {
   return {
     getUserByEmail: async (email) => {
       return await db.user.findUnique({ where: { email } })
     },
+
     createUser: async (data) => {
       return await db.user.create({ data })
     },
+
     getAccount: async (provider, accountId) => {
       return await db.account.findUnique({
         where: { provider_accountId: { provider, accountId } },
       })
     },
+
     createAccount: async (data) => {
       return await db.account.create({ data })
     },
+
     getSessionAndUser: async (token) => {
       return await db.session.findUnique({
         where: { token },
@@ -60,26 +66,24 @@ function getAdapter(): AuthOptions['adapter'] {
         },
       })
     },
+
     createSession: async (data) => {
       await db.session.create({ data })
     },
+
     updateSession: async (token, data) => {
       await db.session.update({
         where: { token },
         data,
       })
     },
+
     deleteSession: async (token) => {
       await db.session.delete({ where: { token } })
     },
-  }
-}
 
-declare module './core/types.d.ts' {
-  interface User extends UserModel {
-    id: string
-  }
-  interface Session extends SessionModel {
-    token: string
+    deleteSessionsByUserId: async (userId) => {
+      await db.session.deleteMany({ where: { userId } })
+    },
   }
 }

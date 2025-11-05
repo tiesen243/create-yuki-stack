@@ -2,11 +2,7 @@ import { cache } from 'react'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
 
-import {
-  appRouter,
-  createCallerFactory,
-  createTRPCContext,
-} from '@{{ name }}/api'
+import { appRouter, createCaller, createTRPCContext } from '@{{ name }}/api'
 
 import { createQueryClient } from '@/trpc/query-client'
 
@@ -23,8 +19,7 @@ const createRscContext = cache((opts: Options) => {
 
 const getQueryClient = cache(createQueryClient)
 
-const createApi = (opts: Options) =>
-  createCallerFactory(appRouter)(() => createRscContext(opts))
+const createApi = (opts: Options) => createCaller(() => createRscContext(opts))
 
 const createTRPC = (opts: Options) =>
   createTRPCOptionsProxy({

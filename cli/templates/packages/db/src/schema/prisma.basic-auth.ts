@@ -24,6 +24,7 @@ model User {
 }
 
 model Account {
+  id        String  @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   provider  String  @db.VarChar(255)
   accountId String  @map("account_id") @db.VarChar(255)
   password  String? @db.VarChar(255)

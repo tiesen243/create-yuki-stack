@@ -2,9 +2,9 @@
   "extends": "@{{ name }}/tsconfig/react.json",
   "compilerOptions": {
     "rootDir": "src",
-    "baseUrl": ".",
     "paths": {
-      "@{{ name }}/ui/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/utils": ["./src/index.ts"]
     }
   },
   "include": ["src"],

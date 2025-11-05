@@ -17,6 +17,7 @@
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
+    "@tanstack/react-query": "catalog:",
     "next": "^16.0.1",
     "react": "catalog:react",
     "react-dom": "catalog:react"

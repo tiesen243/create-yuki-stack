@@ -5,15 +5,16 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
-    }
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
   },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsc --watch",
+    "dev": "tsdown --watch ./src",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
@@ -28,6 +29,7 @@
     "@{{ name }}/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {

@@ -23,6 +23,7 @@ export const users: Model<User> =
   mongoose.models.user ?? mongoose.model<User>('user', userSchema)
 
 export interface Account {
+  _id: string
   provider: string
   accountId: string
   password?: string

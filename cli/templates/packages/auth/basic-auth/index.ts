@@ -1,7 +1,13 @@
-import { authOptions } from './config'
-import { Auth } from './core'
+import { authOptions } from '@/config'
+import { Auth } from '@/core'
 
-export type { Session, SessionResult, User } from './core/types'
-export { validateSessionToken, invalidateSessionToken } from './config'
-export { Password } from './core/password'
+export type { Session, User } from '@/types'
+export {
+  validateSessionToken,
+  invalidateSessionToken,
+  invalidateSessionTokens,
+} from '@/config'
+export { Password } from '@/core/password'
+export { generateCsrfToken, verifyRequestOrigin } from '@/csrf'
+export { TokenBucketRateLimit } from '@/rate-limit'
 export const { auth, signIn, signOut, handlers } = Auth(authOptions)

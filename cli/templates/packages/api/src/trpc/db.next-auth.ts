@@ -4,61 +4,91 @@ import SuperJSON from 'superjson'
 import { auth, validateSessionToken } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
 
+interface TRPCMeta {
+  message?: string
+}
+
+interface TRPCContext {
+  headers: Headers
+  session: Awaited<ReturnType<typeof validateSessionToken>> | null
+  db: typeof db
+}
+
 const isomorphicGetSession = async (headers: Headers) => {
   const authToken = headers.get('Authorization') ?? null
   if (authToken) return validateSessionToken(authToken)
   return auth()
 }
 
-const createTRPCContext = async (opts: { headers: Headers }) => {
+const createTRPCContext = async (opts: { headers: Headers }): Promise<TRPCContext> => {
   const session = await isomorphicGetSession(opts.headers)
 
-  console.log(
-    '>>> tRPC Request from',
-    opts.headers.get('x-trpc-source') ?? 'unknown',
-    'by',
-    session?.user?.name ?? 'anonymous',
-  )
-
   return {
-    db,
+    headers: opts.headers,
     session,
+    db,
   }
 }
 
-const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: SuperJSON,
-  sse: {
-    maxDurationMs: 1_000 * 60 * 5, // 5 minutes
-    ping: { enabled: true, intervalMs: 3_000 },
-    client: { reconnectAfterInactivityMs: 5_000 },
-  },
-})
+const t = initTRPC
+  .meta<TRPCMeta>()
+  .context<TRPCContext>()
+  .create({
+    transformer: SuperJSON,
+    errorFormatter({ type, path, shape }) {
+      if (shape.message !== `No procedure found on path "${path}"`)
+        console.error(
+          `[tRPC] <<< [${type}] ${path} ${shape.data.httpStatus}: ${shape.message}`,
+        )
+
+      if (shape.message.startsWith('Failed query: '))
+        shape.message =
+          'An error occurred. Please try again later or contact the administrator.'
+      return shape
+    },
+  })
 
 const createCallerFactory = t.createCallerFactory
 
 const createTRPCRouter = t.router
 
-const timingMiddleware = t.middleware(async ({ next, path }) => {
-  const start = Date.now()
-  const result = await next()
-  const end = Date.now()
-  console.log(`[tRPC] ${path} took ${end - start}ms to execute`)
-  return result
-})
+const loggingMiddleware = t.middleware(
+  async ({ ctx, next, type, path, meta }) => {
+    console.log(
+      '[tRPC] >>> Request from',
+      ctx.headers.get('x-trpc-source') ?? 'unknown',
+      'by',
+      ctx.session?.user?.name ?? 'guest',
+      `at ${path}`,
+    )
 
-const publicProcedure = t.procedure.use(timingMiddleware)
+    const start = performance.now()
+    const result = await next()
+    const end = performance.now()
+    console.log(`[tRPC] took ${(end - start).toFixed(2)}ms to execute`)
+
+    if (result.ok) {
+      const codeMap = { query: 200, mutation: 201, subscription: 200 } as const
+      console.log(
+        `[tRPC] <<< [${type}] ${path} ${codeMap[type]}: ${meta?.message ?? 'Success'}`,
+      )
+    }
+
+    return result
+  },
+)
+
+const publicProcedure = t.procedure.use(loggingMiddleware)
 const protectedProcedure = t.procedure
-  .use(timingMiddleware)
+  .use(loggingMiddleware)
   .use(({ ctx, next }) => {
     if (!ctx.session?.user) throw new TRPCError({ code: 'UNAUTHORIZED' })
     return next({
-      ctx: {
-        session: { ...ctx.session, user: ctx.session.user },
-      },
+      ctx: { session: { ...ctx.session, user: ctx.session.user } },
     })
   })
 
+export type { TRPCMeta, TRPCContext }
 export {
   createCallerFactory,
   createTRPCContext,

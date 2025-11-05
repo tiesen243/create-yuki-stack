@@ -30,6 +30,7 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
 
   const filesToCopy = [
     { src: 'eslint.config.js', dest: `${apiDir}/eslint.config.js` },
+    { src: 'tsdown.config.ts', dest: `${apiDir}/tsdown.config.ts` },
     { src: 'tsconfig.json', dest: `${apiDir}/tsconfig.json` },
     { src: 'turbo.json', dest: `${apiDir}/turbo.json` },
     { src: `src/server.${opts.backend}.ts`, dest: `${srcDir}/server.ts` },
@@ -45,16 +46,13 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
     (opts.api === 'eden' || opts.api === 'none')
   ) {
     await fs.mkdir(`${srcDir}/plugins`, { recursive: true })
-    filesToCopy.push({
-      src: 'src/plugins/logger.ts',
-      dest: `${srcDir}/plugins/logger.ts`,
-    })
 
     if (opts.auth !== 'none')
       filesToCopy.push({
         src: 'src/plugins/auth.ts',
         dest: `${srcDir}/plugins/auth.ts`,
       })
+
     if (opts.database !== 'none')
       filesToCopy.push({
         src: 'src/plugins/db.ts',
@@ -87,7 +85,6 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
     packageJson.devDependencies.tsx = await getPackageVersion('tsx')
 
     packageJson.scripts.dev = 'tsx watch --env-file=../../.env src/server.ts'
-    packageJson.scripts.start = 'tsx --env-file=../../.env src/server.ts'
 
     await modifyServerFileForNonBunEnvironment(opts, `${srcDir}/server.ts`)
   }
@@ -163,13 +160,24 @@ async function configureBackendDependencies(
         versions['@hono/node-server']
   }
 
-  if (opts.api !== 'none')
+  if (opts.api !== 'none') {
     packageJson.exports = {
-      '.': {
-        types: './dist/index.d.ts',
-        default: './src/index.ts',
-      },
+      '.': './dist/index.mjs',
+      './server': './dist/server.mjs',
+      './package.json': './package.json',
     }
+    packageJson.main = './dist/index.mjs'
+    packageJson.module = './dist/index.mjs'
+    packageJson.types = './dist/index.d.mts'
+  } else {
+    packageJson.exports = {
+      '.': './dist/server.mjs',
+      './package.json': './package.json',
+    }
+    packageJson.main = './dist/server.mjs'
+    packageJson.module = './dist/server.mjs'
+    packageJson.types = './dist/server.d.mts'
+  }
 }
 
 async function modifyServerFileForNonBunEnvironment(

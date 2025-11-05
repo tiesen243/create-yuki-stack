@@ -22,6 +22,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 export const accounts = pgTable(
   'account',
   (t) => ({
+    id: t.uuid().primaryKey().defaultRandom().notNull(),
     provider: t.varchar({ length: 255 }).notNull(),
     accountId: t.varchar({ length: 255 }).notNull(),
     userId: t

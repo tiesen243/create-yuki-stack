@@ -1,4 +1,4 @@
-import type { CookieOptions } from './types'
+import type { CookieOptions } from '@/types'
 
 export default class Cookies {
   private _cookies: Record<string, string> = {}

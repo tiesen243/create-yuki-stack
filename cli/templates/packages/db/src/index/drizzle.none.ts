@@ -3,11 +3,9 @@ import postgres from 'postgres'
 
 import { env } from '@{{ name }}/validators/env'
 
-import * as schema from './schema'
-
 const createDrizzleClient = () => {
   const conn = postgres(env.DATABASE_URL)
-  return drizzle(conn, { schema, casing: 'snake_case' })
+  return drizzle(conn, { casing: 'snake_case' })
 }
 const globalForDrizzle = globalThis as unknown as {
   db: ReturnType<typeof createDrizzleClient> | undefined

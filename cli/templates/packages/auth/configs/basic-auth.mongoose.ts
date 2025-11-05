@@ -1,13 +1,11 @@
 import { db } from '@{{ name }}/db'
-
-import type { AuthOptions } from './core/types'
-import { encodeHex, hashSecret } from './core/crypto'
-import Discord from './providers/discord'
-
 import { env } from '@{{ name }}/validators/env'
 
-const adapter = getAdapter()
+import type { AuthOptions } from '@/types'
+import { encodeHex, hashSecret } from '@/core/crypto'
+import Discord from '@/providers/discord'
 
+const adapter = getAdapter()
 export const authOptions = {
   adapter,
   session: {
@@ -34,6 +32,10 @@ export async function invalidateSessionToken(token: string) {
   await adapter.deleteSession(hashToken)
 }
 
+export async function invalidateSessionTokens(userId: string) {
+  await adapter.deleteSessionsByUserId(userId)
+}
+
 function getAdapter(): AuthOptions['adapter'] {
   return {
     getUserByEmail: async (email) => {
@@ -41,6 +43,7 @@ function getAdapter(): AuthOptions['adapter'] {
       if (!user) return null
       return { ...user.toObject(), id: user._id }
     },
+
     createUser: async (data) => {
       const user = await users.create(data)
       return { ...user.toObject(), id: user._id }
@@ -52,8 +55,10 @@ function getAdapter(): AuthOptions['adapter'] {
       return {
         ...account.toObject(),
         password: account.password ?? null,
+        id: account._id,
       }
     },
+
     createAccount: async (data) => {
       await accounts.create(data)
     },
@@ -63,29 +68,27 @@ function getAdapter(): AuthOptions['adapter'] {
       if (!session) return null
       const user = await users.findById(session.userId)
       if (!user) return null
+
       return {
         user: { ...user.toObject(), id: user._id },
         expires: session.expires,
       }
     },
+
     createSession: async (data) => {
       await sessions.create(data)
     },
+
     updateSession: async (token, data) => {
       await sessions.findOneAndUpdate({ token }, { $set: data }, { new: true })
     },
+
     deleteSession: async (token) => {
       await sessions.deleteOne({ token })
     },
-  }
-}
 
-declare module './core/types.d.ts' {
-  interface User extends Omit<IUser, '_id'> {
-    id: string
-  }
-
-  interface Session extends ISession {
-    token: string
+    deleteSessionsByUserId: async (userId) => {
+      await sessions.deleteMany({ userId })
+    }
   }
 }

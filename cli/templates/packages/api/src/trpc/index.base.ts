@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
-import { appRouter } from './routers/_app'
-import { createCallerFactory, createTRPCContext } from './trpc'
+import { appRouter } from '@/routers/_app'
+import { createCallerFactory, createTRPCContext } from '@/trpc'
 
 const handler = async (request: Request) => {
   let response: Response
@@ -23,5 +23,8 @@ const handler = async (request: Request) => {
   return response
 }
 
-export type { AppRouter, RouterInputs, RouterOutputs } from './routers/_app'
-export { appRouter, createCallerFactory, createTRPCContext, handler }
+const createCaller = createCallerFactory(appRouter)
+
+export type { AppRouter, RouterInputs, RouterOutputs } from '@/routers/_app'
+export type { TRPCMeta, TRPCContext } from '@/trpc'
+export { appRouter, createCaller, createTRPCContext, handler }
