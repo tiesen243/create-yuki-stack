@@ -4,6 +4,9 @@
   "tasks": {
     "build": {
       "outputs": ["build/**", ".react-router/**"]
+    },
+    "dev": {
+      "dependsOn": ["@{{ name }}/validators#build"]
     }
   }
 }

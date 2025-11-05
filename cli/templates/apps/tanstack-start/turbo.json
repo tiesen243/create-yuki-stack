@@ -4,6 +4,9 @@
   "tasks": {
     "build": {
       "outputs": [".output/**", ".tanstack/**"]
+    },
+    "dev": {
+      "dependsOn": ["@{{ name }}/validators#build"]
     }
   }
 }
