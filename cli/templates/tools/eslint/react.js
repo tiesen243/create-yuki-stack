@@ -1,5 +1,5 @@
+// @ts-nocheck
 import reactPlugin from '@eslint-react/eslint-plugin'
-// @ts-ignore
 import a11yPlugin from 'eslint-plugin-jsx-a11y'
 import hooksPlugin from 'eslint-plugin-react-hooks'
 import { defineConfig } from 'eslint/config'
