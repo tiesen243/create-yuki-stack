@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.1.94
+
+### Patch Changes
+
+- [`907c308`](https://github.com/tiesen243/create-yuki-stack/commit/907c308caea0a69d95ca8885cdf532e49e978c8c) Thanks [@tiesen243](https://github.com/tiesen243)! - bump deps
+
+- [`84c8dbc`](https://github.com/tiesen243/create-yuki-stack/commit/84c8dbce1d953a514191be6f7672dd74c65a5263) Thanks [@tiesen243](https://github.com/tiesen243)! - update templates and add tsdown for build packages
+
 ## 0.1.93
 
 ### Patch Changes
