@@ -17,19 +17,19 @@
   "dependencies": {
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "@react-router/fs-routes": "^7.9.4",
-    "@react-router/node": "^7.9.4",
-    "@react-router/serve": "^7.9.4",
-    "isbot": "^5.1.31",
+    "@react-router/fs-routes": "^7.9.5",
+    "@react-router/node": "^7.9.5",
+    "@react-router/serve": "^7.9.5",
+    "isbot": "^5.1.32",
     "react": "catalog:react",
     "react-dom": "catalog:react",
-    "react-router": "^7.9.4"
+    "react-router": "^7.9.5"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "@react-router/dev": "^7.9.4",
+    "@react-router/dev": "^7.9.5",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",

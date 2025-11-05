@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0",
-    "@trpc/server": "^11.6.0",
+    "@trpc/server": "^11.7.1",
     "gradient-string": "^3.0.0",
     "picocolors": "^1.1.1",
     "trpc-cli": "^0.12.0",
@@ -50,7 +50,7 @@
     "@yuki/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "tsdown": "^0.15.9",
+    "tsdown": "^0.16.0",
     "typescript": "catalog:"
   },
   "publishConfig": {

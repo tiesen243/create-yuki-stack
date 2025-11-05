@@ -28,7 +28,7 @@
   "devDependencies": {
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
-    "turbo": "^2.5.8"
+    "turbo": "^2.6.0"
   },
   "peerDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "catalog:",

@@ -30,7 +30,7 @@
     "@yuki/prettier-config": "workspace:*",
     "@yuki/tsconfig": "workspace:*",
     "prettier": "^3.6.2",
-    "turbo": "^2.5.8"
+    "turbo": "^2.6.0"
   },
   "peerDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "catalog:",
