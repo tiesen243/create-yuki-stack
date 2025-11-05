@@ -31,7 +31,7 @@
   "scripts": {
     "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsdown --watch src",
+    "dev": "tsdown --watch ./src",
     "format": "prettier --check . --ignore-path ../.gitignore --ignore-path ./.prettierignore",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
