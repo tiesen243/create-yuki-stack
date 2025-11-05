@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.1.95
+
+### Patch Changes
+
+- [`c8ba035`](https://github.com/tiesen243/create-yuki-stack/commit/c8ba0357010427cfd77d4261ba494575bf360bf2) Thanks [@tiesen243](https://github.com/tiesen243)! - fix type error of eslint react hook
+
+- [`0d78466`](https://github.com/tiesen243/create-yuki-stack/commit/0d7846684cb97ba1b67694d60a7f473c0529bc9b) Thanks [@tiesen243](https://github.com/tiesen243)! - feat added depends build validators to apps
+
 ## 0.1.94
 
 ### Patch Changes
