@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.1.97
+
+### Patch Changes
+
+- [`c990c5b`](https://github.com/tiesen243/create-yuki-stack/commit/c990c5bd7a9255644795744565c35af0ecef9965) Thanks [@tiesen243](https://github.com/tiesen243)! - bump deps
+
+- [`e7c4070`](https://github.com/tiesen243/create-yuki-stack/commit/e7c40702f4f7e359ddceebce8897c359f9d65af0) Thanks [@tiesen243](https://github.com/tiesen243)! - fix excecute script
+
 ## 0.1.96
 
 ### Patch Changes
