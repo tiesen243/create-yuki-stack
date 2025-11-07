@@ -29,7 +29,7 @@
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
-  "bin": "./dist/index.js",
+  "bin": "./dist/index.mjs",
   "files": [
     "dist",
     "templates"
