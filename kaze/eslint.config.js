@@ -1,6 +1,6 @@
 import { defineConfig } from 'eslint/config'
 
-import baseConfig from '@yuki/eslint-config/base'
+import baseConfig, { restrictEnvAccess } from '@yuki/eslint-config/base'
 import nextjsConfig from '@yuki/eslint-config/next'
 import reactConfig from '@yuki/eslint-config/react'
 
@@ -11,4 +11,5 @@ export default defineConfig(
   ...baseConfig,
   ...reactConfig,
   ...nextjsConfig,
+  ...restrictEnvAccess,
 )
