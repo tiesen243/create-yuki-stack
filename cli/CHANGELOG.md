@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.99
+
+### Patch Changes
+
+- [`ea6ca1b`](https://github.com/tiesen243/create-yuki-stack/commit/ea6ca1bcc21235b8b08cfc45ac44b7808db77e26) Thanks [@tiesen243](https://github.com/tiesen243)! - remove index of validators
+
 ## 0.1.98
 
 ### Patch Changes
