@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.96
+
+### Patch Changes
+
+- [`22c71bb`](https://github.com/tiesen243/create-yuki-stack/commit/22c71bb5965583eef1820373965d507f803b978b) Thanks [@tiesen243](https://github.com/tiesen243)! - fix server env show in debug tab of dev tool in vite apps
+
 ## 0.1.95
 
 ### Patch Changes
