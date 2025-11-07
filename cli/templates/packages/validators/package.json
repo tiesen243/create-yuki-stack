@@ -17,10 +17,10 @@
   "scripts": {
     "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "~dev": "tsdown --watch ./src",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "~dev": "tsdown --watch ./src"
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
