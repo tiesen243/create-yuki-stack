@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.1.98
+
+### Patch Changes
+
+- [`abbe693`](https://github.com/tiesen243/create-yuki-stack/commit/abbe69375b11df59bfb9fde7c70043df5349d0c9) Thanks [@tiesen243](https://github.com/tiesen243)! - fix bin path
+
 ## 0.1.97
 
 ### Patch Changes
