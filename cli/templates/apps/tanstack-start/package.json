@@ -9,7 +9,7 @@
     "dev": "{{ pkm }} run with-env vite dev",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "tsr generate && eslint",
-    "start": "PORT=3002 {{ pkm }} run with-env node ./.output/server/index.mjs",
+    "start": "{{ pkm }} run with-env node ./.output/server/index.mjs",
     "typecheck": "tsr generate && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },

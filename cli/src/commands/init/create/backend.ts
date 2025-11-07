@@ -115,7 +115,7 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
       await fs.writeFile(`${srcDir}/server.ts`, modifiedContent)
   }
 
-  await addEnv('client', 'NEXT_PUBLIC_API_URL', 'z.optional(z.string())')
+  await addEnv('client', 'API_URL', 'z.optional(z.string())')
 }
 
 async function configureBackendDependencies(

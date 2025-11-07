@@ -6,7 +6,7 @@
       "outputs": [".output/**", ".tanstack/**"]
     },
     "dev": {
-      "dependsOn": ["@{{ name }}/validators#build"]
+      "dependsOn": ["^build"]
     }
   }
 }

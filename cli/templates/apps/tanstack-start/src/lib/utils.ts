@@ -1,4 +1,4 @@
-import { env } from '@{{ name }}/validators/env'
+import { env } from '@{{ name }}/validators/env.vite'
 
 export function getBaseUrl(): string {
   if (typeof window !== 'undefined') return window.location.origin

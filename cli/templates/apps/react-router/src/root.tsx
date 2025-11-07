@@ -51,8 +51,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         ? 'The requested page could not be found.'
         : error.statusText || details
   } else if (
-    // eslint-disable-next-line no-restricted-properties
-    process.env.NODE_ENV === 'development' &&
+    import.meta.env.NODE === 'development' &&
     error &&
     error instanceof Error
   ) {

@@ -136,10 +136,16 @@ async function addApiClient(
     modifiedReactContent = `'use client'\n\n${modifiedReactContent}`
 
   if (opts.backend !== 'none')
-    modifiedReactContent = `${modifiedReactContent.replace(
-      `import { getBaseUrl } from '@/lib/utils'`,
-      `import { env } from '@{{ name }}/validators/env'`,
-    )}\nfunction getBaseUrl() {\n  if (env.NEXT_PUBLIC_API_URL) return \`https://\${env.NEXT_PUBLIC_API_URL}\`\n  return 'http://localhost:8080'\n}`
+    if (app === 'nextjs')
+      modifiedReactContent = `${modifiedReactContent.replace(
+        `import { getBaseUrl } from '@/lib/utils'`,
+        `import { env } from '@{{ name }}/validators/env.next'`,
+      )}\nfunction getBaseUrl() {\n  if (env.NEXT_PUBLIC_API_URL) return \`https://\${env.NEXT_PUBLIC_API_URL}\`\n  return 'http://localhost:8080'\n}`
+    else
+      modifiedReactContent = `${modifiedReactContent.replace(
+        `import { getBaseUrl } from '@/lib/utils'`,
+        `import { env } from '@{{ name }}/validators/env.vite'`,
+      )}\nfunction getBaseUrl() {\n  if (env.VITE_API_URL) return \`https://\${env.VITE_API_URL}\`\n  return 'http://localhost:8080'\n}`
 
   await fs.writeFile(`${clientPath}/react.tsx`, modifiedReactContent)
 }

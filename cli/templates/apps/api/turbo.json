@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "dev": {
-      "dependsOn": ["@{{ name }}/validators#build"]
+      "dependsOn": ["^build"]
     }
   }
 }

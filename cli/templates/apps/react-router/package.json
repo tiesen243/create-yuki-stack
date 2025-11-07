@@ -9,7 +9,7 @@
     "dev": "{{ pkm }} run with-env react-router dev",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "{{ pkm }} run with-env react-router typegen && eslint",
-    "start": "PORT=3001 {{ pkm }} run with-env react-router-serve ./build/server/index.js",
+    "start": "{{ pkm }} run with-env react-router-serve ./build/server/index.js",
     "typecheck": "{{ pkm }} run with-env react-router typegen && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },

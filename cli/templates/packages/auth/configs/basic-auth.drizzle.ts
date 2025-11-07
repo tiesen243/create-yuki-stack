@@ -1,6 +1,6 @@
-import { and, db, eq } from '@aa/db'
-import { accounts, sessions, users } from '@aa/db/schema'
-import { env } from '@aa/validators/env'
+import { and, db, eq } from '@{{ name }}/db'
+import { accounts, sessions, users } from '@{{ name }}/db/schema'
+import { env } from '@{{ name }}/validators/env'
 
 import type { AuthOptions } from '@/types'
 import { encodeHex, hashSecret } from '@/core/crypto'
