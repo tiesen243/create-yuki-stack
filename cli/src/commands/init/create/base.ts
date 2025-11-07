@@ -4,9 +4,9 @@ import type { ProjectOptions } from '@/commands/init/types'
 
 const versionMap = new Map<string, string>([
   ['node', '22.0.0'],
-  ['npm', '11.4.0'],
+  ['npm', '11.6.0'],
   ['yarn', '1.22.22'],
-  ['pnpm', '10.18.0'],
+  ['pnpm', '10.20.0'],
   ['bun', '1.3.0'],
 ])
 
