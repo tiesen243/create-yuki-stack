@@ -1,58 +1,61 @@
-import type { Model } from 'mongoose'
-import mongoose from 'mongoose'
+import mongoose, { Schema, Document } from 'mongoose'
 
-export interface User {
-  _id: string
+export interface IUser extends Document {
   name: string
   email: string
-  image: string
+  image: string | null
   createdAt: Date
   updatedAt: Date
 }
 
-const userSchema = new mongoose.Schema<User>(
-  {
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    image: { type: String, required: true },
-  },
-  { timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } },
-)
+const UserSchema = new Schema<IUser>({
+  name: { type: String, required: true, maxlength: 100 },
+  email: { type: String, required: true, maxlength: 255, unique: true },
+  image: { type: String, maxlength: 500, default: null },
+  createdAt: { type: Date, default: Date.now, required: true },
+  updatedAt: { type: Date, default: Date.now, required: true },
+})
 
-export const users: Model<User> =
-  mongoose.models.user ?? mongoose.model<User>('user', userSchema)
+export const user =
+  mongoose.models.User ?? mongoose.model<IUser>('User', UserSchema)
 
-export interface Account {
-  _id: string
+export interface IAccount extends Document {
+  userId: mongoose.Types.ObjectId
   provider: string
   accountId: string
-  password?: string
-  userId: string
+  password: string | null
 }
 
-const accountSchema = new mongoose.Schema<Account>({
-  provider: { type: String, required: true },
-  accountId: { type: String, required: true },
-  password: { type: String, required: false },
-  userId: { type: String, required: true },
+const AccountSchema = new Schema<IAccount>({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  provider: { type: String, required: true, maxlength: 50 },
+  accountId: { type: String, required: true, maxlength: 100 },
+  password: { type: String, default: null },
 })
 
-accountSchema.index({ provider: 1, accountId: 1 }, { unique: true })
+AccountSchema.index({ provider: 1, accountId: 1 }, { unique: true })
 
-export const accounts: Model<Account> =
-  mongoose.models.account ?? mongoose.model<Account>('account', accountSchema)
+export const account =
+  mongoose.models.Account ?? mongoose.model<IAccount>('Account', AccountSchema)
 
-export interface Session {
+// Remove this model if you use JWT strategy
+export interface ISession extends Document {
+  id: string
+  userId: mongoose.Types.ObjectId
   token: string
-  expires: Date
-  userId: string
+  expiresAt: Date
+  ipAddress: string | null
+  userAgent: string | null
 }
 
-const sessionSchema = new mongoose.Schema<Session>({
-  token: { type: String, required: true, unique: true },
-  expires: { type: Date, required: true },
-  userId: { type: String, required: true },
+const SessionSchema = new Schema<ISession>({
+  id: { type: String, required: true, unique: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  token: { type: String, required: true, maxlength: 64, unique: true },
+  expiresAt: { type: Date, required: true },
+  ipAddress: { type: String, maxlength: 45, default: null },
+  userAgent: { type: String, default: null },
 })
 
-export const sessions: Model<Session> =
-  mongoose.models.session ?? mongoose.model<Session>('session', sessionSchema)
+export const session =
+  mongoose.models.Session ?? mongoose.model<ISession>('Session', SessionSchema)

@@ -31,10 +31,5 @@
     "prettier": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "@types/node": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:"
   }
 }

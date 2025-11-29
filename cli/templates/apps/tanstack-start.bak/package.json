@@ -1,0 +1,48 @@
+{
+  "name": "@{{ name }}/tanstack-start",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "{{ pkm }} run with-env vite build",
+    "clean": "git clean -xdf .cache .nitro .output .tanstack .turbo node_modules",
+    "dev": "{{ pkm }} run with-env vite dev",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "tsr generate && eslint",
+    "start": "{{ pkm }} run with-env node ./.output/server/index.mjs",
+    "typecheck": "tsr generate && tsc --noEmit",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "prettier": "@{{ name }}/prettier-config",
+  "dependencies": {
+    "@{{ name }}/ui": "workspace:*",
+    "@{{ name }}/validators": "workspace:*",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-router": "^1.139.10",
+    "@tanstack/react-start": "^1.139.10",
+    "react": "catalog:react",
+    "react-dom": "catalog:react"
+  },
+  "devDependencies": {
+    "@{{ name }}/eslint-config": "workspace:*",
+    "@{{ name }}/prettier-config": "workspace:*",
+    "@{{ name }}/tsconfig": "workspace:*",
+    "@tailwindcss/vite": "catalog:tailwind",
+    "@tanstack/router-cli": "^1.139.10",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "dotenv-cli": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "tailwindcss": "catalog:tailwind",
+    "typescript": "catalog:",
+    "vite": "^7.2.4",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "peerDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:"
+  }
+}

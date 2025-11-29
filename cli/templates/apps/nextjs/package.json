@@ -15,10 +15,11 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
+    "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
     "@tanstack/react-query": "catalog:",
-    "next": "^16.0.1",
+    "next": "^16.0.5",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
@@ -35,9 +36,5 @@
     "prettier": "catalog:",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:"
   }
 }

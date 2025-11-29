@@ -4,14 +4,8 @@ import { ORPCError, os } from '@orpc/server'
 import { auth, validateSessionToken } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
 
-const isomorphicGetSession = async (headers: Headers) => {
-  const authToken = headers.get('Authorization') ?? null
-  if (authToken) return validateSessionToken(authToken)
-  return auth({ headers } as Request)
-}
-
 const createORPCContext = async (opts: { headers: Headers }) => {
-  const session = await isomorphicGetSession(opts.headers)
+  const session = await auth(opts)
 
   console.log(
     '>>> oRPC Request from',

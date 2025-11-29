@@ -3,8 +3,7 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".cache/tsbuildinfo.json", "dist/**"]
+      "outputs": ["dist/**"]
     },
     "clean": {
       "dependsOn": ["^clean"],
@@ -49,6 +48,7 @@
 
     "DATABASE_URL",
 
+    "AUTH_SECRET",
     "AUTH_DISCORD_ID",
     "AUTH_DISCORD_SECRET",
 
@@ -61,14 +61,16 @@
     "SKIP_ENV_VALIDATION",
 
     "VERCEL_ENV",
-    "NEXT_PUBLIC_VERCEL_ENV",
-    "VITE_VERCEL_ENV",
     "VERCEL_URL",
-    "NEXT_PUBLIC_VERCEL_URL",
-    "VITE_VERCEL_URL",
     "VERCEL_PROJECT_PRODUCTION_URL",
-    "NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL",
+
+    "VITE_VERCEL_ENV",
+    "VITE_VERCEL_URL",
     "VITE_VERCEL_PROJECT_PRODUCTION_URL",
+
+    "NEXT_PUBLIC_VERCEL_ENV",
+    "NEXT_PUBLIC_VERCEL_URL",
+    "NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL",
 
     "npm_lifecycle_event"
   ]

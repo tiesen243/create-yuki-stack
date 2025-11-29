@@ -8,7 +8,6 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "bump-deps": "{{ pkme }} npm-check-updates --deep -u && {{ pkm }} install",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
     "db:generate": "turbo run db:generate -F @{{ name }}/db",
@@ -24,14 +23,14 @@
     "lint:ws": "{{ pkme }} sherif@latest",
     "typecheck": "turbo run typecheck"
   },
-  "prettier": "@{{ name }}/prettier-config",
-  "devDependencies": {
-    "@{{ name }}/prettier-config": "workspace:*",
-    "@{{ name }}/tsconfig": "workspace:*",
-    "turbo": "^2.6.0"
+  "prettier": {
+    "printWidth": 80,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all"
   },
-  "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:"
+  "devDependencies": {
+    "turbo": "^2.6.1"
   }
 }

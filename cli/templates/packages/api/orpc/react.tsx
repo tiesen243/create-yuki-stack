@@ -1,22 +1,13 @@
-import type { RouterUtils } from '@orpc/react-query'
-import type { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
+import type { RouterUtils } from '@orpc/tanstack-query'
 import { createORPCClient } from '@orpc/client'
 import { RPCLink } from '@orpc/client/fetch'
 import { BatchLinkPlugin, DedupeRequestsPlugin } from '@orpc/client/plugins'
-import { createORPCReactQueryUtils } from '@orpc/react-query'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { createTanstackQueryUtils } from '@orpc/tanstack-query'
 
 import type { AppRouter } from '@{{ name }}/api'
 
 import { getBaseUrl } from '@/lib/utils'
-import { createQueryClient } from '@/orpc/query-client'
-
-let clientQueryClientSingleton: QueryClient | undefined = undefined
-const getQueryClient = () => {
-  if (typeof window === 'undefined') return createQueryClient()
-  else return (clientQueryClientSingleton ??= createQueryClient())
-}
 
 const ORPCContext = React.createContext<RouterUtils<AppRouter> | undefined>(
   undefined,
@@ -31,8 +22,6 @@ const useORPC = () => {
 function ORPCReactProvider({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const queryClient = getQueryClient()
-
   // eslint-disable-next-line @eslint-react/naming-convention/use-state
   const [orpcClient] = React.useState(() => {
     const link = new RPCLink({
@@ -56,11 +45,7 @@ function ORPCReactProvider({
     [orpcClient],
   )
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ORPCContext value={value}>{children}</ORPCContext>
-    </QueryClientProvider>
-  )
+  return <ORPCContext value={value}>{children}</ORPCContext>
 }
 
 export { useORPC, ORPCReactProvider }

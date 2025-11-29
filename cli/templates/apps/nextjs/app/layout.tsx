@@ -2,8 +2,9 @@ import '@/app/globals.css'
 
 import { Geist, Geist_Mono } from 'next/font/google'
 
-import { cn, ThemeProvider } from '@{{ name }}/ui'
+import { cn } from '@{{ name }}/ui'
 
+import { Providers } from '@/components/providers'
 import { createMetadata } from '@/lib/metadata'
 
 const geistSans = Geist({
@@ -28,9 +29,7 @@ export default function RootLayout({
           geistMono.variable,
         )}
       >
-        <ThemeProvider attribute='class' disableTransitionOnChange enableSystem>
-          {children}
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

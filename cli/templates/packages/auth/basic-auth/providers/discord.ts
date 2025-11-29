@@ -1,31 +1,24 @@
-import type { OAuth2Token, OauthAccount } from '@/types'
-import BaseProvider, { OAuthClient } from '@/providers/base'
+import type { OAuth2Token, OAuthAccount } from '@/types'
+import { BaseProvider } from '@/providers/base'
 
-export default class Discord extends BaseProvider {
-  private client: OAuthClient
+export class Discord extends BaseProvider {
+  constructor(
+    clientId: string,
+    clientSecret: string,
+    redirectUri: string = '',
+  ) {
+    super('discord', clientId, clientSecret, redirectUri)
+  }
 
   private authorizationEndpoint = 'https://discord.com/oauth2/authorize'
   private tokenEndpoint = 'https://discord.com/api/oauth2/token'
   private apiEndpoint = 'https://discord.com/api/users/@me'
 
-  constructor(opts: {
-    clientId: string
-    clientSecret: string
-    redirectUrl?: string
-  }) {
-    super()
-    this.client = new OAuthClient(
-      opts.clientId,
-      opts.clientSecret,
-      opts.redirectUrl ?? this.createCallbackUrl('discord'),
-    )
-  }
-
   public override async createAuthorizationUrl(
     state: string,
     codeVerifier: string,
   ): Promise<URL> {
-    const url = await this.client.createAuthorizationUrlWithPKCE(
+    const url = await this.createAuthorizationUrlWithPKCE(
       this.authorizationEndpoint,
       state,
       ['identify', 'email'],
@@ -37,9 +30,9 @@ export default class Discord extends BaseProvider {
 
   public override async fetchUserData(
     code: string,
-    codeVerifier: string | null,
-  ): Promise<OauthAccount> {
-    const tokenResponse = await this.client.validateAuthorizationCode(
+    codeVerifier: string,
+  ): Promise<OAuthAccount> {
+    const tokenResponse = await this.validateAuthorizationCode(
       this.tokenEndpoint,
       code,
       codeVerifier,
@@ -61,9 +54,9 @@ export default class Discord extends BaseProvider {
 
     const userData = (await userResponse.json()) as DiscordUserResponse
     return {
-      accountId: userData.id,
-      email: userData.email,
+      id: userData.id,
       name: userData.username,
+      email: userData.email,
       image: userData.avatar
         ? `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`
         : '',
@@ -73,7 +66,7 @@ export default class Discord extends BaseProvider {
 
 interface DiscordUserResponse {
   id: string
-  email: string
   username: string
-  avatar: string
+  email: string
+  avatar: string | null
 }

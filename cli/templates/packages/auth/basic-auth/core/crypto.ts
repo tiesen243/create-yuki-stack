@@ -1,4 +1,4 @@
-function generateSecureString(): string {
+export function generateSecureString(): string {
   const alphabet = 'abcdefghijklmnpqrstuvwxyz23456789'
 
   const bytes = new Uint8Array(24)
@@ -10,7 +10,7 @@ function generateSecureString(): string {
   return id
 }
 
-function generateStateOrCode(): string {
+export function generateStateOrCode(): string {
   const randomValues = new Uint8Array(32)
   crypto.getRandomValues(randomValues)
   return btoa(String.fromCharCode(...randomValues))
@@ -19,7 +19,9 @@ function generateStateOrCode(): string {
     .replace(/=/g, '')
 }
 
-async function generateCodeChallenge(codeVerifier: string): Promise<string> {
+export async function generateCodeChallenge(
+  codeVerifier: string,
+): Promise<string> {
   const encoder = new TextEncoder()
   const data = encoder.encode(codeVerifier)
   const digest = await crypto.subtle.digest('SHA-256', data)
@@ -27,19 +29,19 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
   return base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
 }
 
-async function hashSecret(secret: string): Promise<Uint8Array> {
+export async function hashSecret(secret: string): Promise<Uint8Array> {
   const secretBytes = new TextEncoder().encode(secret)
   const secretHashBuffer = await crypto.subtle.digest('SHA-256', secretBytes)
   return new Uint8Array(secretHashBuffer)
 }
 
-function encodeHex(bytes: Uint8Array): string {
+export function encodeHex(bytes: Uint8Array): string {
   return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join(
     '',
   )
 }
 
-function decodeHex(hex: string): Uint8Array {
+export function decodeHex(hex: string): Uint8Array {
   if (hex.length % 2 !== 0) throw new Error('Invalid hex string')
 
   const bytes = new Uint8Array(hex.length / 2)
@@ -49,21 +51,28 @@ function decodeHex(hex: string): Uint8Array {
   return bytes
 }
 
-function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
+export function encodeBase64Url(bytes: Uint8Array): string {
+  const binary = Array.from(bytes, (byte) => String.fromCharCode(byte)).join('')
+  return btoa(binary)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/g, '')
+}
+
+export function decodeBase64Url(base64url: string): Uint8Array {
+  const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
+  const paddedBase64 = base64 + '='.repeat((4 - (base64.length % 4)) % 4)
+  const binary = atob(paddedBase64)
+
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+  return bytes
+}
+
+export function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
   if (a.byteLength !== b.byteLength) return false
 
   let c = 0
-  // @ts-expect-error - TypeScript doesn't recognize that Uint8Array is iterable
-  for (let i = 0; i < a.byteLength; i++) c |= a[i] ^ b[i]
+  for (let i = 0; i < a.byteLength; i++) c |= (a[i] ?? 0) ^ (b[i] ?? 0)
   return c === 0
-}
-
-export {
-  constantTimeEqual,
-  decodeHex,
-  encodeHex,
-  generateStateOrCode,
-  generateCodeChallenge,
-  generateSecureString,
-  hashSecret,
 }

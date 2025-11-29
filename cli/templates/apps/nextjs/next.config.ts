@@ -11,6 +11,7 @@ const nextConfig = {
     '@{{ name }}/api',
     '@{{ name }}/auth',
     '@{{ name }}/db',
+    '@{{ name }}/lib',
     '@{{ name }}/ui',
     '@{{ name }}/validators',
   ],

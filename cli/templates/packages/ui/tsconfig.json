@@ -1,7 +1,6 @@
 {
   "extends": "@{{ name }}/tsconfig/react.json",
   "compilerOptions": {
-    "rootDir": "src",
     "paths": {
       "@/*": ["./src/*"],
       "@/utils": ["./src/index.ts"]

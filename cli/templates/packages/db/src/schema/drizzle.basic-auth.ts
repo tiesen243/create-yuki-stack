@@ -1,52 +1,60 @@
-import { relations } from 'drizzle-orm'
-import { pgTable, primaryKey } from 'drizzle-orm/pg-core'
+import { index, pgTable, uniqueIndex } from 'drizzle-orm/pg-core'
 
-export const users = pgTable('user', (t) => ({
-  id: t.uuid().primaryKey().defaultRandom().notNull(),
-  name: t.varchar({ length: 255 }).notNull(),
-  email: t.varchar({ length: 255 }).unique().notNull(),
-  image: t.varchar({ length: 255 }).notNull(),
-  createdAt: t.timestamp().defaultNow().notNull(),
-  updatedAt: t
-    .timestamp({ mode: 'date', withTimezone: true })
-    .defaultNow()
-    .$onUpdateFn(() => new Date())
-    .notNull(),
-}))
+import { createId } from '@{{ name }}/lib/create-id'
 
-export const usersRelations = relations(users, ({ many }) => ({
-  accounts: many(accounts),
-  sessions: many(sessions),
-}))
-
-export const accounts = pgTable(
-  'account',
+export const users = pgTable(
+  'users',
   (t) => ({
-    id: t.uuid().primaryKey().defaultRandom().notNull(),
-    provider: t.varchar({ length: 255 }).notNull(),
-    accountId: t.varchar({ length: 255 }).notNull(),
-    userId: t
-      .uuid()
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
-    password: t.varchar({ length: 255 }),
+    id: t.varchar({ length: 24 }).$default(createId).primaryKey(),
+    name: t.varchar({ length: 100 }).notNull(),
+    email: t.varchar({ length: 255 }).notNull(),
+    image: t.varchar({ length: 500 }),
+    createdAt: t.timestamp({ mode: 'date' }).defaultNow().notNull(),
+    updatedAt: t.timestamp({ mode: 'date' }).defaultNow().notNull(),
   }),
-  (account) => [primaryKey({ columns: [account.provider, account.accountId] })],
+  (t) => [
+    index('users_name_idx').on(t.name),
+    uniqueIndex('users_email_uq_idx').on(t.email),
+  ],
 )
 
-export const accountsRelations = relations(accounts, ({ one }) => ({
-  user: one(users, { fields: [accounts.userId], references: [users.id] }),
-}))
+export const accounts = pgTable(
+  'accounts',
+  (t) => ({
+    id: t.varchar({ length: 24 }).$default(createId).primaryKey(),
+    userId: t
+      .varchar({ length: 24 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    provider: t.varchar({ length: 50 }).notNull(),
+    accountId: t.varchar({ length: 100 }).notNull(),
+    password: t.text(),
+  }),
+  (t) => [
+    index('accounts_user_id_idx').on(t.userId),
+    uniqueIndex('accounts_provider_account_id_uq_idx').on(
+      t.provider,
+      t.accountId,
+    ),
+  ],
+)
 
-export const sessions = pgTable('session', (t) => ({
-  token: t.varchar({ length: 255 }).primaryKey().notNull(),
-  expires: t.timestamp({ mode: 'date', withTimezone: true }).notNull(),
-  userId: t
-    .uuid()
-    .notNull()
-    .references(() => users.id, { onDelete: 'cascade' }),
-}))
-
-export const sessionRelations = relations(sessions, ({ one }) => ({
-  user: one(users, { fields: [sessions.userId], references: [users.id] }),
-}))
+// Remove this table if you use JWT strategy
+export const sessions = pgTable(
+  'sessions',
+  (t) => ({
+    id: t.varchar({ length: 24 }).primaryKey(),
+    userId: t
+      .varchar({ length: 24 })
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    token: t.varchar({ length: 64 }).notNull(),
+    expiresAt: t.timestamp({ mode: 'date' }).notNull(),
+    ipAddress: t.varchar({ length: 45 }),
+    userAgent: t.text(),
+  }),
+  (t) => [
+    index('sessions_user_id_idx').on(t.userId),
+    uniqueIndex('sessions_id_token_uq_idx').on(t.id, t.token),
+  ],
+)

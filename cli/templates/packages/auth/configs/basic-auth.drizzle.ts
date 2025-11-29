@@ -1,101 +1,104 @@
-import { and, db, eq } from '@{{ name }}/db'
-import { accounts, sessions, users } from '@{{ name }}/db/schema'
+import { accounts, sessions, users } from '@/server/db/schema'
+import { and, db, eq, or } from '@{{ name }}/db/schema'
 import { env } from '@{{ name }}/validators/env'
 
-import type { AuthOptions } from '@/types'
-import { encodeHex, hashSecret } from '@/core/crypto'
-import Discord from '@/providers/discord'
+import type { AuthConfig } from '@/types'
+import { Discord } from '@/providers/discord'
 
-const adapter = getAdapter()
 export const authOptions = {
-  adapter,
-  session: {
-    expiresIn: 60 * 60 * 24 * 30, // 30 days
-    expiresThreshold: 60 * 60 * 24 * 7, // 7 days
+  secret: env.AUTH_SECRET,
+
+  providers: [
+    new Discord(
+      env.AUTH_DISCORD_ID,
+      env.AUTH_DISCORD_SECRET,
+    ),
+  ],
+
+  adapter: {
+    user: {
+      async find(identifier) {
+        const [record] = await db
+          .select()
+          .from(users)
+          .where(or(eq(users.id, identifier), eq(users.email, identifier)))
+          .limit(1)
+
+        return record ?? null
+      },
+      async create(data) {
+        const [result] = await db
+          .insert(users)
+          .values(data)
+          .returning({ id: users.id })
+
+        return result
+      },
+    },
+
+    account: {
+      async find(provider, accountId) {
+        const [record] = await db
+          .select()
+          .from(accounts)
+          .where(
+            and(
+              eq(accounts.provider, provider),
+              eq(accounts.accountId, accountId),
+            ),
+          )
+          .limit(1)
+
+        return record ?? null
+      },
+      async create(data) {
+        const [result] = await db
+          .insert(accounts)
+          .values(data)
+          .returning({ id: accounts.id })
+
+        return result
+      },
+    },
+
+    /**
+     * If you use JWT authentication, session management may not be necessary.
+     * To disable sessions when using JWT, you can throw an error in the session methods:
+     * ```ts
+     * throw new Error("Sessions are not supported with JWT auth.");
+     * ```
+     */
+    session: {
+      async find(id) {
+        const [record] = await db
+          .select({
+            user: {
+              id: users.id,
+              name: users.name,
+              email: users.email,
+              image: users.image,
+            },
+            token: sessions.token,
+            expiresAt: sessions.expiresAt,
+            ipAddress: sessions.ipAddress,
+            userAgent: sessions.userAgent,
+          })
+          .from(sessions)
+          .where(eq(sessions.id, id))
+          .innerJoin(users, eq(sessions.userId, users.id))
+          .limit(1)
+
+        return record ?? null
+      },
+      async create(data) {
+        await db.insert(sessions).values(data)
+      },
+      async update(id, data) {
+        await db.update(sessions).set(data).where(eq(sessions.id, id))
+      },
+      async delete(id) {
+        await db.delete(sessions).where(eq(sessions.id, id))
+      },
+    },
   },
-  providers: {
-    discord: new Discord({
-      clientId: env.AUTH_DISCORD_ID,
-      clientSecret: env.AUTH_DISCORD_SECRET,
-    }),
-  },
-} satisfies AuthOptions
-
-export type Providers = keyof typeof authOptions.providers
-
-export async function validateSessionToken(token: string) {
-  const hashToken = encodeHex(await hashSecret(token))
-  return await adapter.getSessionAndUser(hashToken)
-}
-
-export async function invalidateSessionToken(token: string) {
-  const hashToken = encodeHex(await hashSecret(token))
-  await adapter.deleteSession(hashToken)
-}
-
-export async function invalidateSessionTokens(userId: string) {
-  await adapter.deleteSessionsByUserId(userId)
-}
-
-function getAdapter(): AuthOptions['adapter'] {
-  return {
-    getUserByEmail: async (email) => {
-      const [user] = await db.select().from(users).where(eq(users.email, email))
-      return user ?? null
-    },
-
-    createUser: async (data) => {
-      const [user] = await db
-        .insert(users)
-        .values(data)
-        .returning({ id: users.id })
-      return user?.id ?? null
-    },
-
-    getAccount: async (provider, accountId) => {
-      const [account] = await db
-        .select()
-        .from(accounts)
-        .where(
-          and(
-            eq(accounts.provider, provider),
-            eq(accounts.accountId, accountId),
-          ),
-        )
-      return account ?? null
-    },
-
-    createAccount: async (data) => {
-      await db.insert(accounts).values(data)
-    },
-
-    getSessionAndUser: async (token) => {
-      const [session] = await db
-        .select({
-          user: users,
-          expires: sessions.expires,
-        })
-        .from(sessions)
-        .where(eq(sessions.token, token))
-        .innerJoin(users, eq(sessions.userId, users.id))
-
-      return session ?? null
-    },
-
-    createSession: async (data) => {
-      await db.insert(sessions).values(data)
-    },
-
-    updateSession: async (token, data) => {
-      await db.update(sessions).set(data).where(eq(sessions.token, token))
-    },
-
-    deleteSession: async (token) => {
-      await db.delete(sessions).where(eq(sessions.token, token))
-    },
-
-    deleteSessionsByUserId: async (userId) => {
-      await db.delete(sessions).where(eq(sessions.userId, userId))
-    },
-  }
-}
+} as const satisfies AuthConfig

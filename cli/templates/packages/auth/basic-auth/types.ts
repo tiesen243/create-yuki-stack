@@ -1,26 +1,12 @@
-import type BaseProvider from '@/providers/base'
+import { BaseProvider } from '@/providers/base'
 
-export interface CookieOptions {
-  domain?: string
-  expires?: Date | string | number
-  httpOnly?: boolean
-  maxAge?: number
-  path?: string
-  sameSite?: 'Strict' | 'Lax' | 'None'
-  secure?: boolean
-  [key: string]: unknown
-}
-
-export interface OAuth2Token {
-  access_token: string
-  token_type: string
-  expires_in: number
-}
-
-export interface User  {
+export interface User {
   id: string
   name: string
   email: string
+  image: string | null
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Account {
@@ -31,56 +17,82 @@ export interface Account {
   password: string | null
 }
 
-export interface NewAccount {
-  id?: string
-  userId: string
-  provider: string
-  accountId: string
-}
-
 export interface Session {
+  id: string
+  userId: string
   token: string
-  user: User | null
-  expires: Date 
+  expiresAt: Date
+  ipAddress: string | null
+  userAgent: string | null
 }
 
-export interface NewSession extends Session {
-  token: string
+export type SessionWithUser = Pick<
+  Session,
+  'token' | 'expiresAt' | 'ipAddress' | 'userAgent'
+> & {
+  user: Pick<User, 'id' | 'name' | 'email' | 'image'> | null
 }
 
-export interface OauthAccount {
-  accountId: string
-  email: string
+export interface OAuthAccount {
+  id: string
   name: string
-  image: string
+  email: string
+  image: string | null
 }
 
-export interface DatabaseAdapter {
-  getUserByEmail(email: string): Promise<Pick<User, 'id'> | null>
-  createUser(data: Omit<OauthAccount, 'accountId'>): Promise<User['id'] | null>
-
-  getAccount(provider: string, accountId: string): Promise<Account | null>
-  createAccount(data: NewAccount): Promise<void>
-
-  getSessionAndUser(token: string): Promise<Omit<Session, 'token'> | null>
-  createSession(data: NewSession): Promise<void>
-  updateSession(token: string, data: Partial<NewSession>): Promise<void>
-  deleteSession(token: string): Promise<void>
-  deleteSessionsByUserId(userId: string): Promise<void>
+export interface OAuth2Token {
+  access_token: string
+  token_type: string
+  expires_in: number
 }
 
-export interface AuthOptions {
-  adapter: DatabaseAdapter
-  providers: Record<string, BaseProvider>
-  session: {
-    expiresIn: number
-    expiresThreshold: number
+export interface AuthConfig {
+  providers?: BaseProvider[]
+  secret?: string
+
+  session?: {
+    expiresIn?: number
+    expiresThreshold?: number
   }
-  cookieKeys?: {
+
+  keys?: {
     token?: string
     state?: string
-    code?: string
-    redirect?: string
+    codeVerifier?: string
+    redirectUri?: string
   }
-  cookieOptions?: CookieOptions
+
+  cookie?: {
+    domain?: string
+    path?: string
+    httpOnly?: boolean
+    secure?: boolean
+    sameSite?: 'lax' | 'strict' | 'none'
+    maxAge?: number
+  }
+
+  adapter: {
+    user: {
+      find(identifier: string): Promise<User | null>
+      create(
+        data: Pick<User, 'name' | 'email' | 'image'>,
+      ): Promise<Pick<User, 'id'>>
+    }
+    account: {
+      find(
+        provider: string,
+        accountId: string,
+      ): Promise<Pick<Account, 'id' | 'userId' | 'password'> | null>
+      create(data: Omit<Account, 'id'>): Promise<Pick<Account, 'id'>>
+    }
+    session: {
+      find(id: string): Promise<SessionWithUser | null>
+      create(data: Session): Promise<void>
+      update(
+        token: string,
+        data: Partial<Omit<Session, 'id' | 'token' | 'userId'>>,
+      ): Promise<void>
+      delete(id: string): Promise<void>
+    }
+  }
 }

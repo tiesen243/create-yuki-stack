@@ -1,94 +1,83 @@
 import { db } from '@{{ name }}/db'
 import { env } from '@{{ name }}/validators/env'
 
-import type { AuthOptions } from '@/types'
-import { encodeHex, hashSecret } from '@/core/crypto'
-import Discord from '@/providers/discord'
+import type { AuthConfig } from '@/types'
+import { Discord } from '@/providers/discord'
 
-const adapter = getAdapter()
 export const authOptions = {
-  adapter,
-  session: {
-    expiresIn: 60 * 60 * 24 * 30, // 30 days
-    expiresThreshold: 60 * 60 * 24 * 7, // 7 days
+  secret: env.AUTH_SECRET,
+
+  providers: [
+    new Discord(
+      env.AUTH_DISCORD_ID,
+      env.AUTH_DISCORD_SECRET,
+    ),
+  ],
+
+  adapter: {
+    user: {
+      async find(identifier) {
+        const query = identifier.includes('@')
+          ? { email: identifier }
+          : { _id: identifier }
+        const record = await db.user.findOne(query)
+
+        return record
+          ? { ...record.toObject(), id: record._id.toString() }
+          : null
+      },
+      async create(data) {
+        const result = await db.user.create(data)
+
+        return { id: result._id.toString() }
+      },
+    },
+
+    account: {
+      async find(provider, accountId) {
+        const record = await db.account.findOne({ provider, accountId })
+
+        return record
+          ? {
+              ...record.toObject(),
+              id: record._id.toString(),
+              userId: record.userId.toString(),
+            }
+          : null
+      },
+      async create(data) {
+        const result = await db.account.create(data)
+
+        return { id: result._id.toString() }
+      },
+    },
+
+    /**
+     * If you use JWT authentication, session management may not be necessary.
+     * To disable sessions when using JWT, you can throw an error in the session methods:
+     * ```ts
+     * throw new Error("Sessions are not supported with JWT auth.");
+     * ```
+     */
+    session: {
+      async find(id) {
+        const record = await db.session
+          .findOne({ id })
+          .populate('userId', '_id name email image')
+        if (!record) return null
+
+        const { userId, token, expiresAt, ipAddress, userAgent } = record
+        return { user: userId, token, expiresAt, ipAddress, userAgent }
+      },
+      async create(data) {
+        await db.session.create(data)
+      },
+      async update(id, data) {
+        await db.session.findOneAndUpdate({ id }, data)
+      },
+      async delete(id) {
+        await db.session.findOneAndDelete({ id })
+      },
+    },
   },
-  providers: {
-    discord: new Discord({
-      clientId: env.AUTH_DISCORD_ID,
-      clientSecret: env.AUTH_DISCORD_SECRET,
-    }),
-  },
-} satisfies AuthOptions
-
-export type Providers = keyof typeof authOptions.providers
-
-export async function validateSessionToken(token: string) {
-  const hashToken = encodeHex(await hashSecret(token))
-  return await adapter.getSessionAndUser(hashToken)
-}
-
-export async function invalidateSessionToken(token: string) {
-  const hashToken = encodeHex(await hashSecret(token))
-  await adapter.deleteSession(hashToken)
-}
-
-export async function invalidateSessionTokens(userId: string) {
-  await adapter.deleteSessionsByUserId(userId)
-}
-
-function getAdapter(): AuthOptions['adapter'] {
-  return {
-    getUserByEmail: async (email) => {
-      const user = await users.findOne({ email })
-      if (!user) return null
-      return { ...user.toObject(), id: user._id }
-    },
-
-    createUser: async (data) => {
-      const user = await users.create(data)
-      return { ...user.toObject(), id: user._id }
-    },
-
-    getAccount: async (provider, accountId) => {
-      const account = await accounts.findOne({ provider, accountId })
-      if (!account) return null
-      return {
-        ...account.toObject(),
-        password: account.password ?? null,
-        id: account._id,
-      }
-    },
-
-    createAccount: async (data) => {
-      await accounts.create(data)
-    },
-
-    getSessionAndUser: async (token) => {
-      const session = await sessions.findOne({ token })
-      if (!session) return null
-      const user = await users.findById(session.userId)
-      if (!user) return null
-
-      return {
-        user: { ...user.toObject(), id: user._id },
-        expires: session.expires,
-      }
-    },
-
-    createSession: async (data) => {
-      await sessions.create(data)
-    },
-
-    updateSession: async (token, data) => {
-      await sessions.findOneAndUpdate({ token }, { $set: data }, { new: true })
-    },
-
-    deleteSession: async (token) => {
-      await sessions.deleteOne({ token })
-    },
-
-    deleteSessionsByUserId: async (userId) => {
-      await sessions.deleteMany({ userId })
-    }
-  }
-}
+} as const satisfies AuthConfig

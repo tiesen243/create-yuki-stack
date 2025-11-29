@@ -1,4 +1,0 @@
-User-Agent: *
-Allow: /
-
-Sitemap: https://create-yuki-stack.vercel.app/sitemap.xml

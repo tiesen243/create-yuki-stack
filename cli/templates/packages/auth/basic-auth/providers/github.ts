@@ -1,31 +1,24 @@
-import type { OAuth2Token, OauthAccount } from '@/types'
-import BaseProvider, { OAuthClient } from '@/providers/base'
+import type { OAuth2Token, OAuthAccount } from '@/types'
+import { BaseProvider } from '@/providers/base'
 
-export default class Github extends BaseProvider {
-  private client: OAuthClient
+export class Github extends BaseProvider {
+  constructor(
+    clientId: string,
+    clientSecret: string,
+    redirectUri: string = '',
+  ) {
+    super('github', clientId, clientSecret, redirectUri)
+  }
 
   private authorizationEndpoint = 'https://github.com/login/oauth/authorize'
   private tokenEndpoint = 'https://github.com/login/oauth/access_token'
   private apiEndpoint = 'https://api.github.com/user'
 
-  constructor(opts: {
-    clientId: string
-    clientSecret: string
-    redirectUrl?: string
-  }) {
-    super()
-    this.client = new OAuthClient(
-      opts.clientId,
-      opts.clientSecret,
-      opts.redirectUrl ?? this.createCallbackUrl('github'),
-    )
-  }
-
   public override async createAuthorizationUrl(
     state: string,
     codeVerifier: string,
   ): Promise<URL> {
-    const url = await this.client.createAuthorizationUrlWithPKCE(
+    const url = await this.createAuthorizationUrlWithPKCE(
       this.authorizationEndpoint,
       state,
       ['read:user', 'user:email'],
@@ -35,11 +28,11 @@ export default class Github extends BaseProvider {
     return url
   }
 
-  override async fetchUserData(
+  public override async fetchUserData(
     code: string,
-    codeVerifier: string | null,
-  ): Promise<OauthAccount> {
-    const tokenResponse = await this.client.validateAuthorizationCode(
+    codeVerifier: string,
+  ): Promise<OAuthAccount> {
+    const tokenResponse = await this.validateAuthorizationCode(
       this.tokenEndpoint,
       code,
       codeVerifier,
@@ -53,16 +46,16 @@ export default class Github extends BaseProvider {
     const response = await fetch(this.apiEndpoint, {
       headers: { Authorization: `Bearer ${tokenData.access_token}` },
     })
+
     if (!response.ok) {
       const errorText = await response.text().catch(() => 'Unknown error')
       throw new Error(`GitHub API error (${response.status}): ${errorText}`)
     }
-
     const userData = (await response.json()) as GithubUserResponse
     return {
-      accountId: userData.id,
-      email: userData.email,
+      id: userData.id,
       name: userData.name,
+      email: userData.email,
       image: userData.avatar_url,
     }
   }
@@ -70,7 +63,7 @@ export default class Github extends BaseProvider {
 
 interface GithubUserResponse {
   id: string
-  email: string
   name: string
+  email: string
   avatar_url: string
 }

@@ -1,31 +1,24 @@
-import type { OAuth2Token, OauthAccount } from '@/types'
-import BaseProvider, { OAuthClient } from '@/providers/base'
+import type { OAuth2Token, OAuthAccount } from '@/types'
+import { BaseProvider } from '@/providers/base'
 
-export default class Google extends BaseProvider {
-  private client: OAuthClient
+export class Google extends BaseProvider {
+  constructor(
+    clientId: string,
+    clientSecret: string,
+    redirectUri: string = '',
+  ) {
+    super('google', clientId, clientSecret, redirectUri)
+  }
 
   private authorizationEndpoint = 'https://accounts.google.com/o/oauth2/v2/auth'
   private tokenEndpoint = 'https://oauth2.googleapis.com/token'
   private apiEndpoint = 'https://openidconnect.googleapis.com/v1/userinfo'
 
-  constructor(opts: {
-    clientId: string
-    clientSecret: string
-    redirectUrl?: string
-  }) {
-    super()
-    this.client = new OAuthClient(
-      opts.clientId,
-      opts.clientSecret,
-      opts.redirectUrl ?? this.createCallbackUrl('google'),
-    )
-  }
-
   public override async createAuthorizationUrl(
     state: string,
     codeVerifier: string,
   ): Promise<URL> {
-    const url = await this.client.createAuthorizationUrlWithPKCE(
+    const url = await this.createAuthorizationUrlWithPKCE(
       this.authorizationEndpoint,
       state,
       ['openid', 'email', 'profile'],
@@ -35,11 +28,11 @@ export default class Google extends BaseProvider {
     return url
   }
 
-  override async fetchUserData(
+  public override async fetchUserData(
     code: string,
-    codeVerifier: string | null,
-  ): Promise<OauthAccount> {
-    const tokenResponse = await this.client.validateAuthorizationCode(
+    codeVerifier: string,
+  ): Promise<OAuthAccount> {
+    const tokenResponse = await this.validateAuthorizationCode(
       this.tokenEndpoint,
       code,
       codeVerifier,
@@ -60,9 +53,9 @@ export default class Google extends BaseProvider {
 
     const userData = (await response.json()) as GoogleUserResponse
     return {
-      accountId: userData.sub,
-      email: userData.email,
+      id: userData.sub,
       name: userData.name,
+      email: userData.email,
       image: userData.picture,
     }
   }
@@ -70,7 +63,7 @@ export default class Google extends BaseProvider {
 
 interface GoogleUserResponse {
   sub: string
-  email: string
   name: string
+  email: string
   picture: string
 }

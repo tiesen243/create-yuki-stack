@@ -16,7 +16,6 @@ coverage
 .output/
 .tanstack/
 routeTree.gen.ts
-app.config.timestamp_*.js
 
 # java
 *.class

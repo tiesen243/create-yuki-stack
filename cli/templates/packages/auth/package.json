@@ -40,11 +40,7 @@
     "typescript": "catalog:"
   },
   "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
     "@tanstack/react-query": "catalog:",
-    "@types/node": "catalog:",
-    "@types/react": "catalog:react",
-    "prettier-plugin-tailwindcss": "catalog:",
     "react": "catalog:react"
   }
 }

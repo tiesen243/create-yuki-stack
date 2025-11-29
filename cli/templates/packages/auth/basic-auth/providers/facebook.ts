@@ -1,31 +1,24 @@
-import type { OAuth2Token, OauthAccount } from '@/types'
-import BaseProvider, { OAuthClient } from '@/providers/base'
+import type { OAuth2Token, OAuthAccount } from '@/types'
+import { BaseProvider } from '@/providers/base'
 
-export default class Facebook extends BaseProvider {
-  private client: OAuthClient
+export class Facebook extends BaseProvider {
+  constructor(
+    clientId: string,
+    clientSecret: string,
+    redirectUri: string = '',
+  ) {
+    super('facebook', clientId, clientSecret, redirectUri)
+  }
 
   private authorizationEndpoint = 'https://www.facebook.com/v23.0/dialog/oauth'
   private tokenEndpoint = 'https://graph.facebook.com/v23.0/oauth/access_token'
   private apiEndpoint = 'https://graph.facebook.com/me'
 
-  constructor(opts: {
-    clientId: string
-    clientSecret: string
-    redirectUrl?: string
-  }) {
-    super()
-    this.client = new OAuthClient(
-      opts.clientId,
-      opts.clientSecret,
-      opts.redirectUrl ?? this.createCallbackUrl('facebook'),
-    )
-  }
-
-  override async createAuthorizationUrl(
+  public override async createAuthorizationUrl(
     state: string,
-    _codeVerifier: string | null,
+    _codeVerifier: string,
   ): Promise<URL> {
-    const url = await this.client.createAuthorizationUrl(
+    const url = await this.createAuthorizationUrlWithoutPkce(
       this.authorizationEndpoint,
       state,
       ['email', 'public_profile'],
@@ -34,11 +27,11 @@ export default class Facebook extends BaseProvider {
     return url
   }
 
-  override async fetchUserData(
+  public override async fetchUserData(
     code: string,
-    _codeVerifier: string | null,
-  ): Promise<OauthAccount> {
-    const tokenResponse = await this.client.validateAuthorizationCode(
+    _codeVerifier: string,
+  ): Promise<OAuthAccount> {
+    const tokenResponse = await this.validateAuthorizationCode(
       this.tokenEndpoint,
       code,
     )
@@ -61,9 +54,9 @@ export default class Facebook extends BaseProvider {
 
     const userData = (await userResponse.json()) as FacebookUserResponse
     return {
-      accountId: userData.id,
-      email: userData.email,
+      id: userData.id,
       name: userData.name,
+      email: userData.email,
       image: userData.picture.data.url,
     }
   }
@@ -71,7 +64,7 @@ export default class Facebook extends BaseProvider {
 
 interface FacebookUserResponse {
   id: string
-  email: string
   name: string
+  email: string
   picture: { data: { url: string } }
 }

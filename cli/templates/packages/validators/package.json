@@ -5,8 +5,8 @@
   "type": "module",
   "exports": {
     "./*": {
-      "default": "./dist/*.mjs",
-      "types": "./dist/*.d.mts"
+      "types": "./dist/*.d.mts",
+      "default": "./dist/*.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -20,7 +20,8 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
-    "zod": "^4.1.12"
+    "@{{ name }}/lib": "workspace:*",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
@@ -30,10 +31,5 @@
     "prettier": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "@types/node": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:"
   }
 }
