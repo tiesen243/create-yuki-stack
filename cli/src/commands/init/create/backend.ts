@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises'
 
 import type { ProjectOptions } from '@/commands/init/types'
-import { addEnv } from '@/utils/add-env'
 import {
   getPackageVersion,
   getPackageVersions,
@@ -19,7 +18,6 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
       'apps/api',
       { recursive: true, force: true },
     )
-    await addEnv('client', 'NEXT_PUBLIC_API_URL', 'z.optional(z.string())')
     return
   }
 
@@ -114,8 +112,6 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
     if (modifiedContent !== serverContent)
       await fs.writeFile(`${srcDir}/server.ts`, modifiedContent)
   }
-
-  await addEnv('client', 'API_URL', 'z.optional(z.string())')
 }
 
 async function configureBackendDependencies(

@@ -1,4 +1,4 @@
-import { BaseProvider } from '@/providers/base'
+import type { BaseProvider } from '@/providers/base'
 
 export interface User {
   id: string
@@ -83,7 +83,7 @@ export interface AuthConfig {
         provider: string,
         accountId: string,
       ): Promise<Pick<Account, 'id' | 'userId' | 'password'> | null>
-      create(data: Omit<Account, 'id'>): Promise<Pick<Account, 'id'>>
+      create(data: Omit<Account, 'id'>): Promise<void>
     }
     session: {
       find(id: string): Promise<SessionWithUser | null>

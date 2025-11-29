@@ -1,7 +1,7 @@
 import type { ResponseHeadersPluginContext } from '@orpc/server/plugins'
 import { ORPCError, os } from '@orpc/server'
 
-import { auth, validateSessionToken } from '@{{ name }}/auth'
+import { auth } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
 
 const createORPCContext = async (opts: { headers: Headers }) => {
@@ -11,7 +11,7 @@ const createORPCContext = async (opts: { headers: Headers }) => {
     '>>> oRPC Request from',
     opts.headers.get('x-orpc-source') ?? 'unknown',
     'by',
-    session?.user?.name ?? 'anonymous',
+    session.user?.name ?? 'anonymous',
   )
 
   return {
@@ -34,7 +34,7 @@ const timingMiddleware = o.middleware(async ({ next, path }) => {
 
 const publicProcedure = o.use(timingMiddleware)
 const protectedProcedure = o.use(timingMiddleware).use(({ context, next }) => {
-  if (!context.session?.user) throw new ORPCError('UNAUTHORIZED')
+  if (!context.session.user) throw new ORPCError('UNAUTHORIZED')
   return next({
     context: {
       session: { ...context.session, user: context.session.user },

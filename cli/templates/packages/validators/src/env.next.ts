@@ -1,6 +1,6 @@
 import * as z from 'zod/mini'
 
-import { createEnv } from '@/lib/create-env'
+import { createEnv } from '@{{ name }}/lib/create-env'
 
 export const env = createEnv({
   server: {

@@ -3,6 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
+      "dependsOn": ["^build"],
       "outputs": [".output/**", ".tanstack/**"]
     },
     "dev": {

@@ -39,9 +39,7 @@ export const authOptions = {
         return record ?? null
       },
       async create(data) {
-        const result = await db.account.create({ data })
-
-        return result
+        await db.account.create({ data })
       },
     },
 

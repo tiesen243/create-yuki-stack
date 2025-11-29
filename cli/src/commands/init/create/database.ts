@@ -20,7 +20,12 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
       `${destPath}/eslint.config.js`,
     ),
     fs.copyFile(
-      new URL('tsdown.config.ts', templatePath),
+      new URL(
+        opts.database === 'prisma'
+          ? 'tsdown.config.prisma.ts'
+          : 'tsdown.config.ts',
+        templatePath,
+      ),
       `${destPath}/tsdown.config.ts`,
     ),
     fs.copyFile(
@@ -53,13 +58,18 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
     .then(JSON.parse)) as PackageJson
 
   const versions = await getPackageVersions([
-    'drizzle-orm',
-    'drizzle-kit',
     '@neondatabase/serverless',
+    'drizzle-kit',
+    'drizzle-orm',
     'postgres',
+
     '@prisma/client',
+    '@prisma/adapter-pg',
     '@prisma/adapter-neon',
+    '@types/pg',
     'prisma',
+    'pg',
+
     'mongoose',
   ])
 
@@ -80,9 +90,13 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
         '@prisma/client': versions['@prisma/client'],
         ...(opts.adapter === 'neon'
           ? { '@prisma/adapter-neon': versions['@prisma/adapter-neon'] }
-          : {}),
+          : {
+              '@prisma/adapter-pg': versions['@prisma/adapter-pg'],
+              pg: versions.pg,
+            }),
       },
       devDependencies: {
+        '@types/pg': versions['@types/pg'],
         prisma: versions.prisma,
       },
     },
@@ -90,7 +104,9 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
       dependencies: {
         mongoose: versions.mongoose,
       },
-      devDependencies: {},
+      devDependencies: {
+        '@types/node': 'catalog:',
+      },
     },
   }
 
@@ -107,16 +123,13 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
     })
   } else if (opts.database === 'prisma') {
     packageJson.exports = packageJson.exports ?? {}
-    Object.assign(packageJson.exports['./schema'] ?? {}, {
-      types: './dist/generated/prisma/client.d.ts',
-      default: './src/generated/prisma/client.ts',
-    })
+    delete packageJson.exports['./schema']
+
     Object.assign(packageJson.scripts, {
       'db:generate': '{{ pkm }} run with-env prisma generate',
       'db:migrate': '{{ pkm }} run with-env prisma migrate dev',
       'db:push': '{{ pkm }} run with-env prisma db push',
       'db:studio': '{{ pkm }} run with-env prisma studio',
-      postinstall: '{{ pkm }} run db:generate',
     })
   }
 
@@ -125,5 +138,5 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
     JSON.stringify(packageJson, null, 2),
   )
 
-  await addEnv('server', 'DATABASE_URL', 'z.string()')
+  await addEnv('DATABASE_URL', 'z.string()')
 }

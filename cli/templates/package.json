@@ -31,6 +31,8 @@
     "trailingComma": "all"
   },
   "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
+    "prettier-plugin-tailwindcss": "catalog:",
     "turbo": "^2.6.1"
   }
 }

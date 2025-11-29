@@ -5,7 +5,7 @@ export class Figma extends BaseProvider {
   constructor(
     clientId: string,
     clientSecret: string,
-    redirectUri: string = '',
+    redirectUri = '',
   ) {
     super('figma', clientId, clientSecret, redirectUri)
   }

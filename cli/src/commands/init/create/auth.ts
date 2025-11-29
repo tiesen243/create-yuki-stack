@@ -54,7 +54,7 @@ export async function addAuth(opts: ProjectOptions): Promise<void> {
     packageJson.dependencies['better-auth'] = versions['better-auth']
     if (opts.database === 'mongoose')
       packageJson.dependencies.mongodb = versions.mongodb
-  } else {
+  } else if (opts.auth === 'next-auth') {
     packageJson.dependencies['next-auth'] = versions['next-auth@beta']
     if (opts.database === 'drizzle')
       packageJson.dependencies['@auth/drizzle-adapter'] =
@@ -73,6 +73,7 @@ export async function addAuth(opts: ProjectOptions): Promise<void> {
     JSON.stringify(packageJson, null, 2),
   )
 
-  await addEnv('server', 'AUTH_DISCORD_ID', 'z.string()')
-  await addEnv('server', 'AUTH_DISCORD_SECRET', 'z.string()')
+  await addEnv('AUTH_SECRET', 'z.optional(z.string())')
+  await addEnv('AUTH_DISCORD_ID', 'z.string()')
+  await addEnv('AUTH_DISCORD_SECRET', 'z.string()')
 }

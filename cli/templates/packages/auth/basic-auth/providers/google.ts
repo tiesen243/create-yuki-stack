@@ -5,7 +5,7 @@ export class Google extends BaseProvider {
   constructor(
     clientId: string,
     clientSecret: string,
-    redirectUri: string = '',
+    redirectUri = '',
   ) {
     super('google', clientId, clientSecret, redirectUri)
   }

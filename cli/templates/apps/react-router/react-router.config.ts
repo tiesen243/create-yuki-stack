@@ -1,4 +1,5 @@
 import '@{{ name }}/validators/env'
+import '@{{ name }}/validators/env.vite'
 
 import type { Config } from '@react-router/dev/config'
 

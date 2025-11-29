@@ -15,6 +15,7 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
+    "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
     "@react-router/node": "^7.9.6",

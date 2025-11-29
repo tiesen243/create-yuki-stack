@@ -4,15 +4,15 @@ import gradient from 'gradient-string'
 import pc from 'picocolors'
 import * as z from 'zod'
 
+import { checkDir } from '@/commands/init/check-dir'
 import {
   APP_COLORS,
   APP_TITLE,
   DEFAULT_PROJECT_OPTIONS,
 } from '@/commands/init/constants'
+import { createProject } from '@/commands/init/create'
 import { projectName, projectOptions } from '@/commands/init/types'
 import { procedure } from '@/trpc'
-import { checkDir } from './check-dir'
-import { createProject } from './create'
 
 export const initCommand = procedure
   .meta({ aliases: { options: { yes: 'y' } }, default: true })
@@ -71,7 +71,7 @@ export const initCommand = procedure
                 },
                 {
                   value: 'tanstack-start',
-                  label: 'TanStack Start',
+                  label: 'TanStack Start (Deprecated)',
                   hint: 'Full-stack React and Solid framework powered by TanStack Router',
                 },
               ],

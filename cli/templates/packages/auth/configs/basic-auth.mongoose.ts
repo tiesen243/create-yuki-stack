@@ -46,9 +46,7 @@ export const authOptions = {
           : null
       },
       async create(data) {
-        const result = await db.account.create(data)
-
-        return { id: result._id.toString() }
+        await db.account.create(data)
       },
     },
 

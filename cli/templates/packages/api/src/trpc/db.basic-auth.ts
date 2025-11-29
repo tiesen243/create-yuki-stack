@@ -1,7 +1,7 @@
 import { initTRPC, TRPCError } from '@trpc/server'
 import SuperJSON from 'superjson'
 
-import type { Session } from '@{{ name }}/auth'
+import type { SessionWithUser } from '@{{ name }}/auth'
 import { auth } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
 
@@ -11,7 +11,7 @@ interface TRPCMeta {
 
 interface TRPCContext {
   headers: Headers
-  session: Omit<Session, 'token'> | null
+  session: SessionWithUser | null
   db: typeof db
 }
 

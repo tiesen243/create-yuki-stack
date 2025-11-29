@@ -22,6 +22,7 @@
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
+    "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/validators": "workspace:*"
   },
   "devDependencies": {

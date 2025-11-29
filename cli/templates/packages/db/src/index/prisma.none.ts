@@ -1,8 +1,14 @@
-import { PrismaClient } from './generated/client'
+import { PrismaPg } from '@prisma/adapter-pg'
 
 import { env } from '@{{ name }}/validators/env'
 
-const createPrismaClient = () => new PrismaClient()
+import { PrismaClient } from './generated/client'
+
+
+const createPrismaClient = () => {
+  const adapter = new PrismaPg({ connectionString: env.DATABASE_URL })
+  return new PrismaClient({ adapter })
+}
 const globalForPrisma = globalThis as unknown as {
   db: PrismaClient | undefined
 }

@@ -8,15 +8,10 @@ export default defineConfig({
   exports: {
     customExports(exports) {
       exports['.'] = {
-        default: './dist/index.mjs',
         'react-server': './dist/index.rsc.mjs',
+        default: './dist/index.mjs',
       }
       delete exports['./index.rsc']
-
-      exports['./react'] = {
-        default: './dist/react.mjs',
-        types: './dist/react.d.mts',
-      }
 
       return exports
     },

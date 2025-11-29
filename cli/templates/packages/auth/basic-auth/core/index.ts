@@ -225,7 +225,7 @@ export function Auth(config: AuthConfig) {
         let data
         const contentType = request.headers.get('Content-Type') ?? ''
         if (contentType.includes('application/json'))
-          data = await request.json()
+          data = await request.json() as Record<string, unknown>
         else if (contentType.includes('application/x-www-form-urlencoded')) {
           const formData = await request.formData()
           data = Object.fromEntries(formData.entries())
@@ -325,7 +325,7 @@ function parseCookies(cookieHeader: string | null): Record<string, string> {
   if (!cookieHeader) return cookies
   const pairs = cookieHeader.split(';')
   for (const pair of pairs) {
-    const [key, value] = pair.trim().split('=')
+    const [key = '', value = ''] = pair.trim().split('=')
     cookies[key] = decodeURIComponent(value)
   }
   return cookies

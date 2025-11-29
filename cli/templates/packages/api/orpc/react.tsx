@@ -41,7 +41,7 @@ function ORPCReactProvider({
   })
 
   const value = React.useMemo(
-    () => createORPCReactQueryUtils<AppRouter>(orpcClient),
+    () => createTanstackQueryUtils<AppRouter>(orpcClient),
     [orpcClient],
   )
 

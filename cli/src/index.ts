@@ -1,10 +1,10 @@
 import { createCli } from 'trpc-cli'
 
+import { addEmailCommand } from '@/commands/add-email'
 import { addGhActionsCommand } from '@/commands/add-gh-actions'
 import { initCommand } from '@/commands/init'
 import { createTRPCRouter } from '@/trpc'
 import packageJson from '../package.json'
-import { addEmailCommand } from './commands/add-email'
 
 const exit = () => process.exit(0)
 process.on('SIGINT', exit)

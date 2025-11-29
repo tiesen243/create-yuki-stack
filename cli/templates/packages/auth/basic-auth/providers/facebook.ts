@@ -5,7 +5,7 @@ export class Facebook extends BaseProvider {
   constructor(
     clientId: string,
     clientSecret: string,
-    redirectUri: string = '',
+    redirectUri = '',
   ) {
     super('facebook', clientId, clientSecret, redirectUri)
   }

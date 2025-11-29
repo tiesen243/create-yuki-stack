@@ -35,7 +35,7 @@ const useSession = () => {
 }
 
 function SessionProvider(props: Readonly<SessionProviderProps>) {
-  const { session, basePath = '/api/auth' } = props
+  const { session, basePath = '/api/auth', children } = props
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['auth', 'get-session'],
@@ -83,7 +83,7 @@ function SessionProvider(props: Readonly<SessionProviderProps>) {
     return { status, session: data, signIn, signOut } as SessionContextValue
   }, [data, isLoading, signIn, signOut])
 
-  return <SessionContext value={value}>{props.children}</SessionContext>
+  return <SessionContext value={value}>{children}</SessionContext>
 }
 
 export { SessionProvider, useSession }

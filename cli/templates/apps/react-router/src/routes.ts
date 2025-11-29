@@ -1,5 +1,5 @@
 import type { RouteConfig } from '@react-router/dev/routes'
-import { index, layout, prefix, route } from '@react-router/dev/routes'
+import { index, prefix, route } from '@react-router/dev/routes'
 
 export default [
   ...prefix('/api', [

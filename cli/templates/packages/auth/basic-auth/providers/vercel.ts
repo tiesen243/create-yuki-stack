@@ -5,7 +5,7 @@ export class Vercel extends BaseProvider {
   constructor(
     clientId: string,
     clientSecret: string,
-    redirectUri: string = '',
+    redirectUri = '',
   ) {
     super('vercel', clientId, clientSecret, redirectUri)
   }

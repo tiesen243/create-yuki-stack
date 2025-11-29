@@ -5,7 +5,7 @@ export class Discord extends BaseProvider {
   constructor(
     clientId: string,
     clientSecret: string,
-    redirectUri: string = '',
+    redirectUri = '',
   ) {
     super('discord', clientId, clientSecret, redirectUri)
   }

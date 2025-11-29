@@ -5,7 +5,7 @@ export class Github extends BaseProvider {
   constructor(
     clientId: string,
     clientSecret: string,
-    redirectUri: string = '',
+    redirectUri = '',
   ) {
     super('github', clientId, clientSecret, redirectUri)
   }

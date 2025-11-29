@@ -9,7 +9,7 @@ import {
 import { createORPCContext } from './orpc'
 import { appRouter } from './routers/_app'
 
-const handler = async (request: Request) => {
+const handler = async (request: Request): Promise<Response> => {
   const handler = new RPCHandler(appRouter, {
     plugins: [
       new BatchHandlerPlugin(),

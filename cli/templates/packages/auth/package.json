@@ -5,13 +5,10 @@
   "type": "module",
   "exports": {
     ".": {
-      "default": "./dist/index.mjs",
-      "react-server": "./dist/index.rsc.mjs"
+      "react-server": "./dist/index.rsc.mjs",
+      "default": "./dist/index.mjs"
     },
-    "./react": {
-      "default": "./dist/react.mjs",
-      "types": "./dist/react.d.mts"
-    },
+    "./react": "./dist/react.mjs",
     "./package.json": "./package.json"
   },
   "main": "./dist/index.mjs",
@@ -34,6 +31,7 @@
     "@{{ name }}/eslint-config": "workspace:*",
     "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "tsdown": "catalog:",
@@ -41,6 +39,7 @@
   },
   "peerDependencies": {
     "@tanstack/react-query": "catalog:",
+    "@types/react": "catalog:react",
     "react": "catalog:react"
   }
 }

@@ -8,7 +8,7 @@ import { ThemeProvider } from '@{{ name }}/ui'
 import { createQueryClient } from '@{{ name }}/lib/create-query-client'
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined
-const getQueryClient = () => {
+export const getQueryClient = () => {
   if (typeof window === 'undefined') return createQueryClient()
   else return (clientQueryClientSingleton ??= createQueryClient())
 }

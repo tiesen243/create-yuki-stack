@@ -1,3 +1,5 @@
+import { env } from '@{{ name }}/validators/env'
+
 import type { OAuthAccount } from '@/types'
 import { generateCodeChallenge } from '@/core/crypto'
 
@@ -6,7 +8,7 @@ export abstract class BaseProvider {
     public readonly providerName: string,
     protected readonly clientId: string,
     protected readonly clientSecret: string,
-    protected readonly redirectUri: string = '',
+    protected readonly redirectUri = '',
   ) {
     if (!this.redirectUri) this.redirectUri = this.createCallbackUrl()
   }
@@ -23,7 +25,8 @@ export abstract class BaseProvider {
 
   protected createCallbackUrl() {
     let baseUrl = `http://localhost:${process.env.PORT ?? 3000}`
-    if (process.env.APP_URL) baseUrl = `https://${process.env.APP_URL}`
+    if (env.VERCEL_PROJECT_PRODUCTION_URL)
+      baseUrl = `https://${env.VERCEL_PROJECT_PRODUCTION_URL}`
     return `${baseUrl}/api/auth/${this.providerName}`
   }
 

@@ -1,5 +1,5 @@
-import { accounts, sessions, users } from '@/server/db/schema'
-import { and, db, eq, or } from '@{{ name }}/db/schema'
+import { accounts, sessions, users } from '@{{ name }}/db/schema'
+import { and, db, eq, or } from '@{{ name }}/db'
 import { env } from '@{{ name }}/validators/env'
 
 import type { AuthConfig } from '@/types'
@@ -31,6 +31,7 @@ export const authOptions = {
           .insert(users)
           .values(data)
           .returning({ id: users.id })
+        if (!result) throw new Error('Failed to create user')
 
         return result
       },
@@ -52,12 +53,7 @@ export const authOptions = {
         return record ?? null
       },
       async create(data) {
-        const [result] = await db
-          .insert(accounts)
-          .values(data)
-          .returning({ id: accounts.id })
-
-        return result
+        await db.insert(accounts).values(data)
       },
     },
 

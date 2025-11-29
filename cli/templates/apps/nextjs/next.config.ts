@@ -1,3 +1,4 @@
+import '@{{ name }}/validators/env.next'
 import '@{{ name }}/validators/env'
 
 import type { NextConfig } from 'next'

@@ -3,7 +3,7 @@ import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 import { appRouter } from '@/routers/_app'
 import { createCallerFactory, createTRPCContext } from '@/trpc'
 
-const handler = async (request: Request) => {
+const handler = async (request: Request): Promise<Response> => {
   let response: Response
 
   if (request.method === 'OPTIONS')

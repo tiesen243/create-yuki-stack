@@ -30,7 +30,7 @@ export async function addApi(opts: ProjectOptions): Promise<void> {
     ])
   }
 
-  const [packageJson] = await Promise.all([
+  const [packageJson, libPackageJson] = await Promise.all([
     fs
       .readFile(
         opts.backend === 'none'
@@ -38,6 +38,9 @@ export async function addApi(opts: ProjectOptions): Promise<void> {
           : `${destPath}/package.json`,
         'utf-8',
       )
+      .then((data) => JSON.parse(data) as PackageJson),
+    fs
+      .readFile('packages/lib/package.json', 'utf-8')
       .then((data) => JSON.parse(data) as PackageJson),
     fs.copyFile(
       new URL(
@@ -60,10 +63,15 @@ export async function addApi(opts: ProjectOptions): Promise<void> {
   ])
 
   packageJson.dependencies = packageJson.dependencies ?? {}
+  libPackageJson.dependencies = libPackageJson.dependencies ?? {}
   if (opts.api === 'trpc') {
     packageJson.dependencies['@trpc/server'] = 'catalog:trpc'
     packageJson.dependencies.superjson = 'catalog:trpc'
-  } else packageJson.dependencies['@orpc/server'] = 'catalog:orpc'
+    libPackageJson.dependencies.superjson = 'catalog:trpc'
+  } else {
+    packageJson.dependencies['@orpc/server'] = 'catalog:orpc'
+    libPackageJson.dependencies['@orpc/client'] = 'catalog:orpc'
+  }
 
   if (opts.backend === 'none') {
     if (opts.database !== 'none')
@@ -75,5 +83,10 @@ export async function addApi(opts: ProjectOptions): Promise<void> {
   await fs.writeFile(
     `${destPath}/package.json`,
     JSON.stringify(packageJson, null, 2),
+  )
+
+  await fs.writeFile(
+    'packages/lib/package.json',
+    JSON.stringify(libPackageJson, null, 2),
   )
 }

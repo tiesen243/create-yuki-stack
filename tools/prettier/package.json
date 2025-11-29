@@ -13,8 +13,7 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:"
+    "@ianvs/prettier-plugin-sort-imports": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",
