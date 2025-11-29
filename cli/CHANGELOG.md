@@ -1,5 +1,15 @@
 # create-yuki-stack
 
+## 0.2.0
+
+### Minor Changes
+
+- [`a4aea02`](https://github.com/tiesen243/create-yuki-stack/commit/a4aea02b10e089e5ab74bfd56e0014b5cfd200e2) Thanks [@tiesen243](https://github.com/tiesen243)! - update cli
+
+### Patch Changes
+
+- [`973a820`](https://github.com/tiesen243/create-yuki-stack/commit/973a820ce3672e9aa96c6cbeb2c94903de972a46) Thanks [@tiesen243](https://github.com/tiesen243)! - update templates
+
 ## 0.1.99
 
 ### Patch Changes
