@@ -58,7 +58,7 @@
     "@yuki/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "tsdown": "^0.16.8",
+    "tsdown": "^0.17.0-beta.4",
     "typescript": "catalog:"
   },
   "publishConfig": {
