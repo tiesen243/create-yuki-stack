@@ -23,14 +23,9 @@
     "lint:ws": "{{ pkme }} sherif@latest",
     "typecheck": "turbo run typecheck"
   },
-  "prettier": {
-    "printWidth": 80,
-    "semi": false,
-    "singleQuote": true,
-    "tabWidth": 2,
-    "trailingComma": "all"
-  },
+  "prettier": "@{{ name }}/prettier-config",
   "devDependencies": {
+    "@{{ name }}/prettier-config": "workspace:*",
     "@ianvs/prettier-plugin-sort-imports": "catalog:",
     "prettier-plugin-tailwindcss": "catalog:",
     "turbo": "^2.6.1"
