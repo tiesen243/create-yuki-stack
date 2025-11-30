@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.2.2
+
+### Patch Changes
+
+- [`708c210`](https://github.com/tiesen243/create-yuki-stack/commit/708c210e92316d08782cc3979fb243807ac1881d) Thanks [@tiesen243](https://github.com/tiesen243)! - fix typo
+
 ## 0.2.1
 
 ### Patch Changes
