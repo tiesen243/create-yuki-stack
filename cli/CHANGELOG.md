@@ -1,5 +1,17 @@
 # create-yuki-stack
 
+## 0.2.1
+
+### Patch Changes
+
+- [`d161aa8`](https://github.com/tiesen243/create-yuki-stack/commit/d161aa8f2b7e8e6467ae1e3db4dd47a14a044563) Thanks [@tiesen243](https://github.com/tiesen243)! - update template
+
+- [`1c03929`](https://github.com/tiesen243/create-yuki-stack/commit/1c03929cb5f8c79e34af15d1fbe5febc06094677) Thanks [@tiesen243](https://github.com/tiesen243)! - update template
+
+- [`e6eee15`](https://github.com/tiesen243/create-yuki-stack/commit/e6eee153ee59c7e5e4110697c46cb08435203731) Thanks [@tiesen243](https://github.com/tiesen243)! - update exports
+
+- [`9e0b52f`](https://github.com/tiesen243/create-yuki-stack/commit/9e0b52f2f8cb30a0dc9f79b56a34ccf87e5b09eb) Thanks [@tiesen243](https://github.com/tiesen243)! - bump deps
+
 ## 0.2.0
 
 ### Minor Changes
