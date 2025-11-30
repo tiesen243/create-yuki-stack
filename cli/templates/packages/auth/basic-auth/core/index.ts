@@ -259,7 +259,7 @@ export function Auth(config: AuthConfig) {
         response = new Response(null, { status: 204 })
         response.headers.set(
           'Set-Cookie',
-          serializeCookie(keys.token, '', { ...cookie, maxAge: 0 }),
+          serializeCookie(keys.token, '', { ...cookie, 'Max-Age': 0 }),
         )
       }
 
@@ -281,15 +281,15 @@ export function Auth(config: AuthConfig) {
         response.headers.set('Location', authorizationUrl.toString())
         response.headers.append(
           'Set-Cookie',
-          serializeCookie(keys.state, state, { maxAge: 300 }),
+          serializeCookie(keys.state, state, { 'Max-Age': 300 }),
         )
         response.headers.append(
           'Set-Cookie',
-          serializeCookie(keys.codeVerifier, code, { maxAge: 300 }),
+          serializeCookie(keys.codeVerifier, code, { 'Max-Age': 300 }),
         )
         response.headers.append(
           'Set-Cookie',
-          serializeCookie(keys.redirectUri, redirectUri, { maxAge: 300 }),
+          serializeCookie(keys.redirectUri, redirectUri, { 'Max-Age': 300 }),
         )
       }
     } catch (e) {
@@ -339,6 +339,7 @@ function serializeCookie(
   let cookieString = `${name}=${encodeURIComponent(value)}`
   for (const [key, val] of Object.entries(options)) {
     if (val === true) cookieString += `; ${key}`
+    else if (val === false) continue
     else cookieString += `; ${key}=${val}`
   }
   return cookieString
@@ -350,10 +351,10 @@ const defaultConfig = {
     expiresThreshold: 60 * 60 * 24, // 1 day
   },
   cookie: {
-    path: '/',
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    Path: '/',
+    HttpOnly: true,
+    Secure: process.env.NODE_ENV === 'production',
+    SameSite: 'lax',
   },
   keys: {
     token: 'auth.token',

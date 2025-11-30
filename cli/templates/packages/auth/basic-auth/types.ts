@@ -63,12 +63,10 @@ export interface AuthConfig {
   }
 
   cookie?: {
-    domain?: string
-    path?: string
-    httpOnly?: boolean
-    secure?: boolean
-    sameSite?: 'lax' | 'strict' | 'none'
-    maxAge?: number
+    Path?: string
+    HttpOnly?: boolean
+    Secure?: boolean
+    SameSite?: 'lax' | 'strict' | 'none'
   }
 
   adapter: {
