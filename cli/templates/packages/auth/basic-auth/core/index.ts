@@ -70,8 +70,8 @@ export function Auth(config: AuthConfig) {
       if (
         !isValid ||
         expiresTime < now // implement additional checks if needed
-        //session.ipAddress !== opts.headers.get('X-Forwarded-For') ||
-        //session.userAgent !== opts.headers.get('User-Agent')
+        // result.ipAddress !== opts.headers.get('X-Forwarded-For') ||
+        // result.userAgent !== opts.headers.get('User-Agent')
       ) {
         await adapter.session.delete(token)
         throw new Error('Session expired')
