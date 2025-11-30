@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.2.3
+
+### Patch Changes
+
+- [`7658330`](https://github.com/tiesen243/create-yuki-stack/commit/7658330a03e26e5168999875a50928692b9a0650) Thanks [@tiesen243](https://github.com/tiesen243)! - fix set cookie in basic-auth
+
+- [`46145f5`](https://github.com/tiesen243/create-yuki-stack/commit/46145f5424b24f69709fe75e804efac110647bee) Thanks [@tiesen243](https://github.com/tiesen243)! - bump next version
+
 ## 0.2.2
 
 ### Patch Changes
