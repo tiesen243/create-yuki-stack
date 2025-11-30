@@ -33,6 +33,7 @@ model Account {
   users      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "accounts_user_id_users_id_fk")
 
   @@index([userId], map: "accounts_user_id_idx")
+  @@unique([userId, provider], map: "accounts_user_id_provider_uq_idx")
   @@unique([provider, accountId], map: "accounts_provider_account_id_uq_idx")
   @@map("accounts")
 }
