@@ -100,9 +100,9 @@ export class JWT<TValue extends Record<string, unknown>> {
 
   private async signData(data: Uint8Array): Promise<ArrayBuffer> {
     const algMap = {
-      HS256: 'sha256',
-      HS384: 'sha384',
-      HS512: 'sha512',
+      HS256: { name: 'SHA-256' },
+      HS384: { name: 'SHA-384' },
+      HS512: { name: 'SHA-512' },
     } as const
 
     const key = await crypto.subtle.importKey(
