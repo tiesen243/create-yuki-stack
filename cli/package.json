@@ -1,6 +1,6 @@
 {
   "name": "create-yuki-stack",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A CLI tool for scaffolding type-safe, full-stack TypeScript applications with best practices and customizable.",
   "keywords": [
     "cli",

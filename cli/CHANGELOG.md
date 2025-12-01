@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.2.4
+
+### Patch Changes
+
+- [`c661810`](https://github.com/tiesen243/create-yuki-stack/commit/c661810b6a35e61796c0be52949e1b92252bbf01) Thanks [@tiesen243](https://github.com/tiesen243)! - add import crypto
+
+- [`2e96128`](https://github.com/tiesen243/create-yuki-stack/commit/2e961285641493a5b69f935d614abe5be3c3eb19) Thanks [@tiesen243](https://github.com/tiesen243)! - fix hash algorithm
+
 ## 0.2.3
 
 ### Patch Changes
