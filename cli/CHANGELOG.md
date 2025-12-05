@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.2.5
+
+### Patch Changes
+
+- [`5522a81`](https://github.com/tiesen243/create-yuki-stack/commit/5522a81b8e0920accf2855d1d01a4c4f63b236cd) Thanks [@tiesen243](https://github.com/tiesen243)! - update create-id function
+
 ## 0.2.4
 
 ### Patch Changes
