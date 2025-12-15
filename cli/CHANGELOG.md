@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.2.6
+
+### Patch Changes
+
+- [`4600afa`](https://github.com/tiesen243/create-yuki-stack/commit/4600afac03ed5dc7161ddef640cf82d0d949b0ff) Thanks [@tiesen243](https://github.com/tiesen243)! - migrate to base ui
+
 ## 0.2.5
 
 ### Patch Changes
