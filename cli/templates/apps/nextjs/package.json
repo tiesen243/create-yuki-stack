@@ -19,7 +19,7 @@
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
     "@tanstack/react-query": "catalog:",
-    "next": "^16.0.6",
+    "next": "^16.0.10",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },

@@ -11,20 +11,28 @@
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "scripts": {
     "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "dev": "tsdown --watch ./src",
-    "dev:email": "email dev --dir src/emails --port 6969",
+    "email:dev": "email dev --dir ./src/templates",
+    "email:export": "email export",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "~dev": "tsdown --watch ./src"
   },
   "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/validators": "workspace:*",
     "@react-email/components": "^1.0.1",
-    "resend": "^6.5.2"
+    "resend": "^6.6.0"
   },
   "devDependencies": {
     "@{{ name }}/eslint-config": "workspace:*",
@@ -32,15 +40,12 @@
     "@{{ name }}/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "react-email": "^5.0.5",
+    "react-email": "^5.0.8",
     "tsdown": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "@types/node": "catalog:",
     "@types/react": "catalog:react",
-    "prettier-plugin-tailwindcss": "catalog:",
     "react": "catalog:react"
   }
 }

@@ -45,11 +45,11 @@
   "prettier": "@yuki/prettier-config",
   "dependencies": {
     "@clack/prompts": "^0.11.0",
-    "@trpc/server": "^11.7.2",
+    "@trpc/server": "^11.8.0",
     "gradient-string": "^3.0.0",
     "picocolors": "^1.1.1",
     "trpc-cli": "^0.12.1",
-    "zod": "^4.1.13"
+    "zod": "^4.2.0"
   },
   "devDependencies": {
     "@types/node": "catalog:",
@@ -58,7 +58,7 @@
     "@yuki/tsconfig": "workspace:*",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "tsdown": "^0.17.0-beta.4",
+    "tsdown": "^0.18.0",
     "typescript": "catalog:"
   },
   "publishConfig": {

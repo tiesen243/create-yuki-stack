@@ -2,24 +2,27 @@ import { Resend } from 'resend'
 
 import { env } from '@{{ name }}/validators/env'
 
-import * as email from './emails'
+import * as Templates from '@/templates'
 
 const resend = new Resend(env.RESEND_TOKEN)
 
-export interface SendEmailParams {
+interface SendEmailOptions<T extends keyof typeof Templates> {
   to: string
   subject: string
-  email: keyof typeof email
-  data?: Record<string, unknown>
+  template: T
+  data: React.ComponentProps<(typeof Templates)[T]>
 }
 
-async function sendEmail(params: SendEmailParams) {
-  await resend.emails.send({
-    from: 'noreply@{{ name }}.com',
-    to: params.to,
-    subject: params.subject,
-    react: email[params.email](params),
+export async function sendEmail<T extends keyof typeof Templates>(
+  opts: SendEmailOptions<T>,
+) {
+  const res = await resend.emails.send({
+    from: 'Yukinu <no-reply@tiesen.id.vn>',
+    to: opts.to,
+    subject: opts.subject,
+    react: Templates[opts.template](opts.data as never),
   })
-}
 
-export { resend, sendEmail }
+  if (res.error) throw new Error(res.error.message)
+  return res.data
+}

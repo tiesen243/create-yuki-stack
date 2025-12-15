@@ -15,14 +15,14 @@
   },
   "prettier": "@yuki/prettier-config",
   "dependencies": {
-    "@eslint-react/eslint-plugin": "^2.3.9",
-    "@eslint/js": "^9.39.1",
-    "@next/eslint-plugin-next": "16.0.6",
+    "@eslint-react/eslint-plugin": "^2.3.13",
+    "@eslint/js": "^9.39.2",
+    "@next/eslint-plugin-next": "16.0.10",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-turbo": "^2.6.1",
-    "typescript-eslint": "^8.48.0"
+    "eslint-plugin-turbo": "^2.6.3",
+    "typescript-eslint": "^8.50.0"
   },
   "devDependencies": {
     "@yuki/prettier-config": "workspace:*",
@@ -30,10 +30,5 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "@types/node": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:"
   }
 }
