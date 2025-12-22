@@ -1,5 +1,15 @@
 # create-yuki-stack
 
+## 0.2.7
+
+### Patch Changes
+
+- [`3fac11d`](https://github.com/tiesen243/create-yuki-stack/commit/3fac11dead469ec12215df7f02f98d2fe95abd72) Thanks [@tiesen243](https://github.com/tiesen243)! - fix env
+
+- [`1dc249d`](https://github.com/tiesen243/create-yuki-stack/commit/1dc249d0dcb9177eda7a0105821da17465aeef75) Thanks [@tiesen243](https://github.com/tiesen243)! - migrate to oxc
+
+- [`285813c`](https://github.com/tiesen243/create-yuki-stack/commit/285813c05dc1094a504b5b07b9d1507081dd9086) Thanks [@tiesen243](https://github.com/tiesen243)! - fix linter
+
 ## 0.2.6
 
 ### Patch Changes
