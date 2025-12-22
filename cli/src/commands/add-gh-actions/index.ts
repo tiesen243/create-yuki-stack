@@ -13,14 +13,14 @@ export const addGhActionsCommand = procedure.mutation(async () => {
   const packageJsonGh = await fs.readFile('tools/github/package.json', 'utf-8')
   await fs.writeFile(
     'tools/github/package.json',
-    packageJsonGh.replace(/{{ name }}/g, name),
+    packageJsonGh.replaceAll('{{ name }}', name),
     'utf-8',
   )
 
   const ci = await fs.readFile('.github/workflows/ci.yml', 'utf-8')
   await fs.writeFile(
     '.github/workflows/ci.yml',
-    ci.replace(/{{ pkm }}/g, packageManager),
+    ci.replaceAll('{{ pkm }}', packageManager),
     'utf-8',
   )
 })

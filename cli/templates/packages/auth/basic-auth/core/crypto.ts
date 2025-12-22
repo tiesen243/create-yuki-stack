@@ -13,10 +13,10 @@ export function generateSecureString(): string {
 export function generateStateOrCode(): string {
   const randomValues = new Uint8Array(32)
   crypto.getRandomValues(randomValues)
-  return btoa(String.fromCharCode(...randomValues))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '')
+  return btoa(String.fromCodePoint(...randomValues))
+    .replaceAll('+', '-')
+    .replaceAll('/', '_')
+    .replaceAll('=', '')
 }
 
 export async function generateCodeChallenge(
@@ -25,8 +25,8 @@ export async function generateCodeChallenge(
   const encoder = new TextEncoder()
   const data = encoder.encode(codeVerifier)
   const digest = await crypto.subtle.digest('SHA-256', data)
-  const base64String = btoa(String.fromCharCode(...new Uint8Array(digest)))
-  return base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
+  const base64String = btoa(String.fromCodePoint(...new Uint8Array(digest)))
+  return base64String.replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '')
 }
 
 export async function hashSecret(secret: string): Promise<Uint8Array> {
@@ -52,20 +52,20 @@ export function decodeHex(hex: string): Uint8Array {
 }
 
 export function encodeBase64Url(bytes: Uint8Array): string {
-  const binary = Array.from(bytes, (byte) => String.fromCharCode(byte)).join('')
+  const binary = Array.from(bytes, (byte) => String.fromCodePoint(byte)).join('')
   return btoa(binary)
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/g, '')
+    .replaceAll('+', '-')
+    .replaceAll('/', '_')
+    .replaceAll(/=+$/g, '')
 }
 
 export function decodeBase64Url(base64url: string): Uint8Array {
-  const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/')
+  const base64 = base64url.replaceAll('-', '+').replaceAll('_', '/')
   const paddedBase64 = base64 + '='.repeat((4 - (base64.length % 4)) % 4)
   const binary = atob(paddedBase64)
 
   const bytes = new Uint8Array(binary.length)
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.codePointAt(i)
   return bytes
 }
 

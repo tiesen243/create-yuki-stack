@@ -81,7 +81,7 @@ export function Auth(config: AuthConfig) {
 
     // For JWT, sign-out is typically handled client-side by deleting the token.
     // If using a token blacklist, implement that logic here.
-    return Promise.resolve()
+    return
   }
 
   const handleGet = async (request: Request): Promise<Response> => {

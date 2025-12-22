@@ -1,3 +1,4 @@
+// oxlint-disable no-negated-condition
 import fs from 'node:fs/promises'
 
 import * as p from '@clack/prompts'
@@ -52,7 +53,7 @@ export const initCommand = procedure
           _: ({ results }) => {
             if (results.language === 'javascript')
               p.note(pc.redBright('Wrong answer. Use TypeScript instead :>'))
-            return undefined
+            return Promise.resolve()
           },
 
           // Frontend
@@ -284,7 +285,7 @@ export const initCommand = procedure
                   ],
                   initialValue: DEFAULT_PROJECT_OPTIONS.javaBuildTool,
                 })
-              : Promise.resolve(undefined),
+              : Promise.resolve(),
 
           install: () =>
             p.confirm({

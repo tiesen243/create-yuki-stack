@@ -44,7 +44,7 @@ export abstract class BaseProvider {
     if (scopes.length > 0) url.searchParams.set('scope', scopes.join(' '))
     url.searchParams.set('redirect_uri', this.redirectUri)
 
-    return Promise.resolve(url)
+    return url
   }
 
   protected async createAuthorizationUrlWithPKCE(
@@ -109,9 +109,9 @@ export abstract class BaseProvider {
   private encodeCredentials(clientId: string, clientSecret: string): string {
     const credentials = `${clientId}:${clientSecret}`
     const bytes = new TextEncoder().encode(credentials)
-    return btoa(String.fromCharCode(...bytes))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=/g, '')
+    return btoa(String.fromCodePoint(...bytes))
+      .replaceAll('+', '-')
+      .replaceAll('/', '_')
+      .replaceAll('=', '')
   }
 }

@@ -3,6 +3,7 @@ import '@{{ name }}/validators/env'
 import cors from '@elysiajs/cors'
 import Elysia from 'elysia'
 
+// oxlint-disable-next-line no-process-env
 const PORT = parseInt(process.env.PORT ?? '8080', 10)
 
 const server = new Elysia({ aot: true, prefix: '/api' })

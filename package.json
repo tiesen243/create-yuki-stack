@@ -17,8 +17,8 @@
     "format": "oxfmt --check",
     "format:fix": "oxfmt --write",
     "postinstall": "bun lint:ws",
-    "lint": "oxlint",
-    "lint:fix": "oxlint --fix",
+    "lint": "oxlint cli/src",
+    "lint:fix": "oxlint cli/src --fix",
     "lint:ws": "bunx --bun sherif@latest",
     "typecheck": "turbo run typecheck"
   },

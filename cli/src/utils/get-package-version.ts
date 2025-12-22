@@ -19,8 +19,8 @@ export async function getPackageVersions<T extends string>(
   await Promise.all(
     deps.map(async (dep) => {
       const lastAtIndex = dep.lastIndexOf('@')
-      const pkg = lastAtIndex > 0 ? dep.substring(0, lastAtIndex) : dep
-      const tag = lastAtIndex > 0 ? dep.substring(lastAtIndex + 1) : 'latest'
+      const pkg = lastAtIndex > 0 ? dep.slice(0, lastAtIndex) : dep
+      const tag = lastAtIndex > 0 ? dep.slice(lastAtIndex + 1) : 'latest'
       return (versions[dep] = await getPackageVersion(pkg, tag as Tag))
     }),
   )

@@ -38,18 +38,20 @@ export async function createProject(
   await replacePlaceholder(opts)
 
   const cwd = process.cwd()
-  await execAsync(
-    `${getExecutor(opts.packageManager)} sort-package-json@latest package.json apps/*/package.json packages/*/package.json tools/*/package.json`,
-    { cwd },
-  )
 
   if (opts.install) {
     creatingSpinner.message(
       `Running ${pc.bold(opts.packageManager)} install...`,
     )
     try {
+      await execAsync(
+        `${getExecutor(opts.packageManager)} sort-package-json **/package.json`,
+        { cwd },
+      )
       await execAsync(`${opts.packageManager} install`, { cwd })
-      await execAsync(`${opts.packageManager} run format:fix`, { cwd })
+      await execAsync(`${getExecutor(opts.packageManager)} oxfmt --write`, {
+        cwd,
+      })
 
       if (opts.backend === 'spring-boot') {
         if (opts.javaBuildTool === 'gradle') {

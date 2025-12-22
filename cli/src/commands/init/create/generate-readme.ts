@@ -162,6 +162,7 @@ function generateGettingStarted(opts: ProjectOptions): string {
     '',
   ]
 
+  // oxlint-disable-next-line no-negated-condition
   if (opts.database !== 'none') {
     steps.push('3. Set up your environment variables:')
     steps.push('')
@@ -202,7 +203,7 @@ function generateProjectStructure(opts: ProjectOptions): string {
   // build apps section
   const apps: string[] = opts.frontend
   if (opts.backend !== 'none') apps.push('api')
-  apps.sort().forEach((app, index) => {
+  apps.toSorted().forEach((app, index) => {
     const isLast = index === apps.length - 1
     const symbol = isLast ? '└──' : '├──'
     if (app === 'api')
@@ -221,7 +222,7 @@ function generateProjectStructure(opts: ProjectOptions): string {
   if (opts.api !== 'none' && opts.backend === 'none') packages.push('api')
   if (opts.database !== 'none') packages.push('db')
   if (opts.extras.includes('email')) packages.push('email')
-  packages.sort().forEach((pkg, index) => {
+  packages.toSorted().forEach((pkg, index) => {
     const isLast = index === packages.length - 1
     const symbol = isLast ? '└──' : '├──'
     const description = DESCRIPTIONS[pkg as keyof typeof DESCRIPTIONS]
@@ -236,7 +237,7 @@ function generateProjectStructure(opts: ProjectOptions): string {
   )
   const tools = ['oxfmt', 'oxlint', 'typescript']
   if (opts.extras.includes('gh-actions')) tools.push('github')
-  tools.sort().forEach((tool, index) => {
+  tools.toSorted().forEach((tool, index) => {
     const isLast = index === tools.length - 1
     const symbol = isLast ? '└──' : '├──'
     const description = DESCRIPTIONS[tool as keyof typeof DESCRIPTIONS]

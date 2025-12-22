@@ -156,6 +156,7 @@ async function configureBackendDependencies(
         versions['@hono/node-server']
   }
 
+  // oxlint-disable-next-line no-negated-condition
   if (opts.api !== 'none') {
     packageJson.exports = {
       '.': './dist/index.mjs',
@@ -185,12 +186,12 @@ async function modifyServerFileForNonBunEnvironment(
   let modifiedContent = serverContent
 
   if (opts.backend === 'elysia') {
-    modifiedContent = `${serverContent.replace(
-      /new Elysia\(\{ aot: /g,
+    modifiedContent = `${serverContent.replaceAll(
+      'new Elysia({ aot: ',
       'new Elysia({ adapter: node(), aot: ',
     )}\nimport node from '@elysiajs/node'`
   } else if (opts.backend === 'hono') {
-    modifiedContent = `${serverContent.replace(
+    modifiedContent = `${serverContent.replaceAll(
       /export default {\n\s*fetch: server\.fetch,\n\s*port: PORT,\n\s*} as const/g,
       'serve({\n  fetch: server.fetch,\n  port: PORT,\n})',
     )}\nimport { serve } from '@hono/node-server'`

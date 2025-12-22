@@ -43,10 +43,11 @@ export async function replaceInDirectory(
 ): Promise<void> {
   const entries = await fs.readdir(dirPath, { withFileTypes: true })
 
-  const tasks = entries.map(async (entry) => {
+  const tasks = entries.map((entry) => {
     const fullPath = path.join(dirPath, entry.name)
     if (entry.isDirectory()) return replaceInDirectory(fullPath, replaceMap)
     else if (entry.isFile()) return replaceInFile(fullPath, replaceMap)
+    return Promise.resolve()
   })
 
   await Promise.all(tasks)
@@ -55,10 +56,11 @@ export async function replaceInDirectory(
 async function fixYarnAndNpmVersion(dirPath: string): Promise<void> {
   const entries = await fs.readdir(dirPath, { withFileTypes: true })
 
-  const tasks = entries.map(async (entry) => {
+  const tasks = entries.map((entry) => {
     const fullPath = path.join(dirPath, entry.name)
     if (entry.isDirectory()) return fixYarnAndNpmVersion(fullPath)
     else if (entry.name === 'package.json') return fixPackageJson(fullPath)
+    return Promise.resolve()
   })
 
   await Promise.all(tasks)

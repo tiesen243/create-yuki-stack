@@ -138,6 +138,7 @@ async function addApiClient(
   opts: ProjectOptions,
 ) {
   if (!['trpc', 'orpc'].includes(opts.api)) return
+  // oxlint-disable-next-line no-negated-condition
   const clientPath = `apps/${app}${app !== 'nextjs' ? '/src' : ''}/${opts.api}`
 
   await fs.cp(
@@ -153,8 +154,8 @@ async function addApiClient(
 
   const reactContent = await fs.readFile(`${clientPath}/react.tsx`, 'utf-8')
 
-  let modifiedReactContent = reactContent.replace(
-    /{{ app }}/g,
+  let modifiedReactContent = reactContent.replaceAll(
+    '{{ app }}',
     appMap.get(app) ?? app,
   )
 
@@ -215,7 +216,7 @@ async function updateProvidersFile(
     if (needsProvider) {
       const provider =
         opts.api === 'trpc' ? 'TRPCReactProvider' : 'ORPCReactProvider'
-      providerContent = providerContent.replace(/{children}/g, (match) =>
+      providerContent = providerContent.replaceAll('{children}', (match) =>
         providerContent.includes('{children}') && match === '<Outlet />'
           ? match
           : `<${provider}>${match}</${provider}>`,
@@ -225,7 +226,7 @@ async function updateProvidersFile(
 
     const needsAuth = ['basic-auth', 'next-auth'].includes(opts.auth)
     if (needsAuth) {
-      providerContent = providerContent.replace(/{children}/g, (match) =>
+      providerContent = providerContent.replaceAll('{children}', (match) =>
         providerContent.includes('{children}') && match === '<Outlet />'
           ? match
           : `<SessionProvider>${match}</SessionProvider>`,

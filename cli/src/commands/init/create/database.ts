@@ -40,6 +40,7 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
       new URL(`src/index/${opts.database}.${opts.adapter}.ts`, templatePath),
       `${destPath}/src/index.ts`,
     ),
+    // oxlint-disable-next-line no-negated-condition
     ...(opts.database !== 'mongoose'
       ? [
           fs.copyFile(

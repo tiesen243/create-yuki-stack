@@ -40,6 +40,7 @@ export async function addApi(opts: ProjectOptions): Promise<void> {
       .then((data) => JSON.parse(data) as PackageJson),
     fs.copyFile(
       new URL(
+        // oxlint-disable-next-line no-negated-condition
         `src/${opts.api}/${opts.database !== 'none' ? 'db' : 'none'}.${opts.auth}.ts`,
         templatePath,
       ),

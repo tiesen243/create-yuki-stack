@@ -42,11 +42,11 @@ const createFingerprint = ({
   random: rand = random,
 }) => {
   const globals = Object.keys(globalObj).toString()
-  const sourceString = globals.length
+  const sourceString = globals.length > 0
     ? globals + createEntropy(32, rand)
     : createEntropy(32, rand)
 
-  return hash(sourceString).substring(0, 32)
+  return hash(sourceString).slice(0, 32)
 }
 
 const createCounter = (count: number) => () => {
@@ -61,5 +61,5 @@ export function createId(rand = random): string {
   const salt = createEntropy(24, rand)
   const hashInput = `${time}${salt}${count}${fingerprint}`
 
-  return `c${hash(hashInput).substring(1, 24)}`
+  return `c${hash(hashInput).slice(1, 24)}`
 }

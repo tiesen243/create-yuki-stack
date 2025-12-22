@@ -1,6 +1,7 @@
 type PackageManager = 'npm' | 'yarn' | 'pnpm' | 'bun'
 
 export function getPackageManager(): PackageManager {
+  // oxlint-disable-next-line no-process-env
   const pm = process.env.npm_config_user_agent ?? ''
   if (pm.startsWith('yarn')) return 'yarn'
   if (pm.startsWith('pnpm')) return 'pnpm'
