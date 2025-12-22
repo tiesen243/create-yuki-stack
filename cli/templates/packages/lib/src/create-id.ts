@@ -42,9 +42,10 @@ const createFingerprint = ({
   random: rand = random,
 }) => {
   const globals = Object.keys(globalObj).toString()
-  const sourceString = globals.length > 0
-    ? globals + createEntropy(32, rand)
-    : createEntropy(32, rand)
+  const sourceString =
+    globals.length > 0
+      ? globals + createEntropy(32, rand)
+      : createEntropy(32, rand)
 
   return hash(sourceString).slice(0, 32)
 }

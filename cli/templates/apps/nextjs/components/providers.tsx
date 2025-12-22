@@ -9,7 +9,7 @@ import { ThemeProvider } from '@{{ name }}/ui'
 let clientQueryClientSingleton: QueryClient | undefined
 export const getQueryClient = () => {
   if (typeof window === 'undefined') return createQueryClient()
-return (clientQueryClientSingleton ??= createQueryClient())
+  return (clientQueryClientSingleton ??= createQueryClient())
 }
 
 export function Providers({

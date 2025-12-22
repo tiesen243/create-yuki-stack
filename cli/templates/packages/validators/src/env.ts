@@ -3,10 +3,8 @@ import * as z from 'zod/mini'
 
 export const env = createEnv({
   server: {
-    NODE_ENV: z._default(
-      z.enum(['development', 'production', 'test']),
-      'development',
-    ),
+    // prettier-ignore
+    NODE_ENV: z._default(z.enum(['development', 'production', 'test']), 'development'),
 
     // Vercel environment variables
     VERCEL: z.optional(z.string()),

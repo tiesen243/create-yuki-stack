@@ -26,7 +26,10 @@ export async function generateCodeChallenge(
   const data = encoder.encode(codeVerifier)
   const digest = await crypto.subtle.digest('SHA-256', data)
   const base64String = btoa(String.fromCodePoint(...new Uint8Array(digest)))
-  return base64String.replaceAll('+', '-').replaceAll('/', '_').replaceAll('=', '')
+  return base64String
+    .replaceAll('+', '-')
+    .replaceAll('/', '_')
+    .replaceAll('=', '')
 }
 
 export async function hashSecret(secret: string): Promise<Uint8Array> {
@@ -52,7 +55,9 @@ export function decodeHex(hex: string): Uint8Array {
 }
 
 export function encodeBase64Url(bytes: Uint8Array): string {
-  const binary = Array.from(bytes, (byte) => String.fromCodePoint(byte)).join('')
+  const binary = Array.from(bytes, (byte) => String.fromCodePoint(byte)).join(
+    '',
+  )
   return btoa(binary)
     .replaceAll('+', '-')
     .replaceAll('/', '_')

@@ -12,7 +12,7 @@ interface TRPCContext {
 const createTRPCContext = async (opts: {
   headers: Headers
 }): Promise<TRPCContext> => {
-  return ({ headers: opts.headers })
+  return { headers: opts.headers }
 }
 
 const t = initTRPC
