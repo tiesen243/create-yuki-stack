@@ -1,6 +1,5 @@
-import mongoose from 'mongoose'
-
 import { env } from '@{{ name }}/validators/env'
+import mongoose from 'mongoose'
 
 import * as schema from './schema'
 

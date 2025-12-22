@@ -1,9 +1,7 @@
 import { PrismaPg } from '@prisma/adapter-pg'
-
 import { env } from '@{{ name }}/validators/env'
 
 import { PrismaClient } from './generated/client'
-
 
 const createPrismaClient = () => {
   const adapter = new PrismaPg({ connectionString: env.DATABASE_URL })

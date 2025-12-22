@@ -1,6 +1,7 @@
+import type { ProjectOptions } from '@/commands/init/types'
+
 import fs from 'node:fs/promises'
 
-import type { ProjectOptions } from '@/commands/init/types'
 import { addEnv } from '@/utils/add-env'
 import { getPackageVersions } from '@/utils/get-package-version'
 
@@ -14,10 +15,6 @@ export async function addAuth(opts: ProjectOptions): Promise<void> {
   if (opts.auth === 'basic-auth')
     await fs.mkdir(`${destPath}/src/core`, { recursive: true })
   await Promise.all([
-    fs.copyFile(
-      new URL('eslint.config.js', templatePath),
-      `${destPath}/eslint.config.js`,
-    ),
     fs.copyFile(
       new URL('tsdown.config.ts', templatePath),
       `${destPath}/tsdown.config.ts`,

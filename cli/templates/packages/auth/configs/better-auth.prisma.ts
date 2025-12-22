@@ -1,8 +1,8 @@
 import type { BetterAuthOptions } from 'better-auth'
-import { prismaAdapter } from 'better-auth/adapters/prisma'
 
 import { db } from '@{{ name }}/db'
 import { env } from '@{{ name }}/validators/env'
+import { prismaAdapter } from 'better-auth/adapters/prisma'
 
 const database = prismaAdapter(db, {
   provider: 'postgresql',

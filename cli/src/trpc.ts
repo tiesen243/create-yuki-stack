@@ -1,4 +1,5 @@
 import type { TrpcCliMeta } from 'trpc-cli'
+
 import { initTRPC } from '@trpc/server'
 
 const t = initTRPC.meta<TrpcCliMeta>().create()

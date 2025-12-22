@@ -1,11 +1,11 @@
-import * as React from 'react'
 import type { RouterUtils } from '@orpc/tanstack-query'
+import type { AppRouter } from '@{{ name }}/api'
+
 import { createORPCClient } from '@orpc/client'
 import { RPCLink } from '@orpc/client/fetch'
 import { BatchLinkPlugin, DedupeRequestsPlugin } from '@orpc/client/plugins'
 import { createTanstackQueryUtils } from '@orpc/tanstack-query'
-
-import type { AppRouter } from '@{{ name }}/api'
+import * as React from 'react'
 
 import { getBaseUrl } from '@/lib/utils'
 
@@ -22,7 +22,6 @@ const useORPC = () => {
 function ORPCReactProvider({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // eslint-disable-next-line @eslint-react/naming-convention/use-state
   const [orpcClient] = React.useState(() => {
     const link = new RPCLink({
       url: getBaseUrl() + '/api/orpc',

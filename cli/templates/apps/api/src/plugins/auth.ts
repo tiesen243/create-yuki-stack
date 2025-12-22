@@ -1,6 +1,5 @@
-import Elysia from 'elysia'
-
 import { auth } from '@{{ name }}/auth'
+import Elysia from 'elysia'
 
 export const authPlugin = new Elysia({ name: 'auth' })
   .derive({ as: 'global' }, async ({ headers }) => {

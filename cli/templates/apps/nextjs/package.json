@@ -7,33 +7,26 @@
     "build": "{{ pkm }} run with-env next build",
     "clean": "git clean -xdf .cache .next .turbo node_modules",
     "dev": "{{ pkm }} run with-env next dev --turbopack",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "bun with-env next typegen && eslint",
     "start": "{{ pkm }} run with-env next start",
     "typecheck": "bun with-env next typegen && tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
-  "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
+    "@tanstack/react-query": "catalog:",
     "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "@tanstack/react-query": "catalog:",
-    "next": "^16.0.10",
+    "next": "^16.1.0",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
   "devDependencies": {
-    "@{{ name }}/eslint-config": "workspace:*",
-    "@{{ name }}/prettier-config": "workspace:*",
-    "@{{ name }}/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "catalog:tailwind",
     "@types/node": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
+    "@{{ name }}/tsconfig": "workspace:*",
     "dotenv-cli": "catalog:",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:"
   }

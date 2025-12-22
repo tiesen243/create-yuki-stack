@@ -1,7 +1,8 @@
 import type { ResponseHeadersPluginContext } from '@orpc/server/plugins'
+
 import { os } from '@orpc/server'
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// oxlint-disable-next-line require-await
 const createORPCContext = async (opts: { headers: Headers }) => {
   console.log(
     '>>> oRPC Request from',

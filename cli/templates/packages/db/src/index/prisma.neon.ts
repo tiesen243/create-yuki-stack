@@ -1,5 +1,4 @@
 import { PrismaNeon } from '@prisma/adapter-neon'
-
 import { env } from '@{{ name }}/validators/env'
 
 import { PrismaClient } from './generated/client'

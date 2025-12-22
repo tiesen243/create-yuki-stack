@@ -1,6 +1,6 @@
-import fs from 'node:fs/promises'
-
 import type { ProjectOptions } from '@/commands/init/types'
+
+import fs from 'node:fs/promises'
 
 export async function generateReadme(opts: ProjectOptions): Promise<void> {
   const content = generateReadmeContent(opts)
@@ -134,8 +134,10 @@ function generateTechStack(opts: ProjectOptions): string {
     '- **Turbo** - High-performance build system for JavaScript and TypeScript',
   )
   stack.push('- **TypeScript** - JavaScript with syntax for types')
-  stack.push('- **ESLint** - Linting utility for JavaScript and TypeScript')
-  stack.push('- **Prettier** - Opinionated code formatter')
+  stack.push(
+    '- **Oxlint** - Designed to catch erroneous or useless code without requiring any configurations by default',
+  )
+  stack.push('- **Oxfmt** - A Prettier-compatible code formatter')
   stack.push(
     `- **${PACKAGE_MANAGER_DISPLAY[opts.packageManager]}** - Package manager`,
   )
@@ -232,7 +234,7 @@ function generateProjectStructure(opts: ProjectOptions): string {
   structure.push(
     '├── tools/                   # Build tools and configurations',
   )
-  const tools = ['eslint', 'prettier', 'typescript']
+  const tools = ['oxfmt', 'oxlint', 'typescript']
   if (opts.extras.includes('gh-actions')) tools.push('github')
   tools.sort().forEach((tool, index) => {
     const isLast = index === tools.length - 1
@@ -347,7 +349,7 @@ function generateScripts(opts: ProjectOptions): string {
     `${opts.packageManager} run build        # Build for production`,
     '',
     '# Code Quality',
-    `${opts.packageManager} run lint         # Run ESLint`,
+    `${opts.packageManager} run lint         # Run Oxlint`,
     `${opts.packageManager} run typecheck    # Run TypeScript checks`,
   ]
 
@@ -379,8 +381,8 @@ const DESCRIPTIONS = {
   api: 'tRPC API package',
   db: 'Database package',
   email: 'Email service with Resend',
-  eslint: 'ESLint configuration',
-  prettier: 'Prettier configuration',
+  oxlint: 'Oxlint configuration',
+  oxfmt: 'Oxfmt configuration',
   typescript: 'TypeScript configuration',
   github: 'GitHub Actions workflows for CI/CD',
 } as const

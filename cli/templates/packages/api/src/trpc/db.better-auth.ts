@@ -1,8 +1,7 @@
 import { initTRPC, TRPCError } from '@trpc/server'
-import SuperJSON from 'superjson'
-
 import { auth } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
+import SuperJSON from 'superjson'
 
 interface TRPCMeta {
   message?: string

@@ -1,5 +1,8 @@
 import '@/globals.css'
 
+import type { Route } from './+types/root'
+
+import { ThemeProvider } from '@{{ name }}/ui'
 import {
   isRouteErrorResponse,
   Links,
@@ -9,9 +12,6 @@ import {
   ScrollRestoration,
 } from 'react-router'
 
-import { ThemeProvider } from '@{{ name }}/ui'
-
-import type { Route } from './+types/root'
 import { createMetadata } from '@/lib/metadata'
 
 export function Layout({ children }: Readonly<{ children: React.ReactNode }>) {

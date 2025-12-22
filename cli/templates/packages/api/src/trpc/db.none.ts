@@ -1,7 +1,6 @@
 import { initTRPC } from '@trpc/server'
-import SuperJSON from 'superjson'
-
 import { db } from '@{{ name }}/db'
+import SuperJSON from 'superjson'
 
 interface TRPCMeta {
   message?: string

@@ -1,4 +1,5 @@
 import type { Model } from 'mongoose'
+
 import mongoose from 'mongoose'
 
 export interface Post {

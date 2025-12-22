@@ -1,6 +1,7 @@
+import type { ProjectOptions } from '@/commands/init/types'
+
 import fs from 'node:fs/promises'
 
-import type { ProjectOptions } from '@/commands/init/types'
 import {
   getPackageVersion,
   getPackageVersions,
@@ -27,7 +28,6 @@ export async function addBackend(opts: ProjectOptions): Promise<void> {
   await fs.mkdir(srcDir, { recursive: true })
 
   const filesToCopy = [
-    { src: 'eslint.config.js', dest: `${apiDir}/eslint.config.js` },
     { src: 'tsdown.config.ts', dest: `${apiDir}/tsdown.config.ts` },
     { src: 'tsconfig.json', dest: `${apiDir}/tsconfig.json` },
     { src: 'turbo.json', dest: `${apiDir}/turbo.json` },

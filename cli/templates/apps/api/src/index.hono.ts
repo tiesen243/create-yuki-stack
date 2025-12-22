@@ -1,6 +1,6 @@
-import { hc } from 'hono/client'
-
 import type { Server } from '@/server'
+
+import { hc } from 'hono/client'
 
 export const { api } = hc<Server>(getApiUrl())
 

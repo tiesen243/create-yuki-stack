@@ -1,9 +1,8 @@
-import { cache } from 'react'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
-
 import { appRouter, createCaller, createTRPCContext } from '@{{ name }}/api'
 import { createQueryClient } from '@{{ name }}/lib/create-query-client'
+import { cache } from 'react'
 
 interface Options {
   headers: Headers

@@ -21,7 +21,7 @@ export function EmailLayout(props: Readonly<EmailLayoutProps>) {
         <Head>
           <Font
             fontFamily='Geist'
-            fallbackFontFamily="Verdana"
+            fallbackFontFamily='Verdana'
             webFont={{
               url: 'https://fonts.gstatic.com/s/geist/v1/gyByhwUxId8gMEwcGFU.woff2',
               format: 'woff2',

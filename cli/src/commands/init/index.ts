@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises'
+
 import * as p from '@clack/prompts'
 import gradient from 'gradient-string'
 import pc from 'picocolors'

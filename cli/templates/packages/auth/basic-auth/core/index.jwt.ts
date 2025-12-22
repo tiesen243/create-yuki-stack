@@ -1,4 +1,5 @@
 import type { AuthConfig, Session, SessionWithUser } from '@/types'
+
 import { generateStateOrCode } from '@/core/crypto'
 import { JWT } from '@/core/jwt'
 import { Password } from '@/core/password'
@@ -183,7 +184,7 @@ export function Auth(config: AuthConfig) {
         let data
         const contentType = request.headers.get('Content-Type') ?? ''
         if (contentType.includes('application/json'))
-          data = await request.json() as Record<string, unknown>
+          data = (await request.json()) as Record<string, unknown>
         else if (contentType.includes('application/x-www-form-urlencoded')) {
           const formData = await request.formData()
           data = Object.fromEntries(formData.entries())

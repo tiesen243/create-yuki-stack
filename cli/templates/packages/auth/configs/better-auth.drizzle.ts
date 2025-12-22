@@ -1,14 +1,9 @@
 import type { BetterAuthOptions } from 'better-auth'
-import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 
 import { db } from '@{{ name }}/db'
+import { accounts, sessions, users, verifications } from '@{{ name }}/db/schema'
 import { env } from '@{{ name }}/validators/env'
-import {
-  accounts,
-  sessions,
-  users,
-  verifications,
-} from '@{{ name }}/db/schema'
+import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 
 const database = drizzleAdapter(db, {
   provider: 'pg',

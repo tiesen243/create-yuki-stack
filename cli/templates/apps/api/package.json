@@ -8,28 +8,17 @@
     "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "bun run --hot --env-file=../../.env src/server.ts",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
     "start": "node --env-file-if-exists=../../.env ./dist/server.mjs",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/validators": "workspace:*"
   },
   "devDependencies": {
-    "@{{ name }}/eslint-config": "workspace:*",
-    "@{{ name }}/prettier-config": "workspace:*",
-    "@{{ name }}/tsconfig": "workspace:*",
     "@types/node": "catalog:",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
+    "@{{ name }}/tsconfig": "workspace:*",
     "tsdown": "catalog:",
     "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:"
   }
 }

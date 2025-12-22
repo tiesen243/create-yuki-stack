@@ -3,40 +3,29 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": "./dist/index.mjs",
     "./schema": "./dist/schema.mjs",
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
   "scripts": {
     "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --",
     "~dev": "tsdown --watch ./src"
   },
-  "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/validators": "workspace:*"
   },
   "devDependencies": {
-    "@{{ name }}/eslint-config": "workspace:*",
-    "@{{ name }}/prettier-config": "workspace:*",
     "@{{ name }}/tsconfig": "workspace:*",
     "dotenv-cli": "catalog:",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:"
   }
 }

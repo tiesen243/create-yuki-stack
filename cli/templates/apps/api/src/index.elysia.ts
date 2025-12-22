@@ -1,6 +1,6 @@
-import { treaty } from '@elysiajs/eden'
-
 import type { Server } from '@/server'
+
+import { treaty } from '@elysiajs/eden'
 
 export const { api } = treaty<Server>(getApiUrl())
 

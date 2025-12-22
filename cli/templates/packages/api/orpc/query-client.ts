@@ -1,14 +1,15 @@
 import type { StandardRPCJsonSerializedMetaItem } from '@orpc/client/standard'
+
 import { StandardRPCJsonSerializer } from '@orpc/client/standard'
 import { QueryClient } from '@tanstack/react-query'
 
 const serializer = new StandardRPCJsonSerializer({
   customJsonSerializers: [
     // put custom serializers here
-  ]
+  ],
 })
 
-export const createQueryClient = () => 
+export const createQueryClient = () =>
   new QueryClient({
     defaultOptions: {
       queries: {
@@ -24,7 +25,7 @@ export const createQueryClient = () =>
         serializeData(data) {
           const [json, meta] = serializer.serialize(data)
           return { json, meta }
-        }
+        },
       },
       hydrate: {
         deserializeData(data: {
@@ -34,5 +35,5 @@ export const createQueryClient = () =>
           return serializer.deserialize(data.json, data.meta)
         },
       },
-    }
+    },
   })

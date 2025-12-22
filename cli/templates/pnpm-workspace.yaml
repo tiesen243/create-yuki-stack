@@ -4,16 +4,12 @@ packages:
   - tools/*
 
 catalog:
-  '@ianvs/prettier-plugin-sort-imports': ^4.7.0
   '@tanstack/react-query': ^5.90.12
-  '@types/node': ^25.0.2
+  '@types/node': ^25.0.3
   dotenv-cli: ^11.0.0
-  eslint: ^9.39.2
-  prettier: ^3.7.4
-  prettier-plugin-tailwindcss: ^0.7.2
-  tsdown: ^0.18.0
+  tsdown: ^0.18.2
   typescript: ^5.9.3
-  zod: ^4.2.0
+  zod: ^4.2.1
 
 catalogs:
   react:
@@ -26,11 +22,11 @@ catalogs:
     '@tailwindcss/vite': ^4.1.18
     tailwindcss: ^4.1.18
   trpc:
-    '@trpc/server': ^11.8.0
-    '@trpc/client': ^11.8.0
-    '@trpc/tanstack-react-query': ^11.8.0
+    '@trpc/server': ^11.8.1
+    '@trpc/client': ^11.8.1
+    '@trpc/tanstack-react-query': ^11.8.1
     superjson": ^2.2.6
   orpc:
-    '@orpc/server': ^1.12.3
-    '@orpc/client': ^1.12.3
-    '@orpc/tanstack-query': ^1.12.3
+    '@orpc/server': ^1.13.0
+    '@orpc/client': ^1.13.0
+    '@orpc/tanstack-query': ^1.13.0

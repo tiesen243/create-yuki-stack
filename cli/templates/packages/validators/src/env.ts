@@ -1,10 +1,12 @@
-import * as z from 'zod/mini'
-
 import { createEnv } from '@{{ name }}/lib/create-env'
+import * as z from 'zod/mini'
 
 export const env = createEnv({
   server: {
-    NODE_ENV: z._default(z.enum(['development', 'production', 'test']), 'development'),
+    NODE_ENV: z._default(
+      z.enum(['development', 'production', 'test']),
+      'development',
+    ),
 
     // Vercel environment variables
     VERCEL: z.optional(z.string()),
@@ -14,8 +16,7 @@ export const env = createEnv({
   },
 
   clientPrefix: 'PUBLIC_',
-  client: {
-  },
+  client: {},
 
   runtimeEnv: process.env,
 

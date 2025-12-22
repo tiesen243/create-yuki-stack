@@ -1,12 +1,9 @@
 import type { OAuth2Token, OAuthAccount } from '@/types'
+
 import { BaseProvider } from '@/providers/base'
 
 export class Google extends BaseProvider {
-  constructor(
-    clientId: string,
-    clientSecret: string,
-    redirectUri = '',
-  ) {
+  constructor(clientId: string, clientSecret: string, redirectUri = '') {
     super('google', clientId, clientSecret, redirectUri)
   }
 

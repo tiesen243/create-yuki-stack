@@ -1,12 +1,9 @@
 import type { OAuth2Token, OAuthAccount } from '@/types'
+
 import { BaseProvider } from '@/providers/base'
 
 export class Github extends BaseProvider {
-  constructor(
-    clientId: string,
-    clientSecret: string,
-    redirectUri = '',
-  ) {
+  constructor(clientId: string, clientSecret: string, redirectUri = '') {
     super('github', clientId, clientSecret, redirectUri)
   }
 

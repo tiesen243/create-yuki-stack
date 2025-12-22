@@ -1,6 +1,7 @@
+import type { ProjectOptions } from '@/commands/init/types'
+
 import fs from 'node:fs/promises'
 
-import type { ProjectOptions } from '@/commands/init/types'
 import { addEnv } from '@/utils/add-env'
 import { getPackageVersions } from '@/utils/get-package-version'
 
@@ -15,10 +16,6 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
     await fs.mkdir(`${destPath}/prisma`, { recursive: true })
 
   await Promise.all([
-    fs.copyFile(
-      new URL('eslint.config.js', templatePath),
-      `${destPath}/eslint.config.js`,
-    ),
     fs.copyFile(
       new URL(
         opts.database === 'prisma'

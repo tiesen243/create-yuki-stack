@@ -15,4 +15,3 @@ type RouterOutputs = inferRouterOutputs<AppRouter>
 
 export type { AppRouter, RouterInputs, RouterOutputs }
 export { appRouter }
-

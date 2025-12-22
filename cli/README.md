@@ -10,14 +10,14 @@ A modern CLI tool for scaffolding fully-typed, full-stack TypeScript application
 
 ## Features
 
-- 🚀 **Multiple Frontend Options**: Next.js, React Router or TanStack Start
-- 🔄 **API Layer Options**: tRPC or oRPC for end-to-end type safety
-- 🗄️ **Database Choices**: Prisma, Drizzle, or Mongoose
-- 🔒 **Authentication**: Multiple auth solutions including NextAuth.js and Better Auth
-- 🎨 **UI Components**: Optional shadcn/ui integration
-- ⚡ **Turborepo**: Optimized monorepo structure for better developer experience
-- 📦 **Shared Packages**: Common code in packages for better code reuse
-- 🔧 **Pre-configured Tooling**: ESLint, Prettier, TypeScript
+- **Multiple Frontend Options**: Next.js, React Router or TanStack Start
+- **API Layer Options**: tRPC or oRPC for end-to-end type safety
+- **Database Choices**: Prisma, Drizzle, or Mongoose
+- **Authentication**: Multiple auth solutions including NextAuth.js and Better Auth
+- **UI Components**: Optional shadcn/ui integration
+- **Turborepo**: Optimized monorepo structure for better developer experience
+- **Shared Packages**: Common code in packages for better code reuse
+- **Pre-configured Tooling**: Oxlint, Oxfmt, TypeScript
 
 ## Getting Started
 

@@ -1,7 +1,6 @@
 import { Pool } from '@neondatabase/serverless'
-import { drizzle } from 'drizzle-orm/neon-serverless'
-
 import { env } from '@{{ name }}/validators/env'
+import { drizzle } from 'drizzle-orm/neon-serverless'
 
 const createDrizzleClient = () => {
   const client = new Pool({ connectionString: env.DATABASE_URL })

@@ -1,18 +1,14 @@
+import type { AuthConfig } from '@/types'
+
 import { db } from '@{{ name }}/db'
 import { env } from '@{{ name }}/validators/env'
 
-import type { AuthConfig } from '@/types'
 import { Discord } from '@/providers/discord'
 
 export const authOptions = {
   secret: env.AUTH_SECRET,
 
-  providers: [
-    new Discord(
-      env.AUTH_DISCORD_ID,
-      env.AUTH_DISCORD_SECRET,
-    ),
-  ],
+  providers: [new Discord(env.AUTH_DISCORD_ID, env.AUTH_DISCORD_SECRET)],
 
   adapter: {
     user: {

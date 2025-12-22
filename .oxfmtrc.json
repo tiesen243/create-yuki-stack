@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [],
+
+  "jsxSingleQuote": true,
+  "printWidth": 80,
+  "semi": false,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+
+  "experimentalSortImports": {
+    "groups": ["side-effect", "type", "builtin", "external", "internal"],
+    "partitionByComment": true
+  }
+}

@@ -1,6 +1,7 @@
+import type { OAuthAccount } from '@/types'
+
 import { env } from '@{{ name }}/validators/env'
 
-import type { OAuthAccount } from '@/types'
 import { generateCodeChallenge } from '@/core/crypto'
 
 export abstract class BaseProvider {

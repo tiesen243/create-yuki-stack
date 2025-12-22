@@ -1,6 +1,6 @@
-import fs from 'node:fs/promises'
-
 import type { ProjectOptions } from '@/commands/init/types'
+
+import fs from 'node:fs/promises'
 
 export async function getProjectMetadata() {
   const lockFilemap = new Map([
@@ -20,6 +20,7 @@ export async function getProjectMetadata() {
 
   for (const [lockFile, pm] of lockFilemap) {
     if (
+      // oxlint-disable-next-line no-await-in-loop
       await fs
         .access(lockFile)
         .then(() => true)

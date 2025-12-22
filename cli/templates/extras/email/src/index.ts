@@ -1,6 +1,5 @@
-import { Resend } from 'resend'
-
 import { env } from '@{{ name }}/validators/env'
+import { Resend } from 'resend'
 
 import * as Templates from '@/templates'
 

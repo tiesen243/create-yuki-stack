@@ -1,8 +1,7 @@
 import { initTRPC, TRPCError } from '@trpc/server'
-import SuperJSON from 'superjson'
-
 import { auth, validateSessionToken } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
+import SuperJSON from 'superjson'
 
 interface TRPCMeta {
   message?: string
@@ -20,7 +19,9 @@ const isomorphicGetSession = async (headers: Headers) => {
   return auth()
 }
 
-const createTRPCContext = async (opts: { headers: Headers }): Promise<TRPCContext> => {
+const createTRPCContext = async (opts: {
+  headers: Headers
+}): Promise<TRPCContext> => {
   const session = await isomorphicGetSession(opts.headers)
 
   return {

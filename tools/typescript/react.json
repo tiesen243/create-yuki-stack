@@ -4,6 +4,6 @@
   "extends": "./internal-package.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "lib": ["es2022", "dom", "dom.iterable"]
+    "lib": ["es2024", "dom", "dom.iterable"]
   }
 }

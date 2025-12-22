@@ -1,6 +1,6 @@
-import fs from 'node:fs/promises'
-
 import type { ProjectOptions } from '@/commands/init/types'
+
+import fs from 'node:fs/promises'
 
 const versionMap = new Map<string, string>([
   ['node', '24.0.0'],
@@ -17,6 +17,8 @@ export async function addBase(opts: ProjectOptions): Promise<void> {
   await Promise.all([
     fs.copyFile(new URL('_gitignore', templatePath), '.gitignore'),
     fs.copyFile(new URL('turbo.json', templatePath), 'turbo.json'),
+    fs.copyFile(new URL('.oxfmtrc.json', templatePath), '.oxfmtrc.json'),
+    fs.copyFile(new URL('.oxlintrc.json', templatePath), '.oxlintrc.json'),
     fs.cp(new URL('tools', templatePath), 'tools', copyOptions),
     fs.mkdir('apps', { recursive: true }),
     fs.cp(new URL('packages/lib', templatePath), 'packages/lib', copyOptions),

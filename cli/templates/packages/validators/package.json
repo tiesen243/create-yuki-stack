@@ -12,23 +12,16 @@
   "scripts": {
     "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "~dev": "tsdown --watch ./src"
   },
-  "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/lib": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@{{ name }}/eslint-config": "workspace:*",
-    "@{{ name }}/prettier-config": "workspace:*",
-    "@{{ name }}/tsconfig": "workspace:*",
     "@types/node": "catalog:",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
+    "@{{ name }}/tsconfig": "workspace:*",
     "tsdown": "catalog:",
     "typescript": "catalog:"
   }

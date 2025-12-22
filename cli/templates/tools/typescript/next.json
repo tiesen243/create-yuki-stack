@@ -3,7 +3,6 @@
   "display": "Next.js",
   "extends": "./react.json",
   "compilerOptions": {
-    "module": "esnext",
     "plugins": [{ "name": "next" }]
   }
 }

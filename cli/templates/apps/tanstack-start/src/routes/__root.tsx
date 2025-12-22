@@ -4,7 +4,6 @@ import {
   Outlet,
   Scripts,
 } from '@tanstack/react-router'
-
 import { ThemeProvider } from '@{{ name }}/ui'
 
 import globalsCss from '@/globals.css?url'

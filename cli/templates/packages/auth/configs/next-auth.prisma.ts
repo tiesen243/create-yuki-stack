@@ -1,9 +1,9 @@
 import type { NextAuthConfig } from 'next-auth'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import Discord from 'next-auth/providers/discord'
 
+import { PrismaAdapter } from '@auth/prisma-adapter'
 import { db } from '@{{ name }}/db'
 import { env } from '@{{ name }}/validators/env'
+import Discord from 'next-auth/providers/discord'
 
 const adapter = PrismaAdapter(db)
 

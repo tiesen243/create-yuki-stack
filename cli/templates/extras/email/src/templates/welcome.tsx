@@ -1,6 +1,7 @@
+import type { SendEmailParams } from '..'
+
 import { Text } from '@react-email/components'
 
-import type { SendEmailParams } from '..'
 import { EmailLayout } from './_layout'
 
 export default function Welcome({ data }: SendEmailParams) {

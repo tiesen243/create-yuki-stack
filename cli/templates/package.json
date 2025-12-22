@@ -15,19 +15,17 @@
     "db:push": "turbo run db:push -F @{{ name }}/db",
     "db:studio": "turbo run db:studio -F @{{ name }}/db",
     "dev": "turbo dev --continue",
-    "format": "turbo run format --continue -- --cache --cache-location .cache/prettiercache",
-    "format:fix": "turbo run format --continue -- --write --cache --cache-location .cache/prettiercache",
+    "format": "oxfmt --check",
+    "format:fix": "oxfmt --write",
     "postinstall": "{{ pkm }} run lint:ws",
-    "lint": "turbo run lint --continue -- --cache --cache-location .cache/eslintcache",
-    "lint:fix": "turbo run lint --continue -- --fix --cache --cache-location .cache/eslintcache",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
     "lint:ws": "{{ pkme }} sherif@latest",
     "typecheck": "turbo run typecheck"
   },
-  "prettier": "@{{ name }}/prettier-config",
   "devDependencies": {
-    "@{{ name }}/prettier-config": "workspace:*",
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
-    "prettier-plugin-tailwindcss": "catalog:",
-    "turbo": "^2.6.1"
+    "oxfmt": "^0.20.0",
+    "oxlint": "^1.35.0",
+    "turbo": "^2.7.1"
   }
 }

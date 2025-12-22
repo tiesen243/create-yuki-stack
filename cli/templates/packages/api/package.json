@@ -4,32 +4,25 @@
   "private": true,
   "license": "MIT",
   "type": "module",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
   "scripts": {
     "build": "tsdown",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsdown --watch ./src",
-    "format": "prettier --check . --ignore-path ../../.gitignore",
-    "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
-  "prettier": "@{{ name }}/prettier-config",
   "dependencies": {
     "@{{ name }}/validators": "workspace:*"
   },
   "devDependencies": {
-    "@{{ name }}/eslint-config": "workspace:*",
-    "@{{ name }}/prettier-config": "workspace:*",
-    "@{{ name }}/tsconfig": "workspace:*",
     "@types/node": "catalog:",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
+    "@{{ name }}/tsconfig": "workspace:*",
     "tsdown": "catalog:",
     "typescript": "catalog:"
   }

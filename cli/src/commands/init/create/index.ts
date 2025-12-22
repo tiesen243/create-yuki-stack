@@ -1,10 +1,13 @@
+import type { ProjectOptions } from '@/commands/init/types'
+
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
+
 import { spinner } from '@clack/prompts'
 import pc from 'picocolors'
 
-import type { ProjectOptions } from '@/commands/init/types'
 import { getExecutor } from '@/utils/get-package-manager'
+
 import { addApi } from './api'
 import { addAuth } from './auth'
 import { addBackend } from './backend'

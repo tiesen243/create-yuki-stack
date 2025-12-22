@@ -1,5 +1,5 @@
-import { cache } from 'react'
 import { betterAuth } from 'better-auth'
+import { cache } from 'react'
 
 import { authOptions } from './config'
 

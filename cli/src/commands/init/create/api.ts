@@ -1,6 +1,6 @@
-import fs from 'node:fs/promises'
-
 import type { ProjectOptions } from '@/commands/init/types'
+
+import fs from 'node:fs/promises'
 
 export async function addApi(opts: ProjectOptions): Promise<void> {
   if (['none', 'eden', 'hc'].includes(opts.api)) return
@@ -11,10 +11,6 @@ export async function addApi(opts: ProjectOptions): Promise<void> {
   await fs.mkdir(`${destPath}/src/routers`, { recursive: true })
   if (opts.backend === 'none') {
     await Promise.all([
-      fs.copyFile(
-        new URL('eslint.config.js', templatePath),
-        `${destPath}/eslint.config.js`,
-      ),
       fs.copyFile(
         new URL('tsdown.config.ts', templatePath),
         `${destPath}/tsdown.config.ts`,

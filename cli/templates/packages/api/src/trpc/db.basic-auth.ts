@@ -1,9 +1,9 @@
-import { initTRPC, TRPCError } from '@trpc/server'
-import SuperJSON from 'superjson'
-
 import type { SessionWithUser } from '@{{ name }}/auth'
+
+import { initTRPC, TRPCError } from '@trpc/server'
 import { auth } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
+import SuperJSON from 'superjson'
 
 interface TRPCMeta {
   message?: string
@@ -15,7 +15,9 @@ interface TRPCContext {
   db: typeof db
 }
 
-const createTRPCContext = async (opts: { headers: Headers }): Promise<TRPCContext> => {
+const createTRPCContext = async (opts: {
+  headers: Headers
+}): Promise<TRPCContext> => {
   const session = await auth(opts)
 
   return {

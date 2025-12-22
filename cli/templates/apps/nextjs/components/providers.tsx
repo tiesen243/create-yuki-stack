@@ -1,11 +1,10 @@
 'use client'
 
 import type { QueryClient } from '@tanstack/react-query'
+
 import { QueryClientProvider } from '@tanstack/react-query'
-
-import { ThemeProvider } from '@{{ name }}/ui'
-
 import { createQueryClient } from '@{{ name }}/lib/create-query-client'
+import { ThemeProvider } from '@{{ name }}/ui'
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined
 export const getQueryClient = () => {
@@ -20,9 +19,7 @@ export function Providers({
 
   return (
     <ThemeProvider attribute='class' disableTransitionOnChange enableSystem>
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </ThemeProvider>
   )
 }

@@ -1,9 +1,9 @@
 import type { NextAuthConfig } from 'next-auth'
-import { DrizzleAdapter } from '@auth/drizzle-adapter'
-import Discord from 'next-auth/providers/discord'
 
+import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { db } from '@{{ name }}/db'
 import { env } from '@{{ name }}/validators/env'
+import Discord from 'next-auth/providers/discord'
 
 const adapter = DrizzleAdapter(db)
 

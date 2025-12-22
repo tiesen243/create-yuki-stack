@@ -1,9 +1,9 @@
 import type { NextAuthConfig } from 'next-auth'
+
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
+import { env } from '@{{ name }}/validators/env'
 import { MongoClient } from 'mongodb'
 import Discord from 'next-auth/providers/discord'
-
-import { env } from '@{{ name }}/validators/env'
 
 const client = new MongoClient(process.env.DATABASE_URL ?? '', {
   serverApi: { version: '1', strict: true, deprecationErrors: true },

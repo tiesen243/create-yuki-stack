@@ -1,8 +1,7 @@
 import '@/app/globals.css'
 
-import { Geist, Geist_Mono } from 'next/font/google'
-
 import { cn } from '@{{ name }}/ui'
+import { Geist, Geist_Mono } from 'next/font/google'
 
 import { Providers } from '@/components/providers'
 import { createMetadata } from '@/lib/metadata'

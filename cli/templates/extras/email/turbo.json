@@ -2,10 +2,9 @@
   "$schema": "../../node_modules/turbo/schema.json",
   "extends": ["//"],
   "tasks": {
-    "dev:email": { 
+    "dev:email": {
       "cache": false,
       "persistent": true
     }
   }
 }
-

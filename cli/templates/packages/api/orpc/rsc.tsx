@@ -1,14 +1,12 @@
-import { cache } from 'react'
 import { createRouterUtils } from '@orpc/tanstack-query'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-
 import {
   appRouter,
   createORPCContext,
   createRouterClient,
 } from '@{{ name }}/api'
-
 import { createQueryClient } from '@{{ name }}/lib/create-query-client'
+import { cache } from 'react'
 
 interface Options {
   headers: Headers

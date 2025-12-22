@@ -1,8 +1,8 @@
 import type { BetterAuthOptions } from 'better-auth'
-import { mongodbAdapter } from 'better-auth/adapters/mongodb'
-import { MongoClient } from 'mongodb'
 
 import { env } from '@{{ name }}/validators/env'
+import { mongodbAdapter } from 'better-auth/adapters/mongodb'
+import { MongoClient } from 'mongodb'
 
 const client = new MongoClient(env.DATABASE_URL ?? '', {
   serverApi: { version: '1', strict: true, deprecationErrors: true },

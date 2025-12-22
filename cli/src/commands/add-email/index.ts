@@ -1,6 +1,7 @@
 import { exec } from 'node:child_process'
 import fs from 'node:fs/promises'
 import { promisify } from 'node:util'
+
 import * as p from '@clack/prompts'
 import pc from 'picocolors'
 
@@ -32,19 +33,14 @@ export async function addEmailMonorepo(spinner?: ReturnType<typeof p.spinner>) {
 
   const { name, packageManager } = await getProjectMetadata()
 
-  const needReplaces = [
-    'eslint.config.js',
-    'package.json',
-    'tsconfig.json',
-    'src/index.ts',
-  ]
+  const needReplaces = ['package.json', 'tsconfig.json', 'src/index.ts']
   await Promise.all(
     needReplaces.map(async (file) => {
       const filePath = `packages/email/${file}`
       const content = await fs.readFile(filePath, 'utf-8')
       await fs.writeFile(
         filePath,
-        content.replace(/{{ name }}/g, name),
+        content.replaceAll('{{ name }}', name),
         'utf-8',
       )
     }),
@@ -71,8 +67,8 @@ async function addEmailMonoapp(spinner: ReturnType<typeof p.spinner>) {
 
   const content = await fs.readFile(`${destPath}/index.ts`, 'utf-8')
   const replacedContent = content
-    .replace(/import { env } from '@{{ name }}\/validators\/env'\n\n/g, '')
-    .replace(/env\.(\w+)/g, "process.env.$1 ?? ''")
+    .replaceAll("import { env } from '@{{ name }}/validators/env'\n\n", '')
+    .replaceAll(/env\.(\w+)/g, "process.env.$1 ?? ''")
   await fs.writeFile(`${destPath}/index.ts`, replacedContent, 'utf-8')
 
   const { packageManager } = await getProjectMetadata()

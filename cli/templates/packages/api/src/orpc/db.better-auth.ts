@@ -1,6 +1,6 @@
 import type { ResponseHeadersPluginContext } from '@orpc/server/plugins'
-import { ORPCError, os } from '@orpc/server'
 
+import { ORPCError, os } from '@orpc/server'
 import { auth } from '@{{ name }}/auth'
 import { db } from '@{{ name }}/db'
 
@@ -42,9 +42,4 @@ const protectedProcedure = o.use(timingMiddleware).use(({ context, next }) => {
   })
 })
 
-export {
-  o,
-  createORPCContext,
-  publicProcedure,
-  protectedProcedure,
-}
+export { o, createORPCContext, publicProcedure, protectedProcedure }

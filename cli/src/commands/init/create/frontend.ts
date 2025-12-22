@@ -1,7 +1,7 @@
+import type { ProjectOptions } from '@/commands/init/types'
+
 import fs from 'node:fs/promises'
 import path from 'node:path'
-
-import type { ProjectOptions } from '@/commands/init/types'
 
 export async function addFrontend(opts: ProjectOptions): Promise<void> {
   const templatePath = new URL('../templates/', import.meta.url)

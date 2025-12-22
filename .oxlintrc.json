@@ -1,0 +1,116 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["unicorn", "typescript", "oxc"],
+  "categories": {
+    "correctness": "error",
+    "perf": "error",
+    "suspicious": "error",
+    "pedantic": "error"
+  },
+  "env": {
+    "builtin": true
+  },
+  "globals": {},
+  "ignorePatterns": ["*.config.js", "*.config.ts"],
+  "overrides": [
+    {
+      "files": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+      "rules": {
+        "eslint/max-lines": "off",
+        "eslint/max-lines-per-function": "off",
+        "eslint/no-duplicate-imports": [
+          "error",
+          { "allowSeparateTypeImports": true }
+        ],
+        "eslint/no-empty": "error",
+        "eslint/no-inline-comments": "off"
+      },
+      "plugins": ["eslint"]
+    },
+    {
+      "files": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+      "rules": {
+        "unicorn/filename-case": ["error", { "case": "kebabCase" }]
+      },
+      "plugins": ["unicorn"]
+    },
+    {
+      "files": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+      "rules": {
+        "typescript/consistent-type-imports": [
+          "error",
+          {
+            "fixStyle": "separate-type-imports",
+            "prefer": "type-imports"
+          }
+        ],
+        "typescript/no-explicit-any": "error",
+        "typescript/no-import-type-side-effects": "error",
+        "typescript/no-non-null-assertion": "error"
+      },
+      "plugins": ["typescript"]
+    },
+    {
+      "files": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+      "rules": {
+        "import/max-dependencies": "off",
+        "import/no-anonymous-default-export": "warn",
+        "import/no-duplicates": "error",
+        "import/no-unassigned-import": "off"
+      },
+      "plugins": ["import"]
+    },
+    {
+      "files": ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
+      "rules": {
+        "node/no-process-env": "error"
+      },
+      "plugins": ["node"]
+    },
+    {
+      "files": ["**/env*.ts"],
+      "rules": {
+        "node/no-process-env": "off"
+      },
+      "plugins": ["node"]
+    },
+    {
+      "files": ["**/*.jsx", "**/*.tsx"],
+      "rules": {
+        "react/button-has-type": "error",
+        "react/jsx-filename-extension": [
+          "error",
+          { "extensions": ["jsx", "tsx"] }
+        ],
+        "react/no-unknown-property": "error",
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-boolean-value": "error",
+        "react/self-closing-comp": "error"
+      },
+      "plugins": ["react"]
+    }
+  ],
+  "settings": {
+    "jsx-a11y": {
+      "polymorphicPropName": null,
+      "components": {
+        "Button": "button"
+      },
+      "attributes": {}
+    },
+    "react": {
+      "formComponents": [],
+      "linkComponents": [{ "name": "Link", "attributes": ["href", "to"] }]
+    },
+    "jsdoc": {
+      "ignorePrivate": false,
+      "ignoreInternal": false,
+      "ignoreReplacesDocs": true,
+      "overrideReplacesDocs": true,
+      "augmentsExtendsReplacesDocs": false,
+      "implementsReplacesDocs": false,
+      "exemptDestructuredRootsFromChecks": false,
+      "tagNamePreference": {}
+    }
+  }
+}

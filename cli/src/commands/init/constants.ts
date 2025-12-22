@@ -1,4 +1,5 @@
 import type { ProjectOptions } from '@/commands/init/types'
+
 import { getPackageManager } from '@/utils/get-package-manager'
 
 export const DEFAULT_PROJECT_NAME = 'my-yuki-app'

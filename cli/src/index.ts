@@ -4,6 +4,7 @@ import { addEmailCommand } from '@/commands/add-email'
 import { addGhActionsCommand } from '@/commands/add-gh-actions'
 import { initCommand } from '@/commands/init'
 import { createTRPCRouter } from '@/trpc'
+
 import packageJson from '../package.json'
 
 const exit = () => process.exit(0)
