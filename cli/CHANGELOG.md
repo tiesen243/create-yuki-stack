@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.2.12
+
+### Patch Changes
+
+- [`8ed6885`](https://github.com/tiesen243/create-yuki-stack/commit/8ed68859a078660ef97a5e5e5478d7a145d68493) Thanks [@tiesen243](https://github.com/tiesen243)! - fix catalog
+
 ## 0.2.11
 
 ### Patch Changes
