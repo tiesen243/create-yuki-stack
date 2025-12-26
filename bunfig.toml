@@ -1,0 +1,7 @@
+[install]
+linker = "isolated"
+linkWorkspacePackages = true
+
+[run]
+bun = true
+silent = true
