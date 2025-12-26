@@ -1,5 +1,11 @@
 # @yuki/github
 
+## 1.0.2
+
+### Patch Changes
+
+- [`effa292`](https://github.com/tiesen243/create-yuki-stack/commit/effa292cea435e091646762bab6f9f8136f0254f) Thanks [@tiesen243](https://github.com/tiesen243)! - update ci
+
 ## 1.0.1
 
 ### Patch Changes

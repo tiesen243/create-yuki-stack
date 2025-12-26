@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.2.8
+
+### Patch Changes
+
+- [`effa292`](https://github.com/tiesen243/create-yuki-stack/commit/effa292cea435e091646762bab6f9f8136f0254f) Thanks [@tiesen243](https://github.com/tiesen243)! - update ci
+
+- [`da2b4d7`](https://github.com/tiesen243/create-yuki-stack/commit/da2b4d755f15408b44e2bc847a8d5e1917e692f5) Thanks [@tiesen243](https://github.com/tiesen243)! - bump deps
+
 ## 0.2.7
 
 ### Patch Changes
