@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.2.11
+
+### Patch Changes
+
+- [`bbcca9d`](https://github.com/tiesen243/create-yuki-stack/commit/bbcca9d04ec4524cf1d4f5f67786276d8f71f3b0) Thanks [@tiesen243](https://github.com/tiesen243)! - update catalog
+
 ## 0.2.10
 
 ### Patch Changes

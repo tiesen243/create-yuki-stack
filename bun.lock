@@ -14,7 +14,7 @@
     },
     "cli": {
       "name": "create-yuki-stack",
-      "version": "0.2.9",
+      "version": "0.2.10",
       "bin": "./dist/index.mjs",
       "dependencies": {
         "@clack/prompts": "^0.11.0",
@@ -44,17 +44,17 @@
     "dev": {
       "@types/node": "^25.0.3",
       "dotenv-cli": "^11.0.0",
-      "tsdown": "^0.18.2",
+      "tsdown": "^0.18.3",
       "typescript": "^5.9.3",
     },
     "orpc": {
-      "@orpc/client": "^1.12.3",
-      "@orpc/react-query": "^1.12.3",
-      "@orpc/server": "^1.12.3",
+      "@orpc/client": "^1.13.1",
+      "@orpc/react-query": "^1.13.1",
+      "@orpc/server": "^1.13.1",
     },
     "prod": {
       "@tanstack/react-query": "^5.90.12",
-      "zod": "^4.2.0",
+      "zod": "^4.2.1",
     },
     "react": {
       "@types/react": "^19.2.7",
