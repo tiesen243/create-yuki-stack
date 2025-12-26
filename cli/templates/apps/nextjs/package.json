@@ -12,7 +12,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query": "catalog:prod",
     "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
@@ -22,12 +22,12 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "catalog:tailwind",
-    "@types/node": "catalog:",
+    "@types/node": "catalog:dev",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "@{{ name }}/tsconfig": "workspace:*",
-    "dotenv-cli": "catalog:",
+    "dotenv-cli": "catalog:dev",
     "tailwindcss": "catalog:tailwind",
-    "typescript": "catalog:"
+    "typescript": "catalog:dev"
   }
 }

@@ -27,11 +27,13 @@
   "devDependencies": {
     "@{{ name }}/tsconfig": "workspace:*",
     "react-email": "^5.1.0",
-    "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "tsdown": "catalog:dev",
+    "typescript": "catalog:dev"
   },
   "peerDependencies": {
     "@types/react": "catalog:react",
-    "react": "catalog:react"
+    "@types/react-dom": "catalog:react",
+    "react": "catalog:react",
+    "react-dom": "catalog:react"
   }
 }

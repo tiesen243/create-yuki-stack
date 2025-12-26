@@ -103,7 +103,7 @@ export async function addDatabase(opts: ProjectOptions): Promise<void> {
         mongoose: versions.mongoose,
       },
       devDependencies: {
-        '@types/node': 'catalog:',
+        '@types/node': 'catalog:dev',
       },
     },
   }

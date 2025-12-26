@@ -33,12 +33,6 @@
       "cache": false,
       "persistent": true
     },
-    "format": {
-      "outputLogs": "new-only"
-    },
-    "lint": {
-      "outputLogs": "new-only"
-    },
     "typecheck": {
       "outputLogs": "new-only"
     }

@@ -14,7 +14,7 @@
   "dependencies": {
     "@react-router/node": "^7.11.0",
     "@react-router/serve": "^7.11.0",
-    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query": "catalog:prod",
     "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
@@ -26,13 +26,13 @@
   "devDependencies": {
     "@react-router/dev": "^7.11.0",
     "@tailwindcss/vite": "catalog:tailwind",
-    "@types/node": "catalog:",
+    "@types/node": "catalog:dev",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "@{{ name }}/tsconfig": "workspace:*",
-    "dotenv-cli": "catalog:",
+    "dotenv-cli": "catalog:dev",
     "tailwindcss": "catalog:tailwind",
-    "typescript": "catalog:",
+    "typescript": "catalog:dev",
     "vite": "^7.3.0",
     "vite-tsconfig-paths": "^6.0.3"
   }

@@ -17,12 +17,12 @@
   },
   "dependencies": {
     "@{{ name }}/lib": "workspace:*",
-    "zod": "catalog:"
+    "zod": "catalog:prod"
   },
   "devDependencies": {
-    "@types/node": "catalog:",
+    "@types/node": "catalog:dev",
     "@{{ name }}/tsconfig": "workspace:*",
-    "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "tsdown": "catalog:dev",
+    "typescript": "catalog:dev"
   }
 }

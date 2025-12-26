@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@{{ name }}/tsconfig": "workspace:*",
-    "dotenv-cli": "catalog:",
-    "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "dotenv-cli": "catalog:dev",
+    "tsdown": "catalog:dev",
+    "typescript": "catalog:dev"
   }
 }

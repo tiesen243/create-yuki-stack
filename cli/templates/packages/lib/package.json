@@ -16,13 +16,13 @@
     "~dev": "tsdown --watch"
   },
   "dependencies": {
-    "@tanstack/react-query": "catalog:",
-    "zod": "catalog:"
+    "@tanstack/react-query": "catalog:prod",
+    "zod": "catalog:prod"
   },
   "devDependencies": {
-    "@types/node": "catalog:",
+    "@types/node": "catalog:dev",
     "@{{ name }}/tsconfig": "workspace:*",
-    "tsdown": "catalog:",
-    "typescript": "catalog:"
+    "tsdown": "catalog:dev",
+    "typescript": "catalog:dev"
   }
 }
