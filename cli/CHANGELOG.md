@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.2.10
+
+### Patch Changes
+
+- [`28ff92d`](https://github.com/tiesen243/create-yuki-stack/commit/28ff92dd29d0d5533e75f5d59e38ca9ee4db221a) Thanks [@tiesen243](https://github.com/tiesen243)! - add missing exports
+
 ## 0.2.9
 
 ### Patch Changes
