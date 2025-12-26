@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.2.9
+
+### Patch Changes
+
+- [`832c21c`](https://github.com/tiesen243/create-yuki-stack/commit/832c21c99707fbdba3c72fe064989c19e8beef8e) Thanks [@tiesen243](https://github.com/tiesen243)! - update tailwind config
+
+- [`431cab9`](https://github.com/tiesen243/create-yuki-stack/commit/431cab97bc334d05d210c51f9aa3526dca16c071) Thanks [@tiesen243](https://github.com/tiesen243)! - add missing keyframes
+
 ## 0.2.8
 
 ### Patch Changes
