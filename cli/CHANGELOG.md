@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.2.13
+
+### Patch Changes
+
+- [`57d1d2a`](https://github.com/tiesen243/create-yuki-stack/commit/57d1d2ad9430808f21b5ea50d87f27d323410194) Thanks [@tiesen243](https://github.com/tiesen243)! - fix tanstack start app
+
 ## 0.2.12
 
 ### Patch Changes
