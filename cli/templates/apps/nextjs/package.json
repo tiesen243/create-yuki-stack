@@ -16,7 +16,7 @@
     "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
-    "next": "^16.1.0",
+    "next": "^16.1.1",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },

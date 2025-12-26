@@ -49,9 +49,7 @@ export async function createProject(
         { cwd },
       )
       await execAsync(`${opts.packageManager} install`, { cwd })
-      await execAsync(`${getExecutor(opts.packageManager)} oxfmt --write`, {
-        cwd,
-      })
+      await execAsync('npx oxfmt --write', { cwd })
 
       if (opts.backend === 'spring-boot') {
         if (opts.javaBuildTool === 'gradle') {

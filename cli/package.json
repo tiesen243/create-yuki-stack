@@ -54,7 +54,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@yuki/tsconfig": "workspace:*",
-    "tsdown": "^0.18.2",
+    "tsdown": "^0.18.3",
     "typescript": "catalog:"
   }
 }
