@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.3.1
+
+### Patch Changes
+
+- [`653c0fb`](https://github.com/tiesen243/create-yuki-stack/commit/653c0fb40e64e8c5cd9ef9af8112d6b418b480cf) Thanks [@tiesen243](https://github.com/tiesen243)! - fix missing react-native-screen package
+
 ## 0.3.0
 
 ### Minor Changes
