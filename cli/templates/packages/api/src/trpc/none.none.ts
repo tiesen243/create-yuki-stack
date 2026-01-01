@@ -9,6 +9,7 @@ interface TRPCContext {
   headers: Headers
 }
 
+// oxlint-disable-next-line require-await
 const createTRPCContext = async (opts: {
   headers: Headers
 }): Promise<TRPCContext> => {

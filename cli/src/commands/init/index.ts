@@ -76,6 +76,11 @@ export const initCommand = procedure
                   label: 'TanStack Start (Deprecated)',
                   hint: 'Full-stack React and Solid framework powered by TanStack Router',
                 },
+                {
+                  value: 'expo',
+                  label: 'Expo',
+                  hint: 'A full-stack React Native framework with powerful cloud services to help you move faster at every stage of the app lifecycle',
+                },
               ],
               initialValues: DEFAULT_PROJECT_OPTIONS.frontend,
             }),

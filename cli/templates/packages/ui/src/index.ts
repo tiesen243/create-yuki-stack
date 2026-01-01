@@ -7,4 +7,5 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export * from 'class-variance-authority'
 export * from 'next-themes'

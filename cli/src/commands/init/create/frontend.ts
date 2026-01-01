@@ -115,6 +115,8 @@ async function createApiRoutes(
     return
 
   const apiContent = API_ROUTES_CONTENT[app].api[opts.api]
+  if (!apiContent || !API_ROUTES_DIR[app]) return
+
   let routePath = path.join(
     API_ROUTES_DIR[app],
     opts.api,
@@ -137,9 +139,35 @@ async function addApiClient(
   app: ProjectOptions['frontend'][number],
   opts: ProjectOptions,
 ) {
+  if (app === 'expo') {
+    if (!['trpc', 'orpc'].includes(opts.api)) {
+      await fs.rm(`apps/expo/src/lib/orpc.ts`, { force: true })
+      await fs.rm(`apps/expo/src/lib/trpc.ts`, { force: true })
+      return
+    }
+
+    await fs.rename(
+      `apps/expo/src/lib/${opts.api}.ts`,
+      'apps/expo/src/lib/api.ts',
+    )
+
+    if (opts.api === 'trpc')
+      await fs.rm(`apps/expo/src/lib/orpc.ts`, { force: true })
+    else if (opts.api === 'orpc')
+      await fs.rm(`apps/expo/src/lib/trpc.ts`, { force: true })
+
+    const apiContent = await fs.readFile(`apps/expo/src/lib/api.ts`, 'utf-8')
+    await fs.writeFile(
+      `apps/expo/src/lib/api.ts`,
+      apiContent.replaceAll('{{ app }}', appMap.get(app) ?? app),
+    )
+
+    return
+  }
+
   if (!['trpc', 'orpc'].includes(opts.api)) return
-  // oxlint-disable-next-line no-negated-condition
-  const clientPath = `apps/${app}${app !== 'nextjs' ? '/src' : ''}/${opts.api}`
+
+  const clientPath = `apps/${app}${app === 'nextjs' ? '' : '/src'}/${opts.api}`
 
   await fs.cp(
     new URL(`../templates/packages/api/${opts.api}`, import.meta.url),
@@ -182,7 +210,7 @@ async function createAuthRoutes(
     return
 
   const authContent = API_ROUTES_CONTENT[app].auth[opts.auth]
-  if (!authContent) return
+  if (!authContent || !API_ROUTES_DIR[app]) return
 
   let routePath = path.join(
     API_ROUTES_DIR[app],
@@ -208,6 +236,7 @@ async function updateProvidersFile(
   opts: ProjectOptions,
 ) {
   const providerFile = PROVIDERS_DIR[app]
+  if (!providerFile) return
 
   try {
     let providerContent = await fs.readFile(providerFile, 'utf-8')
@@ -251,6 +280,7 @@ const API_ROUTES_DIR = {
   nextjs: 'apps/nextjs/app/api',
   'react-router': 'apps/react-router/src/routes/api',
   'tanstack-start': 'apps/tanstack-start/src/routes/api',
+  expo: '',
 } as const
 
 const API_ROUTES_CONTENT = {
@@ -287,10 +317,22 @@ const API_ROUTES_CONTENT = {
       'next-auth': ``,
     },
   },
+  expo: {
+    api: {
+      trpc: '',
+      orpc: '',
+    },
+    auth: {
+      'basic-auth': '',
+      'better-auth': '',
+      'next-auth': '',
+    },
+  },
 } as const
 
 const PROVIDERS_DIR = {
   nextjs: 'apps/nextjs/components/providers.tsx',
   'react-router': 'apps/react-router/src/components/providers.tsx',
   'tanstack-start': 'apps/tanstack-start/src/components/providers.tsx',
+  expo: '',
 } as const

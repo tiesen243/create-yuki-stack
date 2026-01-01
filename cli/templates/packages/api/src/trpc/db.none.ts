@@ -11,6 +11,7 @@ interface TRPCContext {
   db: typeof db
 }
 
+// oxlint-disable-next-line require-await
 const createTRPCContext = async (opts: {
   headers: Headers
 }): Promise<TRPCContext> => {

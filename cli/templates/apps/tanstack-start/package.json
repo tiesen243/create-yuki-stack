@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@tanstack/react-query": "catalog:prod",
-    "@tanstack/react-router": "^1.143.11",
-    "@tanstack/react-start": "^1.143.11",
+    "@tanstack/react-router": "^1.144.0",
+    "@tanstack/react-start": "^1.145.3",
     "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:tailwind",
-    "@tanstack/router-cli": "^1.143.11",
+    "@tanstack/router-cli": "^1.145.2",
     "@types/node": "catalog:dev",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",

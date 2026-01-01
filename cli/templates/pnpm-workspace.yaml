@@ -21,6 +21,7 @@ catalogs:
     '@tailwindcss/postcss': ^4.1.18
     '@tailwindcss/vite': ^4.1.18
     tailwindcss: ^4.1.18
+    uniwind: ^1.2.2
   trpc:
     '@trpc/server': ^11.8.1
     '@trpc/client': ^11.8.1

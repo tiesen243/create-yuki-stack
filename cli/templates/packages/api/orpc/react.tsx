@@ -25,7 +25,7 @@ function ORPCReactProvider({
   const [orpcClient] = React.useState(() => {
     const link = new RPCLink({
       url: getBaseUrl() + '/api/orpc',
-      headers: { 'x-orpc-source': 'react-nextjs' },
+      headers: { 'x-orpc-source': '{{ app }}' },
       plugins: [
         new BatchLinkPlugin({
           groups: [{ condition: () => true, context: {} }],

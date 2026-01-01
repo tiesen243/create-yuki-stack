@@ -1,0 +1,35 @@
+{
+  "name": "@{{ name }}/expo",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "clean": "git clean -xdf .cache .expo .turbo node_modules",
+    "start": "expo start",
+    "start:android": "expo start --android",
+    "start:ios": "expo start --ios",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-navigation/native": "^7.1.26",
+    "@react-navigation/native-stack": "^7.9.0",
+    "@tanstack/react-query": "catalog:prod",
+    "@{{ name }}/lib": "workspace:*",
+    "@{{ name }}/ui": "workspace:*",
+    "@{{ name }}/validators": "workspace:*",
+    "expo": "~54.0.30",
+    "expo-constants": "^18.0.12",
+    "expo-secure-store": "^15.0.8",
+    "expo-splash-screen": "^31.0.13",
+    "lucide-react-native": "^0.562.0",
+    "react": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-safe-area-context": "^5.6.2"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:react",
+    "tailwindcss": "catalog:tailwind",
+    "typescript": "catalog:dev",
+    "uniwind": "catalog:tailwind"
+  }
+}

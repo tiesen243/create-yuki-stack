@@ -16,7 +16,7 @@ export const projectOptions = z.object({
   yes: z.boolean().optional(),
 
   frontend: z
-    .array(z.enum(['nextjs', 'react-router', 'tanstack-start']))
+    .array(z.enum(['nextjs', 'react-router', 'tanstack-start', 'expo']))
     .describe('Frontend frameworks')
     .optional(),
 

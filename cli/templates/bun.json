@@ -19,7 +19,8 @@
     "tailwind": {
       "@tailwindcss/postcss": "^4.1.18",
       "@tailwindcss/vite": "^4.1.18",
-      "tailwindcss": "^4.1.18"
+      "tailwindcss": "^4.1.18",
+      "uniwind": "^1.2.2"
     },
     "trpc": {
       "@trpc/server": "^11.8.1",
@@ -30,7 +31,7 @@
     "orpc": {
       "@orpc/server": "^1.13.1",
       "@orpc/client": "^1.13.1",
-      "@orpc/react-query": "^1.13.1"
+      "@orpc/tanstack-query": "^1.13.1"
     }
   }
 }
