@@ -1,5 +1,11 @@
 # create-yuki-stack
 
+## 0.3.0
+
+### Minor Changes
+
+- [`9737dba`](https://github.com/tiesen243/create-yuki-stack/commit/9737dba8a99f73d3e1d8c0a66a2a9a2a6c8bff45) Thanks [@tiesen243](https://github.com/tiesen243)! - added expo app
+
 ## 0.2.13
 
 ### Patch Changes
