@@ -1,6 +1,6 @@
-import crypto from 'node:crypto'
-
 import { decodeBase64Url, encodeBase64Url } from '@/core/crypto'
+
+import crypto from 'node:crypto'
 
 export type JWTAlgorithm = 'HS256' | 'HS384' | 'HS512'
 

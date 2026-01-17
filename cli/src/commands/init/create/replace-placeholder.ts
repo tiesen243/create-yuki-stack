@@ -1,9 +1,9 @@
 import type { ProjectOptions } from '@/commands/init/types'
 
+import { getExecutor } from '@/utils/get-package-manager'
+
 import fs from 'node:fs/promises'
 import path from 'node:path'
-
-import { getExecutor } from '@/utils/get-package-manager'
 
 export async function replacePlaceholder(opts: ProjectOptions): Promise<void> {
   const cwd = process.cwd()

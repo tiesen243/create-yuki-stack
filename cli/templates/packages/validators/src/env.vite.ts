@@ -2,6 +2,8 @@ import { createEnv } from '@{{ name }}/lib/create-env'
 import * as z from 'zod/mini'
 
 export const env = createEnv({
+  shared: {},
+
   server: {},
 
   clientPrefix: 'VITE_',
@@ -24,6 +26,7 @@ export const env = createEnv({
       .VITE_VERCEL_PROJECT_PRODUCTION_URL,
   },
 
+  emptyStringAsUndefined: true,
   skipValidation: true,
 })
 

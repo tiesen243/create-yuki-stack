@@ -1,11 +1,11 @@
 import type { ProjectOptions } from '@/commands/init/types'
 
-import fs from 'node:fs/promises'
-
 import {
   getPackageVersion,
   getPackageVersions,
 } from '@/utils/get-package-version'
+
+import fs from 'node:fs/promises'
 
 export async function addBackend(opts: ProjectOptions): Promise<void> {
   if (opts.backend === 'none') return

@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@tanstack/react-query": "catalog:prod",
-    "@tanstack/react-router": "^1.144.0",
-    "@tanstack/react-start": "^1.145.3",
+    "@tanstack/react-router": "^1.151.1",
+    "@tanstack/react-start": "^1.151.1",
     "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
     "@{{ name }}/validators": "workspace:*",
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:tailwind",
-    "@tanstack/router-cli": "^1.145.2",
+    "@tanstack/router-cli": "^1.151.1",
     "@types/node": "catalog:dev",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
@@ -32,7 +32,7 @@
     "dotenv-cli": "catalog:dev",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:dev",
-    "vite": "^7.3.0",
-    "vite-tsconfig-paths": "^6.0.3"
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.0.4"
   }
 }

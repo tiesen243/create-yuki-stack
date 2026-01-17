@@ -1,9 +1,9 @@
 import type { ProjectOptions } from '@/commands/init/types'
 
-import fs from 'node:fs/promises'
-
 import { procedure } from '@/trpc'
 import { getProjectMetadata } from '@/utils/get-project-metadata'
+
+import fs from 'node:fs/promises'
 
 export const addGhActionsCommand = procedure.mutation(async () => {
   const { name, packageManager } = await getProjectMetadata()

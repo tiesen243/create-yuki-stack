@@ -1,6 +1,4 @@
 // oxlint-disable no-negated-condition
-import fs from 'node:fs/promises'
-
 import * as p from '@clack/prompts'
 import gradient from 'gradient-string'
 import pc from 'picocolors'
@@ -15,6 +13,8 @@ import {
 import { createProject } from '@/commands/init/create'
 import { projectName, projectOptions } from '@/commands/init/types'
 import { procedure } from '@/trpc'
+
+import fs from 'node:fs/promises'
 
 export const initCommand = procedure
   .meta({ aliases: { options: { yes: 'y' } }, default: true })

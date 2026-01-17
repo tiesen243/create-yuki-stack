@@ -17,15 +17,15 @@
     "dev": "turbo dev --continue",
     "format": "oxfmt --check",
     "format:fix": "oxfmt --write",
-    "postinstall": "{{ pkm }} run lint:ws",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "lint:ws": "{{ pkme }} sherif@latest",
+    "postinstall": "{{ pkm }} run lint:ws",
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
-    "oxfmt": "^0.21.0",
-    "oxlint": "^1.36.0",
-    "turbo": "^2.7.2"
+    "oxfmt": "^0.24.0",
+    "oxlint": "^1.39.0",
+    "turbo": "^2.7.5"
   }
 }

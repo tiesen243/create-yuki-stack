@@ -12,8 +12,8 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@react-router/node": "^7.11.0",
-    "@react-router/serve": "^7.11.0",
+    "@react-router/node": "^7.12.0",
+    "@react-router/serve": "^7.12.0",
     "@tanstack/react-query": "catalog:prod",
     "@{{ name }}/lib": "workspace:*",
     "@{{ name }}/ui": "workspace:*",
@@ -21,10 +21,10 @@
     "isbot": "^5.1.32",
     "react": "catalog:react",
     "react-dom": "catalog:react",
-    "react-router": "^7.11.0"
+    "react-router": "^7.12.0"
   },
   "devDependencies": {
-    "@react-router/dev": "^7.11.0",
+    "@react-router/dev": "^7.12.0",
     "@tailwindcss/vite": "catalog:tailwind",
     "@types/node": "catalog:dev",
     "@types/react": "catalog:react",
@@ -33,7 +33,7 @@
     "dotenv-cli": "catalog:dev",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:dev",
-    "vite": "^7.3.0",
-    "vite-tsconfig-paths": "^6.0.3"
+    "vite": "^7.3.1",
+    "vite-tsconfig-paths": "^6.0.4"
   }
 }
