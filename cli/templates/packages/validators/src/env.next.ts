@@ -2,12 +2,14 @@ import { createEnv } from '@{{ name }}/lib/create-env'
 import * as z from 'zod/mini'
 
 export const env = createEnv({
-  server: {
+  shared: {
     NODE_ENV: z._default(
       z.enum(['development', 'production', 'test']),
       'development',
     ),
   },
+
+  server: {},
 
   clientPrefix: 'NEXT_PUBLIC_',
   client: {
@@ -26,5 +28,6 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL,
   },
 
+  emptyStringAsUndefined: true,
   skipValidation: true,
 })

@@ -1,8 +1,5 @@
 import type { ProjectOptions } from '@/commands/init/types'
 
-import { exec } from 'node:child_process'
-import { promisify } from 'node:util'
-
 import { spinner } from '@clack/prompts'
 import pc from 'picocolors'
 
@@ -17,6 +14,8 @@ import { addExtras } from './extras'
 import { addFrontend } from './frontend'
 import { generateReadme } from './generate-readme'
 import { replacePlaceholder } from './replace-placeholder'
+import { exec } from 'node:child_process'
+import { promisify } from 'node:util'
 
 const execAsync = promisify(exec)
 

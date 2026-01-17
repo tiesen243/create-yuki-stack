@@ -1,9 +1,9 @@
 import type { ProjectOptions } from '@/commands/init/types'
 
-import fs from 'node:fs/promises'
-
 import { addEnv } from '@/utils/add-env'
 import { getPackageVersions } from '@/utils/get-package-version'
+
+import fs from 'node:fs/promises'
 
 export async function addDatabase(opts: ProjectOptions): Promise<void> {
   if (opts.database === 'none') return

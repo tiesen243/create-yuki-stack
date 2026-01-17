@@ -16,8 +16,7 @@
     "~dev": "tsdown --watch"
   },
   "dependencies": {
-    "@tanstack/react-query": "catalog:prod",
-    "zod": "catalog:prod"
+    "@tanstack/react-query": "catalog:prod"
   },
   "devDependencies": {
     "@types/node": "catalog:dev",

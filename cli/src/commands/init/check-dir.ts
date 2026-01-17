@@ -1,8 +1,8 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-
 import * as p from '@clack/prompts'
 import pc from 'picocolors'
+
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
 export async function checkDir(
   dir: string,

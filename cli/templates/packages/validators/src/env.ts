@@ -2,6 +2,8 @@ import { createEnv } from '@{{ name }}/lib/create-env'
 import * as z from 'zod/mini'
 
 export const env = createEnv({
+  shared: {},
+
   server: {
     // prettier-ignore
     NODE_ENV: z._default(z.enum(['development', 'production', 'test']), 'development'),
@@ -18,6 +20,7 @@ export const env = createEnv({
 
   runtimeEnv: process.env,
 
+  emptyStringAsUndefined: true,
   skipValidation:
     !!process.env.SKIP_ENV_VALIDATION ||
     !!process.env.CI ||

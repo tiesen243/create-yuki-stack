@@ -20,13 +20,13 @@
     "~dev": "tsdown --watch ./src"
   },
   "dependencies": {
-    "@react-email/components": "^1.0.3",
+    "@react-email/components": "^1.0.4",
     "@{{ name }}/validators": "workspace:*",
-    "resend": "^6.6.0"
+    "resend": "^6.7.0"
   },
   "devDependencies": {
     "@{{ name }}/tsconfig": "workspace:*",
-    "react-email": "^5.1.1",
+    "react-email": "^5.2.5",
     "tsdown": "catalog:dev",
     "typescript": "catalog:dev"
   },

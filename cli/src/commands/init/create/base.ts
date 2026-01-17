@@ -56,7 +56,7 @@ async function setupPackageManager(opts: ProjectOptions, templatePath: URL) {
       break
 
     case 'bun': {
-      await fs.copyFile(new URL('bunfig.yaml', templatePath), 'bunfig.toml')
+      await fs.copyFile(new URL('bunfig.yml', templatePath), 'bunfig.toml')
       const bunJson = (await fs
         .readFile(new URL('bun.json', templatePath), 'utf-8')
         .then(JSON.parse)) as PackageJson

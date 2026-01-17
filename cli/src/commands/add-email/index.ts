@@ -1,13 +1,13 @@
-import { exec } from 'node:child_process'
-import fs from 'node:fs/promises'
-import { promisify } from 'node:util'
-
 import * as p from '@clack/prompts'
 import pc from 'picocolors'
 
 import { procedure } from '@/trpc'
 import { addEnv } from '@/utils/add-env'
 import { getProjectMetadata } from '@/utils/get-project-metadata'
+
+import { exec } from 'node:child_process'
+import fs from 'node:fs/promises'
+import { promisify } from 'node:util'
 
 const execAsync = promisify(exec)
 
