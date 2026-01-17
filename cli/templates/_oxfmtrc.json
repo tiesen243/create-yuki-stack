@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [],
 
   "jsxSingleQuote": true,
   "printWidth": 80,
@@ -10,7 +9,16 @@
   "trailingComma": "all",
 
   "experimentalSortImports": {
-    "groups": ["side-effect", "type", "builtin", "external", "internal"],
+    "groups": ["side-effect", "type", "external", "internal"],
     "partitionByComment": true
+  },
+
+  "experimentalSortPackageJson": {
+    "sortScripts": true
+  },
+
+  "experimentalTailwindcss": {
+    "functions": ["clsx", "cva", "cn"],
+    "stylesheet": "./packages/ui/src/tailwind.css"
   }
 }
