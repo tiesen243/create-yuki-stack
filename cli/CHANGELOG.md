@@ -1,5 +1,13 @@
 # create-yuki-stack
 
+## 0.3.2
+
+### Patch Changes
+
+- [`7cf960f`](https://github.com/tiesen243/create-yuki-stack/commit/7cf960f7bb7526e36422cea3619d0a448bcd405e) Thanks [@tiesen243](https://github.com/tiesen243)! - bump deps
+
+- [`7535b4f`](https://github.com/tiesen243/create-yuki-stack/commit/7535b4ffc4771bd64a60df17cc919612f91c1db7) Thanks [@tiesen243](https://github.com/tiesen243)! - update oxfmt config
+
 ## 0.3.1
 
 ### Patch Changes
