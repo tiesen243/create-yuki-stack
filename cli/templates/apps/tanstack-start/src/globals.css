@@ -1,3 +1,0 @@
-@import '@{{ name }}/ui/tailwind.css';
-
-@source "../../../packages/ui/src/**/*.tsx";

@@ -1,9 +1,0 @@
-{
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "React",
-  "extends": "./internal-package.json",
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "lib": ["es2024", "dom", "dom.iterable"]
-  }
-}

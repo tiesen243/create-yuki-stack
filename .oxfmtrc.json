@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["**/*.{json,yml}", "**/schema/prisma.*.ts"],
 
   "jsxSingleQuote": true,
   "printWidth": 80,
@@ -10,8 +9,15 @@
   "trailingComma": "all",
 
   "experimentalSortImports": {
-    "groups": ["side-effect", "type", "external", "internal"],
-    "partitionByComment": true
+    "groups": [
+      "side_effect_style",
+      "type-import",
+      ["value-builtin", "value-external"],
+      "type-internal",
+      "value-internal",
+      ["type-parent", "type-sibling", "type-index"],
+      ["value-parent", "value-sibling", "value-index"]
+    ]
   },
 
   "experimentalSortPackageJson": {

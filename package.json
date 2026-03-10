@@ -9,17 +9,13 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "bump-deps": "bunx --bun npm-check-updates --deep -u && bun install",
     "changeset": "changeset",
     "clean": "git clean -xdf node_modules",
-    "clean:workspaces": "turbo run clean",
     "dev": "turbo dev --continue",
     "format": "oxfmt --check",
     "format:fix": "oxfmt --write",
     "lint": "oxlint cli/src",
     "lint:fix": "oxlint cli/src --fix",
-    "lint:ws": "bunx --bun sherif@latest",
-    "postinstall": "bun lint:ws",
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {

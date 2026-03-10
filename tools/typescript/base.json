@@ -5,25 +5,26 @@
     /** Base Options */
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "es2024",
-    "lib": ["es2024"],
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
-    "verbatimModuleSyntax": true,
+
     /** Keep TSC performant in monorepos */
     "incremental": true,
     "disableSourceOfProjectReferenceRedirect": true,
     "tsBuildInfoFile": "${configDir}/.cache/tsbuildinfo.json",
+
     /** Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
     "checkJs": true,
+
     /** Transpile using Bundler (not tsc) */
-    "module": "preserve",
-    "moduleResolution": "bundler",
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
     "noEmit": true
   },
   "exclude": ["node_modules", "build", "dist", ".next", ".expo"]
