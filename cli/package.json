@@ -21,6 +21,14 @@
     "url": "https://github.com/tiesen243/create-yuki-stack",
     "directory": "cli"
   },
+  "bin": {
+    "create-yuki-stack": "./dist/index.mjs"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -29,5 +37,17 @@
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "dev": "tsdown --watch ./src",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@effect/cli": "^0.73.2",
+    "@effect/platform": "^0.94.5",
+    "@effect/platform-bun": "^0.87.1",
+    "effect": "^3.19.19",
+    "ora": "^9.3.0"
+  },
+  "devDependencies": {
+    "@yuki/tsconfig": "workspace:*",
+    "tsdown": "^0.21.1",
+    "typescript": "catalog:dev"
   }
 }

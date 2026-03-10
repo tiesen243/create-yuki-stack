@@ -18,9 +18,13 @@
     "lint:fix": "oxlint cli/src --fix",
     "typecheck": "turbo run typecheck"
   },
+  "dependencies": {
+    "gradient-string": "^3.0.0"
+  },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.2",
     "@changesets/cli": "^2.29.8",
+    "@types/bun": "^1.3.10",
     "oxfmt": "^0.24.0",
     "oxlint": "^1.39.0",
     "turbo": "^2.7.5"
